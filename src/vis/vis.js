@@ -136,7 +136,7 @@ var Vis = cdb.core.View.extend({
     }
 
     var scrollwheel = true;
-    
+
     options = options || {};
 
     this._applyOptions(data, options);
@@ -209,6 +209,33 @@ var Vis = cdb.core.View.extend({
       this.loadLayer(layerData);
     }
 
+    if(options.legends) {
+      this.addLegends(data.layers);
+    }
+
+    // set layer options
+    if(options.sublayer_options) {
+
+      var dataLayer = this.getLayers()[1];
+
+      for(i = 0; i < options.sublayer_options.length; ++i) {
+        var o = options.sublayer_options[i];
+        var subLayer = dataLayer.getSubLayer(i);
+
+        if (this.legends) {
+
+          var j = options.sublayer_options.length - i - 1;
+          var legend = this.legends && this.legends.options.legends[j];
+
+          if (legend) {
+            o.visible ? legend.show(): legend.hide();
+          }
+
+        }
+        o.visible ? subLayer.show(): subLayer.hide();
+      }
+    }
+
     // Create the overlays
     for (var i in data.overlays) {
       this.addOverlay(data.overlays[i]);
@@ -219,6 +246,34 @@ var Vis = cdb.core.View.extend({
     })
 
     return this;
+  },
+
+  addLegends: function(layers) {
+    function createLegendView(layers) {
+      var legends = [];
+      for(var i = layers.length - 1; i>= 0; --i) {
+        var layer = layers[i];
+        if(layer.legend) {
+          layer.legend.data = layer.legend.items;
+          var legend = layer.legend;
+          if(legend.items && legend.items.length) {
+            legends.push(new cdb.geo.ui.Legend(layer.legend));
+          }
+        }
+        if(layer.options && layer.options.layer_definition) {
+          legends = legends.concat(createLegendView(layer.options.layer_definition.layers));
+        }
+      }
+      return legends;
+    }
+
+    legends = createLegendView(layers);
+    var stackedLegend = new cdb.geo.ui.StackedLegend({
+       legends: legends
+    });
+    this.legends = stackedLegend;
+
+    this.mapView.addOverlay(stackedLegend);
   },
 
   addOverlay: function(overlay) {
@@ -266,7 +321,8 @@ var Vis = cdb.core.View.extend({
       loaderControl: true,
       layer_selector: false,
       searchControl: false,
-      infowindow: true
+      infowindow: true,
+      legends: true
     });
     vizjson.overlays = vizjson.overlays || [];
     vizjson.layers = vizjson.layers || [];
@@ -423,7 +479,9 @@ var Vis = cdb.core.View.extend({
 
     // activate interactivity for layers with infowindows
     for(var i = 0; i < layerView.getLayerCount(); ++i) {
-      if(layerView.getInfowindowData(i)) {
+      var interactivity = layerView.getSubLayer(i).get('interactivity');
+      // if interactivity is not enabled we can't enable it
+      if(layerView.getInfowindowData(i) && interactivity && interactivity.indexOf('cartodb_id') !== -1) {
         if(!infowindow) {
           infowindow = Overlay.create('infowindow', this, layerView.getInfowindowData(i), true);
           mapView.addInfowindow(infowindow);
@@ -445,6 +503,11 @@ var Vis = cdb.core.View.extend({
         var cartodb_id = data.cartodb_id
         var infowindowFields = layerView.getInfowindowData(layer)
         var fields = infowindowFields.fields;
+
+        infowindow.model.set({
+          'template': infowindowFields.template,
+          'template_type': infowindowFields.template_type
+        });
         // Send request
         sql.execute("select {{{fields}}} from ({{{sql}}}) as _cartodbjs_alias where cartodb_id = {{{ cartodb_id }}}", {
           fields: _.pluck(fields, 'name').join(','),
@@ -481,6 +544,7 @@ var Vis = cdb.core.View.extend({
             content = render_fields;
           }
 
+
           infowindow.model.set({
             content:  {
               fields: content,
@@ -493,7 +557,6 @@ var Vis = cdb.core.View.extend({
           infowindow.setError();
         })
 
-        infowindow.model.set('template', infowindowFields.template);
 
         // Show infowindow with loading state
         infowindow
@@ -586,8 +649,6 @@ var Vis = cdb.core.View.extend({
       return v.type == type;
     });
   }
-
-
 
 });
 

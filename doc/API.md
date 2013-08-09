@@ -128,8 +128,9 @@ Below is an example putting a CartoDB layer on top of an existing Leaflet map.
       });
 
       cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+        .addTo(map)
         .on('done', function(layer) {
-          map.addLayer(layer);
+            //do stuff
         })
         .on('error', function(err) {
           alert("some error occurred: " + err);
@@ -157,9 +158,9 @@ Each visualization you create in the CartoDB UI includes a you get a viz.json UR
         sql: "SELECT * FROM table_name",
         cartocss: '#table_name {marker-fill: #F0F0F0;}'
       }]
-    }).done(function(layer) {
-      // add the layer to our map which already contains 1 sublayer
-      map.addLayer(layer);
+    })
+    .addTo(map) // add the layer to our map which already contains 1 sublayer
+    .done(function(layer) {
 
       // create and add a new sublayer
       layer.createSubLayer({
@@ -168,7 +169,7 @@ Each visualization you create in the CartoDB UI includes a you get a viz.json UR
       });
 
       // change the query for the first layer
-      layer.getSubLayer(0).setSQL('');
+      layer.getSubLayer(0).setSQL("SELECT * FROM table_name limit 10");
     });
   ```
 <div class="margin20"></div>
@@ -225,7 +226,9 @@ Creates a visualization inside the map_id DOM object.
     - **zoom**: initial zoom.
     - **cartodb_logo**: default to true, set to false if you want to remove the cartodb logo.
     - **infowindow**: set to false if you want to disable the infowindow (enabled by default).
+    - **legends**: if it's true legends are shown in the map.
     - **https**: if true forces tiles to be fetched using https. If false it uses the predefined method
+
 
 #### cartodb.Vis
 
@@ -285,12 +288,14 @@ With visualizations already created through the CartoDB console, you can simply 
   + **map**: Leaflet L.Map or Google Maps google.maps.Map object. The map should be initialized before calling this function.
   + **layerSource**: contains information about the layer. It can be specified in 2 ways:
     - passing the url where the layer data is located:
+    <div class="margin20"></div></p>
     <div class="code_title">cartodb.createLayer</div>
       ```
         cartodb.createLayer(map, 'http://myserver.com/layerdata.json')
       ```
 
     - passing the data directly:
+    <div class="margin20"></div></p>
     <div class="code_title">cartodb.createLayer</div>
       ```
         cartodb.createLayer(map, { ... layer metadata ... });
@@ -304,6 +309,8 @@ With visualizations already created through the CartoDB console, you can simply 
   + **options**: 
     - **https**: force https
     - **refreshTime**: if is set, the layer is refreshed each refreshTime milliseconds.
+    - **infowindow**: set to false if you want to disable the infowindow (enabled by default).
+    - **legends**: if it's true legends are shown in the map.
 
   + **callback(layer)**: if a function is specified is called when the layer is created passing it as argument.
 
@@ -331,6 +338,7 @@ You can call to addTo(map[, position]) in the promise so when the layer is ready
     map = new google.maps.Map(document.getElementById('map'),  mapOptions);
 
     cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+      .addTo(map)
       .on('done', function(layer) {
         layer
           .on('featureOver', function(e, latlng, pos, data) {
@@ -425,15 +433,12 @@ SubLayer object
 <div class="code_title">layer.createSubLayer</div>
   ```
     cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/european_countries_e/viz.json', function(layer) {
-       // add the layer to the map
-       map.addLayer(layer);
-
        // add populated places points over the countries layer
        layer.createSubLayer({
          sql: 'SELECT * FROM ne_10m_populated_places_simple',
          cartocss: '#layer { marker-fill: red; }'
        });
-    });
+    }).addTo(map);
   ```
 <div class="margin20"></div>
 
@@ -862,7 +867,7 @@ Keep in mind the version of CartoDB.js you are using for development. For any li
 
 Contains the library version, should be something like '3.0.1'.
 
-### FAQ
+### Other important stuff
 
 The CartoDB.js library has many great features for you to use in your applications. Let’s take a look at the most important for your application development.
 
@@ -905,6 +910,7 @@ The **createLayer** and **createVis** functions returns two important events for
 <div class="code_title">Loading events</div>
   ```
     cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/0001/viz.json')
+      .addTo(map)
       .on('done', function(layer) {
         alert(‘CartoDB layer loaded!’);
       }).on('error', function(err) {
@@ -989,6 +995,7 @@ You can use all the functionality of CartoDB.js with HTTPs support. Be sure to a
         zoom: 2
       })
       cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/15589/viz.json', { https: true })
+        .addTo(map)
         .on('error', function(err) {
           alert("some error occurred: " + err);
         });
@@ -1031,7 +1038,7 @@ Now, that you have your CartoDB.js version, you can point your site at that rele
 <div class="margin20"></div>
 <div class="code_title">Persistent version hosting</div>
   ``` html
-    http://libs.cartocdn.com/cartodb.js/v3/2.0.11/cartodb.js
+    http://libs.cartocdn.com/cartodb.js/v3/3.0.01/cartodb.js
   ```
 <div class="margin20"></div>
 
@@ -1040,6 +1047,6 @@ You can do the same for the CSS documents we provide:
 <div class="margin20"></div>
 <div class="code_title">Persistent version hosting</div>
   ``` html
-    http://libs.cartocdn.com/cartodb.js/v3/2.0.11/themes/css/cartodb.css
+    http://libs.cartocdn.com/cartodb.js/v3/3.0.01/themes/css/cartodb.css
   ```
 <div class="margin20"></div>

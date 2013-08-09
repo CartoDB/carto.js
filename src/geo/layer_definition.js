@@ -24,7 +24,7 @@ function LayerDefinition(layerDefinition, options) {
 }
 
 /**
- * given a list of sublayers as: 
+ * given a list of sublayers as:
  * {
  *   sql: '...',
  *   cartocss: '..',
@@ -59,10 +59,10 @@ LayerDefinition.layerDefFromSubLayers = function(sublayers) {
 LayerDefinition.prototype = {
 
   /*
-   * TODO: extract these two functions to some core module 
+   * TODO: extract these two functions to some core module
    */
   isCORSSupported: function() {
-    return 'withCredentials' in new XMLHttpRequest() || typeof XDomainRequest !== "undefined";
+    return 'withCredentials' in new XMLHttpRequest();// || (typeof XDomainRequest !== "undefined";
   },
 
   isBtoaSupported: function() {
@@ -219,9 +219,7 @@ LayerDefinition.prototype = {
   _requestGET: function(params, callback) {
     var self = this;
     var ajax = this.options.ajax;
-    var json = '{ "config": "' +
-      JSON.stringify(this.toJSON()).replace(/"/g, '\\"').replace(/\\n/g, '') +
-    '"}';
+    var json = JSON.stringify({ config: JSON.stringify(this.toJSON()) });
     LZMA.compress(json, 3, function(encoded) {
       encoded = self._array2hex(encoded);
       params.push("lzma=" + encodeURIComponent(encoded));
@@ -265,7 +263,7 @@ LayerDefinition.prototype = {
     if(api_key) {
       params.push("map_key=" + api_key);
     }
-    // mark as the request is being done 
+    // mark as the request is being done
     this._waiting = true;
     var req = null;
     if(this.options.cors) {
