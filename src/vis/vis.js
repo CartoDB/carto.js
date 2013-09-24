@@ -469,7 +469,6 @@ var Vis = cdb.core.View.extend({
     var protocol = attrs.sql_api_protocol;
     var version = 'v1';
     if (domain.indexOf('cartodb.com') !== -1) {
-      protocol = 'http';
       domain = "cartodb.com";
       version = 'v2';
     }
