@@ -39,7 +39,7 @@
     "karma-coverage": "~0.2.5"
   },
   "scripts": {
-    "test": "./node_modules/.bin/karma start my.conf.js --single-run --browsers PhantomJS"
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "files": [
     "dist"
