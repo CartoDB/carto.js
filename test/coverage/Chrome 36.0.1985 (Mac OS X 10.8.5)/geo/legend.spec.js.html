@@ -1,0 +1,3106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for geo/legend.spec.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../prettify.css">
+
+    <style>
+        body, html {
+            margin:0; padding: 0;
+        }
+        body {
+            font-family: Helvetica Neue, Helvetica,Arial;
+            font-size: 10pt;
+        }
+        div.header, div.footer {
+            background: #eee;
+            padding: 1em;
+        }
+        div.header {
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            border-bottom: 1px solid #666;
+            width: 100%;
+        }
+        div.footer {
+            border-top: 1px solid #666;
+        }
+        div.body {
+            margin-top: 10em;
+        }
+        div.meta {
+            font-size: 90%;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-weight: normal;
+        }
+        h1 {
+            font-size: 12pt;
+        }
+        h2 {
+            font-size: 10pt;
+        }
+        pre {
+            font-family: Consolas, Menlo, Monaco, monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 14px;
+            font-size: 14px;
+            -moz-tab-size: 2;
+            -o-tab-size:  2;
+            tab-size: 2;
+        }
+
+        div.path { font-size: 110%; }
+        div.path a:link, div.path a:visited { color: #000; }
+        table.coverage { border-collapse: collapse; margin:0; padding: 0 }
+
+        table.coverage td {
+            margin: 0;
+            padding: 0;
+            color: #111;
+            vertical-align: top;
+        }
+        table.coverage td.line-count {
+            width: 50px;
+            text-align: right;
+            padding-right: 5px;
+        }
+        table.coverage td.line-coverage {
+            color: #777 !important;
+            text-align: right;
+            border-left: 1px solid #666;
+            border-right: 1px solid #666;
+        }
+
+        table.coverage td.text {
+        }
+
+        table.coverage td span.cline-any {
+            display: inline-block;
+            padding: 0 5px;
+            width: 40px;
+        }
+        table.coverage td span.cline-neutral {
+            background: #eee;
+        }
+        table.coverage td span.cline-yes {
+            background: #b5d592;
+            color: #999;
+        }
+        table.coverage td span.cline-no {
+            background: #fc8c84;
+        }
+
+        .cstat-yes { color: #111; }
+        .cstat-no { background: #fc8c84; color: #111; }
+        .fstat-no { background: #ffc520; color: #111 !important; }
+        .cbranch-no { background:  yellow !important; color: #111; }
+
+        .cstat-skip { background: #ddd; color: #111; }
+        .fstat-skip { background: #ddd; color: #111 !important; }
+        .cbranch-skip { background: #ddd !important; color: #111; }
+
+        .missing-if-branch {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: black;
+            color: yellow;
+        }
+
+        .skip-if-branch {
+            display: none;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: #ccc;
+            color: white;
+        }
+
+        .missing-if-branch .typ, .skip-if-branch .typ {
+            color: inherit !important;
+        }
+
+        .entity, .metric { font-weight: bold; }
+        .metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }
+        .metric small { font-size: 80%; font-weight: normal; color: #666; }
+
+        div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }
+        div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }
+        div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }
+        div.coverage-summary th.file { border-right: none !important; }
+        div.coverage-summary th.pic { border-left: none !important; text-align: right; }
+        div.coverage-summary th.pct { border-right: none !important; }
+        div.coverage-summary th.abs { border-left: none !important; text-align: right; }
+        div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }
+        div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }
+        div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }
+        div.coverage-summary td.pic { min-width: 120px !important;  }
+        div.coverage-summary a:link { text-decoration: none; color: #000; }
+        div.coverage-summary a:visited { text-decoration: none; color: #333; }
+        div.coverage-summary a:hover { text-decoration: underline; }
+        div.coverage-summary tfoot td { border-top: 1px solid #666; }
+
+        div.coverage-summary .yui3-datatable-sort-indicator, div.coverage-summary .dummy-sort-indicator {
+            height: 10px;
+            width: 7px;
+            display: inline-block;
+            margin-left: 0.5em;
+        }
+        div.coverage-summary .yui3-datatable-sort-indicator {
+            background: url("https://yui-s.yahooapis.com/3.6.0/build/datatable-sort/assets/skins/sam/sort-arrow-sprite.png") no-repeat scroll 0 0 transparent;
+        }
+        div.coverage-summary .yui3-datatable-sorted .yui3-datatable-sort-indicator {
+            background-position: 0 -20px;
+        }
+        div.coverage-summary .yui3-datatable-sorted-desc .yui3-datatable-sort-indicator {
+            background-position: 0 -10px;
+        }
+
+        .high { background: #b5d592 !important; }
+        .medium { background: #ffe87c !important; }
+        .low { background: #fc8c84 !important; }
+
+        span.cover-fill, span.cover-empty {
+            display:inline-block;
+            border:1px solid #444;
+            background: white;
+            height: 12px;
+        }
+        span.cover-fill {
+            background: #ccc;
+            border-right: 1px solid #444;
+        }
+        span.cover-empty {
+            background: white;
+            border-left: none;
+        }
+        span.cover-full {
+            border-right: none !important;
+        }
+        pre.prettyprint {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .com { color: #999 !important; }
+        .ignore-none { color: #999; font-weight: normal; }
+
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">geo/legend.spec.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">98.06% <small>(454 / 463)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">96.46% <small>(109 / 113)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">98.06% <small>(454 / 463)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">geo/</a> &#187; legend.spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">describe("common.geo.ui.Legend", function() {
+&nbsp;
+  describe("Legend", function() {
+&nbsp;
+    var data, legend, map;
+&nbsp;
+    afterEach(function() {
+      legend.clean();
+    });
+&nbsp;
+    beforeEach(function() {
+&nbsp;
+      map = new cdb.geo.Map();
+&nbsp;
+      data = [
+        { name: "Category 1", value: "#f1f1f1" },
+        { name: "Category 2", value: "red" },
+        { name: "Category 3", value: "#f1f1f1" },
+        { name: "Category 4", value: "#ccc" },
+      ];
+&nbsp;
+      legend = new cdb.geo.ui.Legend({
+        data: data,
+        map: map
+      });
+&nbsp;
+      $("body").append(legend.render().$el);
+&nbsp;
+    });
+&nbsp;
+    it("should have a 'none' type set by default", function() {
+      expect(legend.model.get("type")).toEqual("none");
+    });
+&nbsp;
+    it("should use the provided model", function() {
+&nbsp;
+      var legend = new cdb.geo.ui.Legend({
+        data: data,
+        map: map
+      });
+&nbsp;
+      expect(legend.model).toBeDefined();
+      expect(legend.model.get("type")).toEqual("none");
+&nbsp;
+    });
+&nbsp;
+    it("should generate a model if no model is provided", function() {
+&nbsp;
+      expect(legend.model).toBeDefined();
+      expect(legend.model.get("type")).toEqual("none");
+&nbsp;
+    });
+&nbsp;
+    it("should allow to change type", function() {
+      legend.model.set({ type: "bubble" });
+      expect(legend.model.get("type")).toEqual('bubble');
+    });
+&nbsp;
+    it("should have a collection", function() {
+      expect(legend.items instanceof cdb.geo.ui.LegendItems).toEqual(true);
+    });
+&nbsp;
+    it("should populate the collection", function() {
+      legend.model.set("type", "custom");
+      expect(legend.model.items.length).toEqual(4);
+&nbsp;
+      for (var i = 0; i &lt; data.length; i++) {
+        expect(legend.model.items.at(i).get("name")).toEqual(data[i].name);
+      }
+&nbsp;
+    });
+&nbsp;
+    it("should set the type of the legend in the element", function() {
+      legend.model.set({ type: "bubble" });
+      legend.render();
+      expect(legend.$el.hasClass("bubble")).toEqual(true);
+    });
+&nbsp;
+    it("should create the specific legend based on the type", function() {
+      legend.model.set({ type: "bubble" });
+      expect(legend.view instanceof cdb.geo.ui.BubbleLegend).toEqual(true);
+      expect(legend.$el.hasClass("bubble")).toEqual(true);
+      expect(legend.$el.hasClass("custom")).toEqual(false);
+    });
+&nbsp;
+    it("shouldn't create the legend if the type is unknown", function() {
+      legend.model.set({ type: "the_legend_of_santana" });
+      expect(legend.view instanceof cdb.geo.ui.CustomLegend).toEqual(false);
+      expect(legend.$el.hasClass("custom")).toEqual(false);
+    });
+&nbsp;
+    it("should update the legend when the name of an item is changed", function() {
+      legend.render();
+      legend.model.set({ type: "custom" });
+      expect(legend.$el.find("li:first-child").text().trim()).toEqual('Category 1');
+&nbsp;
+      legend.items.at(0).set("name", "New Category 1")
+      expect(legend.$el.find("li:first-child").text().trim()).toEqual('New Category 1');
+    });
+&nbsp;
+    it("should update the legend when the value of an item is changed", function() {
+      legend.render();
+      legend.model.set({ type: "custom" });
+      expect(legend.$el.find("li:first-child .bullet").css("background-color")).toEqual('rgb(241, 241, 241)');
+&nbsp;
+      legend.items.at(0).set("value", "red")
+      expect(legend.$el.find("li:first-child .bullet").css("background-color")).toEqual('rgb(255, 0, 0)');
+    });
+&nbsp;
+&nbsp;
+    it("should have a title defined", function() {
+      expect(legend.model.get("title")).toBeDefined();
+    });
+&nbsp;
+    it("should have a show_title defined", function() {
+      legend.model.set({ type: "custom" });
+      expect(legend.model.get("show_title")).toBeDefined();
+    });
+&nbsp;
+    it("should show the legend", function() {
+      legend.model.set({ type: "custom" });
+      legend.show();
+      expect(legend.$el.css('display')).toEqual('block');
+    });
+    it("shouldn't show the 'none' legend", function() {
+      legend.show();
+      expect(legend.$el.css('display')).toEqual('none');
+    });
+&nbsp;
+    it("should hide the legend", function() {
+&nbsp;
+      legend.model.set({ type: "bubble" });
+&nbsp;
+      legend.show();
+      legend.hide();
+&nbsp;
+      waits(300);
+&nbsp;
+      runs(function () {
+        expect(legend.$el.css('display')).toEqual('none');
+      });
+&nbsp;
+    });
+&nbsp;
+    it("should render the title if title and show_title are set", function() {
+      var title = "Hi, I'm a title";
+      legend.model.set({ type: "custom", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "bubble", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "density", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "intensity", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "color", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "category", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+&nbsp;
+      legend.model.set({ type: "choropleth", title: title, show_title: true });
+      expect(legend.$el.find('.legend-title').text()).toEqual(title);
+    });
+&nbsp;
+    it("shouldn't render the title if show_title is not true", function() {
+      var title = "Hi, I'm a title";
+      legend.model.set({ type: "custom", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "bubble", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "density", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "intensity", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "color", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "category", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+&nbsp;
+      legend.model.set({ type: "choropleth", title: title, show_title: false });
+      expect(legend.$el.find('.legend-title').text()).not.toEqual(title);
+    });
+&nbsp;
+  });
+&nbsp;
+  describe("StackedLegend", function() {
+&nbsp;
+    var data, legends, legendA, legendB, stackedLegend;
+&nbsp;
+    afterEach(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      stackedLegend.clean();</span>
+    });
+&nbsp;
+    beforeEach(<span class="fstat-no" title="function not covered" >function() {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      data = [</span>
+        { name: "Category 1", value: "#f1f1f1" },
+        { name: "Category 2", value: "red" },
+        { name: "Category 3", value: "#f1f1f1" },
+        { name: "Category 4", value: "#ccc" },
+      ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      legendA = new cdb.geo.ui.Legend({</span>
+        data: data
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      legendB = new cdb.geo.ui.Legend({</span>
+        data: data
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      legends = [ legendA, legendB ];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      stackedLegend = new cdb.geo.ui.StackedLegend({</span>
+        legends: legends
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      $("body").append(stackedLegend.render().$el);</span>
+&nbsp;
+    });
+&nbsp;
+    xit("should have a collection of items", <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      expect(stackedLegend.items instanceof cdb.geo.ui.StackedLegendItems).toEqual(true);</span>
+    });
+&nbsp;
+    xit("should populate the collection", <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >      expect(stackedLegend.items.length).toEqual(2);</span>
+&nbsp;
+      //for (var i = 0; i &lt; legends.length; i++) {
+      //expect(stackedLegend.items.at(i).toJSON()).toEqual(legends[i]);
+      //}
+&nbsp;
+    });
+&nbsp;
+    //it("should generate one element", function() {
+    //stackedLegend.render();
+    //expec(stackedLegend.$el);
+    //});
+&nbsp;
+  });
+&nbsp;
+  describe("ColorLegend", function() {
+    var legend;
+    beforeEach(function() {
+      var data = [
+        { name: true, value: "red" },
+        { name: false, value: "red"  },
+        { name: "#f1f1f1", value: "red"  },
+        { name: null, value: "red"  },
+      ];
+&nbsp;
+      var model = new cdb.core.Model({
+        type: "color",
+        title: "title",
+        show_title: false,
+      });
+      model.items = new Backbone.Collection(data)
+&nbsp;
+      legend = new cdb.geo.ui.ColorLegend({
+        model: model
+      });
+    });
+&nbsp;
+    it("should render boolean values and nulls", function() {
+      legend.render();
+      var bullets = legend.$('li');
+      expect(bullets.length).toEqual(4);
+      expect($(bullets[0]).text()).toEqual("		 true");
+      expect($(bullets[1]).text()).toEqual("		 false");
+      expect($(bullets[2]).text()).toEqual("		 #f1f1f1");
+      expect($(bullets[3]).text()).toEqual("		 null");
+    });
+  });
+&nbsp;
+&nbsp;
+  describe("Legend (public interface)", function() {
+&nbsp;
+    var custom_data;
+&nbsp;
+    afterEach(function() {
+      $(".legend_playground").remove();
+    });
+&nbsp;
+    beforeEach(function() {
+&nbsp;
+      custom_data = [
+        { name: "Natural Parks",  value: "#58A062" },
+        { name: "Villages",       value: "http://cartodb.com/assets/logos/logos_full_cartodb_light.png", type: "image" },
+        { name: "Rivers",         value: "#54BFDE" },
+        { name: "Fields",         value: "#9BC562" },
+        { name: "Caves",          value: "#FABB5C" }
+      ];
+&nbsp;
+    });
+&nbsp;
+    it("should allow to show/hide the title", function() {
+&nbsp;
+      var title = "Custom title";
+&nbsp;
+      var legend = new cdb.geo.ui.Legend.Custom({
+        title: title,
+        data: custom_data
+      });
+&nbsp;
+      legend.render();
+      legend.model.set("show_title", false);
+&nbsp;
+      expect(legend.$el.find(".legend-title").html()).toEqual(null);
+&nbsp;
+      legend.model.set("show_title", true);
+      expect(legend.$el.find(".legend-title").html()).toEqual(title);
+&nbsp;
+      legend.hideTitle();
+      expect(legend.$el.find(".legend-title").html()).toEqual(null);
+&nbsp;
+      legend.showTitle();
+      expect(legend.$el.find(".legend-title").html()).toEqual(title);
+&nbsp;
+    });
+&nbsp;
+    it("should have a method to render the legend", function() {
+&nbsp;
+      $("body").append("&lt;div class='legend_playground' /&gt;");
+&nbsp;
+      var legend = new cdb.geo.ui.Legend.Custom({
+        title: "Custom title",
+        data: custom_data
+      });
+&nbsp;
+      legend.addTo(".legend_playground");
+      expect($(".legend_playground .cartodb-legend").length).toEqual(1);
+    });
+&nbsp;
+    it("should render the title", function() {
+&nbsp;
+      var legend = new cdb.geo.ui.Legend.Custom({
+        title: "Custom title",
+        data: custom_data
+      });
+&nbsp;
+      legend.render();
+&nbsp;
+      expect(legend.$el.find(".legend-title").html()).toEqual("Custom title");
+&nbsp;
+    });
+&nbsp;
+    it("shouldn't render the title if it's not provided", function() {
+&nbsp;
+      var legend = new cdb.geo.ui.Legend.Custom({
+        data: custom_data
+      });
+&nbsp;
+      legend.render();
+&nbsp;
+      expect(legend.$el.find(".legend-title").html()).toEqual(null);
+&nbsp;
+    });
+&nbsp;
+&nbsp;
+    describe("Custom Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Custom title", data: custom_data };
+        legend     = new cdb.geo.ui.Legend.Custom( properties );
+&nbsp;
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate a legend", function() {
+        expect(legend.model.get("type")).toEqual("custom");
+      });
+&nbsp;
+      it("should show the items", function() {
+        expect(legend.items.length).toEqual(custom_data.length);
+        expect(legend.items.at(0).get("name")).toEqual(custom_data[0].name);
+        expect(legend.items.at(0).get("value")).toEqual(custom_data[0].value);
+&nbsp;
+        expect(legend.$el.find("li:first-child").text().trim()).toEqual(custom_data[0].name);
+        expect(legend.$el.find("li:first-child .bullet").css("background")).toEqual("rgb(88, 160, 98)");
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+      it("should allow to change the items", function() {
+&nbsp;
+        var new_data = [
+          { name: "One", value: "#F1F1F1" },
+          { name: "Too", value: "#FF00FF" }
+        ];
+&nbsp;
+        legend.setData(new_data);
+&nbsp;
+        expect(legend.items.length).toEqual(new_data.length);
+&nbsp;
+        expect(legend.items.at(0).get("name")).toEqual(new_data[0].name);
+        expect(legend.items.at(0).get("value")).toEqual(new_data[0].value);
+&nbsp;
+        expect(legend.$el.find("li:first-child").text().trim()).toEqual(new_data[0].name);
+        expect(legend.$el.find("li:first-child .bullet").css("background")).toEqual("rgb(241, 241, 241)");
+&nbsp;
+        expect(legend.$el.find("li:last-child").text().trim()).toEqual(new_data[1].name);
+        expect(legend.$el.find("li:last-child .bullet").css("background")).toEqual("rgb(255, 0, 255)");
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Category Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Category title", data: custom_data };
+        legend     = new cdb.geo.ui.Legend.Category( properties );
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate the legend", function() {
+        expect(legend.model.get("type")).toEqual("category");
+      });
+&nbsp;
+      it("should show the items", function() {
+        expect(legend.items.length).toEqual(custom_data.length);
+        expect(legend.items.at(0).get("name")).toEqual(custom_data[0].name);
+        expect(legend.items.at(0).get("value")).toEqual(custom_data[0].value);
+&nbsp;
+        expect(legend.$el.find("li:first-child").text().trim()).toEqual(custom_data[0].name);
+        expect(legend.$el.find("li:first-child .bullet").css("background")).toEqual("rgb(88, 160, 98)");
+&nbsp;
+        expect(legend.$el.find("li:nth-child(2)").text().trim()).toEqual(custom_data[1].name);
+        expect(legend.$el.find("li:nth-child(2) .bullet").css("background")).toEqual("url(http://cartodb.com/assets/logos/logos_full_cartodb_light.png)");
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Bubble Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Bubble legend", type: "bubble", color: "#FF0000", min: 1, max: 120 };
+        legend = new cdb.geo.ui.Legend.Bubble( properties );
+&nbsp;
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate the legend", function() {
+        expect(legend.model.get("type")).toEqual(properties.type);
+      });
+&nbsp;
+      it("should show a graph with the right color", function() {
+        expect(legend.$el.find(".graph").css("background-color")).toEqual("rgb(255, 0, 0)");
+      });
+&nbsp;
+      it("should show min and max values", function() {
+        expect(legend.model.get("min")).toEqual(properties.min);
+        expect(legend.model.get("max")).toEqual(properties.max);
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+      it("should allow to show the title", function() {
+        legend.hideTitle();
+        legend.showTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to hide the title", function() {
+        legend.hideTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(null);
+      });
+&nbsp;
+      it("should allow to change the color", function() {
+        legend.setColor("#CCC");
+        expect(legend.$el.find(".graph").css("background-color")).toEqual("rgb(204, 204, 204)");
+      });
+&nbsp;
+      it("should allow to change the min value", function() {
+        var value = "3";
+&nbsp;
+        legend.setMinValue(value)
+        expect(legend.model.get("min")).toEqual(value);
+        expect(legend.$el.find("ul li:nth-child(1)").text().trim()).toEqual(value);
+      });
+&nbsp;
+      it("should allow to change the max value", function() {
+        var value = "10000";
+&nbsp;
+        legend.setMaxValue(value)
+        expect(legend.model.get("max")).toEqual(value);
+        expect(legend.$el.find("ul li:nth-child(3)").text().trim()).toEqual(value);
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Choropleth Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Choropleth title", type: "choropleth", colors: ["#DDD", "#FF000", "#F1F1F1"], left: "Left value", right: "Right value" };
+        legend = new cdb.geo.ui.Legend.Choropleth(properties);
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate a legend", function() {
+        expect(legend.model.get("type")).toEqual(properties.type);
+      });
+&nbsp;
+      it("should show left and right values", function() {
+        expect(legend.model.get("leftLabel")).toEqual(properties.left);
+        expect(legend.model.get("rightLabel")).toEqual(properties.right);
+      });
+&nbsp;
+      it("should show colors", function() {
+        expect(legend.model.get("colors").length).toEqual(properties.colors.length);
+        expect(legend.$el.find(".quartile").length).toEqual(properties.colors.length);
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+      it("should allow to hide the title", function() {
+        legend.hideTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(null);
+      });
+&nbsp;
+      it("should allow to show the title", function() {
+        legend.hideTitle();
+        legend.showTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow change colors", function() {
+        var newColors = ["red", "white", "blue"];
+&nbsp;
+        legend.setColors(newColors);
+        expect(legend.model.get("colors").length).toEqual(newColors.length);
+        expect(legend.$el.find(".quartile").length).toEqual(newColors.length);
+      });
+&nbsp;
+      it("should allow change the left label", function() {
+        var label = "New left label";
+&nbsp;
+        legend.setLeftLabel(label)
+        expect(legend.model.get("leftLabel")).toEqual(label);
+        expect(legend.$el.find("li:nth-child(1)").text().trim()).toEqual(label);
+      });
+&nbsp;
+      it("should allow change the right label", function() {
+        var label = "New right label";
+&nbsp;
+        legend.setRightLabel(label)
+        expect(legend.model.get("rightLabel")).toEqual(label);
+        expect(legend.$el.find("li:nth-child(2)").text().trim()).toEqual(label);
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Density Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Density title", type: "density", colors: ["#DDD", "#FF000", "#F1F1F1"], left: "Left value", right: "Right value" };
+        legend = new cdb.geo.ui.Legend.Density(properties);
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate a legend", function() {
+        expect(legend.model.get("type")).toEqual(properties.type);
+      });
+&nbsp;
+      it("should show left and right values", function() {
+        expect(legend.model.get("leftLabel")).toEqual(properties.left);
+        expect(legend.model.get("rightLabel")).toEqual(properties.right);
+      });
+&nbsp;
+      it("should show colors", function() {
+        expect(legend.model.get("colors").length).toEqual(properties.colors.length);
+        expect(legend.$el.find(".quartile").length).toEqual(properties.colors.length);
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+      it("should allow to hide the title", function() {
+        legend.hideTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(null);
+      });
+&nbsp;
+      it("should allow to show the title", function() {
+        legend.hideTitle();
+        legend.showTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow change colors", function() {
+        var newColors = ["red", "white", "blue"];
+&nbsp;
+        legend.setColors(newColors);
+        expect(legend.model.get("colors").length).toEqual(newColors.length);
+        expect(legend.$el.find(".quartile").length).toEqual(newColors.length);
+      });
+&nbsp;
+      it("should allow change the left label", function() {
+        legend.setLeftLabel("Hello!")
+        expect(legend.model.get("leftLabel")).toEqual("Hello!");
+        expect(legend.$el.find("li:nth-child(1)").text().trim()).toEqual("Hello!");
+      });
+&nbsp;
+      it("should allow change the right label", function() {
+        legend.setRightLabel("Hi!")
+        expect(legend.model.get("rightLabel")).toEqual("Hi!");
+        expect(legend.$el.find("li:nth-child(2)").text().trim()).toEqual("Hi!");
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Intensity Legend", function() {
+&nbsp;
+      var properties, legend;
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        properties = { title: "Intensity legend", type: "intensity", color: "#FF0000", min: 1, max: 120 };
+        legend = new cdb.geo.ui.Legend.Intensity( properties );
+&nbsp;
+        legend.render();
+&nbsp;
+      });
+&nbsp;
+      it("should generate the legend", function() {
+        expect(legend.model.get("type")).toEqual(properties.type);
+      });
+&nbsp;
+      it("should show a graph with the right color", function() {
+        var gradient = "-webkit-linear-gradient(left, rgb(255, 0, 0) 0%, rgb(255, 0, 0) 100%)";
+        expect(legend.$el.find(".graph").css("background")).toEqual(gradient);
+      });
+&nbsp;
+      it("should show left and right values", function() {
+        expect(legend.model.get("leftLabel")).toEqual(properties.left);
+        expect(legend.model.get("rightLabel")).toEqual(properties.right);
+      });
+&nbsp;
+      it("should show a title", function() {
+        expect(legend.model.get("title")).toEqual(properties.title);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to change the title", function() {
+        legend.setTitle("New title");
+        expect(legend.model.get("show_title")).toEqual(true);
+        expect(legend.$el.find(".legend-title").text().trim()).toEqual("New title");
+      });
+&nbsp;
+      it("should allow to show the title", function() {
+        legend.hideTitle();
+        legend.showTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(properties.title);
+      });
+&nbsp;
+      it("should allow to hide the title", function() {
+        legend.hideTitle();
+        expect(legend.$el.find(".legend-title").html()).toEqual(null);
+      });
+&nbsp;
+      it("should allow to change the color", function() {
+        legend.setColor("#CCC");
+        var gradient = "-webkit-linear-gradient(left, rgb(204, 204, 204) 0%, rgb(255, 255, 255) 100%)";
+        expect(legend.$el.find(".graph").css("background")).toEqual(gradient);
+      });
+&nbsp;
+      it("should allow change the left label", function() {
+        var label = "New left label";
+&nbsp;
+        legend.setLeftLabel(label)
+        expect(legend.model.get("leftLabel")).toEqual(label);
+        expect(legend.$el.find("li:nth-child(1)").text().trim()).toEqual(label);
+      });
+&nbsp;
+      it("should allow change the right label", function() {
+        var label = "New right label";
+&nbsp;
+        legend.setRightLabel(label)
+        expect(legend.model.get("rightLabel")).toEqual(label);
+        expect(legend.$el.find("li:nth-child(2)").text().trim()).toEqual(label);
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Stacked Legend (using data)", function() {
+&nbsp;
+      afterEach(function() {
+        $(".legend_playground").remove();
+      });
+&nbsp;
+      var stacked, properties, legendA, legendB, custom_data;
+&nbsp;
+      var custom_data = [
+        { name: "Natural Parks",  value: "#58A062" },
+        { name: "Villages",       value: "#F07971" },
+        { name: "Rivers",         value: "#54BFDE" },
+        { name: "Fields",         value: "#9BC562" },
+        { name: "Caves",          value: "#FABB5C" }
+      ];
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        var legendA = { title: "Intensity legend", type: "intensity", color: "#FF0000", min: 1, max: 120 };
+        var legendB = { title: "Custom title", type:"custom", data: custom_data };
+&nbsp;
+        stacked = new cdb.geo.ui.Legend.Stacked({ data: [legendA, legendB] });
+&nbsp;
+        stacked.render();
+&nbsp;
+      });
+&nbsp;
+      it("should have a method to render the stacked legend", function() {
+&nbsp;
+        $("body").append("&lt;div class='legend_playground' /&gt;");
+&nbsp;
+        var legendA = { title: "Intensity legend", type: "intensity", color: "#FF0000", min: 1, max: 120 };
+        var legendB = { title: "Custom title", type:"custom", data: custom_data };
+&nbsp;
+        var stacked = new cdb.geo.ui.Legend.Stacked({ data: [legendA, legendB] });
+&nbsp;
+        stacked.addTo(".legend_playground");
+        expect($(".legend_playground .cartodb-legend-stack").length).toEqual(1);
+      });
+&nbsp;
+      it("should render", function() {
+        expect(stacked.legends.length).toEqual(2);
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(2);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(1);
+      });
+&nbsp;
+      it("should allow to add a legend", function() {
+&nbsp;
+        var properties = { title: "Density title", type: "density", colors: ["#DDD", "#FF000", "#F1F1F1"], left: "Left value", right: "Right value" };
+&nbsp;
+        stacked.addLegend(properties);
+&nbsp;
+        expect(stacked.legends.length).toEqual(3);
+&nbsp;
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(3);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.density").length).toEqual(1);
+&nbsp;
+      });
+&nbsp;
+      it("should allow to remove a legend", function() {
+&nbsp;
+        stacked.removeLegendAt(0);
+&nbsp;
+        expect(stacked.legends.length).toEqual(1);
+&nbsp;
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(0);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(1);
+&nbsp;
+      });
+&nbsp;
+      it("should allow to get a legend", function() {
+&nbsp;
+        var legend = stacked.getLegendAt(1);
+&nbsp;
+        expect(legend.model.get("title")).toEqual("Custom title");
+        expect(legend.$el.find(".legend-title").html()).toEqual("Custom title");
+&nbsp;
+        var legend = stacked.legends[0];
+&nbsp;
+        expect(legend.model.get("title")).toEqual("Intensity legend");
+        expect(legend.$el.find(".legend-title").html()).toEqual("Intensity legend");
+&nbsp;
+      });
+&nbsp;
+    });
+&nbsp;
+    describe("Stacked Legend (using legends)", function() {
+&nbsp;
+      var stacked, properties, legendA, legendB, custom_data;
+&nbsp;
+      var custom_data = [
+        { name: "Natural Parks",  value: "#58A062" },
+        { name: "Villages",       value: "#F07971" },
+        { name: "Rivers",         value: "#54BFDE" },
+        { name: "Fields",         value: "#9BC562" },
+        { name: "Caves",          value: "#FABB5C" }
+      ];
+&nbsp;
+      var customLegend = new cdb.geo.ui.Legend.Custom({
+        title: "Custom Legend",
+        data: custom_data
+      });
+&nbsp;
+      var intensityLegend = new cdb.geo.ui.Legend.Intensity({
+        title: "Intensity Legend",
+        left: "10", right: "20", color: "#f1f1f1"
+      });
+&nbsp;
+      beforeEach(function() {
+&nbsp;
+        stacked = new cdb.geo.ui.Legend.Stacked({ legends: [ customLegend, intensityLegend ] });
+        stacked.render();
+&nbsp;
+      });
+&nbsp;
+      it("should render", function() {
+        expect(stacked.legends.length).toEqual(2);
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(2);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(1);
+      });
+&nbsp;
+      it("should allow to add a legend", function() {
+&nbsp;
+        var properties = { title: "Density title", type: "density", colors: ["#DDD", "#FF000", "#F1F1F1"], left: "Left value", right: "Right value" };
+&nbsp;
+        stacked.addLegend(properties);
+&nbsp;
+        expect(stacked.legends.length).toEqual(3);
+&nbsp;
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(3);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.density").length).toEqual(1);
+&nbsp;
+      });
+&nbsp;
+      it("should allow to remove a legend", function() {
+&nbsp;
+        stacked.removeLegendAt(0);
+&nbsp;
+        expect(stacked.legends.length).toEqual(1);
+&nbsp;
+        expect(stacked.$el.find(".cartodb-legend").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.intensity").length).toEqual(1);
+        expect(stacked.$el.find(".cartodb-legend.custom").length).toEqual(0);
+&nbsp;
+      });
+&nbsp;
+      it("should allow to get a legend", function() {
+&nbsp;
+        var legend = stacked.getLegendAt(0);
+&nbsp;
+        expect(legend.model.get("title")).toEqual("Custom Legend");
+        expect(legend.$el.find(".legend-title").html()).toEqual("Custom Legend");
+&nbsp;
+        var legend = stacked.legends[1];
+&nbsp;
+        expect(legend.model.get("title")).toEqual("Intensity Legend");
+        expect(legend.$el.find(".legend-title").html()).toEqual("Intensity Legend");
+&nbsp;
+      });
+&nbsp;
+    });
+&nbsp;
+  });
+&nbsp;
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jul 29 2014 01:23:14 GMT+0200 (CEST)</div>
+</div>
+
+<script src="../prettify.js"></script>
+
+<script src="https://yui-s.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+<script>
+
+    YUI().use('datatable', function (Y) {
+
+        var formatters = {
+          pct: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              try {
+                  return o.value.toFixed(2) + '%';
+              } catch (ex) { return o.value + '%'; }
+          },
+          html: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.record.get(o.column.key + '_html');
+          }
+        },
+          defaultFormatter = function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.value;
+          };
+
+        function getColumns(theadNode) {
+            var colNodes = theadNode.all('tr th'),
+                cols = [],
+                col;
+            colNodes.each(function (colNode) {
+                col = {
+                    key: colNode.getAttribute('data-col'),
+                    label: colNode.get('innerHTML') || ' ',
+                    sortable: !colNode.getAttribute('data-nosort'),
+                    className: colNode.getAttribute('class'),
+                    type: colNode.getAttribute('data-type'),
+                    allowHTML: colNode.getAttribute('data-html') === 'true' || colNode.getAttribute('data-fmt') === 'html'
+                };
+                col.formatter = formatters[colNode.getAttribute('data-fmt')] || defaultFormatter;
+                cols.push(col);
+            });
+            return cols;
+        }
+
+        function getRowData(trNode, cols) {
+            var tdNodes = trNode.all('td'),
+                    i,
+                    row = { classes: {} },
+                    node,
+                    name;
+            for (i = 0; i < cols.length; i += 1) {
+                name = cols[i].key;
+                node = tdNodes.item(i);
+                row[name] = node.getAttribute('data-value') || node.get('innerHTML');
+                row[name + '_html'] = node.get('innerHTML');
+                row.classes[name] = node.getAttribute('class');
+                //Y.log('Name: ' + name + '; Value: ' + row[name]);
+                if (cols[i].type === 'number') { row[name] = row[name] * 1; }
+            }
+            //Y.log(row);
+            return row;
+        }
+
+        function getData(tbodyNode, cols) {
+            var data = [];
+            tbodyNode.all('tr').each(function (trNode) {
+                data.push(getRowData(trNode, cols));
+            });
+            return data;
+        }
+
+        function replaceTable(node) {
+            if (!node) { return; }
+            var cols = getColumns(node.one('thead')),
+                data = getData(node.one('tbody'), cols),
+                table,
+                parent = node.get('parentNode');
+
+            table = new Y.DataTable({
+                columns: cols,
+                data: data,
+                sortBy: 'file'
+            });
+            parent.set('innerHTML', '');
+            table.render(parent);
+        }
+
+        Y.on('domready', function () {
+            replaceTable(Y.one('div.coverage-summary table'));
+            if (typeof prettyPrint === 'function') {
+                prettyPrint();
+            }
+        });
+    });
+</script>
+</body>
+</html>

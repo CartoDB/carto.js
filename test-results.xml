@@ -1,0 +1,483 @@
+<?xml version="1.0"?>
+<testsuites>
+  <testsuite name="Chrome 36.0.1985 (Mac OS X 10.8.5)" package="" timestamp="2014-07-28T23:09:05" id="0" hostname="jamBook-Air.local">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36"/>
+    </properties>
+  </testsuite>
+  <testsuite name="Chrome 36.0.1985 (Mac OS X 10.8.5)" package="" timestamp="2014-07-28T23:09:05" id="0" hostname="jamBook-Air.local" tests="407" errors="0" failures="0" time="33.516">
+    <properties>
+      <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36"/>
+    </properties>
+    <testcase name="Should be able to add elder method " time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).decorators cbd_decorators_elder"/>
+    <testcase name="Should be able to call a method from a parent class" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).decorators cbd_decorators_elder"/>
+    <testcase name="Should be able to use parent using own properties without infinitelooping" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).decorators cbd_decorators_elder"/>
+    <testcase name="Should be able to use grandparent method when the parent is not defined" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).decorators cbd_decorators_elder"/>
+    <testcase name="should contain links variables" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).config"/>
+    <testcase name="should exist a global log" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).log"/>
+    <testcase name="should exist a global errorlist" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).log"/>
+    <testcase name="should has error, log and debug" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).log Log"/>
+    <testcase name="should generate error when error is called" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).log Log"/>
+    <testcase name="should set a browser info when created" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).log Error"/>
+    <testcase name="should call initialize" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should call cdb.core.Model initialize method too" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should attach save to the element context" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should attach fetch to the element context" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should add the correct response from server" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;loadModelStarted&apos; event when fetch" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;loadModelCompleted&apos; event when fetched" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;loadModelFailed&apos; event when fetch fails" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should retrigger an event when launched on a descendant object" time="0.028" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;saving&apos; event when save" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;saved&apos; event when saved" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should trigger &apos;errorSaving&apos; event when save fails" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_Model"/>
+    <testcase name="should call initialize" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should increment refCount" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should decrement refCount" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="clean should remove view from dom" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="clean should unbind all events" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should unlink the view model" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should unlink linked models" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should add and remove subview" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should remove and clean subviews" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="subview shuould be removed from its parent" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="extendEvents should extend events" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should retrigger an event when launched on a descendant object" time="0.027" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should kill an event" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_view"/>
+    <testcase name="should render" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_template cbd_core_Template"/>
+    <testcase name="should accept compiled templates" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_template cbd_core_Template"/>
+    <testcase name="should render using mustache" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_template cbd_core_Template"/>
+    <testcase name="should get template by name" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_template cbd_core_TemplateList"/>
+    <testcase name="should show element on open" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should hide element on close" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should hide element on ok" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should call cancel on _cancel" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should call ok on _ok" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should append it to body and be rendered" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="should render title" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Dialog"/>
+    <testcase name="open should show the element" time="0.508" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Notification"/>
+    <testcase name="should be closed on timeout" time="0.506" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Notification"/>
+    <testcase name="" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Row"/>
+    <testcase name="should return the value for cell" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table TableData"/>
+    <testcase name="should return null for non existing cell" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table TableData"/>
+    <testcase name="should render in a row" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table RowView"/>
+    <testcase name="should render in order" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table RowView"/>
+    <testcase name="should render row header" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table RowView"/>
+    <testcase name="should return cell x" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table RowView"/>
+    <testcase name="should render a table" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should render a header" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should have 2 rows and the header" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should have 6 cells and header" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="each row has an id" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should change value when model changes" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should rerender on data reset" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should remove rows on remove" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should add rows" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should add rows at index" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should update cell indexes when remove a column" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should remove rows" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should return cell x,y" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should trigger cell clicked on click and dblclick" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should render new data on change data source" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should clear rows after a reset" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should call renderEmpty after an error" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="should render faster than light" time="4.799" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_ui_Table Table"/>
+    <testcase name="getPreviousPane should return the last pane if the active pane is the first one" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="getPreviousPane should return the previous pane" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="getNextPane should return the next pane" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="getNextPane should return the first pane if the last pane is active" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="getActive should return the desired pane" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="getActivePane should return the active pane" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="activating a tab should return the view" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should allow to add a pane" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should allow to remove a pane" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should remove all panels " time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should trigger on activate" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should call activated and deactivaed on tab if exists" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="each should call function for each tab" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="user after option inserting view after specified index" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="clean should remove all tabs" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).core_ui_common_TabPane"/>
+    <testcase name="should return layer count" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should invalidate" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should remove a layer" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should add a layer" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should return json spec of layers" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should generate url for tiles" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should generate url for tiles with params" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should generate url for with cdn" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="grid url should not include interactivity" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should set interactivity" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should use cdn_url as default" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should use cdn_url from tiler when present" time="0.408" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should return null token when there are no layers" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should return values for the latest query" time="1.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="it should use jsonp when request is less than 2kb" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should use not use compression for small layergroups" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="it should use jsonp when cors is not available" time="0.702" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should add api_key" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="getTiles should include extra params" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="getTiles should use empty gif there there is no layers" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should set refresh timer after being updated" time="0.207" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should manage layer index with hidden layers" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition"/>
+    <testcase name="should create sublayer" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should get cartocss and sql" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should set sql and cartocss by name" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should get sublayer count" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should show/hide" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="hide should remove interaction" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should be the same object for the same sublayer" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should raise an exception when change something after remove" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition sublayers"/>
+    <testcase name="should generate layerdef" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LayerDefinition layerDefFromSubLayers"/>
+    <testcase name="should include instanciation callback" time="0.103" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should instance named_map with no layers" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should instance named_map" time="0.106" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should instance named_map using POST" time="0.103" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="shoud have infowindow" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should fetch attributes" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should enable/disable layers" time="0.513" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should raise errors when try to set sql or cartocss" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should raise errors when try to get sql or cartocss" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should send auth_token when it&apos;s provided" time="0.411" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="set param without default param" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should add params" time="0.309" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should use https when auth_token is provided" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="should return layer by index" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).NamedMap"/>
+    <testcase name="when query_wrapper is present the query should be wrapped" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common"/>
+    <testcase name="should render fields in specified order" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_Tooltip"/>
+    <testcase name="should use alternate_names " time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_Tooltip"/>
+    <testcase name="should positionate the element correctly" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_Tooltip"/>
+    <testcase name="should be type GMapsBase" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map GMapsBaseLayer"/>
+    <testcase name="should be type tiled" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map TileLayer"/>
+    <testcase name="should be type CartoDB" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map CartoDBLayer"/>
+    <testcase name="should be type layergroup" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map CartoDBGroupLayer"/>
+    <testcase name="should compare equal layers correctly" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map Layers"/>
+    <testcase name="should assign indices" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map Layers"/>
+    <testcase name="should raise only one change event on setBounds" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map Map"/>
+    <testcase name="should not change center or zoom when the bounds are not ok" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map Map"/>
+    <testcase name="should not change bounds when map size is 0" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map Map"/>
+    <testcase name="should be able to add a infowindow" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map MapView"/>
+    <testcase name="should be able to retrieve the infowindows" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).geo_map MapView"/>
+    <testcase name="should change bounds when center is set" time="0.022" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should change center and zoom when bounds are changed" time="1.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should allow adding a layer" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should add layers on reset" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create a layer view when adds a model" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should allow removing a layer" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should allow removing a layer by index" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should allow removing a layer by Cid" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create a TiledLayerView when the layer is Tiled" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create a CartoDBLayer when the layer is cartodb" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create a CartoDBLayerGroup when the layer is LayerGroup" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create the cartodb logo" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should not add the cartodb logo when cartodb_logo = false" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should create a PlaiLayer when the layer is cartodb" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should insert layers in specified order" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="shoule remove all layers when map view is cleaned" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should not all a layer when it can&apos;t be creadted" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should add and remove a geometry" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should edit a geometry" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should save automatically when the zoom or center changes" time="1.509" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should set z-order" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="should swicth layer" time="0.026" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).LeafletMapView"/>
+    <testcase name="isPoint should return true when is a point" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Geometry"/>
+    <testcase name="should have a &apos;none&apos; type set by default" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should use the provided model" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should generate a model if no model is provided" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should allow to change type" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should have a collection" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should populate the collection" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should set the type of the legend in the element" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should create the specific legend based on the type" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="shouldn&apos;t create the legend if the type is unknown" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should update the legend when the name of an item is changed" time="0.01" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should update the legend when the value of an item is changed" time="0.011" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should have a title defined" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should have a show_title defined" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should show the legend" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="shouldn&apos;t show the &apos;none&apos; legend" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should hide the legend" time="0.309" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should render the title if title and show_title are set" time="0.018" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="shouldn&apos;t render the title if show_title is not true" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend"/>
+    <testcase name="should render boolean values and nulls" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend ColorLegend"/>
+    <testcase name="should allow to show/hide the title" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface)"/>
+    <testcase name="should have a method to render the legend" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface)"/>
+    <testcase name="should render the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface)"/>
+    <testcase name="shouldn&apos;t render the title if it&apos;s not provided" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface)"/>
+    <testcase name="should generate a legend" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Custom Legend"/>
+    <testcase name="should show the items" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Custom Legend"/>
+    <testcase name="should show a title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Custom Legend"/>
+    <testcase name="should allow to change the title" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Custom Legend"/>
+    <testcase name="should allow to change the items" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Custom Legend"/>
+    <testcase name="should generate the legend" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Category Legend"/>
+    <testcase name="should show the items" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Category Legend"/>
+    <testcase name="should show a title" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Category Legend"/>
+    <testcase name="should allow to change the title" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Category Legend"/>
+    <testcase name="should generate the legend" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should show a graph with the right color" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should show min and max values" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should show a title" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to change the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to show the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to hide the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to change the color" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to change the min value" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should allow to change the max value" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Bubble Legend"/>
+    <testcase name="should generate a legend" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should show left and right values" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should show colors" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should show a title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow to change the title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow to hide the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow to show the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow change colors" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow change the left label" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should allow change the right label" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Choropleth Legend"/>
+    <testcase name="should generate a legend" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should show left and right values" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should show colors" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should show a title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow to change the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow to hide the title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow to show the title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow change colors" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow change the left label" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should allow change the right label" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Density Legend"/>
+    <testcase name="should generate the legend" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should show a graph with the right color" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should show left and right values" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should show a title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow to change the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow to show the title" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow to hide the title" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow to change the color" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow change the left label" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should allow change the right label" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Intensity Legend"/>
+    <testcase name="should have a method to render the stacked legend" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using data)"/>
+    <testcase name="should render" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using data)"/>
+    <testcase name="should allow to add a legend" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using data)"/>
+    <testcase name="should allow to remove a legend" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using data)"/>
+    <testcase name="should allow to get a legend" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using data)"/>
+    <testcase name="should render" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using legends)"/>
+    <testcase name="should allow to add a legend" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using legends)"/>
+    <testcase name="should allow to remove a legend" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using legends)"/>
+    <testcase name="should allow to get a legend" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).common_geo_ui_Legend Legend (public interface) Stacked Legend (using legends)"/>
+    <testcase name="should allow adding an alternative name" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow model"/>
+    <testcase name="should add a field" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow model"/>
+    <testcase name="should add a field in order" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow model"/>
+    <testcase name="should allow modify field properties" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow model"/>
+    <testcase name="should save and restore fields" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow model"/>
+    <testcase name="should add render when template changes" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should change width of the popup when width attribute changes" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="shouldn&apos;t change width of the popup when width attribute is undefined" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should change maxHeight of the popup when maxHeight attribute changes" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should render without alternative_name set" time="0.024" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should convert value to string when it is a number" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should convert value to &apos;&apos; when it is undefined" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should convert value to &apos;&apos; when it is null" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="shouldn&apos;t convert the value if it is empty" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should leave a string as it is" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should convert value to string when it is a boolean" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should be null when there isn&apos;t any field" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow view"/>
+    <testcase name="should show loading state" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow loading state"/>
+    <testcase name="should hide loading state" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow loading state"/>
+    <testcase name="shouldn&apos;t show the loader if there are several fields" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow loading state"/>
+    <testcase name="should compile the template when changes" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow custom template"/>
+    <testcase name="should render properly when there is only a field without title" time="0.005" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow custom template"/>
+    <testcase name="shouldn&apos;t sanitize the fields" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow custom template"/>
+    <testcase name="should get the cover url" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="should validate the cover url" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="should accept google chart URLS in the cover" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="should detect if the infowindow has a cover" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="should append the image" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="if the image is invalid it shouldn&apos;t append it" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="if the theme doesn&apos;t have cover don&apos;t append the image" time="0.004" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_infowindow image template"/>
+    <testcase name="should render properly" time="0.02" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should render the dropdown correctly" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should store two layers" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should open the dropdown when clicks over it" time="0.022" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should change the select status when the switch button is clicked and trigger and event" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should trigger a switchChanged event when the switch button is clicked" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should toggle the enabled/disabled classes when the switch button is clicked" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with CartoDB layers"/>
+    <testcase name="should render properly" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with a CartoDB LayerGroup"/>
+    <testcase name="should store two layers" time="0.01" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with a CartoDB LayerGroup"/>
+    <testcase name="should hide the layer when the switch button is clicked" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).cdb_geo_ui_LayerSelector with a CartoDB LayerGroup"/>
+    <testcase name="should change bounds when center is set" time="0.01" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should change center and zoom when bounds are changed" time="1.049" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should allow to disable the scroll wheel" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should change zoom" time="0.015" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should allow adding a layer" time="0.015" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should add layers on reset" time="0.018" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a layer view when adds a model" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should allow removing a layer" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should allow removing a layer by index" time="0.026" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should allow removing a layer by Cid" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a TiledLayerView when the layer is Tiled" time="0.01" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a CartoDBLayer when the layer is cartodb" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a CartoDBGroupLayer when the layer is layergroup" time="0.011" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a cartodb logo when layer is cartodb" time="2.015" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should create a PlaiLayer when the layer is cartodb" time="0.011" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should add and remove a geometry" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should add and remove a polygon" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should edit a geometry" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should convert to geojson" time="0.012" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="should swicth layer" time="0.027" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).GoogleMapsMapView"/>
+    <testcase name="we should don&apos;t get a direction that doesn&apos;t exist using YAHOO" time="1.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Geocoder"/>
+    <testcase name="we should get a direction that exists using NOKIA" time="2.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Geocoder"/>
+    <testcase name="we should get a direction with # character using NOKIA" time="1.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Geocoder"/>
+    <testcase name="we should don&apos;t get a direction that doesn&apos;t exist using NOKIA" time="1.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Geocoder"/>
+    <testcase name="if hides layers should work" time="1.023" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Hide funcionality"/>
+    <testcase name="If sets opacity to 0, layer should be visible" time="0.517" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Hide funcionality"/>
+    <testcase name="If there is no interaction defined, shouldn&apos;t work and failed" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Interaction funcionality"/>
+    <testcase name="If layer is visible, show shouldn&apos;t do anything" time="0.515" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Show funcionality"/>
+    <testcase name="Shows layer after hide it" time="0.518" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Show funcionality"/>
+    <testcase name="If hides layer and set an opacity greater than 0, layer shouln&apos;t be visible" time="0.512" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Show funcionality"/>
+    <testcase name="torque layer should not rewrite to http if vis is not forced to https" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).vis_layers https/http"/>
+    <testcase name="torque layer should rewrite to https if the domain is not cartodb.com and is forced" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).vis_layers https/http"/>
+    <testcase name="should register and create a type" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Overlay"/>
+    <testcase name="should insert  default max and minZoom values when not provided" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should insert user max and minZoom values when provided" time="0.01" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should insert the max boundaries when provided" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should parse center if values are correct" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should not parse center if values are not correct" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should parse bounds values if they are correct" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should not parse bounds values if they are not correct" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should create a google maps map when provider is google maps" time="0.018" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should not invalidate map if map height is 0" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should bind resize changes when map height is 0" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="shouldn&apos;t bind resize changes when map height is greater than 0" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should pass map to overlays" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="when https is false all the urls should be transformed to http" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should return the native map obj" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="load should call done" time="0.114" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should add header" time="0.011" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should add header without link in the title" time="0.021" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should use zoom" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should add an overlay" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should load modules" time="0.027" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).Vis"/>
+    <testcase name="should fecth layer when user and pass are specified" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should fecth layer when a url is specified" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should not fecth layer when kind and options are specified" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should create a layer" time="0.104" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should create a layer with type" time="0.109" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should create a layer with options" time="0.104" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should use https when https == true" time="0.104" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should not use https when https == false" time="0.109" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should not substitute mapnik tokens" time="0.103" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should manage errors" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should call callback if the last argument is a function" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should load vis.json" time="0.014" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should load vis.json without infowindows" time="0.013" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should load specified layer" time="0.509" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should add cartodb logo with torque layer although it is not defined" time="0.509" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should create a named map" time="0.104" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should use access_token" time="0.105" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should create layer form sublayer list" time="0.109" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should have addTo" time="0.103" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer leaflet (shared)"/>
+    <testcase name="should fecth layer when user and pass are specified" time="0.007" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should fecth layer when a url is specified" time="0.006" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should not fecth layer when kind and options are specified" time="0.008" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should create a layer" time="0.128" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should create a layer with type" time="0.106" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should create a layer with options" time="0.11" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should use https when https == true" time="0.115" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should not use https when https == false" time="0.112" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should not substitute mapnik tokens" time="0.107" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should manage errors" time="0.046" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should call callback if the last argument is a function" time="0.023" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should load vis.json" time="0.03" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should load vis.json without infowindows" time="0.036" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should load specified layer" time="0.52" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should add cartodb logo with torque layer although it is not defined" time="2.517" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should create a named map" time="0.114" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should use access_token" time="0.111" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should create layer form sublayer list" time="0.116" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="should have addTo" time="0.108" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer gmaps (shared)"/>
+    <testcase name="shoudl return an error for unknow map types" time="0.102" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers loadLayer unknow"/>
+    <testcase name="has all the needed methods" time="0.11" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer leaflet"/>
+    <testcase name="should add a infowindow" time="0.104" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer leaflet"/>
+    <testcase name="should add interactivity if there is infowindow" time="0.105" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer leaflet"/>
+    <testcase name="should not add interactivity when interaction is false" time="0.116" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer leaflet"/>
+    <testcase name="should add to the map when done" time="0.003" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer leaflet"/>
+    <testcase name="has all the needed methods" time="0.11" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer gmaps"/>
+    <testcase name="should add a infowindow" time="0.108" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer gmaps"/>
+    <testcase name="should add interactivity if there is infowindow" time="0.115" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer gmaps"/>
+    <testcase name="should not add interactivity when interaction is false" time="0.114" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer gmaps"/>
+    <testcase name="should add to the map when done" time="0.009" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).api_layers_cartodb loadLayer gmaps"/>
+    <testcase name="should compile the url if not completeDomain passed" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should compile the url if completeDomain passed" time="0" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should execute a query" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should parse template" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should substitute mapnik tokens" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should call promise" time="0.016" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should call promise on error" time="0.017" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should include url params" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should include extra url params" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should use jsonp if browser does not support cors" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should get bounds for query" time="0.002" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="should get bounds for query with appostrophes" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).SQL api client"/>
+    <testcase name="sql" time="0.001" classname="Chrome 36.0.1985 (Mac OS X 10.8.5).sql_table"/>
+    <system-out><![CDATA[Chrome 36.0.1985 (Mac OS X 10.8.5) LOG: 'cartodb.js 3.10.3-dev'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'this is an error'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'nononon not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'common/views/dialog_base not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.508 secs: common.ui.Notification open should show the element
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.506 secs: common.ui.Notification should be closed on timeout
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 4.799 secs: common.ui.Table Table should render faster than light
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.006 secs: LayerDefinition should return values for the latest query
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.702 secs: LayerDefinition it should use jsonp when cors is not available
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.513 secs: NamedMap should enable/disable layers
+,Chrome 36.0.1985 (Mac OS X 10.8.5) LOG: 'http://rambo.cartodb.com:8081/api/v1/map/named/testing/jsonp?config=%7B%22color%22%3A%22red%22%2C%22test%22%3A10%7D'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) LOG: 'http://rambo.cartodb.com:8081/api/v1/map/named/testing/jsonp?config=%7B%22test%22%3A10%7D'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.016 secs: LeafletMapView should change center and zoom when bounds are changed
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'MAP: rambo can't be created'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.509 secs: LeafletMapView should save automatically when the zoom or center changes
+,Chrome 36.0.1985 (Mac OS X 10.8.5) LOG: 1, 0
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) LOG: 'Header image url not valid'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) ERROR: 'infowindow_light not found'
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.049 secs: GoogleMapsMapView should change center and zoom when bounds are changed
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 2.015 secs: GoogleMapsMapView should create a cartodb logo when layer is cartodb
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.006 secs: Geocoder we should don't get a direction that doesn't exist using YAHOO
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 2.007 secs: Geocoder we should get a direction that exists using NOKIA
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.007 secs: Geocoder we should get a direction with # character using NOKIA
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.007 secs: Geocoder we should don't get a direction that doesn't exist using NOKIA
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 1.023 secs: Hide funcionality if hides layers should work
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.517 secs: Hide funcionality If sets opacity to 0, layer should be visible
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.515 secs: Show funcionality If layer is visible, show shouldn't do anything
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.518 secs: Show funcionality Shows layer after hide it
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.512 secs: Show funcionality If hides layer and set an opacity greater than 0, layer shouln't be visible
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.509 secs: api.layers loadLayer leaflet (shared) should load specified layer
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.509 secs: api.layers loadLayer leaflet (shared) should add cartodb logo with torque layer although it is not defined
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 0.52 secs: api.layers loadLayer gmaps (shared) should load specified layer
+,Chrome 36.0.1985 (Mac OS X 10.8.5) SLOW 2.517 secs: api.layers loadLayer gmaps (shared) should add cartodb logo with torque layer although it is not defined
+
+]]></system-out>
+    <system-err/>
+  </testsuite>
+</testsuites>
