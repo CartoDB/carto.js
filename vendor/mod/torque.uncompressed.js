@@ -2297,6 +2297,10 @@ exports.Profiler = Profiler;
   exports.torque = exports.torque || {};
 
   var TAU = Math.PI*2;
+  // min value to render a line. 
+  // it does not make sense to render a line of a width is not even visible
+  var LINEWIDTH_MIN_VALUE = 0.05; 
+
   function renderPoint(ctx, st) {
     ctx.fillStyle = st.fillStyle;
     var pixel_size = st['point-radius'];
@@ -2316,7 +2320,7 @@ exports.Profiler = Profiler;
 
     // stroke
     ctx.globalAlpha = 1.0;
-    if (st.strokeStyle && st.lineWidth) {
+    if (st.strokeStyle && st.lineWidth && st.lineWidth > LINEWIDTH_MIN_VALUE) {
       if (st.strokeOpacity) {
         ctx.globalAlpha = st.strokeOpacity;
       }
@@ -2448,7 +2452,11 @@ exports.Profiler = Profiler;
 
       var pointSize = st['point-radius'];
       if (!pointSize) {
-        throw new Error("marker-width property should be set");
+        return null;
+      }
+
+      if (st.fillOpacity === 0 && !st.strokeOpacity) {
+        return null;
       }
 
       var canvas = document.createElement('canvas');
@@ -2522,12 +2530,14 @@ exports.Profiler = Profiler;
           var c = tile.renderData[pixelIndex + p];
           if(c) {
            var sp = sprites[c];
-           if(!sp) {
+           if(sp === undefined) {
              sp = sprites[c] = this.generateSprite(shader, c, _.extend({ zoom: tile.z, 'frame-offset': frame_offset }, shaderVars));
            }
-           var x = tile.x[posIdx]- (sp.width >> 1);
-           var y = tileMax - tile.y[posIdx]; // flip mercator
-           ctx.drawImage(sp, x, y - (sp.height >> 1));
+           if (sp) {
+             var x = tile.x[posIdx]- (sp.width >> 1);
+             var y = tileMax - tile.y[posIdx]; // flip mercator
+             ctx.drawImage(sp, x, y - (sp.height >> 1));
+           }
           }
         }
       }
