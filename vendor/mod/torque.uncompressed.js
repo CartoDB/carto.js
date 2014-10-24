@@ -626,6 +626,10 @@ exports.torque.common.TorqueLayer = TorqueLayer;
     return exports.torque.extend({}, a);
   }
 
+  exports.torque.isFunction = function(f) {
+    return typeof f == 'function' || false;
+  }
+
   exports.torque.isArray = function(value) {
       return value && typeof value == 'object' && Object.prototype.toString.call(value) == '[object Array]';
   };
@@ -640,6 +644,10 @@ exports.torque.common.TorqueLayer = TorqueLayer;
   exports.torque.isBrowserSupported = function() {
     return !!document.createElement('canvas');
   };
+
+  exports.torque.flags = {
+    sprites_to_images: navigator.userAgent.indexOf('Safari') === -1
+  }
 
 })(typeof exports === "undefined" ? this : exports);
 
@@ -747,9 +755,10 @@ MercatorProjection.prototype._tilePixelPos = function(tileX, tileY) {
   };
 };
 
-MercatorProjection.prototype.tilePixelBBox = function(x, y, zoom, px, py) {
+MercatorProjection.prototype.tilePixelBBox = function(x, y, zoom, px, py, res) {
+  res = res || 1.0;
   var numTiles = 1 <<zoom;
-  var inc = 1.0/numTiles;
+  var inc = res/numTiles;
   px = (x*this._tileSize + px)/numTiles;
   py = (y*this._tileSize + py)/numTiles;
   return [
@@ -1975,11 +1984,12 @@ exports.Profiler = Profiler;
       return refresh;
     },
 
-    _extraParams: function() {
-      if (this.options.extra_params) {
+    _extraParams: function(e) {
+      e = torque.extend(torque.extend({}, e), this.options.extra_params);
+      if (e) {
         var p = [];
-        for(var k in this.options.extra_params) {
-          var v = this.options.extra_params[k];
+        for(var k in e) {
+          var v = e[k];
           if (v) {
             if (torque.isArray(v)) {
               for (var i = 0, len = v.length; i < len; i++) {
@@ -2135,7 +2145,6 @@ exports.Profiler = Profiler;
       if(named) {
         //tiles/template
         url = this._tilerHost() + "/api/v1/map/named/" + named.name + "/jsonp"
-        //url = this._tilerHost() + "/map/" + named.name + "/jsonp"
       } else {
         layergroup = {
           "version": "1.0.1",
@@ -2150,7 +2159,7 @@ exports.Profiler = Profiler;
           }]
         };
       }
-      var extra = this._extraParams();
+      var extra = this._extraParams(this.options.stat_tag ? { stat_tag: this.options.stat_tag }: {} );
 
       // tiler needs map_key instead of api_key
       // so replace it
@@ -2205,6 +2214,10 @@ exports.Profiler = Profiler;
 
      // function name
      var fnName = options.callbackName || 'torque_' + Date.now();
+
+     if (torque.isFunction(fnName)) {
+       fnName = fnName();
+     }
 
      function clean() {
        head.removeChild(script);
@@ -2296,9 +2309,12 @@ exports.Profiler = Profiler;
   exports.torque = exports.torque || {};
 
   var TAU = Math.PI*2;
+  // min value to render a line. 
+  // it does not make sense to render a line of a width is not even visible
+  var LINEWIDTH_MIN_VALUE = 0.05; 
+
   function renderPoint(ctx, st) {
     ctx.fillStyle = st.fillStyle;
-    ctx.strokStyle = st.strokStyle;
     var pixel_size = st['point-radius'];
 
     // render a circle
@@ -2316,7 +2332,7 @@ exports.Profiler = Profiler;
 
     // stroke
     ctx.globalAlpha = 1.0;
-    if (st.strokeStyle && st.lineWidth) {
+    if (st.strokeStyle && st.lineWidth && st.lineWidth > LINEWIDTH_MIN_VALUE) {
       if (st.strokeOpacity) {
         ctx.globalAlpha = st.strokeOpacity;
       }
@@ -2334,7 +2350,6 @@ exports.Profiler = Profiler;
 
   function renderRectangle(ctx, st) {
     ctx.fillStyle = st.fillStyle;
-    ctx.strokStyle = st.strokStyle;
     var pixel_size = st['point-radius'];
     var w = pixel_size * 2;
 
@@ -2449,7 +2464,11 @@ exports.Profiler = Profiler;
 
       var pointSize = st['point-radius'];
       if (!pointSize) {
-        throw new Error("marker-width property should be set");
+        return null;
+      }
+
+      if (st.fillOpacity === 0 && !st.strokeOpacity) {
+        return null;
       }
 
       var canvas = document.createElement('canvas');
@@ -2471,9 +2490,12 @@ exports.Profiler = Profiler;
         }
       }
       prof.end(true);
-      var i = new Image();
-      i.src = canvas.toDataURL();
-      return i;
+      if (torque.flags.sprites_to_images) {
+        var i = new Image();
+        i.src = canvas.toDataURL();
+        return i;
+      }
+      return canvas;
     },
 
     //
@@ -2523,12 +2545,14 @@ exports.Profiler = Profiler;
           var c = tile.renderData[pixelIndex + p];
           if(c) {
            var sp = sprites[c];
-           if(!sp) {
+           if(sp === undefined) {
              sp = sprites[c] = this.generateSprite(shader, c, _.extend({ zoom: tile.z, 'frame-offset': frame_offset }, shaderVars));
            }
-           var x = tile.x[posIdx]- (sp.width >> 1);
-           var y = tileMax - tile.y[posIdx]; // flip mercator
-           ctx.drawImage(sp, x, y - (sp.height >> 1));
+           if (sp) {
+             var x = tile.x[posIdx]- (sp.width >> 1);
+             var y = tileMax - tile.y[posIdx]; // flip mercator
+             ctx.drawImage(sp, x, y - (sp.height >> 1));
+           }
           }
         }
       }
@@ -2567,6 +2591,41 @@ exports.Profiler = Profiler;
         }
       }
       return positions;
+    },
+
+    // return the value for x, y (tile coordinates)
+    // null for no value
+    getValueFor: function(tile, step, px, py) {
+      var mercator = new torque.Mercator();
+      var res = this.options.resolution;
+      var res2 = res >> 1;
+
+      var tileMax = this.options.resolution * (this.TILE_SIZE/this.options.resolution - 1);
+      //this.renderer.renderTile(tile, this.key, pos.x, pos.y);
+      var activePixels = tile.timeCount[step];
+      var pixelIndex = tile.timeIndex[step];
+      for(var p = 0; p < activePixels; ++p) {
+        var posIdx = tile.renderDataPos[pixelIndex + p];
+        var c = tile.renderData[pixelIndex + p];
+        if (c) {
+         var x = tile.x[posIdx];
+         var y = tileMax - tile.y[posIdx];
+         var dx = px + res2 - x;
+         var dy = py + res2 - y;
+         if (dx >= 0 && dx < res && dy >= 0 && dy < res) {
+           return {
+             value: c,
+             bbox: mercator.tilePixelBBox(
+               tile.coord.x,
+               tile.coord.y,
+               tile.coord.z,
+               x - res2, y - res2, res
+             )
+           }
+         }
+        }
+      }
+      return null;
     }
 
   };
@@ -4654,6 +4713,27 @@ L.TorqueLayer = L.CanvasLayer.extend({
       positions = positions.concat(this.renderer.getActivePointsBBox(tile, step));
     }
     return positions;
+  },
+
+  /**
+   * return the value for position relative to map coordinates. null for no value
+   */
+  getValueForPos: function(x, y, step) {
+    step = step === undefined ? this.key: step;
+    var t, tile, pos, value = null, xx, yy;
+    for(t in this._tiles) {
+      tile = this._tiles[t];
+      pos = this.getTilePos(tile.coord);
+      xx = x - pos.x;
+      yy = y - pos.y;
+      if (xx >= 0 && yy >= 0 && xx < this.renderer.TILE_SIZE && yy <= this.renderer.TILE_SIZE) {
+        value = this.renderer.getValueFor(tile, step, xx, yy);
+      }
+      if (value !== null) {
+        return value;
+      }
+    }
+    return null;
   }
 
 });

@@ -1,5 +1,5 @@
-// version: 3.11.08
-// sha: d77708cef46fac5290671ffc317e814a629c668b
+// version: 3.11.20
+// sha: 62a22057f230bc1bff64344b3603001e8bacb5c4
 ;(function() {
   this.cartodb = {};
   var Backbone = {};
@@ -627,7 +627,9 @@ var Mustache;
   * license MIT
   */
 ;(function (name, context, definition) {
-  context[name] = definition()
+  if (typeof module != 'undefined' && module.exports) module.exports = definition()
+  else if (typeof define == 'function' && define.amd) define(definition)
+  else context[name] = definition()
 })('reqwest', this, function () {
 
   var win = window
@@ -725,6 +727,7 @@ var Mustache;
       , script = doc.createElement('script')
       , loaded = 0
       , isIE10 = navigator.userAgent.indexOf('MSIE 10.0') !== -1
+      , isIE9 = navigator.userAgent.indexOf('MSIE 9.0') !== -1;
 
     if (match) {
       if (match[3] === '?') {
@@ -741,7 +744,7 @@ var Mustache;
     script.type = 'text/javascript'
     script.src = url
     script.async = true
-    if (typeof script.onreadystatechange !== 'undefined' && !isIE10) {
+    if (typeof script.onreadystatechange !== 'undefined' && !isIE10 && !isIE9) {
       // need this for IE due to out-of-order onreadystatechange(), binding script
       // execution to an event listener gives us control over when the script
       // is executed. See http://jaubourg.net/2010/07/loading-script-as-onclick-handler-of.html
@@ -1120,13 +1123,18 @@ var Mustache;
     return callbackPrefix
   }
 
+  // evaluates f if it's a function or returns the actual value
+  function getValue(f) {
+    return typeof(f) === 'function' ? f(): f;
+  }
+
   // jQuery and Zepto compatibility, differences can be remapped here so you can call
   // .ajax.compat(options, callback)
   reqwest.compat = function (o, fn) {
     if (o) {
       o.type && (o.method = o.type) && delete o.type
       o.dataType && (o.type = o.dataType)
-      o.jsonpCallback && (o.jsonpCallbackName = o.jsonpCallback) && delete o.jsonpCallback
+      o.jsonpCallback && (o.jsonpCallbackName = getValue(o.jsonpCallback)) && delete o.jsonpCallback
       o.jsonp && (o.jsonpCallback = o.jsonp)
     }
     return new Reqwest(o, fn)
@@ -1141,7 +1149,7 @@ var Mustache;
 
     var cdb = root.cdb = {};
 
-    cdb.VERSION = '3.11.08';
+    cdb.VERSION = '3.11.20';
     cdb.DEBUG = false;
 
     cdb.CARTOCSS_VERSIONS = {
@@ -1199,17 +1207,18 @@ var Mustache;
         'geo/geometry.js',
         'geo/map.js',
         'geo/ui/text.js',
+        'geo/ui/annotation.js',
         'geo/ui/image.js',
         'geo/ui/share.js',
         'geo/ui/zoom.js',
         'geo/ui/zoom_info.js',
-        'geo/ui/mobile.js',
         'geo/ui/legend.js',
         'geo/ui/switcher.js',
         'geo/ui/infowindow.js',
         'geo/ui/header.js',
         'geo/ui/search.js',
         'geo/ui/layer_selector.js',
+        'geo/ui/mobile.js',
         'geo/ui/tiles_loader.js',
         'geo/ui/infobox.js',
         'geo/ui/tooltip.js',
@@ -1671,13 +1680,16 @@ exports.Profiler = Profiler;
       crossDomain: true
     };
 
-    if(options.jsonp) {
-      delete params.crossDomain;
-      params.dataType = 'jsonp';
+    if(options.cache !== undefined) {
+      params.cache = options.cache; 
     }
 
-    if(options.cache) {
-      params.cache = options.cache; 
+    if(options.jsonp) {
+      delete params.crossDomain;
+      if (options.jsonpCallback) {
+        params.jsonpCallback = options.jsonpCallback;
+      }
+      params.dataType = 'jsonp';
     }
 
     // Substitute mapnik tokens
@@ -1909,6 +1921,7 @@ exports.Profiler = Profiler;
 
 })();
 
+
 function Map(options) {
   var self = this;
   this.options = _.defaults(options, {
@@ -1918,7 +1931,10 @@ function Map(options) {
     cors: this.isCORSSupported(),
     btoa: this.isBtoaSupported() ? this._encodeBase64Native : this._encodeBase64,
     MAX_GET_SIZE: 2033,
-    force_cors: false
+    force_cors: false,
+    instanciateCallback: function() {
+      return '_cdbc_' + cartodb.uniqueCallbackName(JSON.stringify(self.toJSON()));
+    }
   });
 
   this.layerToken = null;
@@ -1950,6 +1966,7 @@ function NamedMap(named_map, options) {
     layer.options.layer_name = layer.layer_name;
   }
   this.named_map = named_map;
+  this.stat_tag = named_map.stat_tag;
   var token = named_map.auth_token || options.auth_token;
   if (token) {
     this.setAuthToken(token);
@@ -2280,6 +2297,10 @@ Map.prototype = {
         params.push("auth_token=" + extra_params.auth_token);
       }
     }
+
+    if (this.stat_tag) {
+      params.push("stat_tag=" + this.stat_tag);
+    }
     // mark as the request is being done
     this._waiting = true;
     var req = null;
@@ -2299,7 +2320,7 @@ Map.prototype = {
       }
       // check payload size
       var payload = JSON.stringify(this.toJSON());
-      if (payload < this.options.MAX_GET_SIZE) {
+      if (payload.length < this.options.MAX_GET_SIZE) {
         return false;
       }
     }
@@ -2678,12 +2699,14 @@ NamedMap.prototype = _.extend({}, Map.prototype, {
     ajax({
       dataType: 'jsonp',
       url: this._attributesUrl(layer_index, feature_id),
+      jsonpCallback: '_cdbi_layer_attributes',
+      cache: true,
       success: function(data) {
-        loadingTime.end()
+        loadingTime.end();
         callback(data);
       },
       error: function(data) {
-        loadingTime.end()
+        loadingTime.end();
         cartodb.core.Profiler.metric('cartodb-js.named_map.attributes.error').inc();
         callback(null);
       }
@@ -2915,6 +2938,10 @@ LayerDefinition.prototype = _.extend({}, Map.prototype, {
       fields: columnNames,
       cartodb_id: feature_id,
       sql: layer.options.sql
+    }, {
+      cache: true, // don't include timestamp
+      jsonpCallback: '_cdbi_layer_attributes',
+      jsonp: true
     }).done(function(interact_data) {
       loadingTime.end();
       if (interact_data.rows.length === 0 ) {
@@ -3064,6 +3091,39 @@ SubLayer.prototype = {
 
 // give events capabilitues
 _.extend(SubLayer.prototype, Backbone.Events);
+
+/** utility methods to calculate hash */
+cartodb._makeCRCTable = function() {
+    var c;
+    var crcTable = [];
+    for(var n = 0; n < 256; ++n){
+        c = n;
+        for(var k = 0; k < 8; ++k){
+            c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+        }
+        crcTable[n] = c;
+    }
+    return crcTable;
+}
+
+cartodb.crc32 = function(str) {
+    var crcTable = cartodb._crcTable || (cartodb._crcTable = cartodb._makeCRCTable());
+    var crc = 0 ^ (-1);
+
+    for (var i = 0, l = str.length; i < l; ++i ) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+    }
+
+    return (crc ^ (-1)) >>> 0;
+};
+
+cartodb.uniqueCallbackName = function(str) {
+  cartodb._callback_c = cartodb._callback_c || 0;
+  ++cartodb._callback_c;
+  return cartodb.crc32(str) + "_" + cartodb._callback_c;
+};
+
+
 
 ;(function() {
 

@@ -4,24 +4,37 @@ cdb.vis.Overlay.register('logo', function(data, vis) {
 
 });
 
-// map mobile control
 cdb.vis.Overlay.register('mobile', function(data, vis) {
 
   var template = cdb.core.Template.compile(
     data.template || '\
+    <div class="backdrop"></div>\
+    <div class="cartodb-header">\
+      <div class="content">\
+        <a href="#" class="fullscreen"></a>\
+        <a href="#" class="toggle"></a>\
+        </div>\
+      </div>\
+    </div>\
+    <div class="aside">\
+    <div class="layer-container">\
+    <div class="scrollpane"><ul class="layers"></ul></div>\
+    </div>\
+    </div>\
+    <div class="cartodb-attribution"></div>\
+    <a href="#" class="cartodb-attribution-button"></a>\
     <div class="torque"></div>\
-    <div class="top-shadow"></div>\
-    <div class="bottom-shadow"></div>\
-    <div class="legends"></div>\
-    <a class="toggle" href="#"></a>\
     ',
     data.templateType || 'mustache'
   );
 
   var mobile = new cdb.geo.ui.Mobile({
     template: template,
+    mapView: vis.mapView,
+    overlays: data.overlays,
+    layerView: data.layerView,
+    visibility_options: data.options,
     torqueLayer: data.torqueLayer,
-    legends: data.legends,
     map: data.map
   });
 
@@ -31,10 +44,6 @@ cdb.vis.Overlay.register('mobile', function(data, vis) {
 cdb.vis.Overlay.register('image', function(data, vis) {
 
   var options = data.options;
-
-  var isDevice = options.device == "mobile" ? true : false;
-
-  if (vis.device !== isDevice) return;
 
   var template = cdb.core.Template.compile(
     data.template || '\
@@ -57,10 +66,6 @@ cdb.vis.Overlay.register('text', function(data, vis) {
 
   var options = data.options;
 
-  var isDevice = options.device == "mobile" ? true : false;
-
-  if (vis.device !== isDevice) return;
-
   var template = cdb.core.Template.compile(
     data.template || '\
     <div class="content">\
@@ -78,6 +83,38 @@ cdb.vis.Overlay.register('text', function(data, vis) {
   return widget.render();
 
 });
+
+cdb.vis.Overlay.register('annotation', function(data, vis) {
+
+  var options = data.options;
+
+  var template = cdb.core.Template.compile(
+    data.template || '\
+    <div class="content">\
+    <div class="text widget_text">{{{ text }}}</div>\
+    <div class="stick"><div class="ball"></div></div>\
+    </div>',
+    data.templateType || 'mustache'
+  );
+
+  var options = data.options;
+
+  var widget = new cdb.geo.ui.Annotation({
+    className: "cartodb-overlay overlay-annotation " + options.device,
+    template: template,
+    mapView: vis.mapView,
+    device: options.device,
+    text: options.extra.rendered_text,
+    minZoom: options.style["min-zoom"],
+    maxZoom: options.style["max-zoom"],
+    latlng: options.extra.latlng,
+    style: options.style
+  });
+
+  return widget.render();
+
+});
+
 
 cdb.vis.Overlay.register('zoom_info', function(data, vis) {
   //console.log("placeholder for the zoom_info overlay");
