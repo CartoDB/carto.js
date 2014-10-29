@@ -214,6 +214,13 @@ cartodb.createVis('map', url)
   - **force_mobile**: forces enabling/disabling the mobile layout (it has priority over mobile_layout argument)
 - **callback(vis,layers)**: if a function is specified, it is called once the visualization is created, passing vis and layers as arguments
 
+##### Returns
+
+Promise object. You can listen for the following events:
+
++ **done**: triggered when the visualization is created, `vis` is passed as the first argument and `layers` is passed as the second argument. Each layer type has different options, see layers section.
++ **error**: triggered when the layer couldn't be created. The error string is the first argument.
+
 ### cartodb.Vis
 
 #### vis.getLayers()
