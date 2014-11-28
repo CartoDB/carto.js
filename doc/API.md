@@ -57,6 +57,13 @@ To start using CartoDB.js just paste this piece of code within the HEAD tags of 
 <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
 ```
+If you're using HTTPS in your application, use the following tags instead:
+
+<div class="code-title">Linking cartodb.js on your html file over HTTPS</div>
+```html
+<link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.11/themes/css/cartodb.css">
+<script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.11/cartodb.js"></script>
+```
 
 ### Create a visualization from scratch 
 
