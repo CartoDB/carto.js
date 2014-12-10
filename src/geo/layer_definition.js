@@ -460,7 +460,7 @@ Map.prototype = {
         self.urls = self._layerGroupTiles(data.layergroupid, self.options.extra_params);
         callback && callback(self.urls);
       } else {
-        if (self.visibleLayers().length === 0) {
+        if ( (self.visibleLayers().length === 0) && (self.named_map === null) ){
           callback && callback({
             tiles: [Map.EMPTY_GIF],
             grids: []
