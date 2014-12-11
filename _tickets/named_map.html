@@ -49,6 +49,10 @@
         .addTo(map)
         .done(function(layer) {
           console.log('done');
+
+          layer.on('error', function(e) {
+            console.log(e);
+          })
         })
         .error(function(){
           console.log('adfljadsfljkadfsjklafsd');

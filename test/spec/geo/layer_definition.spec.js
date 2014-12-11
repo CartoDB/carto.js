@@ -961,13 +961,14 @@ describe("NamedMap", function() {
   });
 
 
-  it("should get error message -----------JAIME", function(done) {
+  it("should throw an error message when there is an error with the namedmaps", function(done) {
 
     var named_map = {
       stat_tag: 'stat_tag_named_map',
       name: 'testing',
       auth_token: 'auth_token_test'
     };
+
     namedMap = new NamedMap(named_map, {
       tiler_domain:   "cartodb.com",
       tiler_port:     "8081",
@@ -976,6 +977,7 @@ describe("NamedMap", function() {
       no_cdn: true,
       subdomains: [null]
     });
+
     namedMap.options.ajax = function(p) { 
       params = p;
       p.success({ error: 'not found' });
@@ -988,14 +990,11 @@ describe("NamedMap", function() {
     };
 
     namedMap.getTiles(callb);
-   
 
     setTimeout(function() {
-      console.log('_data:' + _data + ' || ' + '_error:' + _error);
-
       var res = "not found";
 
-      expect(_error).toEqual(res);
+      expect(_error.errors).toEqual(res);
       expect(true).toEqual(true);
 
       done();

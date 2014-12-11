@@ -460,14 +460,17 @@ Map.prototype = {
         self.urls = self._layerGroupTiles(data.layergroupid, self.options.extra_params);
         callback && callback(self.urls);
       } else {
-        if ( (self.visibleLayers().length === 0) && (self.named_map === null) ){
+        if ((self.named_map !== null) && (err) ){
+          //Throwing errors with format in leaflet_cartodb_layergroup.js (function error:)
+          var err_message =  { errors : err};
+          callback && callback(null, err_message);      
+        } else if (self.visibleLayers().length === 0) {
           callback && callback({
             tiles: [Map.EMPTY_GIF],
             grids: []
           });
           return;
         } 
-        callback && callback(null, err);
       }
     });
     return this;

@@ -37,7 +37,7 @@
           attribution: 'Stamen'
         }).addTo(map);
         // add cartodb layer with one sublayer
-        cartodb.createLayer(map, {
+        var layer = cartodb.createLayer(map, {
           type: 'namedmap',
           user_name: 'documentation',
           options: {
@@ -49,13 +49,18 @@
         .addTo(map)
         .done(function(layer) {
           console.log('done');
+          layer.on('error', function(e) {
+            console.log(e);
+          })
         })
         .error(function(){
-          console.log('adfljadsfljkadfsjklafsd');
+          console.log('error___1');
         })
-        .on('error',function() {
-          console.log('error_________JAIMEEEEEEEE');
-        });
+         .on('error',function() {
+           console.log('error___1');
+         });
+
+        console.log(layer);
       });
       }
       // you could use $(window).load(main);
