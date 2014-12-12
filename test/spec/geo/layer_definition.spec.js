@@ -994,7 +994,7 @@ describe("NamedMap", function() {
     setTimeout(function() {
       var res = "not found";
 
-      expect(_error.errors).toEqual(res);
+      expect(_error).toEqual(res);
       expect(true).toEqual(true);
 
       done();

@@ -461,9 +461,7 @@ Map.prototype = {
         callback && callback(self.urls);
       } else {
         if ((self.named_map !== null) && (err) ){
-          //Throwing errors with format in leaflet_cartodb_layergroup.js (function error:)
-          var err_message =  { errors : err};
-          callback && callback(null, err_message);      
+          callback && callback(null, err);      
         } else if (self.visibleLayers().length === 0) {
           callback && callback({
             tiles: [Map.EMPTY_GIF],
