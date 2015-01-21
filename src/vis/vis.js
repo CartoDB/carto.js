@@ -283,7 +283,7 @@ var Vis = cdb.core.View.extend({
 
   addTimeSlider: function(torqueLayer) {
 
-    if (torqueLayer) {
+    if (torqueLayer && (torqueLayer.options.steps > 1)) {
 
       this.addOverlay({
         type: 'time_slider',
