@@ -220,19 +220,19 @@ var Vis = cdb.core.View.extend({
   },
 
   addLegends: function(layers) {
-
     if (this.legends) {
       this.legends.remove();
     }
 
-    this.legends = new cdb.geo.ui.StackedLegend({
-      legends: this.createLegendView(layers)
-    });
+    if (this.legends_enabled && this.map.get("legends") !== false) {
+      this.legends = new cdb.geo.ui.StackedLegend({
+        legends: this.createLegendView(layers)
+      });
 
-    if (!this.mobile_enabled) {
-      this.mapView.addOverlay(this.legends);
+      if (!this.mobile_enabled) {
+        this.mapView.addOverlay(this.legends);
+      }
     }
-
   },
 
   _setLayerOptions: function(options) {
@@ -399,6 +399,8 @@ var Vis = cdb.core.View.extend({
     var has_logo_overlay = !!_.find(data.overlays, function(o) { return o.type === 'logo' && o.options.display; });
 
     this.cartodb_logo = (options.cartodb_logo !== undefined) ? options.cartodb_logo: has_logo_overlay;
+    this.legends_enabled = (options.legends === undefined) ? true: options.legends;
+    
 
     if (this.mobile) this.cartodb_logo = false;
     else if (!has_logo_overlay && options.cartodb_logo === undefined) this.cartodb_logo = true; // We set the logo by default
@@ -517,9 +519,7 @@ var Vis = cdb.core.View.extend({
 
     this.mapView = mapView;
 
-    if (options.legends || (options.legends === undefined && this.map.get("legends") !== false)) {
-      map.layers.bind('reset', this.addLegends, this);
-    }
+    map.layers.bind('reset', this.addLegends, this);
 
     this.overlayModels.bind('reset', function(overlays) {
       this._addOverlays(overlays, data, options);
@@ -715,7 +715,8 @@ var Vis = cdb.core.View.extend({
           // map movement
           this.map.actions.set({
             'center': typeof slide.center === 'string' ? JSON.parse(slide.center): slide.center,
-            'zoom': slide.zoom
+            'zoom': slide.zoom,
+            'legends': slide.legends
           }),
           // wait a little bit
           O.Sleep(350),
@@ -850,9 +851,7 @@ var Vis = cdb.core.View.extend({
     var layer = data.layers[1];
 
     if (this.mobile_enabled) {
-      if (options && options.legends === undefined) {
-        options.legends = this.legends ? true : false;
-      }
+      options.legends_enabled = this.legends_enabled;
 
       if (layer.options && layer.options.layer_definition) {
         layers = layer.options.layer_definition.layers;
