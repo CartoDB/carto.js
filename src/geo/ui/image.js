@@ -52,7 +52,51 @@ cdb.geo.ui.Image = cdb.geo.ui.Text.extend({
       backgroundColor: rgbaCol
     });
 
+    var url = this.model.get("extra").url;
+
+    this._loadImage(url)
+
     this.$el.find("img").css({ width: boxWidth });
+
+  },
+
+  _loadImage: function(url) {
+
+    var self = this;
+
+    var success = function() {
+      self._onLoadSuccess(url);
+    };
+
+    var error = function() {
+      self._onLoadError(url);
+    };
+
+    $("<img/>")
+    .load(success)
+    .error(error)
+    .attr("src", url);
+
+  },
+
+  _onLoadError: function(url) {
+    this.$el.addClass('error');
+  },
+
+  _onLoadSuccess: function(url) {
+
+    var style     = this.model.get("style");
+    var boxWidth  = style["box-width"];
+    var extra     = this.model.get("extra");
+    var img       = "<img src='" + url + "' style='width: " + boxWidth + "px'/>";
+
+    extra.rendered_text = img;
+
+    this.model.set({ extra: extra }, { silent: true });
+
+    this.$text.html(img);
+
+    this.show();
 
   },
 
@@ -60,7 +104,10 @@ cdb.geo.ui.Image = cdb.geo.ui.Text.extend({
 
     var content = this.model.get("extra").rendered_text;
 
-    if (this.model.get("extra").has_default_image) content = '<img src="' + this.model.get("extra").public_default_image_url + '" />';
+    if (this.model.get("extra").has_default_image) {
+      var url = this.model.get("extra").public_default_image_url;
+      content = '<img src="' + url + '" />';
+    }
 
     this.$el.html(this.template(_.extend(this.model.attributes, { content: content })));
 
@@ -71,9 +118,7 @@ cdb.geo.ui.Image = cdb.geo.ui.Text.extend({
     setTimeout(function() {
       self._applyStyle();
       self._place();
-      self.show();
-    }, 900);
-
+    }, 500);
 
     return this;
 
