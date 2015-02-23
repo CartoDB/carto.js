@@ -319,6 +319,15 @@ var Vis = cdb.core.View.extend({
       this.https = true;
     }
 
+    // this checks that the screen is retina to add @2x to the url
+    if (window.devicePixelRatio > 1) {
+      data.layers.forEach(function(layer){
+        if(layer.type === "tiled"){
+          layer.options.urlTemplate = layer.options.urlTemplate.replace("{y}", "{y}@2x");
+        }
+      })
+    }
+
     if (data.https) {
       this.https = data.https;
     }
