@@ -435,7 +435,7 @@ describe("cdb.geo.ui.infowindow", function() {
       expect(view.$(".cover img").attr('style')).toBe(undefined);
     });
 
-    it("if the theme doesn't have cover don't edit the image", function() {
+    it("if the theme doesn't have a cover don't style the image", function() {
       model.set("content", { fields: fields });
       model.set('template', '<div class="cover"><img src="http://hello.png" /></div>');
       expect(view.$(".cover img").attr('style')).toBe(undefined);
