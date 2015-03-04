@@ -439,4 +439,6 @@ describe("cdb.geo.ui.infowindow", function() {
       model.set("content", { fields: fields });
       model.set('template', '<div class="cover"><img src="http://hello.png" /></div>');
       expect(view.$(".cover img").attr('style')).toBe(undefined);
-   
+    });
+  });
+});
