@@ -425,23 +425,18 @@ describe("cdb.geo.ui.infowindow", function() {
       expect(view._containsCover()).toEqual(true);
     });
 
-    it("should append the image", function() {
+    it("should not append an image anymore", function() {
       model.set('template', '<div class="cartodb-popup header" data-cover="true"><div class="cover"></div></div>');
-      expect(view.$el.find("img").length).toEqual(1);
+      expect(view.$(".cover img").length).toEqual(0);
     });
 
-    it("if the image is invalid it shouldn't append it", function() {
-      model.set("content", { fields: fieldsWithoutURL });
-      model.set('template', '<div class="cartodb-popup header" data-cover="true"><div class="cover"></div></div>');
-      expect(view.$el.find("img").length).toEqual(0);
+    it("should not edit <img> if it is not valid", function() {
+      model.set('template', '<div class="cartodb-popup header" data-cover="true"><div class="cover"><img src="hello"/></div></div>');
+      expect(view.$(".cover img").attr('style')).toBe(undefined);
     });
 
-    it("if the theme doesn't have cover don't append the image", function() {
+    it("if the theme doesn't have cover don't edit the image", function() {
       model.set("content", { fields: fields });
-      model.set('template', '<div class="cover"></div>');
-      expect(view.$el.find("img").length).toEqual(0);
-    });
-
-  });
-
-});
+      model.set('template', '<div class="cover"><img src="http://hello.png" /></div>');
+      expect(view.$(".cover img").attr('style')).toBe(undefined);
+   

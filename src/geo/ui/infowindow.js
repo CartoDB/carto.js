@@ -553,16 +553,14 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
    *  Attempts to load the cover URL and show it
    */
   _loadCover: function() {
-
     if (!this._containsCover()) return;
 
-    var
-    self = this,
-    $cover = this.$(".cover"),
-    $shadow = this.$(".shadow"),
-    url = this._getCoverURL();
+    var $cover = this.$(".cover");
+    var $shadow = this.$(".shadow");
+    var $img = $cover.find("img");
+    var url = $img.attr('src');
 
-    if (!this._isValidURL(url)) {
+    if (!this._isValidURL(url) || $img.length === 0) {
       $shadow.hide();
       cdb.log.info("Header image url not valid");
       return;
@@ -573,16 +571,6 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     target  = document.getElementById('spinner'),
     opts    = { lines: 9, length: 4, width: 2, radius: 4, corners: 1, rotate: 0, color: '#ccc', speed: 1, trail: 60, shadow: true, hwaccel: false, zIndex: 2e9 },
     spinner = new Spinner(opts).spin(target);
-
-    // create the image
-    var $img = $cover.find("img");
-
-    $img.hide(function() {
-      this.remove();
-    });
-
-    $img = $("<img />").attr("src", url);
-    $cover.append($img);
 
     $img.load(function(){
       spinner.stop();
