@@ -1714,6 +1714,7 @@ GMapsTorqueLayer.prototype = torque.extend({},
         this.renderer.renderTile(tile, this.key);
       }
     }
+    this.renderer.applyFilters();
   },
 
   getActivePointsBBox: function(step) {
@@ -1818,6 +1819,42 @@ GMapsTorqueLayer.prototype = torque.extend({},
     this.animator.stop();
     this._removeTileLoader();
     google.maps.event.removeListener(this._cacheListener);
+  },
+
+  getValueForPos: function(x, y, step) {
+    step = step === undefined ? this.key: step;
+    var t, tile, pos, value = null, xx, yy;
+    for(t in this._tiles) {
+      tile = this._tiles[t];
+      pos = this.getTilePos(tile.coord);
+      xx = x - pos.x;
+      yy = y - pos.y;
+      if (xx >= 0 && yy >= 0 && xx < this.renderer.TILE_SIZE && yy <= this.renderer.TILE_SIZE) {
+        value = this.renderer.getValueFor(tile, step, xx, yy);
+      }
+      if (value !== null) {
+        return value;
+      }
+    }
+    return null;
+  },
+  getValueForBBox: function(x, y, w, h) {
+    var xf = x + w, yf = y + h;
+    var sum = 0;
+    for(_y = y; y<yf; y+=this.options.resolution){
+      for(_x = x; x<xf; x+=this.options.resolution){
+        var thisValue = this.getValueForPos(_x,_y);
+        if (thisValue){
+          var bb = thisValue.bbox;
+          var proj = this.getProjection()
+          var xy = proj.fromLatLngToContainerPixel(new google.maps.LatLng(bb[1].lat, bb[1].lon));
+          if(xy.x < xf && xy.y < yf){
+            sum += thisValue.value;
+          }
+        }
+      }
+    }
+    return sum;
   }
 
 });
@@ -2711,6 +2748,24 @@ L.TorqueLayer = L.CanvasLayer.extend({
       }
     }
     return null;
+  },
+
+  getValueForBBox: function(x, y, w, h) {
+    var xf = x + w, yf = y + h, _x=x;
+    var sum = 0;
+    for(_y = y; _y<yf; _y+=this.options.resolution){
+      for(_x = x; _x<xf; _x+=this.options.resolution){
+        var thisValue = this.getValueForPos(_x,_y);
+        if (thisValue){
+          var bb = thisValue.bbox;
+          var xy = this._map.latLngToContainerPoint([bb[1].lat, bb[1].lon]);
+          if(xy.x < xf && xy.y < yf){
+            sum += thisValue.value;
+          }
+        }
+      }
+    }
+    return sum;
   },
 
   invalidate: function() {
@@ -4279,19 +4334,20 @@ var Profiler = require('../profiler');
     ctx.beginPath();
     ctx.arc(0, 0, pixel_size, 0, TAU, true, true);
     ctx.closePath();
+
+    if (st['marker-opacity'] !== undefined )  st['marker-fill-opacity'] = st['marker-line-opacity'] = st['marker-opacity'];
+
     if (st['marker-fill']) {
-      if (st['marker-fill-opacity'] !== undefined || st['marker-opacity'] !== undefined) {
-        ctx.globalAlpha = st['marker-fill-opacity'] || st['marker-opacity'];
+        ctx.globalAlpha = st['marker-fill-opacity'] >= 0? st['marker-fill-opacity']: 1;
+
+      if (ctx.globalAlpha > 0) {
+        ctx.fill();
       }
-      ctx.fill();
     }
 
     // stroke
-    ctx.globalAlpha = 1.0;
     if (st['marker-line-color'] && st['marker-line-width'] && st['marker-line-width'] > LINEWIDTH_MIN_VALUE) {
-      if (st['marker-line-opacity'] !== undefined) {
-        ctx.globalAlpha = st['marker-line-opacity'];
-      }
+      ctx.globalAlpha = st['marker-line-opacity'] >= 0? st['marker-line-opacity']: 1;
       if (st['marker-line-width'] !== undefined) {
         ctx.lineWidth = st['marker-line-width'];
       }
