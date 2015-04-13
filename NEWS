@@ -1,3 +1,6 @@
+3.11.37 (13//04//2014)
+- fixed error management when layer group instantiation fails using GET
+
 3.11.36 (09//02//2014)
 - Fixes slider style problem in narrower devices.
 
