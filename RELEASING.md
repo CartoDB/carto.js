@@ -69,10 +69,10 @@ grunt build
 grunt publish
 ```
 
-For example, if we are in 3.12.15 and we want to go back to 3.12.14
+For example, if we are in 3.12.15 and we want to go back to 3.12.15
 
 ```
-git checkout 3.12.14
+git checkout 3.12.15
 grunt build
 grunt publish
 ```

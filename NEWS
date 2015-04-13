@@ -1,3 +1,6 @@
+3.12.15 (13//04//2015)
+- Fixes error management when layer group instantiation fails using GET
+
 3.12.14 (30//03//2015)
 - Fixes fullscreen button is throwing errors (#412)
 - Updates Torque.js to 2.11
