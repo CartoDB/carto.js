@@ -1,3 +1,9 @@
+3.13.4 (10//04//2015)
+* Removes the force https option
+
+3.13.3 (09//04//2015)
+* Fixes default styles for header titles in infowindows.
+
 3.13.2 (07//04//2015)
 * Fix double escaping on infowindows
 * Fix a-tag's target attribute not working
