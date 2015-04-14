@@ -43,10 +43,10 @@ cdb.vis.Overlay.register('mobile', function(data, vis) {
     template: template,
     mapView: vis.mapView,
     overlays: data.overlays,
-    slides: vis.slides,
     transitions: data.transitions,
     visualization: vis,
     slides_data: data.slides,
+    visualization: vis,
     layerView: data.layerView,
     visibility_options: data.options,
     torqueLayer: data.torqueLayer,
@@ -277,17 +277,16 @@ cdb.vis.Overlay.register('infowindow', function(data, vis) {
 
   var infowindowModel = new cdb.geo.ui.InfowindowModel({
     template: data.template,
+    template_type: data.templateType,
     alternative_names: data.alternative_names,
     fields: data.fields,
     template_name: data.template_name
   });
 
-  var templateType = data.templateType || 'mustache';
-
   var infowindow = new cdb.geo.ui.Infowindow({
      model: infowindowModel,
      mapView: vis.mapView,
-     template: new cdb.core.Template({ template: data.template, type: templateType}).asFunction()
+     template: data.template
   });
 
   return infowindow;
@@ -427,23 +426,12 @@ cdb.vis.Overlay.register('search', function(data, vis) {
 
 // tooltip
 cdb.vis.Overlay.register('tooltip', function(data, vis) {
-  var layer;
-  if (!data.layer) {
-    var layers = vis.getLayers();
-    if(layers.length > 1) {
-      layer = layers[1];
-    }
-    data.layer = layer;
-  }
-
-  if (!data.layer) {
+  if (!data.layer && vis.getLayers().length <= 1) {
     throw new Error("layer is null");
   }
-
+  data.layer = data.layer || vis.getLayers()[1];
   data.layer.setInteraction(true);
-  var tooltip = new cdb.geo.ui.Tooltip(data);
-  return tooltip;
-
+  return new cdb.geo.ui.Tooltip(data);
 });
 
 cdb.vis.Overlay.register('infobox', function(data, vis) {

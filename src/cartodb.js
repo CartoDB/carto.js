@@ -5,7 +5,7 @@
 
     var cdb = root.cdb = {};
 
-    cdb.VERSION = "3.12.00";
+    cdb.VERSION = "3.13.2";
     cdb.DEBUG = false;
 
     cdb.CARTOCSS_VERSIONS = {
@@ -22,6 +22,7 @@
 
     root.cdb.config = {};
     root.cdb.core = {};
+    root.cdb.image = {};
     root.cdb.geo = {};
     root.cdb.geo.ui = {};
     root.cdb.geo.geocoder = {};
@@ -40,6 +41,7 @@
         "../vendor/underscore-min.js",
         "../vendor/json2.js",
         "../vendor/backbone.js",
+        "../vendor/mustache.js",
 
         "../vendor/leaflet.js",
         "../vendor/wax.cartodb.js",
@@ -50,7 +52,9 @@
         "../vendor/mwheelIntent.js",
         "../vendor/spin.js",
         "../vendor/lzma.js",
+        "../vendor/html-css-sanitizer-bundle.js",
 
+        'core/sanitize.js',
         'core/decorator.js',
         'core/config.js',
         'core/log.js',
@@ -58,6 +62,7 @@
         'core/template.js',
         'core/model.js',
         'core/view.js',
+        'core/loader.js',
 
         'geo/geocoder.js',
         'geo/geometry.js',
@@ -108,6 +113,7 @@
         'ui/common/dropdown.js',
 
         'vis/vis.js',
+        'vis/image.js',
         'vis/overlays.js',
         'vis/layers.js',
 
