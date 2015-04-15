@@ -60,6 +60,25 @@ describe("common.geo.ui.Legend", function() {
       expect(legend.items instanceof cdb.geo.ui.LegendItems).toEqual(true);
     });
 
+    it("should order the items in the collection", function() {
+      data = [
+        { name: "Category D", value: "#f1f1f1" },
+        { name: "Category C", value: "#fabada" },
+        { name: "Category A", value: "#f1f1f1" },
+        { name: "Category B", value: "#000000" },
+      ];
+
+      legend = new cdb.geo.ui.Legend({
+        data: data,
+        map: map
+      });
+
+      expect(legend.model.items.at(0).get("name")).toEqual("Category A");
+      expect(legend.model.items.at(1).get("name")).toEqual("Category B");
+      expect(legend.model.items.at(2).get("name")).toEqual("Category C");
+      expect(legend.model.items.at(3).get("name")).toEqual("Category D");
+    });
+
     it("should populate the collection", function() {
       legend.model.set("type", "custom");
       expect(legend.model.items.length).toEqual(4);
@@ -92,10 +111,25 @@ describe("common.geo.ui.Legend", function() {
     it("should update the legend when the name of an item is changed", function() {
       legend.render();
       legend.model.set({ type: "custom" });
-      expect(legend.$el.find("li:first-child").text().trim()).toEqual('Category 1');
 
-      legend.items.at(0).set("name", "New Category 1")
-      expect(legend.$el.find("li:first-child").text().trim()).toEqual('New Category 1');
+      var legends = legend.$('li').map(function(){return this.textContent.trim()}).toArray();
+      expect(legends).toEqual([
+        "Category 1",
+        "Category 2",
+        "Category 3",
+        "Category 4"
+      ]);
+
+      // Rename Category 1 to Category 5
+      legend.items.at(0).set("name", "Category 5")
+
+      var legends = legend.$('li').map(function(){return this.textContent.trim()}).toArray();
+      expect(legends).toEqual([
+        "Category 2",
+        "Category 3",
+        "Category 4",
+        "Category 5"
+      ]);
     });
 
     it("should update the legend when the value of an item is changed", function() {
@@ -381,13 +415,27 @@ describe("common.geo.ui.Legend", function() {
         expect(legend.model.get("type")).toEqual("custom");
       });
 
-      it("should show the items", function() {
-        expect(legend.items.length).toEqual(custom_data.length);
-        expect(legend.items.at(0).get("name")).toEqual(custom_data[0].name);
-        expect(legend.items.at(0).get("value")).toEqual(custom_data[0].value);
+      it("should render the items and order them alphabetically", function() {
+        var legend = new cdb.geo.ui.Legend.Custom({
+          title: "Custom title",
+          data: [
+            { name: "Legend 3", value: "#CCCCCC" },
+            { name: "Legend 1", value: "#AAAAAA" },
+            { name: "Legend 2", value: "#BBBBBB" }
+          ]
+        });
 
-        expect(legend.$el.find("li:first-child").text().trim()).toEqual(custom_data[0].name);
-        expect(legend.$el.find("li:first-child .bullet").css("background")).toEqual("rgb(88, 160, 98)");
+        legend.render();
+
+        var legends = legend.$('li');
+
+        expect(legends.length).toEqual(3);
+        expect($(legends[0]).text().trim()).toEqual('Legend 1');
+        expect($(legends[0]).find('.bullet').css('background')).toEqual('rgb(170, 170, 170)');
+        expect($(legends[1]).text().trim()).toEqual('Legend 2');
+        expect($(legends[1]).find('.bullet').css('background')).toEqual('rgb(187, 187, 187)');
+        expect($(legends[2]).text().trim()).toEqual('Legend 3');
+        expect($(legends[2]).find('.bullet').css('background')).toEqual('rgb(204, 204, 204)');
       });
 
       it("should show a title", function() {
@@ -440,16 +488,27 @@ describe("common.geo.ui.Legend", function() {
         expect(legend.model.get("type")).toEqual("category");
       });
 
-      it("should show the items", function() {
-        expect(legend.items.length).toEqual(custom_data.length);
-        expect(legend.items.at(0).get("name")).toEqual(custom_data[0].name);
-        expect(legend.items.at(0).get("value")).toEqual(custom_data[0].value);
+      it("should render the items and order them alphabetically", function() {
+        var legend = new cdb.geo.ui.Legend.Category({
+          title: "Category title",
+          data: [
+            { name: "Legend 3", value: "#CCCCCC" },
+            { name: "Legend 1", value: "#AAAAAA" },
+            { name: "Legend 2", value: "#BBBBBB" }
+          ]
+        });
 
-        expect(legend.$el.find("li:first-child").text().trim()).toEqual(custom_data[0].name);
-        expect(legend.$el.find("li:first-child .bullet").css("background")).toEqual("rgb(88, 160, 98)");
+        legend.render();
 
-        expect(legend.$el.find("li:nth-child(2)").text().trim()).toEqual(custom_data[1].name);
-        expect(legend.$el.find("li:nth-child(2) .bullet").css("background")).toEqual("url(http://cartodb.com/assets/logos/logos_full_cartodb_light.png)");
+        var legends = legend.$('li');
+
+        expect(legends.length).toEqual(3);
+        expect($(legends[0]).text().trim()).toEqual('Legend 1');
+        expect($(legends[0]).find('.bullet').css('background')).toEqual('rgb(170, 170, 170)');
+        expect($(legends[1]).text().trim()).toEqual('Legend 2');
+        expect($(legends[1]).find('.bullet').css('background')).toEqual('rgb(187, 187, 187)');
+        expect($(legends[2]).text().trim()).toEqual('Legend 3');
+        expect($(legends[2]).find('.bullet').css('background')).toEqual('rgb(204, 204, 204)');
       });
 
       it("should show a title", function() {
