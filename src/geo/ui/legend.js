@@ -19,7 +19,13 @@ cdb.geo.ui.LegendItemModel = cdb.core.Model.extend({
  * */
 
 cdb.geo.ui.LegendItems = Backbone.Collection.extend({
-  model: cdb.geo.ui.LegendItemModel
+  model: cdb.geo.ui.LegendItemModel,
+
+  initialize: function() {
+    this.comparator = function(m) {
+      return m.get('name');
+    };
+  }
 });
 
 /*
