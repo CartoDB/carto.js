@@ -78,7 +78,7 @@ LayerDefinition.layerDefFromSubLayers = function(sublayers) {
 
   for (var i = 0; i < sublayers.length; ++i) {
     layer_definition.layers.push({
-      type: 'cartodb',
+      type: sublayers[i].type || 'cartodb',
       options: sublayers[i]
     });
   }
@@ -508,7 +508,7 @@ Map.prototype = {
       subdomains = [null]; // no subdomain
     }
 
-    var tileTemplate = '/{z}/{x}/{y}';
+    var tileTemplate = '/all/{z}/{x}/{y}';
 
     var grids = []
     var tiles = [];
@@ -701,7 +701,7 @@ Map.prototype = {
 
   getSubLayer: function(index) {
     var layer = this.layers[index];
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || subLayerByType(layer.type, this, index);
     return layer.sub;
   },
 
@@ -730,7 +730,7 @@ NamedMap.prototype = _.extend({}, Map.prototype, {
         options: {}
       };
     }
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || subLayerByType(layer.type, this, index);
     return layer.sub;
   },
 
@@ -908,16 +908,23 @@ LayerDefinition.prototype = _.extend({}, Map.prototype, {
     }
   },
 
-  toJSON: function() {
-    var obj = {};
-    obj.version = this.version;
-    if(this.stat_tag) {
-      obj.stat_tag = this.stat_tag;
+  _httpLayerToLayerDef: function(layer) {
+    var layer_def = {
+      type: 'http',
+      options: {
+        urlTemplate: layer.options.urlTemplate
+      }
+    };
+    if (layer.options.subdomains !== undefined) {
+      layer_def.options.subdomains = layer.options.subdomains;
     }
-    obj.layers = [];
-    var layers = this.visibleLayers();
-    for(var i = 0; i < layers.length; ++i) {
-      var layer = layers[i];
+    if (layer.options.tms !== undefined) {
+      layer_def.options.tms = layer.options.subdomains;
+    }
+    return layer_def;
+  },
+
+  _cartoDBLayerToLayerDef: function(layer, index) {
       var layer_def = {
         type: 'cartodb',
         options: {
@@ -936,7 +943,7 @@ LayerDefinition.prototype = _.extend({}, Map.prototype, {
           return n;
         }
         layer_def.options.interactivity = this._cleanInteractivity(layer.options.interactivity);
-        var infowindow = this.getInfowindowData(this.getLayerNumberByIndex(i));
+        var infowindow = this.getInfowindowData(this.getLayerNumberByIndex(index));
         var attrs = layer.options.attributes ? this._cleanInteractivity(this.options.attributes):(infowindow && fields(infowindow.fields));
         if (attrs) {
           layer_def.options.attributes = {
@@ -952,6 +959,27 @@ LayerDefinition.prototype = _.extend({}, Map.prototype, {
         // raster needs 2.3.0 to work
         layer_def.options.cartocss_version = layer.options.cartocss_version || '2.3.0';
       }
+      return layer_def;
+  },
+
+  toJSON: function() {
+    var obj = {};
+    obj.version = this.version;
+    if(this.stat_tag) {
+      obj.stat_tag = this.stat_tag;
+    }
+    obj.layers = [];
+    var layers = this.visibleLayers();
+    for(var i = 0; i < layers.length; ++i) {
+      var layer = layers[i];
+      var type = layer.type;
+      var layer_def;
+      if (type === 'http') {
+        layer_def = this._httpLayerToLayerDef(layer, i);
+      } else {
+        layer_def = this._cartoDBLayerToLayerDef(layer, i);
+      }
+
       obj.layers.push(layer_def);
     }
     return obj;
@@ -1080,30 +1108,42 @@ LayerDefinition.prototype = _.extend({}, Map.prototype, {
 
 });
 
-
-function SubLayer(_parent, position) {
+function BaseSubLayer(_parent, position) {
   this._parent = _parent;
   this._position = position;
   this._added = true;
-  this._bindInteraction();
-  if (Backbone.Model && this._parent.getLayer(this._position)) {
-    this.infowindow = new Backbone.Model(this._parent.getLayer(this._position).infowindow);
-    this.infowindow.bind('change', function() {
-      var def = this._parent.getLayer(this._position);
-      def.infowindow = this.infowindow.toJSON();
-      this._parent.setLayer(this._position, def);
-    }, this);
-  }
 }
 
-SubLayer.prototype = {
+BaseSubLayer.prototype = {
 
-  remove: function() {
+  get: function(attr) {
     this._check();
-    this._parent.removeLayer(this._position);
-    this._unbindInteraction();
-    this._added = false;
-    this.trigger('remove', this);
+    var attrs = this._parent.getLayer(this._position);
+    return attrs.options[attr];
+  },
+
+  set: function(new_attrs) {
+    this._check();
+    var def = this._parent.getLayer(this._position);
+    var attrs = def.options;
+    for(var i in new_attrs) {
+      attrs[i] = new_attrs[i];
+    }
+    this._parent.setLayer(this._position, def);
+    if (new_attrs.hidden !== undefined) {
+      this.trigger('change:visibility', this, new_attrs.hidden);
+    }
+    return this;
+  },
+
+  unset: function(attr) {
+    var def = this._parent.getLayer(this._position);
+    delete def.options[attr];
+    this._parent.setLayer(this._position, def);
+  },
+
+  getType: function() {
+    return this.get('type');
   },
 
   toggle: function() {
@@ -1125,6 +1165,75 @@ SubLayer.prototype = {
         hidden: true
       });
     }
+  },
+
+  remove: function() {
+    this._check();
+    this._parent.removeLayer(this._position);
+    this._added = false;
+    this.trigger('remove', this);
+  },
+
+  _check: function() {
+    if(!this._added) throw "sublayer was removed";
+  },
+
+  _setPosition: function(p) {
+    this._position = p;
+  }
+
+};
+
+// give events capabilitues
+_.extend(BaseSubLayer.prototype, Backbone.Events);
+
+
+// factory to create sublayer depending on the type
+// parent and position inside the parent must be given
+function subLayerByType(type, _parent, position) {
+  if (type === 'http') {
+    return new HTTPSubLayer(_parent, position)
+  }
+  return new CartoDBSubLayer(_parent, position);
+}
+
+// http layer fetch in the server
+function HTTPSubLayer(_parent, position) {
+  BaseSubLayer.call(this, _parent, position);
+}
+
+HTTPSubLayer.prototype = _.extend(BaseSubLayer.prototype, {
+
+  setUrlTemplate: function(url) {
+    this.set({ 'urlTemplate': url });
+    return this;
+  }
+
+});
+
+
+// cartodb layer based on sql + cartocss + interactivity
+function CartoDBSubLayer(_parent, position) {
+  BaseSubLayer.call(this, _parent, position);
+  this._bindInteraction();
+  if (Backbone.Model && this._parent.getLayer(this._position)) {
+    this.infowindow = new Backbone.Model(this._parent.getLayer(this._position).infowindow);
+    this.infowindow.bind('change', function() {
+      var def = this._parent.getLayer(this._position);
+      def.infowindow = this.infowindow.toJSON();
+      this._parent.setLayer(this._position, def);
+    }, this);
+  }
+}
+
+CartoDBSubLayer.prototype = _.extend(BaseSubLayer.prototype, {
+
+  remove: function() {
+    this._check();
+    this._parent.removeLayer(this._position);
+    this._unbindInteraction();
+    this._added = false;
+    this.trigger('remove', this);
   },
 
   setSQL: function(sql) {
@@ -1157,36 +1266,6 @@ SubLayer.prototype = {
     this._parent.setInteraction(this._position, active);
   },
 
-  get: function(attr) {
-    this._check();
-    var attrs = this._parent.getLayer(this._position);
-    return attrs.options[attr];
-  },
-
-  set: function(new_attrs) {
-    this._check();
-    var def = this._parent.getLayer(this._position);
-    var attrs = def.options;
-    for(var i in new_attrs) {
-      attrs[i] = new_attrs[i];
-    }
-    this._parent.setLayer(this._position, def);
-    if (new_attrs.hidden !== undefined) {
-      this.trigger('change:visibility', this, new_attrs.hidden);
-    }
-    return this;
-  },
-
-  unset: function(attr) {
-    var def = this._parent.getLayer(this._position);
-    delete def.options[attr];
-    this._parent.setLayer(this._position, def);
-  },
-
-  _check: function() {
-    if(!this._added) throw "sublayer was removed";
-  },
-
   _unbindInteraction: function() {
     if(!this._parent.off) return;
     this._parent.off(null, null, this);
@@ -1213,14 +1292,7 @@ SubLayer.prototype = {
     _bindSignal('layermouseout', 'mouseout');
   },
 
-  _setPosition: function(p) {
-    this._position = p;
-  }
-
-};
-
-// give events capabilitues
-_.extend(SubLayer.prototype, Backbone.Events);
+});
 
 /** utility methods to calculate hash */
 cartodb._makeCRCTable = function() {
