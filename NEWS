@@ -1,3 +1,6 @@
+3.15.0 ()
+* Changed interface to create layers. sublayers attribute in createLayer can sptcify a type per layer
+
 3.14.0 ()
 * Infowindow in anonymous maps are requested by attributes endpoint in maps api so SQL API is not used anymore
 * Changed the way remote host is set for maps and sql API.
