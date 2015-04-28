@@ -89,7 +89,11 @@ cdb.vis.Overlay.register('text', function(data, vis) {
   );
 
   var widget = new cdb.geo.ui.Text({
-    model: new cdb.core.Model(options),
+    text: options.extra.rendered_text,
+    x: options.x,
+    y: options.y,
+    extra: options.extra,
+    style: options.style,
     template: template,
     className: "cartodb-overlay overlay-text " + options.device
   });
