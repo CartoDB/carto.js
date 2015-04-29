@@ -14,6 +14,7 @@
     </style>
 
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.14/themes/css/cartodb.css" />
+
   </head>
   <body>
     <div id="map"></div>
@@ -22,15 +23,16 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
 
     <!-- include cartodb.js library -->
-    <script src="http://libs.cartocdn.com.s3.amazonaws.com/cartodb.js/v3/3.14/cartodb.js"></script>
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.14/cartodb.js"></script>
 
     <script>
       var map, pointarray, heatmap;
       var google_api_key = "AIzaSyCADWr4a6NraGN1ldmcBKN4W_6c6teuImw"
-      function main() {
 
+      function main() {
         // Map center
         var myLatlng = new google.maps.LatLng(40.722, -73.997);
+
         var myOptions = {
           zoom: 14,
           center: myLatlng, 
@@ -41,21 +43,28 @@
         // Render basemap
         map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-        var sql = cartodb.SQL({ user: 'andrew', format: 'geojson'});
-        sql.execute("SELECT cartodb_id, the_geom FROM cleveland_spring_points").done(function(data) {
+        var sql = cartodb.SQL({ user: 'documentation', format: 'geojson'});
+
+        sql.execute("SELECT cartodb_id, the_geom FROM cleveland_spring_points_281_29").done(function(data) {
+
           data = data.features.map(function(r) {
               return new google.maps.LatLng(r.geometry.coordinates[1], r.geometry.coordinates[0]) 
             });
+
           var pointArray = new google.maps.MVCArray(data);
+
           heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
           });
+
           heatmap.set('radius', heatmap.get('radius') ? null : 20);
+          heatmap.set('opacity', heatmap.get('opacity') ? null : .8);
+
           heatmap.setMap(map);
         });
-
       }
       window.onload = main;
+
     </script>
   </body>
 </html>
