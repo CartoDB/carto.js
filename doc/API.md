@@ -1402,3 +1402,37 @@ You can do the same for the CSS documents we provide:
 ```html
 <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.12.3/themes/css/cartodb.css" />
 ```
+
+#### Accessing the API using SSL
+
+If you are building a page where all resources are being accessed over HTTPS, you will want to also access the CartoDB.js files over SSL. For all the examples above, a simple general rule is:
+
+- In API URLs, replace the string `http://libs.cartocdn.com/` with `https://cartodb-libs.global.ssl.fastly.net`. 
+
+Here is an example of a simple map using the API accessed over SSL.
+
+<div class="code-title">A simple visualization using SSL endpoints</div>
+```html
+<link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.14/themes/css/cartodb.css" />
+
+...
+
+<div id="map"></div>
+
+...
+
+<script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.14/cartodb.js"></script>
+<script>
+// get the viz.json url from the CartoDB Editor
+// - click on visualize
+// - create new visualization
+// - make visualization public
+// - click on publish
+// - go to API tab
+
+window.onload = function() {
+  cartodb.createVis('map', 'https://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
+}
+</script>
+```
+
