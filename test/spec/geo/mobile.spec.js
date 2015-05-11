@@ -126,7 +126,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           search: false,
-          legends: true,
+          legends_enabled: true,
           layer_selector: true
         }
       });
@@ -228,7 +228,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           search:false,
-          legends: false,
+          legends_enabled: false,
           layer_selector: false
         }
       });
@@ -301,7 +301,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           search: false,
-          legends: true,
+          legends_enabled: true,
           layer_selector: false
         }
       });
@@ -381,7 +381,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           search: false,
-          legends: false,
+          legends_enabled: false,
           layer_selector: true
         }
       });
@@ -454,7 +454,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           search:true,
-          legends: false,
+          legends_enabled: false,
           layer_selector: false
         }
       });
@@ -525,7 +525,7 @@ describe("cdb.geo.ui.Mobile", function() {
         torqueLayer: null,
         map: map,
         visibility_options: {
-          legends: false,
+          legends_enabled: false,
           layer_selector: false
         }
       });
@@ -665,7 +665,8 @@ describe("cdb.geo.ui.Mobile", function() {
         torqueLayer: null,
         map: map,
         visibility_options: {
-          layer_selector: true
+          layer_selector: true,
+          legends_enabled: true
         }
       });
 
@@ -815,7 +816,7 @@ describe("cdb.geo.ui.Mobile", function() {
         map: map,
         visibility_options: {
           layer_selector:false,
-          legends:false,
+          legends_enabled:false,
           title: false,
           description: false,
         }

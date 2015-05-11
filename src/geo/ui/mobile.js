@@ -698,7 +698,7 @@ cdb.geo.ui.Mobile = cdb.core.View.extend({
 
   _renderLayers: function() {
 
-    var hasLegendOverlay = this.visibility_options.legends;
+    var hasLegendOverlay = this.visibility_options.legends_enabled;
 
     var legends = this.layers.filter(function(layer) {
       return layer.get("legend") && layer.get("legend").type !== "none"
@@ -733,8 +733,8 @@ cdb.geo.ui.Mobile = cdb.core.View.extend({
 
     var show_legends = true;
 
-    if (this.visibility_options && this.visibility_options.legends !== undefined) {
-      show_legends = this.visibility_options.legends;
+    if (this.visibility_options) {
+      show_legends = this.visibility_options.legends_enabled
     }
 
     var layer = new cdb.geo.ui.MobileLayer({ 
