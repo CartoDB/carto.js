@@ -1,5 +1,6 @@
 function MapBase(options) {
   var self = this;
+
   this.options = _.defaults(options, {
     ajax: window.$ ? window.$.ajax : reqwest.compat,
     pngParams: ['map_key', 'api_key', 'cache_policy', 'updated_at'],
@@ -322,7 +323,7 @@ MapBase.prototype = {
       subdomains = [null]; // no subdomain
     }
 
-    var tileTemplate = '/{z}/{x}/{y}';
+    var tileTemplate = '/all/{z}/{x}/{y}';
     var grids = []
     var tiles = [];
     var pngParams = this._encodeParams(params, this.options.pngParams);
@@ -502,7 +503,7 @@ MapBase.prototype = {
     var layers = [];
     for(var i = 0; i < this.layers.length; ++i) {
       var layer = this.layers[i];
-      if(!layer.options.hidden) {
+      if(layer.options && !layer.options.hidden) {
         layers.push(layer);
       }
     }
@@ -569,7 +570,7 @@ MapBase.prototype = {
 
   getSubLayer: function(index) {
     var layer = this.layers[index];
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || SubLayerFactory.createSublayer(layer.type, this, index);
     return layer.sub;
   },
 
@@ -602,20 +603,22 @@ LayerDefinition.layerDefFromSubLayers = function(sublayers) {
 
   if(!sublayers || sublayers.length === undefined) throw new Error("sublayers should be an array");
 
-  var layer_definition = {
+  sublayers = _.map(sublayers, function(sublayer) {
+    var type = sublayer.type;
+    delete sublayer.type;
+    return {
+      type: type,
+      options: sublayer
+    }
+  });
+
+  var layerDefinition = {
     version: '1.0.0',
     stat_tag: 'API',
-    layers: []
-  };
-
-  for (var i = 0; i < sublayers.length; ++i) {
-    layer_definition.layers.push({
-      type: 'cartodb',
-      options: sublayers[i]
-    });
+    layers: sublayers
   }
 
-  return layer_definition;
+  return new LayerDefinition(layerDefinition, {}).toJSON();
 };
 
 LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
@@ -639,57 +642,10 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
     obj.layers = [];
     var layers = this.visibleLayers();
     for(var i = 0; i < layers.length; ++i) {
-      var layer = layers[i];
-      var layer_def = {
-        type: 'cartodb',
-        options: {
-          sql: layer.options.sql,
-          cartocss: layer.options.cartocss,
-          cartocss_version: layer.options.cartocss_version || '2.1.0',
-        }
-      };
-
-      if (layer.options.interactivity) {
-        function fields(f) {
-          var n = []
-          for(var i = 0; i < f.length; ++i) {
-            n.push(f[i].name);
-          }
-          return n;
-        }
-        layer_def.options.interactivity = this._cleanInteractivity(layer.options.interactivity);
-        var infowindow = this.getInfowindowData(this.getLayerNumberByIndex(i));
-        var attrs = layer.options.attributes ? this._cleanInteractivity(this.options.attributes):(infowindow && fields(infowindow.fields));
-        if (attrs) {
-          layer_def.options.attributes = {
-             id: 'cartodb_id',
-             columns: attrs
-          }
-        }
-      }
-
-      if (layer.options.raster) {
-        layer_def.options.geom_column = "the_raster_webmercator";
-        layer_def.options.geom_type = "raster";
-        // raster needs 2.3.0 to work
-        layer_def.options.cartocss_version = layer.options.cartocss_version || '2.3.0';
-      }
-      obj.layers.push(layer_def);
+      var sublayer = this.getSubLayer(this.getLayerNumberByIndex(i));
+      obj.layers.push(sublayer.toJSON());
     }
     return obj;
-  },
-
-  _cleanInteractivity: function(attributes) {
-    if(!attributes) return;
-    if(typeof(attributes) == 'string') {
-      attributes = attributes.split(',');
-    }
-
-    for(var i = 0; i < attributes.length; ++i) {
-      attributes[i] = attributes[i].replace(/ /g, '');
-    }
-
-    return attributes;
   },
 
   removeLayer: function(layer) {
@@ -711,18 +667,25 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
     }
   },
 
-  addLayer: function(def, layer) {
-    layer = layer === undefined ? this.getLayerCount(): layer;
-    if(layer <= this.getLayerCount() && layer >= 0) {
-      if(!def.sql || !def.cartocss) {
-        throw new Error("layer definition should contain at least a sql and a cartocss");
-        return this;
-      }
-      this.layers.splice(layer, 0, {
-        type: 'cartodb',
+  addLayer: function(def, index) {
+    index = index === undefined ? this.getLayerCount(): index;
+    if(index <= this.getLayerCount() && index >= 0) {
+
+      var type = def.type || 'cartodb';
+      delete def.type;
+
+      this.layers.splice(index, 0, {
+        type: type,
         options: def
       });
-      this._definitionUpdated();
+
+      var sublayer = this.getSubLayer(index);
+      if (sublayer.isValid()) {
+        this._definitionUpdated();
+      } else { // Remove it from the definition
+        sublayer.remove();
+        throw 'Layer definition should contain all the required attributes';
+      }
     }
     return this;
   },
@@ -831,7 +794,7 @@ NamedMap.prototype = _.extend({}, MapBase.prototype, {
         options: {}
       };
     }
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || SubLayerFactory.createSublayer(layer.type, this, index);
     return layer.sub;
   },
 
