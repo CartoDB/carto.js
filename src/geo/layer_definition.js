@@ -1,5 +1,6 @@
 function MapBase(options) {
   var self = this;
+
   this.options = _.defaults(options, {
     ajax: window.$ ? window.$.ajax : reqwest.compat,
     pngParams: ['map_key', 'api_key', 'cache_policy', 'updated_at'],
@@ -12,7 +13,7 @@ function MapBase(options) {
     }
   });
 
-  this.layerToken = null;
+  this.mapProperties = null;
   this.urls = null;
   this.silent = false;
   this.interactionEnabled = []; //TODO: refactor, include inside layer
@@ -42,6 +43,7 @@ MapBase.prototype = {
     opts.maps_api_template = [tilerProtocol, "://", username, tilerDomain, tilerPort].join('');
   },
 
+  // TODO: This method is actually creating a map in the server -> Rename to createMap?
   getLayerToken: function(callback) {
     var self = this;
     function _done(data, err) {
@@ -275,27 +277,28 @@ MapBase.prototype = {
   },
 
   invalidate: function() {
-    this.layerToken = null;
+    this.mapProperties = null;
     this.urls = null;
     this.onLayerDefinitionUpdated();
   },
 
   getTiles: function(callback) {
     var self = this;
-    if(self.layerToken) {
-      callback && callback(self._layerGroupTiles(self.layerToken, self.options.extra_params));
+    if(self.mapProperties) {
+      callback && callback(self._layerGroupTiles());
       return this;
     }
     this.getLayerToken(function(data, err) {
       if(data) {
-        self.layerToken = data.layergroupid;
+        self.mapProperties = data;
+
         // if cdn_url is present, use it
         if (data.cdn_url) {
           var c = self.options.cdn_url = self.options.cdn_url || {};
           c.http = data.cdn_url.http || c.http;
           c.https = data.cdn_url.https || c.https;
         }
-        self.urls = self._layerGroupTiles(data.layergroupid, self.options.extra_params);
+        self.urls = self._layerGroupTiles();
         callback && callback(self.urls);
       } else {
         if ((self.named_map !== null) && (err) ){
@@ -316,27 +319,49 @@ MapBase.prototype = {
     return this.options.maps_api_template.indexOf('https') === 0;
   },
 
-  _layerGroupTiles: function(layerGroupId, params) {
+  _layerGroupTiles: function() {
+    var grids = [];
+    var tiles = [];
+    var pngParams = this._encodeParams(this.options.extra_params, this.options.pngParams);
+    var gridParams = this._encodeParams(this.options.extra_params, this.options.gridParams);
     var subdomains = this.options.subdomains || ['0', '1', '2', '3'];
     if(this.isHttps()) {
       subdomains = [null]; // no subdomain
     }
+    var filter = this.options.filter;
+    var layerGroupId = this.mapProperties.layergroupid;
+    var layers = this.mapProperties.metadata.layers;
 
-    var tileTemplate = '/{z}/{x}/{y}';
-    var grids = []
-    var tiles = [];
-    var pngParams = this._encodeParams(params, this.options.pngParams);
-
-    for(var i = 0; i < subdomains.length; ++i) {
-      var s = subdomains[i]
-      var cartodb_url = this._host(s) + MapBase.BASE_URL + '/' + layerGroupId
-      tiles.push(cartodb_url + tileTemplate + ".png" + (pngParams ? "?" + pngParams: '') );
-
-      var gridParams = this._encodeParams(params, this.options.gridParams);
-      for(var layer = 0; layer < this.layers.length; ++layer) {
-        grids[layer] = grids[layer] || [];
-        grids[layer].push(cartodb_url + "/" + layer +  tileTemplate + ".grid.json" + (gridParams ? "?" + gridParams: ''));
+    // Iterate through the layers returned by the tiler as metadata and
+    // extract the indexes of all the layers that should be rendered
+    var layerIndexes = [];
+    for (var i = 0; i < layers.length; i++) {
+      var layer = layers[i];
+      var isValidType = layer.type !== 'torque';
+      if (filter) {
+        isValidType = isValidType && filter.indexOf(layer.type) != -1
       }
+      if (isValidType) {
+        layerIndexes.push(i);
+      }
+    }
+
+    if (layerIndexes.length) {
+      var tileTemplate = '/' +  layerIndexes.join(',') +'/{z}/{x}/{y}';
+      var gridTemplate = '/{z}/{x}/{y}';
+
+      for(var i = 0; i < subdomains.length; ++i) {
+        var s = subdomains[i]
+        var cartodb_url = this._host(s) + MapBase.BASE_URL + '/' + layerGroupId
+        tiles.push(cartodb_url + tileTemplate + ".png" + (pngParams ? "?" + pngParams: '') );
+
+        for(var layer = 0; layer < this.layers.length; ++layer) {
+          grids[layer] = grids[layer] || [];
+          grids[layer].push(cartodb_url + "/" + layer +  gridTemplate + ".grid.json" + (gridParams ? "?" + gridParams: ''));
+        }
+      }
+    } else {
+      tiles = [MapBase.EMPTY_GIF];
     }
 
     return {
@@ -502,7 +527,7 @@ MapBase.prototype = {
     var layers = [];
     for(var i = 0; i < this.layers.length; ++i) {
       var layer = this.layers[i];
-      if(!layer.options.hidden) {
+      if(layer.options && !layer.options.hidden) {
         layers.push(layer);
       }
     }
@@ -569,7 +594,7 @@ MapBase.prototype = {
 
   getSubLayer: function(index) {
     var layer = this.layers[index];
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || SubLayerFactory.createSublayer(layer.type, this, index);
     return layer.sub;
   },
 
@@ -586,6 +611,7 @@ MapBase.prototype = {
   }
 };
 
+// TODO: This is actually an AnonymousMap -> Rename?
 function LayerDefinition(layerDefinition, options) {
   MapBase.call(this, options);
   this.endPoint = MapBase.BASE_URL;
@@ -602,20 +628,22 @@ LayerDefinition.layerDefFromSubLayers = function(sublayers) {
 
   if(!sublayers || sublayers.length === undefined) throw new Error("sublayers should be an array");
 
-  var layer_definition = {
-    version: '1.0.0',
-    stat_tag: 'API',
-    layers: []
-  };
+  sublayers = _.map(sublayers, function(sublayer) {
+    var type = sublayer.type;
+    delete sublayer.type;
+    return {
+      type: type,
+      options: sublayer
+    }
+  });
 
-  for (var i = 0; i < sublayers.length; ++i) {
-    layer_definition.layers.push({
-      type: 'cartodb',
-      options: sublayers[i]
-    });
+  var layerDefinition = {
+    version: '1.3.0',
+    stat_tag: 'API',
+    layers: sublayers
   }
 
-  return layer_definition;
+  return new LayerDefinition(layerDefinition, {}).toJSON();
 };
 
 LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
@@ -639,57 +667,10 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
     obj.layers = [];
     var layers = this.visibleLayers();
     for(var i = 0; i < layers.length; ++i) {
-      var layer = layers[i];
-      var layer_def = {
-        type: 'cartodb',
-        options: {
-          sql: layer.options.sql,
-          cartocss: layer.options.cartocss,
-          cartocss_version: layer.options.cartocss_version || '2.1.0',
-        }
-      };
-
-      if (layer.options.interactivity) {
-        function fields(f) {
-          var n = []
-          for(var i = 0; i < f.length; ++i) {
-            n.push(f[i].name);
-          }
-          return n;
-        }
-        layer_def.options.interactivity = this._cleanInteractivity(layer.options.interactivity);
-        var infowindow = this.getInfowindowData(this.getLayerNumberByIndex(i));
-        var attrs = layer.options.attributes ? this._cleanInteractivity(this.options.attributes):(infowindow && fields(infowindow.fields));
-        if (attrs) {
-          layer_def.options.attributes = {
-             id: 'cartodb_id',
-             columns: attrs
-          }
-        }
-      }
-
-      if (layer.options.raster) {
-        layer_def.options.geom_column = "the_raster_webmercator";
-        layer_def.options.geom_type = "raster";
-        // raster needs 2.3.0 to work
-        layer_def.options.cartocss_version = layer.options.cartocss_version || '2.3.0';
-      }
-      obj.layers.push(layer_def);
+      var sublayer = this.getSubLayer(this.getLayerNumberByIndex(i));
+      obj.layers.push(sublayer.toJSON());
     }
     return obj;
-  },
-
-  _cleanInteractivity: function(attributes) {
-    if(!attributes) return;
-    if(typeof(attributes) == 'string') {
-      attributes = attributes.split(',');
-    }
-
-    for(var i = 0; i < attributes.length; ++i) {
-      attributes[i] = attributes[i].replace(/ /g, '');
-    }
-
-    return attributes;
   },
 
   removeLayer: function(layer) {
@@ -711,18 +692,25 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
     }
   },
 
-  addLayer: function(def, layer) {
-    layer = layer === undefined ? this.getLayerCount(): layer;
-    if(layer <= this.getLayerCount() && layer >= 0) {
-      if(!def.sql || !def.cartocss) {
-        throw new Error("layer definition should contain at least a sql and a cartocss");
-        return this;
-      }
-      this.layers.splice(layer, 0, {
-        type: 'cartodb',
+  addLayer: function(def, index) {
+    index = index === undefined ? this.getLayerCount(): index;
+    if(index <= this.getLayerCount() && index >= 0) {
+
+      var type = def.type || 'cartodb';
+      delete def.type;
+
+      this.layers.splice(index, 0, {
+        type: type,
         options: def
       });
-      this._definitionUpdated();
+
+      var sublayer = this.getSubLayer(index);
+      if (sublayer.isValid()) {
+        this._definitionUpdated();
+      } else { // Remove it from the definition
+        sublayer.remove();
+        throw 'Layer definition should contain all the required attributes';
+      }
     }
     return this;
   },
@@ -803,7 +791,7 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
       //'api',
       //'v1',
       MapBase.BASE_URL.slice(1),
-      this.layerToken,
+      this.mapProperties.layergroupid,
       this.getLayerIndexByNumber(layer),
       'attributes',
       feature_id].join('/');
@@ -831,7 +819,7 @@ NamedMap.prototype = _.extend({}, MapBase.prototype, {
         options: {}
       };
     }
-    layer.sub = layer.sub || new SubLayer(this, index);
+    layer.sub = layer.sub || SubLayerFactory.createSublayer(layer.type, this, index);
     return layer.sub;
   },
 
@@ -926,7 +914,7 @@ NamedMap.prototype = _.extend({}, MapBase.prototype, {
       //'api',
       //'v1',
       MapBase.BASE_URL.slice(1),
-      this.layerToken,
+      this.mapProperties.layergroupid,
       layer,
       'attributes',
       feature_id].join('/');
