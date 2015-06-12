@@ -1,4 +1,32 @@
+/**
+ * Wrapper for map properties returned by the tiler
+ */
+function MapProperties(mapProperties) {
+  this.mapProperties = mapProperties;
+}
 
+MapProperties.prototype.getMapId = function() {
+  return this.mapProperties.layergroupid;
+}
+
+/**
+ * Returns the index of a layer of a given type, as the tiler kwows it.
+ */
+MapProperties.prototype.getLayerIndexByType = function(index, layerType) {
+  var layers = this.mapProperties.metadata.layers;
+  var tilerLayerIndex = {}
+  var j = 0;
+  for (var i = 0; i < layers.length; i++) {
+    if (layers[i].type == layerType) {
+      tilerLayerIndex[j] = i;
+      j++;
+    }
+  }
+  if (tilerLayerIndex[index] == undefined) {
+    return -1;
+  }
+  return tilerLayerIndex[index];
+}
 
 function Map(options) {
   var self = this;
@@ -15,7 +43,7 @@ function Map(options) {
     }
   });
 
-  this.layerToken = null;
+  this.mapProperties = null;
   this.urls = null;
   this.silent = false;
   this.interactionEnabled = []; //TODO: refactor, include inside layer
@@ -405,7 +433,7 @@ Map.prototype = {
   },
 
   invalidate: function() {
-    this.layerToken = null;
+    this.mapProperties = null;
     this.urls = null;
     this.onLayerDefinitionUpdated();
   },
@@ -433,20 +461,20 @@ Map.prototype = {
 
   getTiles: function(callback) {
     var self = this;
-    if(self.layerToken) {
-      callback && callback(self._layerGroupTiles(self.layerToken, self.options.extra_params));
+    if(self.mapProperties) {
+      callback && callback(self._layerGroupTiles(self.mapProperties, self.options.extra_params));
       return this;
     }
     this.getLayerToken(function(data, err) {
       if(data) {
-        self.layerToken = data.layergroupid;
+        self.mapProperties = new MapProperties(data);
         // if cdn_url is present, use it
         if (data.cdn_url) {
           var c = self.options.cdn_url = self.options.cdn_url || {};
           c.http = data.cdn_url.http || c.http;
           c.https = data.cdn_url.https || c.https;
         }
-        self.urls = self._layerGroupTiles(data.layergroupid, self.options.extra_params);
+        self.urls = self._layerGroupTiles(self.mapProperties, self.options.extra_params);
         callback && callback(self.urls);
       } else {
         if ((self.named_map !== null) && (err) ){
@@ -467,7 +495,8 @@ Map.prototype = {
     return this.options.tiler_protocol === 'https';
   },
 
-  _layerGroupTiles: function(layerGroupId, params) {
+  _layerGroupTiles: function(mapProperties, params) {
+    var layerGroupId = mapProperties.getMapId();
     var subdomains = this.options.subdomains || ['0', '1', '2', '3'];
     if(this.isHttps()) {
       subdomains = [null]; // no subdomain
@@ -486,8 +515,9 @@ Map.prototype = {
 
       var gridParams = this._encodeParams(params, this.options.gridParams);
       for(var layer = 0; layer < this.layers.length; ++layer) {
+        var index = mapProperties.getLayerIndexByType(layer, "mapnik");
         grids[layer] = grids[layer] || [];
-        grids[layer].push(cartodb_url + "/" + layer +  tileTemplate + ".grid.json" + (gridParams ? "?" + gridParams: ''));
+        grids[layer].push(cartodb_url + "/" + index +  tileTemplate + ".grid.json" + (gridParams ? "?" + gridParams: ''));
       }
     }
 
@@ -782,7 +812,7 @@ NamedMap.prototype = _.extend({}, Map.prototype, {
       //'api',
       //'v1',
       Map.BASE_URL.slice(1),
-      this.layerToken,
+      this.mapProperties.getMapId(),
       layer,
       'attributes',
       feature_id].join('/');
