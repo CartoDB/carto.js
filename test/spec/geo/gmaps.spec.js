@@ -1,5 +1,5 @@
 
-  fdescribe('GoogleMapsMapView', function() {
+  describe('GoogleMapsMapView', function() {
     var mapView;
     var map;
     var spy;
