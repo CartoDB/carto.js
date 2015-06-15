@@ -1,3 +1,41 @@
+describe('MapProperties', function() {
+
+  describe('.getMapId', function() {
+
+    it('returns the id of the map', function() {
+      var mapProperties = new MapProperties( { layergroupid: 'wadus' });
+      expect(mapProperties.getMapId()).toEqual('wadus');
+    })
+  });
+
+  describe('.getLayerIndexByType', function() {
+
+    it('returns the index of a layer of a given type', function() {
+      var layers = [
+        { type: 'mapnik' },
+        { type: 'http' },
+        { type: 'mapnik' }
+      ]
+      var mapProperties = new MapProperties({
+        metadata: {
+          layers: layers
+        }
+      });
+      expect(mapProperties.getLayerIndexByType(0, 'mapnik')).toEqual(0);
+      expect(mapProperties.getLayerIndexByType(1, 'mapnik')).toEqual(2);
+      expect(mapProperties.getLayerIndexByType(0, 'http')).toEqual(1);
+      expect(mapProperties.getLayerIndexByType(10, 'http')).toEqual(-1);
+    })
+
+    it('returns the given index if metadata is empty', function() {
+      var mapProperties = new MapProperties({});
+
+      expect(mapProperties.getLayerIndexByType(0, 'mapnik')).toEqual(0);
+      expect(mapProperties.getLayerIndexByType(1, 'mapnik')).toEqual(1);
+    })
+  })
+})
+
 describe("LayerDefinition", function() {
   var layerDefinition, mapProperties;
   beforeEach(function(){
@@ -840,6 +878,31 @@ describe("NamedMap", function() {
       expect(params.jsonpCallback.indexOf('_cdbi_layer_attributes') !== -1).toEqual(true);
     });
 
+  })
+
+  it('should fetch attributes using the right indexes', function() {
+    mapProperties = new MapProperties({
+      layergroupid: 'test',
+      metadata: {
+        layers: [
+          { type: 'http', meta: {} },
+          { type: 'mapnik', meta: {} },
+          { type: 'mapnik', meta: {} }
+        ]
+      }
+    });
+    namedMap.mapProperties = mapProperties;
+    namedMap.options.ajax = function(p) { 
+      params = p;
+      p.success({ test: 1 });
+    };
+    namedMap.fetchAttributes(1, 12345, null, function(data) {
+      expect(data).toEqual({test: 1});
+      expect(params.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map/test/2/attributes/12345')
+      expect(params.dataType).toEqual('jsonp')
+      expect(params.cache).toEqual(true);
+      expect(params.jsonpCallback.indexOf('_cdbi_layer_attributes') !== -1).toEqual(true);
+    });
   })
 
   it("should get sublayer", function() {
