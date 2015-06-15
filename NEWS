@@ -1,3 +1,6 @@
+3.11.38 (16//06//2015)
+- Use the right indexes when fetching grids and attributes (#518)
+
 3.11.37 (13//04//2014)
 - fixed error management when layer group instantiation fails using GET
 
