@@ -22,7 +22,12 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
   },
 
   get: function(url, callback) {
-    if (!Loader._script) {
+    if(url.indexOf("http") != 0){
+      $.get(url).done(function(data){
+        callback(data);
+      })
+    }
+    else if (!Loader._script) {
       Loader.current = callback;
       Loader._script = Loader.loadScript(url + (~url.indexOf('?') ? '&' : '?') + 'callback=vizjson');
     } else {
