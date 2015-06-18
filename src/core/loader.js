@@ -22,7 +22,8 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
   },
 
   get: function(url, callback) {
-    if(url.indexOf("http") != 0){
+    var absoluteURLre = new RegExp('^(?:[a-z]+:)?//', 'i');
+    if(!absoluteURLre.test(url)){
       $.get(url).done(function(data){
         callback(data);
       })
