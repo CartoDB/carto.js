@@ -222,6 +222,16 @@ describe('api.layers', function() {
 
       });
 
+      fit("should load local viz.json correctly", function(done) {
+        spyOn(cartodb, 'createLayer');
+        cartodb.createLayer(map, "../../demos/viz.json")
+            .addTo(map)
+            .error(function(e){
+              expect(cdb.vis.Loader.get).toHaveBeenCalled();
+              done();
+            });
+      })
+
       it("should load specified layer", function(done) {
         var layer;
         var s = sinon.spy();
