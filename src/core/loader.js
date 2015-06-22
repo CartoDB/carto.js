@@ -24,9 +24,7 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
   get: function(url, callback) {
     var absoluteURLre = new RegExp('^(?:[a-z]+:)?//', 'i');
     if(!absoluteURLre.test(url)){
-      $.get(url).done(function(data){
-        callback(data);
-      })
+      this.getNoJSONP();
     }
     else if (!Loader._script) {
       Loader.current = callback;
@@ -34,6 +32,12 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
     } else {
       Loader.queue.push([url, callback]);
     }
+  },
+
+  getNoJSONP: function(url, callback) {
+    $.get(url).done(function(data){
+      callback(data);
+    })
   },
 
   getPath: function(file) {
