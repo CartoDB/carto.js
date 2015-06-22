@@ -222,15 +222,16 @@ describe('api.layers', function() {
 
       });
 
-      fit("should load local viz.json correctly", function(done) {
-        spyOn(cartodb, 'createLayer');
+      it("should load local viz.json correctly", function(done) {
+        sinon.spy($, "get");
         cartodb.createLayer(map, "../../demos/viz.json")
-            .addTo(map)
-            .error(function(e){
-              expect(cdb.vis.Loader.get).toHaveBeenCalled();
-              done();
-            });
-      })
+            .addTo(map);
+        setTimeout(function(){
+          expect($.get.getCall(0)); // If jquery get has been called, means it's loading it as a local, non jsonp vizjson
+          $.get.restore();
+          done();
+        })
+      });
 
       it("should load specified layer", function(done) {
         var layer;
