@@ -125,12 +125,12 @@ function guess(o, callback) {
 
 function guessMap(sql, tableName, column, stats) {
   var geometryType = column.get("geometry_type");
-    var bbox =  column.get("bbox");
-    var columnName = column.get("name");
-    var wizard = "choropleth";
-    var css = null
-    var type = stats.type;
-    var metadata = []
+  var bbox =  column.get("bbox");
+  var columnName = column.get("name");
+  var wizard = "choropleth";
+  var css = null
+  var type = stats.type;
+  var metadata = []
 
   if (stats.type == 'number') {
     if (['A','U'].indexOf(stats.dist_type) != -1) {
@@ -165,7 +165,10 @@ function guessMap(sql, tableName, column, stats) {
         "marker-allow-overlap": true
       };
 
-    }
+  } else if (stats.type === 'date') {
+    wizard = "torque";
+    css = CSS.torque(stats, tableName);
+  }
 
   if (css) {
     return { sql: sql, css: css, metadata: metadata, wizard_properties: wizard_properties, column: columnName, bbox: bbox, stats: stats, type: type, wizard: wizard  };
