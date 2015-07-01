@@ -1,10 +1,7 @@
 /**
  * public api for cartodb
  */
-
 (function() {
-
-
   function _Promise() {
 
   }
@@ -42,7 +39,7 @@
     } else if(layer.table !== undefined && layer.user !== undefined) {
       // layer object points to cartodbjson
       url = cartodbUrl(layer);
-    } else if(layer.indexOf && layer.indexOf('http') === 0) {
+    } else if(layer.indexOf) {
       // fetch from url
       url = layer;
     }
@@ -61,7 +58,6 @@
    * @param options layer options
    *
    */
-
   cartodb.createLayer = function(map, layer, options, callback) {
     if(map === undefined) {
       throw new TypeError("map should be provided");
@@ -217,11 +213,8 @@
       } else {
         createLayer();
       }
-
     });
 
     return promise;
   };
-
-
 })();
