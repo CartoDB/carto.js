@@ -409,6 +409,31 @@
       });
   }
 
+  SQL.prototype.describeDate = function(sql, column, options, callback) {
+    var s = [
+      'with minimum as (',
+        'SELECT min({{column}}) as start_time FROM ({{sql}}) _wrap), ',
+        'maximum as (SELECT max({{column}}) as end_time FROM ({{sql}}) _wrap) ',
+      'SELECT * FROM minimum, maximum'
+    ];
+    var query = Mustache.render(s.join('\n'), {
+      column: column,
+      sql: sql
+    });
+
+    this.execute(query, function(data) {
+      var row = data.rows[0];
+      var e = new Date(row.end_time);
+      var s = new Date(row.start_time);
+      callback({
+        type: 'date',
+        start_time: s,
+        end_time: e,
+        range: e - s
+      });
+    });
+  }
+
   SQL.prototype.describeGeom = function(sql, column, options, callback) {
       var s = [
         'with stats as (', 
@@ -604,8 +629,10 @@
           self.describeFloat(sql, column, options, callback);
         } else if (type === 'geometry') {
           self.describeGeom(sql, column, options, callback);
+        } else if (type === 'date') {
+          self.describeDate(sql, column, options, callback);
         } else {
-          callback(new Error("column type does not supported"));
+          callback(new Error("column type is not supported"));
         }
       });
   }
