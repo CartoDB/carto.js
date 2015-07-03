@@ -105,7 +105,7 @@ var CSS = {
         'Map {',
         '  -torque-time-attribute: ' + stats.column + ';',
         '  -torque-aggregation-function: "count(cartodb_id)";',
-        '  -torque-frame-count: 512;',
+        '  -torque-frame-count: ' + stats.steps + ';',
         '  -torque-animation-duration: 10;',
         '  -torque-resolution: 2',
         '}',
