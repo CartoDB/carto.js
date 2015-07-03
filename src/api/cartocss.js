@@ -101,7 +101,7 @@ var CSS = {
   torque: function(stats, tableName){
     var tableID = "#" + tableName;
     var css = [
-        '/** category visualization */',
+        '/** torque visualization */',
         'Map {',
         '  -torque-time-attribute: ' + stats.column + ';',
         '  -torque-aggregation-function: "count(cartodb_id)";',
@@ -109,7 +109,7 @@ var CSS = {
         '  -torque-animation-duration: 15;',
         '  -torque-resolution: 2',
         '}',
-        tableID,
+        tableID + " {",
         '  marker-width: 3;',
         '  marker-fill-opacity: 0.8;',
         '  marker-fill: #FEE391; ',
