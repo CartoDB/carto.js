@@ -29,7 +29,7 @@ The simplest way to use a visualization created in CartoDB on an external site i
 // - go to API tab
 
 window.onload = function() {
-  cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
+  cartodb.createVis('map', 'https://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
 }
 </script>
 ```

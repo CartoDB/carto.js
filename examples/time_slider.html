@@ -34,7 +34,7 @@
     <div id="slider"></div>
     <div id="legend"></div>
 
-    
+
     <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -86,7 +86,7 @@
           attribution: 'CartoDB · OSM data'
         }).addTo(map);
 
-        cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/d1e06c70-5dce-11e3-bda9-0e6bd0b8aae4/viz.json', { legends: false })
+        cartodb.createLayer(map, 'https://documentation.cartodb.com/api/v2/viz/d1e06c70-5dce-11e3-bda9-0e6bd0b8aae4/viz.json', { legends: false })
          .addTo(map)
          .on('done', function(layer) {
            // add time slider on change

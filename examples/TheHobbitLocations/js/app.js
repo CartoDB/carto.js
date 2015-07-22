@@ -4,12 +4,12 @@ function main() {
 
   var options = {
     center: [-42.27730877423707, 172.63916015625],
-    zoom: 6, 
+    zoom: 6,
     zoomControl: false,  // dont add the zoom overlay (it is added by default)
     loaderControl: false //dont show tiles loader
   };
 
-  cartodb.createVis('map', 'http://saleiva.cartodb.com/api/v2/viz/20a26a6a-eef9-11e2-8999-3085a9a9563c/viz.json', options)
+  cartodb.createVis('map', 'https://saleiva.cartodb.com/api/v2/viz/20a26a6a-eef9-11e2-8999-3085a9a9563c/viz.json', options)
     .done(function(vis, layers) {
       // there are two layers, base layer and points layer
       var sublayer = layers[1].getSubLayer(0);
