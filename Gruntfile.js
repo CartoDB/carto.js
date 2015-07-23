@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 
   var config = {
     dist: 'dist',
+    src: 'src',
     app:  'www',
     version: {
       major:      version[0],

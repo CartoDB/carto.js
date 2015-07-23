@@ -13,7 +13,7 @@ module.exports = {
             '// sha: <%= grunt.config.get("gitinfo").local.branch.current.SHA %> \n'
         },
         files: {
-          '<%= config.dist %>/cartodb.js':             ['<%= config.dist %>/cartodb.uncompressed.js'],
+          '<%= config.dist %>/cartodb.js':             ['<%= config.dist %>/cartodb.uncompressed.js', '<%= config.src %>/node.js'],
           '<%= config.dist %>/cartodb.core.js':        ['<%= config.dist %>/cartodb.core.uncompressed.js'],
           '<%= config.dist %>/cartodb_nojquery.js':    ['<%= config.dist %>/_cartodb_nojquery.js'],
           '<%= config.dist %>/cartodb_noleaflet.js':   ['<%= config.dist %>/_cartodb_noleaflet.js'],
