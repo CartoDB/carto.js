@@ -1,7 +1,7 @@
 # Ignore all files inside the dist directory by default
 dist/*
 
-# Only include the compressed version of cartodb.js with the node.js module
+# Only include the compressed version of cartodb.js with the node.js module defition
 !dist/cartodb.js
 
 # Include the themes directory with imgs and css
