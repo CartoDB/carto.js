@@ -47,7 +47,6 @@ You can install **cartodb.js** with [bower](http://bower.io/) by running
 bower install cartodb.js
 ```
 
-
 ## Documentation
 You can find the documentation online [here](http://docs.cartodb.com/cartodb-platform/cartodb-js.html) and the [source](https://github.com/CartoDB/cartodb.js/blob/develop/doc/API.md) inside this repository.
 
