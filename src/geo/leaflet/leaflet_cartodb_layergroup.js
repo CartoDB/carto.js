@@ -27,7 +27,7 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
     sql_api_domain:     "cartodb.com",
     sql_api_port:       "80",
     sql_api_protocol:   "http",
-    maxZoom: 30, // default leaflet zoom level for a layers is 18, raise it 
+    maxZoom: 30, // default leaflet zoom level for a layers is 18, raise it
     extra_params:   {
     },
     cdn_url:        null,
@@ -89,10 +89,15 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
 
     var index = (tilePoint.x + tilePoint.y) % tiles.length;
 
-    return L.Util.template(tiles[index], L.Util.extend({
+    // Add the high resolution images suffix
+    // FIXME - I think it would be better to change the layer tiles configuration !!!
+    var tile = tiles[index].replace(".png", "{r}.png");
+
+    return L.Util.template(tile, L.Util.extend({
       z: this._getZoomForUrl(),
       x: tilePoint.x,
-      y: tilePoint.y
+      y: tilePoint.y,
+      r: cdb.isRetinaBrowser() ? "@2x" : ""
     }, this.options));
   },
 
@@ -123,7 +128,7 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
   onAdd: function(map) {
     var self = this;
     this.options.map = map;
-    
+
     // Add cartodb logo
     if (this.options.cartodb_logo != false)
       cdb.geo.common.CartoDBLogo.addWadus({ left:8, bottom:8 }, 0, map._container);
@@ -132,8 +137,8 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
       // if while the layer was processed in the server is removed
       // it should not be added to the map
       var id = L.stamp(self);
-      if (!map._layers[id]) { 
-        return; 
+      if (!map._layers[id]) {
+        return;
       }
 
       L.TileLayer.prototype.onAdd.call(self, map);
