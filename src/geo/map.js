@@ -11,13 +11,13 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
     visible: true,
     type: 'Tiled'
   },
+
   /***
   * Compare the layer with the received one
   * @method isEqual
   * @param layer {Layer}
   */
   isEqual: function(layer) {
-
     var me          = this.toJSON()
       , other       = layer.toJSON()
       // Select params generated when layer is added to the map
@@ -37,27 +37,24 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
     if(myType && (myType === itsType)) {
 
       if(myType === 'Tiled') {
-        var myTemplate  = me.urlTemplate? me.urlTemplate : me.options.urlTemplate
-          , itsTemplate = other.urlTemplate? other.urlTemplate : other.options.urlTemplate;
+        var myTemplate  = me.urlTemplate? me.urlTemplate : me.options.urlTemplate;
+        var itsTemplate = other.urlTemplate? other.urlTemplate : other.options.urlTemplate;
+        var myName = me.name? me.name : me.options.name;
+        var itsName = other.name? other.name : other.options.name;
 
-        if(myTemplate === itsTemplate) {
-          return true; // tiled and same template
-        } else {
-          return false; // tiled and differente template
-        }
+        return myTemplate === itsTemplate && myName === itsName;
       } else if(myType === 'WMS') {
-
-        var myTemplate  = me.urlTemplate? me.urlTemplate : me.options.urlTemplate
-          , itsTemplate = other.urlTemplate? other.urlTemplate : other.options.urlTemplate;
-
-        var myLayer  = me.layers? me.layers : me.options.layers
-          , itsLayer = other.layers? other.layers : other.options.layers;
-
-        if(myTemplate === itsTemplate && myLayer === itsLayer) {
-          return true; // wms and same template
-        } else {
-          return false; // wms and differente template
-        }
+        var myTemplate  = me.urlTemplate? me.urlTemplate : me.options.urlTemplate;
+        var itsTemplate = other.urlTemplate? other.urlTemplate : other.options.urlTemplate;
+        var myLayer  = me.layers? me.layers : me.options.layers;
+        var itsLayer = other.layers? other.layers : other.options.layers;
+        return myTemplate === itsTemplate && myLayer === itsLayer;
+      }
+      else if (myType === 'torque') {
+        return cdb.geo.TorqueLayer.prototype.isEqual.call(this, layer);
+      }
+      else if (myType === 'named_map') {
+        return cdb.geo.CartoDBNamedMapLayer.prototype.isEqual.call(this, layer);
       } else { // same type but not tiled
         var myBaseType = me.base_type? me.base_type : me.options.base_type;
         var itsBaseType = other.base_type? other.base_type : other.options.base_type;
@@ -70,13 +67,10 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
         } else { // not gmaps
           return true;
         }
-
       }
     }
     return false; // different type
   }
-
-
 });
 
 // Good old fashioned tile layer
@@ -92,7 +86,6 @@ cdb.geo.GMapsBaseLayer = cdb.geo.MapLayer.extend({
     base_type: 'gray_roadmap',
     style: null
   }
-
 });
 
 /**
@@ -127,6 +120,14 @@ cdb.geo.TorqueLayer = cdb.geo.MapLayer.extend({
   defaults: {
     type: 'torque',
     visible: true
+  },
+
+  isEqual: function(other) {
+    var properties = ['query', 'query_wrapper', 'cartocss'];
+    var self = this;
+    return this.get('type') === other.get('type') && _.every(properties, function(p) {
+      return other.get(p) === self.get(p);
+    });
   }
 });
 
@@ -177,13 +178,30 @@ cdb.geo.CartoDBLayer = cdb.geo.MapLayer.extend({
     } else {
       this.activate();
     }
-  }
+  },
+
+  /*isEqual: function() {
+    return false;
+  }*/
 });
 
 cdb.geo.CartoDBGroupLayer = cdb.geo.MapLayer.extend({
+
   defaults: {
     visible: true,
     type: 'layergroup'
+  },
+
+  initialize: function() {
+    this.sublayers = new cdb.geo.Layers();
+  },
+
+  isEqual: function() {
+    return false;
+  },
+
+  contains: function(layer) {
+    return layer.get('type') === 'cartodb';
   }
 });
 
@@ -191,8 +209,17 @@ cdb.geo.CartoDBNamedMapLayer = cdb.geo.MapLayer.extend({
   defaults: {
     visible: true,
     type: 'namedmap'
+  },
+
+  isEqual: function(other) {
+    return _.isEqual(this.get('options').named_map, other.get('options').named_map);
   }
+
 });
+
+var TILED_LAYER_TYPE = 'Tiled';
+var CARTODB_LAYER_TYPE = 'CartoDB';
+var TORQUE_LAYER_TYPE = 'torque';
 
 cdb.geo.Layers = Backbone.Collection.extend({
 
@@ -203,6 +230,7 @@ cdb.geo.Layers = Backbone.Collection.extend({
       return parseInt(m.get('order'), 10);
     };
     this.bind('add', this._assignIndexes);
+    this.bind('remove', this._assignIndexes);
   },
 
   /**
@@ -210,25 +238,33 @@ cdb.geo.Layers = Backbone.Collection.extend({
    * the index should be recalculated
    */
   _assignIndexes: function(model, col, options) {
-    var layerTypeWeight = {
-      'torque': 100
-    };
-    function layerWeight(layer) {
-      var t = layer.get('type');
-      return layerTypeWeight[t] || 0;
-    }
-    var from = 0;//this.size() - 1;
-    if(options && options.at !== undefined) {
-      from = options.at;
-    }
-    if(from === 0) {
-      this.models[0].set({ order: 0 });
-      ++from;
-    }
-    for(var i = from; i < this.size(); ++i) {
-      var prev = this.models[i - 1]
-      var prev_order = prev.get('order') - layerWeight(prev);
-      this.models[i].set({ order: layerWeight(this.models[i]) + prev_order + 1 });
+    if (this.size() > 0) {
+
+      // Assign an order of 0 to the first layer
+      this.at(0).set({ order: 0 });
+
+      if (this.size() > 1) {
+        var layersByType = {};
+        for (var i = 1; i < this.size(); ++i) {
+          var layer = this.at(i);
+          var layerType = layer.get('type');
+          layersByType[layerType] = layersByType[layerType] || [];
+          layersByType[layerType].push(layer);
+        }
+
+        var lastOrder = 0;
+        var sortedTypes = [CARTODB_LAYER_TYPE, TORQUE_LAYER_TYPE, TILED_LAYER_TYPE];
+        for (var i = 0; i < sortedTypes.length; ++i) {
+          var type = sortedTypes[i];
+          var layers = layersByType[type] || [];
+          for (var j = 0; j < layers.length; ++j) {
+            var layer = layers[j];
+            layer.set({
+              order: ++lastOrder
+            });
+          }
+        }
+      }
     }
   }
 });
@@ -244,6 +280,7 @@ cdb.geo.Map = cdb.core.Model.extend({
     minZoom: 0,
     maxZoom: 40,
     scrollwheel: true,
+    keyboard: true,
     provider: 'leaflet'
   },
 
@@ -272,6 +309,18 @@ cdb.geo.Map = cdb.core.Model.extend({
   setZoom: function(z) {
     this.set({
       zoom: z
+    });
+  },
+
+  enableKeyboard: function() {
+    this.set({
+      keyboard: true
+    });
+  },
+
+  disableKeyboard: function() {
+    this.set({
+      keyboard: false
     });
   },
 
@@ -312,7 +361,6 @@ cdb.geo.Map = cdb.core.Model.extend({
 
     // Set options
     _.defaults(this.options, options);
-
   },
 
   /**
@@ -338,21 +386,17 @@ cdb.geo.Map = cdb.core.Model.extend({
 
   _adjustZoomtoLayer: function(layer) {
 
-    var maxZoom = layer.get('maxZoom');
-    var minZoom = layer.get('minZoom');
+    var maxZoom = parseInt(layer.get('maxZoom'), 10);
+    var minZoom = parseInt(layer.get('minZoom'), 10);
 
-    if (_.isNumber(maxZoom)) {
-
+    if (_.isNumber(maxZoom) && !_.isNaN(maxZoom)) {
       if ( this.get("zoom") > maxZoom ) this.set({ zoom: maxZoom, maxZoom: maxZoom });
       else this.set("maxZoom", maxZoom);
-
     }
 
-    if (_.isNumber(minZoom)) {
-
+    if (_.isNumber(minZoom) && !_.isNaN(minZoom)) {
       if ( this.get("zoom") < minZoom ) this.set({ minZoom: minZoom, zoom: minZoom });
       else this.set("minZoom", minZoom);
-
     }
 
   },
@@ -455,7 +499,6 @@ cdb.geo.Map = cdb.core.Model.extend({
 
     // change both at the same time
     this.trigger('change:view_bounds_ne', this);
-
   },
 
   // set center and zoom according to fit bounds
@@ -464,6 +507,7 @@ cdb.geo.Map = cdb.core.Model.extend({
     if(z === null) {
       return;
     }
+
     // project -> calculate center -> unproject
     var swPoint = cdb.geo.Map.latlngToMercator(bounds[0], z);
     var nePoint = cdb.geo.Map.latlngToMercator(bounds[1], z);
@@ -479,6 +523,8 @@ cdb.geo.Map = cdb.core.Model.extend({
   },
 
   // adapted from leaflat src
+  // @return {Number, null} Calculated zoom from given bounds or the maxZoom if no appropriate zoom level could be found
+  //   or null if given mapSize has no size.
   getBoundsZoom: function(boundsSWNE, mapSize) {
     // sometimes the map reports size = 0 so return null
     if(mapSize.x === 0 || mapSize.y === 0) return null;
@@ -502,15 +548,13 @@ cdb.geo.Map = cdb.core.Model.extend({
     } while (zoomNotFound && zoom <= maxZoom);
 
     if (zoomNotFound) {
-      return null;
+      return maxZoom;
     }
 
     return zoom - 1;
-
   }
 
 }, {
-
   latlngToMercator: function(latlng, zoom) {
     var ll = new L.LatLng(latlng[0], latlng[1]);
     var pp = L.CRS.EPSG3857.latLngToPoint(ll, zoom);
@@ -521,7 +565,6 @@ cdb.geo.Map = cdb.core.Model.extend({
     var ll = L.CRS.EPSG3857.pointToLatLng(point, zoom);
     return [ll.lat, ll.lng]
   }
-
 });
 
 
@@ -617,6 +660,7 @@ cdb.geo.MapView = cdb.core.View.extend({
     this.map.bind('change:view_bounds_ne',  this._changeBounds, this);
     this.map.bind('change:zoom',            this._setZoom, this);
     this.map.bind('change:scrollwheel',     this._setScrollWheel, this);
+    this.map.bind('change:keyboard',        this._setKeyboard, this);
     this.map.bind('change:center',          this._setCenter, this);
     this.map.bind('change:attribution',     this._setAttribution, this);
   },
@@ -627,6 +671,7 @@ cdb.geo.MapView = cdb.core.View.extend({
     this.map.unbind('change:view_bounds_ne',  null, this);
     this.map.unbind('change:zoom',            null, this);
     this.map.unbind('change:scrollwheel',     null, this);
+    this.map.unbind('change:keyboard',        null, this);
     this.map.unbind('change:center',          null, this);
     this.map.unbind('change:attribution',     null, this);
   },
@@ -731,7 +776,6 @@ cdb.geo.MapView = cdb.core.View.extend({
 
 
 }, {
-
   _getClass: function(provider) {
     var mapViewClass = cdb.geo.LeafletMapView;
     if(provider === 'googlemaps') {
@@ -751,6 +795,4 @@ cdb.geo.MapView = cdb.core.View.extend({
       map: mapModel
     });
   }
-
-}
-);
+});

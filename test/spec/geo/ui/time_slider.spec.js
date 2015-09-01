@@ -31,9 +31,9 @@ describe('cdb.geo.ui.TimeSlider', function() {
         formatter = view.formatterForRange(start, end)
       });
 
-      it("should return a formatter function that renders the UTC time of given moment", function() {
+      it("should return a formatter function that renders the local time of given moment", function() {
         var moment = new Date("2014-11-19T15:04:00Z");
-        expect(formatter(moment)).toEqual("15:04");
+        expect(formatter(moment).match(/\d?\d:\d\d/g).length > 0).toBe(true);
       });
     });
 
@@ -63,6 +63,34 @@ describe('cdb.geo.ui.TimeSlider', function() {
       });
     });
 
+    describe("given a step that spans more than 48 hours", function() {
+      beforeEach(function() {
+        var start = 1423699205000;
+        var end = 1424649534000;
+        view.torqueLayer.getTimeBounds = function(){return {start: start, end: end}};
+        view.torqueLayer.options = {steps: 5};
+        formatter = view.formatterForRange(start, end);
+      });
+      it("should return a formatter function that defines a two-date range", function() {
+        var moment = new Date(1424269402400);
+        expect(formatter(moment, view.torqueLayer)).toEqual("Feb 18 - Feb 20");
+      });
+    });
+
+    describe("given a step that spans more than 48 hours, but within a period of more than a year", function() {
+      beforeEach(function() {
+        var start = 1423699205000;
+        var end = 1460419200000;
+        view.torqueLayer.getTimeBounds = function(){return {start: start, end: end}};
+        view.torqueLayer.options = {steps: 5};
+        formatter = view.formatterForRange(start, end);
+      });
+      it("should return a formatter function that defines a two-date range", function() {
+        var moment = new Date(1424269402400);
+        expect(formatter(moment, view.torqueLayer).indexOf(" - ")).toEqual(-1);
+      });
+    });
+
     describe("given a range is less than a day but spanning two dates", function() {
       beforeEach(function() {
         var start = time("2014-11-19T23:33:00Z");
@@ -70,9 +98,9 @@ describe('cdb.geo.ui.TimeSlider', function() {
         formatter = view.formatterForRange(start, end)
       });
 
-      it("should return a formatter function that renders both date and UTC time", function() {
+      it("should return a formatter function that renders both date and local time", function() {
         var moment = new Date("2014-11-20T01:16:00Z");
-        expect(formatter(moment)).toEqual("11/20/2014 01:16")
+        expect(formatter(moment).match(/\d?\d:\d\d/g).length > 0).toBe(true);
       });
     });
   });

@@ -103,20 +103,28 @@ cdb.geo.ui.Annotation = cdb.core.View.extend({
 
   },
 
-  _onChangeText: function(e) {
-    this.$el.find(".text").html(this.model.get("text"));
+  _onChangeText: function() {
+    this.$el.find(".text").html(this._sanitizedText());
+  },
+
+  _sanitizedText: function() {
+    return cdb.core.sanitize.html(this.model.get("text"), this.model.get('sanitizeText'));
   },
 
   _getStandardPropertyName: function(name) {
-
-    if (!name) return;
-    var parts = name.split("-");
-
-    if (parts.length === 1) return name;
-    else if (parts.length === 2) {
-      return parts[0] + parts[1].slice(0, 1).toUpperCase() + parts[1].slice(1);
+    if (!name) {
+      return;
     }
 
+    var parts = name.split("-");
+
+    if (parts.length === 1) {
+      return name;
+    } else {
+      return parts[0] + _.map(parts.slice(1), function(l) { 
+        return l.slice(0,1).toUpperCase() + l.slice(1);
+      }).join("");
+    }
   },
 
   _cleanStyleProperties: function(hash) {
@@ -323,13 +331,13 @@ cdb.geo.ui.Annotation = cdb.core.View.extend({
   },
 
   render: function() {
-
-    var self = this;
-
-    this.$el.html(this.template(this.model.attributes));
+    var d = _.clone(this.model.attributes);
+    d.text = this._sanitizedText();
+    this.$el.html(this.template(d));
 
     this._fixLinks();
 
+    var self = this;
     setTimeout(function() {
       self._applyStyle();
       self._applyZoomLevelStyle();

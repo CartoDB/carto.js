@@ -27,9 +27,11 @@ describe('api.layers.cartodb', function() {
   function loadLayerSpecs(mapFn, addFn) {
     var layer;
     var map;
+
     beforeEach(function() {
-        map = mapFn();
+      map = mapFn();
     });
+
     it("has all the needed methods", function(done) {
       var methods = [
         'show',
@@ -53,7 +55,6 @@ describe('api.layers.cartodb', function() {
         })
         done();
       }, 100);
-
     });
 
     function get_url_options(u) {
@@ -93,6 +94,54 @@ describe('api.layers.cartodb', function() {
         expect(layer.infowindow.get('fields').length).toEqual(1);
         expect(layer.infowindow.get('fields')[0].name).toEqual('test');
         expect(layer.options.interactivity).toEqual('cartodb_id');
+        done();
+      }, 100);
+    });
+
+    it("should expose the legend", function(done) {
+      var legend = {
+        type: "custom",
+        show_title: true,
+        title: "wadus",
+        template: "",
+        items: [
+          {
+            name: "item1",
+            visible: true,
+            value: "#FFCC00",
+            sync: true
+          },
+          {
+            name: "item2",
+            visible: true,
+            value: "#3B007F",
+            sync: true
+          }
+        ]
+      };
+
+      cartodb.createLayer(map, {
+        kind: 'cartodb',
+        options: {
+          table_name: 'test',
+          user_name: 'test',
+          tile_style: 'tesst'
+        },
+        infowindow: {
+          template: '<div></div>',
+          fields: [{name: 'test', title: true, order: 0}]
+        },
+        legend: legend,
+        visible: true
+      }, function(l) {
+        addFn(map, l);
+        layer = l;
+      });
+
+      setTimeout(function() {
+        expect(layer.legend instanceof cdb.geo.ui.LegendModel).toBeTruthy();
+        expect(layer.legend.get('visible')).toBeTruthy();
+        expect(layer.legend.get('items')).toEqual(legend.items);
         done();
       }, 100);
     });

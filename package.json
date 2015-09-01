@@ -1,6 +1,6 @@
 {
     "name": "cartodb.js",
-    "version": "3.11.36",
+    "version": "3.15.2",
     "description": "CartoDB javascript library",
     "repository": {
       "type": "git",
@@ -19,7 +19,8 @@
       "Raul Ochoa <rochoa@cartodb.com>",
       "Carlos Matallín <matallo@cartodb.com>",
       "Jaime Chapinal <jaime.chapinal@cartodb.com>",
-      "Nicklas Gummesson <nicklas@cartodb.com>"
+      "Nicklas Gummesson <nicklas@cartodb.com>",
+      "Francisco Dans <francisco@cartodb.com>"
     ],
     "licenses": [{
       "type": "BSD"
@@ -37,7 +38,7 @@
       "grunt-contrib-csslint": "~0.2.0",
       "grunt-contrib-cssmin": "~0.7.0",
       "grunt-contrib-htmlmin": "~0.1.3",
-      "grunt-contrib-imagemin": "~0.5.0",
+      "grunt-contrib-imagemin": "~0.7.0",
       "grunt-contrib-jshint": "~0.8.0",
       "grunt-contrib-uglify": "~0.3.0",
       "grunt-replace": "0.6.2",

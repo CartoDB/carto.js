@@ -25,7 +25,7 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
   },
 
   initialize: function() {
-    _.bindAll(this, '_stop', '_start', '_slide', '_bindLayer', '_unbindLayer', 'updateSliderRange', 'updateSlider', 'updateTime');
+    _.bindAll(this, '_stop', '_start', '_slide', '_bindLayer', '_unbindLayer', 'updateSliderRange', 'updateSlider', 'updateTime', 'toggleTime', 'toggleButton');
     var self = this;
     this.options.template = this.options.template || this.defaultTemplate;
     this.options.position = 'bottom|left';
@@ -36,6 +36,7 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
     this.wasRunning = false;
 
     this._bindLayer(this.options.layer);
+
     this.on('clean', this._unbindLayer);
     cdb.geo.ui.InfoBox.prototype.initialize.call(this);
 
@@ -52,6 +53,8 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
     this.torqueLayer.on('change:time', this.updateSlider);
     this.torqueLayer.on('change:time', this.updateTime);
     this.torqueLayer.on('change:steps', this.updateSliderRange);
+    this.torqueLayer.on('play', this.toggleButton);
+    this.torqueLayer.on('pause', this.toggleButton);
     return this;
   },
 
@@ -67,7 +70,13 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
   },
 
   updateSliderRange: function(changes) {
-    this.$(".slider" ).slider({ max: changes.steps - 1 });
+    if (changes.steps > 1){
+      this.show();
+      this.$(".slider" ).slider({ max: changes.steps - 1 });
+    }
+    else{
+      this.hide();
+    }
   },
 
   // each time time changes, move the slider
@@ -80,7 +89,7 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
         var f = self.options.formatter || this.formatterForRange(tb.start, tb.end);
         // avoid showing invalid dates
         if (!_.isNaN(changes.time.getYear())) {
-          self.$('.value').text(f(changes.time));
+          self.$('.value').text(f(changes.time, this.torqueLayer));
         }
       }
     } else {
@@ -97,22 +106,38 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
     end = end.getTime ? end : new Date(end);
     var range = (end.getTime() - start.getTime()) / 1000;
     var ONE_DAY = 3600*24;
+    var THREE_DAYS = ONE_DAY*3;
     var ONE_YEAR = ONE_DAY * 31 * 12;
+    if(this.torqueLayer.options){
+      var stepDurationMS = (end.getTime() - start.getTime()) / this.torqueLayer.options.steps;
+    }
 
     function pad(n) {
       return n < 10 ? '0' + n : n;
     }
 
     function toUSDateStr(date) {
-      return pad(date.getUTCMonth() + 1) + "/" + pad(date.getUTCDate()) + "/" + pad(date.getUTCFullYear());
+      return pad(date.getMonth() + 1) + "/" + pad(date.getDate()) + "/" + pad(date.getFullYear());
     }
 
     function toTimeStr(date) {
-      return pad(date.getUTCHours()) + ":" + pad(date.getUTCMinutes());
+      return pad(date.getHours()) + ":" + pad(date.getMinutes());
     }
 
-    if (range < ONE_DAY) {
-      if (start.getUTCDate() === end.getUTCDate()) {
+    function toDateRange(date, torqueLayer) {
+      var stepStartTimeMS = date.getTime();
+      var tb = torqueLayer.getTimeBounds();
+      var stepDurationMS = (new Date(tb.end).getTime() - new Date(tb.start).getTime()) / torqueLayer.options.steps;
+      var stepEndTime = new Date(stepStartTimeMS + stepDurationMS);
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return pad(months[date.getMonth()]) + " " + pad(date.getDate())  + " - " 
+        + pad(months[stepEndTime.getMonth()]) + " " + pad(stepEndTime.getDate());
+    }
+
+    
+
+    if (range < THREE_DAYS) {
+      if (start.getDate() === end.getDate()) {
         return toTimeStr;
       } else {
         // range is less than a day, but the range spans more than one day so render the date in addition to the time
@@ -123,12 +148,15 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
     }
 
     if (range < ONE_YEAR) {
+      if (stepDurationMS > ONE_DAY * 2000){ // More than 48 hours
+        return toDateRange;
+      }
       return toUSDateStr;
     }
 
     // >= ONE_YEAR
     return function(date) {
-      return pad(date.getUTCMonth() + 1) + "/" + pad(date.getUTCFullYear());
+      return pad(date.getMonth() + 1) + "/" + pad(date.getFullYear());
     };
   },
 
@@ -167,11 +195,16 @@ cdb.geo.ui.TimeSlider = cdb.geo.ui.InfoBox.extend({
       start: this._start,
       slide: this._slide
     });
+    if(torqueLayer.provider){
+      this.updateSliderRange({"steps": torqueLayer.provider.getSteps()});
+    }
   },
 
   toggleTime: function(e) {
     this.killEvent(e);
     this.torqueLayer.toggle();
+  },
+  toggleButton: function() {
     this.$('.button')
       [(this.torqueLayer.isRunning() ? 'addClass': 'removeClass')]('stop')
       .attr('href','#/' + (this.torqueLayer.isRunning() ? 'pause': 'play'))

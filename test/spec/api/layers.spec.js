@@ -18,7 +18,7 @@ describe('api.layers', function() {
 
 
   describe('loadLayer unknow', function() {
-    it("shoudl return an error for unknow map types", function(done) {
+    it("should return an error for unknow map types", function(done) {
       var map = {};
       var err = false;
       cartodb.createLayer(map, { kind: 'plain', options: {} }, function(l) {
@@ -51,26 +51,26 @@ describe('api.layers', function() {
       });
 
       it("should fecth layer when user and pass are specified", function() {
-        spyOn(cdb.vis.Loader, 'get');
+        spyOn(cdb.core.Loader, 'get');
         cartodb.createLayer(map, {
           user: 'development',
           table: 'clubbing',
           host: 'localhost.lan:3000',
           protocol: 'http'
         });
-        expect(cdb.vis.Loader.get).toHaveBeenCalled();
+        expect(cdb.core.Loader.get).toHaveBeenCalled();
       });
 
       it("should fecth layer when a url is specified", function() {
-        spyOn(cdb.vis.Loader, 'get');
+        spyOn(cdb.core.Loader, 'get');
         cartodb.createLayer(map, 'http://test.com/layer.json');
-        expect(cdb.vis.Loader.get).toHaveBeenCalled();
+        expect(cdb.core.Loader.get).toHaveBeenCalled();
       });
 
       it("should not fecth layer when kind and options are specified", function() {
-        spyOn(cdb.vis.Loader, 'get');
+        spyOn(cdb.core.Loader, 'get');
         cartodb.createLayer(map, { kind: 'plain', options: {} });
-        expect(cdb.vis.Loader.get).not.toHaveBeenCalled();
+        expect(cdb.core.Loader.get).not.toHaveBeenCalled();
       });
 
       it("should create a layer", function(done) {
@@ -184,9 +184,16 @@ describe('api.layers', function() {
         cartodb.createLayer(map, {
           updated_at: 'jaja',
           layers: [
-            null,
-            //{kind: 'plain', options: {} }
-            {kind: 'cartodb', options: { tile_style: 'test', user_name: 'test', table_name: 'test', extra_params: { cache_buster: 'cb' }} }
+            { type: 'tiled', options: {} },
+            {
+              type: 'layergroup',
+              options: {
+                layer_definition: {
+                  layers: []
+                },
+                extra_params: { cache_buster: 'cb' }
+              }
+            }
           ]
         }, s).done(function(lyr) {
           layer = lyr;
@@ -194,32 +201,9 @@ describe('api.layers', function() {
 
         setTimeout(function() {
           expect(s.called).toEqual(true);
-          //expect(layer.model.attributes.extra_params.updated_at).toEqual('jaja');
           expect(layer.model.attributes.extra_params.cache_buster).toEqual('cb');
-          //expect(layer.model.attributes.extra_params.cache_buster).toEqual(undefined);
           done();
         }, 10);
-      });
-
-      it("should load vis.json without infowindows", function(done) {
-        var layer;
-        var s = sinon.spy();
-        
-        cartodb.createLayer(map, {
-          updated_at: 'jaja',
-          layers: [
-            null,
-            {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: { fields: [], template: '' } }
-          ]
-        }, s).done(function(lyr) {
-          layer = lyr;
-        });
-
-        setTimeout(function() {
-          expect(s.called).toEqual(true);
-          done();
-        }, 10);
-
       });
 
       it("should load specified layer", function(done) {
@@ -242,7 +226,64 @@ describe('api.layers', function() {
           expect(layer.model.get('type')).toEqual('torque');
           done();
         }, 500);
+      });
 
+      it("should load the `namedmap` layer by default", function(done) {
+        var layer;
+
+        cartodb.createLayer(map, {
+          updated_at: 'jaja',
+          layers: [
+            { type: 'tiled', options: {} },
+            { type: 'tiled', options: {} },
+            {
+              type: 'namedmap',
+              user_name: 'dev',
+              options: {
+                named_map: {
+                  name: 'testing',
+                  params: {
+                    color: 'red'
+                  }
+                }
+              }
+            }
+          ]
+        }).done(function(lyr) {
+          layer = lyr;
+        });
+
+        setTimeout(function() {
+          expect(layer.options.type).toEqual('namedmap');
+          done();
+        }, 100);
+      });
+
+      it("should load the `layergroup` by default", function(done) {
+        var layer;
+
+        cartodb.createLayer(map, {
+          updated_at: 'jaja',
+          layers: [
+            { type: 'tiled', options: {} },
+            { type: 'tiled', options: {} },
+            {
+              type: 'layergroup',
+              options: {
+                layer_definition: {
+                  layers: []
+                }
+              }
+            }
+          ]
+        }).done(function(lyr) {
+          layer = lyr;
+        });
+
+        setTimeout(function() {
+          expect(layer.options.type).toEqual('layergroup');
+          done();
+        }, 100);
       });
 
       it("should add a torque layer", function(done) {
@@ -266,6 +307,56 @@ describe('api.layers', function() {
         setTimeout(function() {
           if (map.getContainer) expect($(map.getContainer()).find('.cartodb-timeslider').length).toBe(1)
           if (map.getDiv)       expect($(map.getDiv()).find('.cartodb-timeslider').length).toBe(1)
+          done()
+        }, wait);
+      });
+
+      it("should ask for https data when https is on at torque layer", function(done) {
+        var layer;
+        var s = sinon.spy();
+        
+        cartodb.createLayer(map, {
+          updated_at: 'jaja',
+          layers: [
+            null,
+            {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: null },
+            {kind: 'torque', options: { user_name: 'test', table_name: 'test', tile_style: 'Map { -torque-frame-count: 10;} #test { marker-width: 10; }'}, infowindow: null }
+          ]
+        }, { layerIndex: 2, https: true }, s).done(function(lyr) {
+          layer = lyr;
+          
+        }).addTo(map)
+
+        var wait = 500;
+        if (!map.getContainer) wait = 2500;
+
+        setTimeout(function() {
+          expect(layer.provider.options.tiler_protocol).toBe("https");
+          done()
+        }, wait);
+      });
+
+      it("should not add a torque layer timeslider if steps are not greater than 1", function(done) {
+        var layer;
+        var s = sinon.spy();
+        
+        cartodb.createLayer(map, {
+          updated_at: 'jaja',
+          layers: [
+            null,
+            {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: null },
+            {kind: 'torque', options: { user_name: 'test', table_name: 'test', tile_style: 'Map { -torque-frame-count: 1;} #test { marker-width: 10; }'}, infowindow: null }
+          ]
+        }, { layerIndex: 2 }, s).done(function(lyr) {
+          layer = lyr;
+        }).addTo(map)
+
+        var wait = 500;
+        if (!map.getContainer) wait = 2500;
+
+        setTimeout(function() {
+          if (map.getContainer) expect($(map.getContainer()).find('.cartodb-timeslider').length).toBe(0)
+          if (map.getDiv)       expect($(map.getDiv()).find('.cartodb-timeslider').length).toBe(0)
           done()
         }, wait);
       });
@@ -319,12 +410,9 @@ describe('api.layers', function() {
           expect(layer.toJSON()).toEqual({ color: 'red' });
           done();
         }, 100);
-
       });
 
       it("should use access_token", function(done) {
-        var layer;
-
         cartodb.createLayer(map, {
           type: 'namedmap',
           user_name: 'dev',
@@ -336,22 +424,21 @@ describe('api.layers', function() {
               }
             }
           }
-        }, { https: true,  auth_token: 'at_rambo' }).done(function(lyr) {
-          layer = lyr;
-        });
-
-        setTimeout(function() {
-          expect(layer).not.toEqual(undefined);
-          layer.layerToken = 'test';
+        }, { https: true,  auth_token: 'at_rambo' }).done(function(layer) {
+          spyOn(layer, 'createMap').and.returnValue({
+            layergroupid: 'test',
+            metadata: {
+              layers: []
+            }
+          })
           layer.getTiles(function(tiles) {
             expect(tiles.tiles[0].indexOf("auth_token=at_rambo")).not.toEqual(-1);
           });
           done();
-        }, 100);
-
+        });
       });
 
-      it("should create layer form sublayer list", function(done) {
+      it("should create a layer from the list of sublayers", function(done) {
         var layer;
 
         cartodb.createLayer(map, {
@@ -368,7 +455,7 @@ describe('api.layers', function() {
         setTimeout(function() {
           expect(layer).not.toEqual(undefined);
           expect(layer.toJSON()).toEqual({
-            version: '1.0.0',
+            version: '1.3.0',
             stat_tag: 'API',
             layers: [{
               type: 'cartodb',
@@ -382,10 +469,9 @@ describe('api.layers', function() {
           });
           done();
         }, 100);
-
       });
 
-      it("should have addTo", function(done) {
+      it("should return a promise that responds to addTo", function(done) {
         var layer;
 
         cartodb.createLayer(map, {
@@ -414,7 +500,6 @@ describe('api.layers', function() {
       });
 
       it("should have several 'addTo' with zIndex set", function(done) {
-        debugger
         var layer0, layer1;
 
         cartodb.createLayer(map, {
@@ -453,11 +538,7 @@ describe('api.layers', function() {
           }
           done();
         }, 100);
-
       });
-
-    //});
-
     });
   }
 

@@ -4,15 +4,24 @@
  *  framework
  *
  */
-
-
 module.exports = function(grunt) {
-  
+
   require('load-grunt-tasks')(grunt);
   require('time-grunt')(grunt);
+  var semver = require('semver');
 
   var pkg = grunt.file.readJSON('package.json');
+
+  if (!pkg.version || !semver.valid(pkg.version)) {
+    grunt.fail.fatal('package.json version is not valid' , 1);
+  }
+
   var version = pkg.version.split('.');
+  var VERSION_OBJ =  {
+      major:      version[0],
+      minor:      version[0] + '.' + version[1],
+      bugfixing:  pkg.version
+   }
 
   var config = {
     dist: 'dist',
@@ -22,11 +31,20 @@ module.exports = function(grunt) {
       minor:      version[0] + '.' + version[1],
       bugfixing:  pkg.version
     },
-    pkg:  pkg
+    pkg: pkg
   };
 
   grunt.initConfig({
+    secrets: {},
     config: config,
+    dist: 'dist',
+    app:  'www',
+    version: {
+      major:      version[0],
+      minor:      version[0] + '.' + version[1],
+      bugfixing:  pkg.version
+    },
+    pkg:  pkg,
     gitinfo: {},
     s3: require('./grunt/tasks/s3').task(grunt, config),
     prompt: require('./grunt/tasks/prompt').task(grunt, config),
@@ -87,6 +105,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', [ 'jasmine' ]);
 
   grunt.registerTask('release', [
+    'prompt:bump',
     'build'
   ]);
 
@@ -96,7 +115,7 @@ module.exports = function(grunt) {
       grunt.fail.fatal('secrets.json file does not exist, copy secrets.example.json and rename it' , 1);
     }
 
-    // Read secrets 
+    // Read secrets
     grunt.config.set('secrets', grunt.file.readJSON('secrets.json'));
 
     if (
@@ -114,12 +133,35 @@ module.exports = function(grunt) {
     ]);
   });
 
+  grunt.registerTask('set_current_version', function() {
+    var version = pkg.version;
+    var minor = version.split('.');
+    minor.pop()
+    minor = minor.join('.');
+    var options = {
+      version: version,
+      minor: minor,
+      increment: 'build',
+      bugfixing: version
+    };
+
+    // Check if version was set via prompt, and
+    // use that version and not the package version
+    var bump = grunt.config.get('bump');
+    if (bump) {
+      options = bump;
+      options.bugfixing = bump.version;
+    }
+
+    grunt.config.set('bump', options);
+  });
+
   grunt.registerTask('invalidate', function(){
     if (!grunt.file.exists('secrets.json')) {
       grunt.fail.fatal('secrets.json file does not exist, copy secrets.example.json and rename it' , 1);
     }
 
-    // Read secrets 
+    // Read secrets
     grunt.config.set('secrets', grunt.file.readJSON('secrets.json'));
 
     if (!grunt.config('secrets') ||
@@ -137,29 +179,37 @@ module.exports = function(grunt) {
   grunt.registerTask('pages', [ 'buildcontrol:pages' ]);
 
   grunt.registerTask('build', [
-      'prompt:bump',
-      'replace',
-      'gitinfo',
-      'clean:dist',
-      'concurrent:dist',
-      'useminPrepare',
-      'concat',
-      'autoprefixer:dist',
-      'cssmin',
-      'copy:distStatic',
-      'imagemin',
-      'svgmin',
-      'filerev',
-      'usemin',
-      'htmlmin',
-      'uglify'
+    'dist_js',
+    'useminPrepare',
+    'cssmin',
+    'imagemin',
+    'svgmin',
+    'filerev',
+    'usemin',
+    'htmlmin',
+    'uglify'
+  ]);
+
+  grunt.registerTask('dist_js', [
+    'set_current_version',
+    'js'
+  ])
+
+  grunt.registerTask('js', [
+    'replace',
+    'gitinfo',
+    'clean:dist',
+    'concurrent:dist',
+    'concat',
+    'autoprefixer:dist'
   ]);
 
   grunt.registerTask('dist', [
+    'set_current_version',
     'build'
   ]);
 
   grunt.registerTask('default', [
-    'build'
+    'dist'
   ]);
 }
