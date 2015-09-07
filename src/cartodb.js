@@ -5,7 +5,7 @@
 
     var cdb = root.cdb = {};
 
-    cdb.VERSION = "3.15.1";
+    cdb.VERSION = "3.15.2";
     cdb.DEBUG = false;
 
     cdb.CARTOCSS_VERSIONS = {
@@ -93,6 +93,7 @@
         'geo/leaflet/leaflet_wmslayer.js',
         'geo/leaflet/leaflet_cartodb_layergroup.js',
         'geo/leaflet/leaflet_cartodb_layer.js',
+        'geo/leaflet/leaflet.geometry.js',
         'geo/leaflet/leaflet.js',
 
         'geo/gmaps/gmaps_base.js',
@@ -101,6 +102,7 @@
         'geo/gmaps/gmaps_tiledlayer.js',
         'geo/gmaps/gmaps_cartodb_layergroup.js',
         'geo/gmaps/gmaps_cartodb_layer.js',
+        'geo/gmaps/gmaps.geometry.js',
         'geo/gmaps/gmaps.js',
 
         'ui/common/dialog.js',
@@ -117,7 +119,6 @@
         // PUBLIC API
         'api/layers.js',
         'api/sql.js',
-        'api/cartocss.js',
         'api/vis.js'
     ];
 

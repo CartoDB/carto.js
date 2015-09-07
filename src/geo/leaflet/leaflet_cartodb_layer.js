@@ -9,7 +9,7 @@ L.CartoDBLayer = L.CartoDBGroupLayer.extend({
   options: {
     query:          "SELECT * FROM {{table_name}}",
     opacity:        0.99,
-    attribution:    "CartoDB",
+    attribution:    cdb.config.get('cartodb_attributions'),
     debug:          false,
     visible:        true,
     added:          false,
@@ -75,10 +75,6 @@ var LeafLetLayerCartoDBView = L.CartoDBLayer.extend({
     var self = this;
 
     _.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
-
-    // CartoDB new attribution,
-    // also we have the logo
-    layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
 
     var opts = _.clone(layerModel.attributes);
 

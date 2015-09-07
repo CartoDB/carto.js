@@ -85,7 +85,7 @@ cdb.geo.geocoder.NOKIA = {
       if(location.protocol.indexOf('http') === -1) {
         protocol = 'http:';
       }
-      
+
       $.getJSON(protocol + '//places.nlp.nokia.com/places/v1/discover/search/?q=' + encodeURIComponent(address) + '&app_id=' + this.keys.app_id + '&app_code=' + this.keys.app_code + '&Accept-Language=en-US&at=0,0&callback=?', function(data) {
 
          var coordinates = [];
@@ -107,8 +107,14 @@ cdb.geo.geocoder.NOKIA = {
                 north: r.bbox[3],
                 south: r.bbox[1],
                 east: r.bbox[2],
-                west: r.bbox[0] 
+                west: r.bbox[0]
               }
+            }
+            if (r.category) {
+              position.type = r.category.id;
+            }
+            if (r.title) {
+              position.title = r.title;
             }
             coordinates.push(position);
           }
@@ -120,5 +126,3 @@ cdb.geo.geocoder.NOKIA = {
       });
   }
 }
-
-
