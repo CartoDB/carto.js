@@ -28,7 +28,7 @@ var CartoDBLayer = function(options) {
   var default_options = {
     query:          "SELECT * FROM {{table_name}}",
     opacity:        0.99,
-    attribution:    "CartoDB",
+    attribution:    cdb.config.get('cartodb_attributions'),
     opacity:        1,
     debug:          false,
     visible:        true,
@@ -79,10 +79,6 @@ var GMapsCartoDBLayerView = function(layerModel, gmapsMap) {
   var self = this;
 
   _.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
-
-  // CartoDB new attribution,
-  // also we have the logo
-  layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
 
   var opts = _.clone(layerModel.attributes);
 

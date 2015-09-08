@@ -17,7 +17,7 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
 
   options: {
     opacity:        0.99,
-    attribution:    "CartoDB",
+    attribution:    cdb.config.get('cartodb_attributions'),
     debug:          false,
     visible:        true,
     added:          false,
@@ -316,10 +316,6 @@ function layerView(base) {
     initialize: function(layerModel, leafletMap) {
       var self = this;
       var hovers = [];
-
-      // CartoDB new attribution,
-      // also we have the logo
-      layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
 
       var opts = _.clone(layerModel.attributes);
 

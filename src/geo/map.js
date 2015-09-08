@@ -135,7 +135,7 @@ cdb.geo.TorqueLayer = cdb.geo.MapLayer.extend({
 cdb.geo.CartoDBLayer = cdb.geo.MapLayer.extend({
 
   defaults: {
-    attribution: 'CartoDB',
+    attribution: cdb.config.get('cartodb_attributions'),
     type: 'CartoDB',
     active: true,
     query: null,
@@ -275,6 +275,7 @@ cdb.geo.Layers = Backbone.Collection.extend({
 cdb.geo.Map = cdb.core.Model.extend({
 
   defaults: {
+    attribution: [cdb.config.get('cartodb_attributions')],
     center: [0, 0],
     zoom: 3,
     minZoom: 0,

@@ -26,7 +26,7 @@ Projector.prototype.pixelToLatLng = function(point) {
 
 var default_options = {
   opacity:        0.99,
-  attribution:    "CartoDB",
+  attribution:    cdb.config.get('cartodb_attributions'),
   debug:          false,
   visible:        true,
   added:          false,
@@ -317,10 +317,6 @@ function LayerGroupView(base) {
     var hovers = [];
 
     _.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
-
-    // CartoDB new attribution,z
-    // also we have the logo
-    layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
 
     var opts = _.clone(layerModel.attributes);
 
