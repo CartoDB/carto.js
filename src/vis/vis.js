@@ -1152,6 +1152,32 @@ var Vis = cdb.core.View.extend({
         }
       });
     }
+
+    var self = this; 
+
+    if (layerView.tooltip){
+      
+      layerView.bind('mouseover', function() {
+        
+        self.mapView.setCursor('nw-resize'); 
+      });
+      layerView.bind('mouseout', function() {
+        
+        self.mapView.setCursor('auto'); 
+      }); 
+    }
+
+    if (layerView.infowindow){
+      layerView.bind('mouseover', function() {
+          
+          self.mapView.setCursor('pointer'); 
+        });
+        layerView.bind('mouseout', function() {
+          
+          self.mapView.setCursor('auto'); 
+        }); 
+
+    }
   },
 
   addInfowindow: function(layerView) {
