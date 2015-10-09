@@ -575,8 +575,7 @@
                    'count(distinct({{column}})) As uniq,',
                    'count(*) As cnt,',
                    'sum(case when {{column}} is null then 1 else 0 end)::numeric / count(*)::numeric As null_ratio,',
-                   'stddev_pop({{column}}) As stddev,', // why this over population
-                   'CASE WHEN abs(avg({{column}})) > 1e-7 THEN stddev({{column}}) / abs(avg({{column}})) ELSE 1e12 END As stddevmean,', // is this useful?
+                   'stddev_pop({{column}}) As stddev,',
                    'CDB_DistType(array_agg({{column}}::numeric)) As dist_type, ',
                    'CDB_Kurtosis(array_agg({{column}}::numeric)) As kurtosis, ',
                    'CDB_Skewness(array_agg({{column}}::numeric)) As skenwess ',
@@ -599,8 +598,7 @@
             'SELECT CDB_QuantileBins(array_agg(distinct({{column}}::numeric)), 7) As quantiles, ',
             '       CDB_EqualIntervalBins(array_agg({{column}}::numeric), 7) As equalint, ',
             '       CDB_JenksBins(array_agg(distinct({{column}}::numeric)), 7) As jenks, ',
-            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) As headstails, ',
-            '       CDB_StandardDeviationBins(array_agg(distinct({{column}}::numeric)), 7) As stddev_bins',
+            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) As headstails ',
             'FROM ({{sql}}) _table_sql where {{column}} is not null',
          ')',
          'SELECT * FROM histogram, stats, buckets, hist'
@@ -643,8 +641,6 @@
           quantiles: row.quantiles,
           skewness: row.skewness,
           stddev: row.stddev,
-          stddevmean: row.stddevmean,
-          stddev_bins: row.stddev_bins,
           weight: (row.uniq > 1 ? 1 : 0) *
                   (1 - row.null_ratio) *
                   (row.stddev < -1 ? 1 : (row.stddev < 1 ? 0.5 : (row.stddev < 3 ? 0.25 : 0.1)))
