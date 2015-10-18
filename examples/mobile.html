@@ -22,7 +22,7 @@
 
     <script>
       function main() {
-        var map = new L.Map('map', { 
+        var map = new L.Map('map', {
           zoomControl: false,
           center: [43, 0],
           zoom: 3
@@ -32,7 +32,7 @@
           attribution: 'Stamen'
         }).addTo(map);
 
-        cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/3fbabeb2-47b2-11e4-b614-0e9d821ea90d/viz.json', {
+        cartodb.createLayer(map, 'https://documentation.cartodb.com/api/v2/viz/3fbabeb2-47b2-11e4-b614-0e9d821ea90d/viz.json', {
           searchControl: true,
           mobile_layout: true,
           force_mobile: $(window).width() < 620

@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Adding Cursor interaction to your map example | CartoDB.js</title>
-    <!--  
+    <!--
       This example shows you how to add cursor interaction to your map using CartoDB.js
     -->
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -20,7 +20,7 @@
   </head>
   <body>
     <div id="map"></div>
-    
+
     <!-- include cartodb.js library -->
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.uncompressed.js"></script>
 
@@ -33,7 +33,7 @@
           zoom: 3
         });
 
-        cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/255729a6-e28c-11e3-bcb7-0e10bcd91c2b/viz.json')
+        cartodb.createLayer(map, 'https://examples.cartodb.com/api/v2/viz/255729a6-e28c-11e3-bcb7-0e10bcd91c2b/viz.json')
           .addTo(map)
           .on('done', function(layer) {
             var subLayer = layer.getSubLayer(0);

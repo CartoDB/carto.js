@@ -6,7 +6,7 @@
     html, body {width:100%; height:100%; padding: 0; margin: 0;}
     #map { width: 100%; height:100%; background: black;}
     #menu { position: absolute; top: 5px; right: 10px; width: 400px; height:60px; background: transparent; z-index:10;}
-    #menu a { 
+    #menu a {
       margin: 15px 10px 0 0;
       float: right;
       vertical-align: baseline;
@@ -23,7 +23,7 @@
       cursor: pointer;
     }
     #menu a.selected,
-    #menu a:hover { 
+    #menu a:hover {
       color: #F84F40;
     }
   </style>
@@ -33,7 +33,7 @@
 
     function init() {
       // initiate leaflet map
-      map = new L.Map('map', { 
+      map = new L.Map('map', {
         center: [20,-20],
         zoom: 3
       })
@@ -42,7 +42,7 @@
         attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
       }).addTo(map);
 
-      var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/9af23dd8-ea10-11e2-b5ac-5404a6a683d5/viz.json';
+      var layerUrl = 'https://documentation.cartodb.com/api/v2/viz/9af23dd8-ea10-11e2-b5ac-5404a6a683d5/viz.json';
 
       var sublayers = [];
 
@@ -92,8 +92,8 @@
   <div id='map'></div>
 
   <div id='menu'>
-    <a href="#megacities" id="megacities" class="button megacities">MEGACITIES</a> 
-    <a href="#capitals" id="capitals" class="button capitals">CAPITALS</a> 
+    <a href="#megacities" id="megacities" class="button megacities">MEGACITIES</a>
+    <a href="#capitals" id="capitals" class="button capitals">CAPITALS</a>
     <a href="#all" id="all" class="button all">ALL CITIES</a>
   </div>
 </body>

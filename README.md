@@ -35,7 +35,7 @@ This library allows to embed visualizations created with CartoDB in your map or 
       }).addTo(map);
 
       // add the cartodb layer
-      var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
+      var layerUrl = 'https://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
       cartodb.createLayer(map, layerUrl).addTo(map);
     ```
 
