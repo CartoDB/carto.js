@@ -128,7 +128,28 @@ cdb.geo.TorqueLayer = cdb.geo.MapLayer.extend({
     return this.get('type') === other.get('type') && _.every(properties, function(p) {
       return other.get(p) === self.get(p);
     });
+  },
+
+  getInfowindowData: function() {
+    return null;
+  },
+
+  getTooltipData: function() {
+    return null;
+  },
+
+  getInteractiveColumnNames: function() {
+    return [];
+  },
+
+  getInfowindowFieldNames: function() {
+    return [];
+  },
+
+  hasInteraction: function() {
+    return this.getInteractiveColumnNames() > 0;
   }
+
 });
 
 // CartoDB layer
