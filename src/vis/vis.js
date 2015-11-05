@@ -473,6 +473,18 @@ var Vis = cdb.core.View.extend({
       layers: cartoDBLayers
     });
 
+    var layers = _.map(data.layers, function(layerData) {
+      var model;
+      if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
+        model = cartoDBLayerGroup;
+      } else {
+        model = Layers.create(layerData.type || layerData.kind, self, layerData);
+      }
+      return model;
+    });
+
+    var nonCartoDBLayers = _.filter(layers, function(lyr) { return lyr.get('type') === 'torque'; })
+
     // TODO: We can probably move this logic somewhere in cdb.geo.ui.Widget
     var widgetClasses = {
       "list": {
@@ -493,7 +505,8 @@ var Vis = cdb.core.View.extend({
 
     var filterModels = [];
     var widgetModels = [];
-    _.each(cartoDBLayers, function(layer, index) {
+    var interactiveLayers = [].concat(cartoDBLayers, nonCartoDBLayers)
+    _.each(interactiveLayers, function(layer, index) {
       var widgets = layer.get('options').widgets;
 
       for (var widgetId in widgets) {
@@ -561,22 +574,13 @@ var Vis = cdb.core.View.extend({
       configGenerator: configGenerator,
       statTag: datasource.stat_tag,
       layerGroup: cartoDBLayerGroup,
-      layers: cartoDBLayers,
+      layers: interactiveLayers,
       widgets: widgetModels,
       filters: filterModels,
       map: map
     });
 
-    this.map.layers.reset(_.map(data.layers, function(layerData) {
-      var model;
-
-      if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
-        model = cartoDBLayerGroup;
-      } else {
-        model = Layers.create(layerData.type || layerData.kind, self, layerData);
-      }
-      return model;
-    }));
+    this.map.layers.reset(layers)
 
     this.overlayModels.reset(data.overlays);
 

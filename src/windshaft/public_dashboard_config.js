@@ -7,7 +7,9 @@ cdb.windshaft.PublicDashboardConfig.generate = function(options) {
 
   config.layers = this.layers.map(function(layerModel, layerIndex) {
     var layerConfig = {
-      type: 'cartodb',
+      // if you send CartoDB as type the api returns CartoDB instead of mapnik layer
+      // TODO: file a ticket in maps api
+      type: layerModel.get('type').toLowerCase(),
       options: {
         sql: layerModel.get('sql'),
         cartocss: layerModel.get('cartocss'),
