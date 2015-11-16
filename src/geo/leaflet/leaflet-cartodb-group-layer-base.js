@@ -6,8 +6,9 @@ var LeafletLayerView = require('./leaflet-layer-view');
 var CartoDBLayerCommon = require('../cartodb-layer-common');
 var LayerDefinition = require('../layer-definition/layer-definition');
 var CartoDBLogo = require('../cartodb-logo');
+var d3cdb = require('d3.cartodb');
 
-var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
+var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
 
   interactionClass: wax.leaf.interaction,
 
@@ -38,6 +39,7 @@ var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
 
 
   initialize: function (options) {
+    L.CartoDBd3Layer.prototype.initialize.apply(this, [options]);
     options = options || {};
     // Set options
     L.Util.setOptions(this, options);
@@ -123,6 +125,11 @@ var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
    * @params {map}
    */
   onAdd: function(map) {
+    this.options.user = this.options.user_name;
+    this.options.table = this.options.layer_definition.layers[0].options.layer_name;
+    L.CartoDBd3Layer.prototype.onAdd.apply(this, [map]);
+    L.CartoDBd3Layer.prototype.setCartoCSS.apply(this, [this.options.options.layer_definition.layers[0].options.cartocss]);
+    this._initTileLoader();
     var self = this;
     this.options.map = map;
 
