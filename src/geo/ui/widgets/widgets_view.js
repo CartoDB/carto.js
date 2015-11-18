@@ -2,13 +2,23 @@ var View = require('cdb/core/view');
 var LayerWidgetsView = require('cdb/geo/ui/widgets/layer_widgets_view');
 require('simplebar');
 
-module.exports = View.extend({
+
+var WidgetsView = View.extend(/** @lends WidgetsView.prototype */ {
 
   className: 'Widget-canvas',
   attributes: {
     "data-simplebar-direction": "vertical"
   },
 
+  /**
+   * Create a new container view instance.
+   *
+   * @classdesc Container view for the widgets.
+   *
+   * @constructs
+   * @extends View
+   * @param {Object} options Options **TODO document this options**
+   */
   initialize: function(options) {
     this.layers = options.layers;
   },
@@ -26,3 +36,6 @@ module.exports = View.extend({
     this.addView(layerWidgetsView);
   }
 });
+
+
+module.exports = WidgetsView;

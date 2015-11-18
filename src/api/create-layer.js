@@ -173,7 +173,7 @@ module.exports = function(map, layer, options, callback) {
 
       if(options.legends) {
         var layerModel = Layers.create(layerData.type || layerData.kind, viz, layerData);
-
+        // TODO - We are calling a supposed Vis private method
         viz._addLegends(viz._createLayerLegendView(layerModel.attributes,  layerView))
       }
 

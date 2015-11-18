@@ -27,6 +27,9 @@
       "type": "BSD"
     }
   ],
+  "scripts": {
+    "jsdoc": "./node_modules/jsdoc/jsdoc.js -c jsdoc-conf.json"
+  },
   "devDependencies": {
     "backbone": "1.2.3",
     "browserify": "11.2.0",

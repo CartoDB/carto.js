@@ -4,7 +4,7 @@ var WidgetErrorView = require('./widgets/standard/widget_error_view');
 var WidgetContentView = require('./widgets/standard/widget_content_view');
 
 /**
- *  Default widget view:
+ * @classdesc Default widget view:
  *
  *  It contains:
  *  - view model (viewModel)
@@ -16,8 +16,11 @@ var WidgetContentView = require('./widgets/standard/widget_content_view');
  *  different possibilities.
  *  - Sync or unsync widget (sync/unsync), making the proper view
  *  listen or not changes from the current datasource.
+ *
+ * @class
+ * @extends View
  */
-module.exports = View.extend({
+var Widget = View.extend(/** @lends Widget.prototype */{
 
   className: 'Widget Widget--light',
 
@@ -65,3 +68,6 @@ module.exports = View.extend({
     });
   }
 });
+
+
+module.exports = Widget;

@@ -27,10 +27,36 @@ var TimeWidgetView = require('cdb/geo/ui/widgets/time/view');
 var Model = require('cdb/core/model');
 
 /**
- * visulization creation
+ * Triggered when visualization data has been loaded.
+ *
+ * @event Vis#done
+ * @type {Object}
+ * @property {Vis} vis Vis instance
+ * @property {Layer[]}  layers Array with the layers contained in the visualization.
  */
-var Vis = View.extend({
 
+
+/**
+ * Callback executed once visualization data is loaded.
+ *
+ * @callback Vis~DoneCallback
+ * @param {Vis} vi  Visualization instance.
+ * @param {Layer[]} layers  Layers of the visualization.
+ */
+
+
+/**
+ * @classdesc Main view of a cartodb.js visulization. Contains the map, overlays
+ * and any other elements.
+ *
+ * @class
+ * @extends View
+ */
+var Vis = View.extend(/** @lends Vis.prototype */{
+
+  /**
+   * Initializes new instances.
+   */
   initialize: function() {
     _.bindAll(this, 'loadingTiles', 'loadTiles', '_onResize');
 
@@ -53,18 +79,28 @@ var Vis = View.extend({
 
   },
 
+  /**
+   * Updates the map orientation.
+   *
+   * **TODO: Why is code comented ?**
+   */
   doOnOrientationChange: function() {
     //this.setMapPosition();
   },
 
   /**
-   * check if all the modules needed to create layers are loaded
+   * Check if all the modules needed to create layers are loaded
    */
   checkModules: function(layers) {
     var mods = Layers.modulesForLayers(layers);
     return _.every(_.map(mods, function(m) { return cdb[m] !== undefined; }));
   },
 
+  /**
+   * Loads modules for specified layers.
+   * @param  {Layer[]}   layers Array of layers
+   * @param  {Function} done   Callback
+   */
   loadModules: function(layers, done) {
     var self = this;
     var mods = Layers.modulesForLayers(layers);
@@ -96,7 +132,12 @@ var Vis = View.extend({
     }
   },
 
+  /**
+   * Add a legend for each layer
+   * @param  {Layer[]} layers Array of layters
+   */
   addLegends: function(layers) {
+    // TODO - Is this necesssary a one line function ???
     this._addLegends(this.createLegendView(layers));
   },
 
@@ -152,6 +193,11 @@ var Vis = View.extend({
     this._createOverlays(overlays, data, options);
   },
 
+  /**
+   * Adds time slider to the given torque layer.
+   *
+   * @param  {TorqueLayer} torqueLayer Torque layer model instance.
+   */
   addTimeSlider: function(torqueLayer) {
     // if a timeslides already exists don't create it again
     if (torqueLayer && (torqueLayer.options.steps > 1) && !this.timeSlider) {
@@ -191,6 +237,15 @@ var Vis = View.extend({
 
   },
 
+  /**
+   * Load the given data and creates all necessary components: map, overlays, etc.
+   *
+   * @param  {(URL|Object)} data    It can be an URL or an object with the data itself.
+   * @param  {CreateVisOptions} options Options to apply to the visualization.
+   * @return {Vis}  Reference to this visualization instance.
+   *
+   * @fires Vis#done
+   */
   load: function(data, options) {
     var self = this;
     this._data = data;
@@ -566,6 +621,9 @@ var Vis = View.extend({
 
   },
 
+  /**
+   * **TODO: ???**
+   */
   _addWidget: function() {
 
   },
@@ -587,8 +645,13 @@ var Vis = View.extend({
     }
   },
 
-  // sets the animation step if there is an animation
-  // returns true if succed
+  /**
+   * sets the animation step if there is an animation returns true if succed
+   *
+   * @param  {Number} s   Steps
+   * @param  {Object} opt **TODO - Does torque layer accept a second parameter**
+   * @return {bool}     False if there is no torque layer. True otherwise.
+   */
   setAnimationStep: function(s, opt) {
     if (this.torqueLayer) {
       this.torqueLayer.setStep(s, opt);
@@ -888,6 +951,7 @@ var Vis = View.extend({
     return null;
   },
 
+  // TODO - Must this be "public" ???
   createLegendView: function(layers) {
     var legends = [];
     var self = this;
@@ -924,6 +988,12 @@ var Vis = View.extend({
     return _.compact(legends).reverse();
   },
 
+  /**
+   * Adds an overlay to the visualization.
+   *
+   * @param  {String} overlay Name of the overlay to be added **TODO double check this**
+   * @return {Overlay}  New overlay instance.
+   */
   addOverlay: function(overlay) {
 
     overlay.map = this.map;
@@ -1143,9 +1213,21 @@ var Vis = View.extend({
 
   },
 
-  // Set map top position taking into account header height
+  /**
+   * Set map top position taking into account header height.
+   *
+   * **TODO: Sure ??**
+   */
   setMapPosition: function() { },
 
+
+  /**
+   * Creates a new layer from the given set of data and options.
+   *
+   * @param  {Object} layerData Layer data. Must folow visjson format.
+   * @param  {Object} opts      Options
+   * @return {LayerView}        New LayerView instance.
+   */
   createLayer: function(layerData, opts) {
     var layerModel = Layers.create(layerData.type || layerData.kind, this, layerData);
     return this.mapView.createLayer(layerModel);
@@ -1173,6 +1255,9 @@ var Vis = View.extend({
     return sql;
   },
 
+  /**
+   * **TODO Must this be public???**
+   */
   addTooltip: function(layerView) {
 
     var layers = layerView.model && layerView.model.layers || [];
@@ -1216,6 +1301,9 @@ var Vis = View.extend({
     }
   },
 
+  /**
+   * **TODO Must this be public???**
+   */
   addInfowindow: function(layerView) {
 
     var mapView = this.mapView;
@@ -1387,6 +1475,13 @@ var Vis = View.extend({
     return this.bind('error', fn);
   },
 
+  /**
+   * Binds a function that is called when the `done` event is triggered, that is,
+   * when data is loaded.
+   *
+   * @param  {Vis~DoneCallback} fn Callback invoked when data is loaded.
+   * @return {Function}      Binded function.
+   */
   done: function(fn) {
     return this.bind('done', fn);
   },
@@ -1548,6 +1643,9 @@ var Vis = View.extend({
 
   },
 
+  /**
+   * **TODO document**
+   */
   addCursorInteraction: function(map, layer) {
     var mapView = map.viz.mapView;
     layer.bind('mouseover', function() {
@@ -1559,6 +1657,9 @@ var Vis = View.extend({
     });
   },
 
+  /**
+   * **TODO document**
+   */
   removeCursorInteraction: function(map, layer) {
     var mapView = map.viz.mapView;
     layer.unbind(null, null, mapView);

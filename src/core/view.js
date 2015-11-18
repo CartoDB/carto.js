@@ -3,12 +3,22 @@ var Backbone = require('backbone');
 var Profiler = require('cdb.core.Profiler');
 var templates = require('cdb.templates');
 
-/**
- * Base View for all CartoDB views.
- * DO NOT USE Backbone.View directly
- */
-var View = Backbone.View.extend({
+
+var View = Backbone.View.extend(/** @lends View.prototype */ {
+
+  // FIXME: Where this is used ?
   classLabel: 'cdb.core.View',
+
+  /**
+   * View constructor
+   *
+   * @classdesc Base View for all CartoDB views.
+   * DO NOT USE `Backbone.View` directly !!!
+   *
+   * @constructs
+   * @extends Backbone.View
+   * @param {Object} options Options **TODO document this options**
+   */
   constructor: function(options) {
     this.options = _.defaults(options, this.options);
     this._models = [];
@@ -20,20 +30,35 @@ var View = Backbone.View.extend({
     Profiler.new_value('total_views', View.viewCount);
   },
 
+  /**
+   * Attach a model to this view.
+   * @param  {Model} m Model reference
+   */
   add_related_model: function(m) {
     if(!m) throw "added non valid model"
     this._models.push(m);
   },
 
+  /**
+   * Attach a subview to this view.
+   * @param  {View} v View reference
+   */
   addView: function(v) {
     this._subviews[v.cid] = v;
     v._parent = this;
   },
 
+  /**
+   * Removes the given view from the subviews lists.
+   * @param  {View} v View reference
+   */
   removeView: function(v) {
     delete this._subviews[v.cid];
   },
 
+  /**
+   * Remove all subviews.
+   */
   clearSubViews: function() {
     _(this._subviews).each(function(v) {
       v.clean();
@@ -42,9 +67,8 @@ var View = Backbone.View.extend({
   },
 
   /**
-   * this methid clean removes the view
-   * and clean and events associated. call it when
-   * the view is not going to be used anymore
+   * This methid clean removes the view and clean and events associated.
+   * Call it when the view is not going to be used anymore.
    */
   clean: function() {
     var self = this;
@@ -80,20 +104,26 @@ var View = Backbone.View.extend({
     return templates.getTemplate(tmpl);
   },
 
+  /**
+   * Shows the view.
+   */
   show: function() {
       this.$el.show();
   },
 
+  /**
+   * Hides the view.
+   */
   hide: function() {
       this.$el.hide();
   },
 
   /**
   * Listen for an event on another object and triggers on itself, with the same name or a new one
-  * @method retrigger
-  * @param ev {String} event who triggers the action
-  * @param obj {Object} object where the event happens
-  * @param obj {Object} [optional] name of the retriggered event;
+  *
+  * @param {String} ev event who triggers the action
+  * @param {Object} obj object where the event happens
+  * @param {Object} [retrigEvent] name of the retriggered event
   */
   retrigger: function(ev, obj, retrigEvent) {
     if(!retrigEvent) {
@@ -106,9 +136,10 @@ var View = Backbone.View.extend({
     // add it as related model//object
     this.add_related_model(obj);
   },
+
   /**
   * Captures an event and prevents the default behaviour and stops it from bubbling
-  * @method killEvent
+  *
   * @param event {Event}
   */
   killEvent: function(ev) {
@@ -121,14 +152,14 @@ var View = Backbone.View.extend({
   },
 
   /**
-  * Remove all the tipsy tooltips from the document
-  * @method cleanTooltips
+  * Removes all the tipsy tooltips from the document
   */
   cleanTooltips: function() {
     this.$('.tipsy').remove();
   }
 
-}, {
+}, /** @lends View */ {
+
   viewCount: 0,
   views: {},
 
