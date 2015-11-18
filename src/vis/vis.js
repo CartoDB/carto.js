@@ -20,6 +20,11 @@ var Template = require('../core/template');
 var Layers = require('./vis/layers');
 var Overlay = require('./vis/overlay');
 var INFOWINDOW_TEMPLATE = require('./vis/infowindow-template');
+var WidgetsView = require('cdb/geo/ui/widgets/widgets_view');
+var CartoDBLayerGroupNamed = require('cdb/geo/map/cartodb-layer-group-named');
+var CartoDBLayerGroupAnonymous = require('cdb/geo/map/cartodb-layer-group-anonymous');
+var TimeWidgetView = require('cdb/geo/ui/widgets/time/view');
+var Model = require('cdb/core/model');
 
 /**
  * visulization creation
@@ -32,7 +37,7 @@ var Vis = View.extend({
     this.https = false;
     this.overlays = [];
     this.moduleChecked = false;
-    this.layersLoading = 0;
+    this.layersing = 0;
 
     if (this.options.mapView) {
       this.mapView = this.options.mapView;
@@ -188,9 +193,9 @@ var Vis = View.extend({
 
   load: function(data, options) {
     var self = this;
+    this._data = data;
 
     if (typeof(data) === 'string') {
-
       var url = data;
 
       Loader.get(url, function(data) {
@@ -202,7 +207,6 @@ var Vis = View.extend({
       });
 
       return this;
-
     }
 
     // if the viz.json contains slides, discard the main viz.json and use the slides
@@ -221,23 +225,18 @@ var Vis = View.extend({
     }
 
     if (!this.checkModules(layers)) {
-
       if (this.moduleChecked) {
-
         self.throwError("modules couldn't be loaded");
         return this;
-
       }
 
       this.moduleChecked = true;
-
 
       this.loadModules(layers, function() {
         self.load(data, options);
       });
 
       return this;
-
     }
 
     // configure the vis in http or https
@@ -301,6 +300,7 @@ var Vis = View.extend({
       }
     }
 
+    // Create the instance of the cdb.geo.Map model
     var mapConfig = {
       title: data.title,
       description: data.description,
@@ -314,17 +314,13 @@ var Vis = View.extend({
 
     // if the boundaries are defined, we add them to the map
     if (data.bounding_box_sw && data.bounding_box_ne) {
-
       mapConfig.bounding_box_sw = data.bounding_box_sw;
       mapConfig.bounding_box_ne = data.bounding_box_ne;
-
     }
 
     if (data.bounds) {
-
       mapConfig.view_bounds_sw = data.bounds[0];
       mapConfig.view_bounds_ne = data.bounds[1];
-
     } else {
       var center = data.center;
 
@@ -407,10 +403,131 @@ var Vis = View.extend({
       this.mapView.bind('newLayerView', this.addTooltip, this);
     }
 
-    this.map.layers.reset(_.map(data.layers, function(layerData) {
-      return Layers.create(layerData.type || layerData.kind, self, layerData);
-    }));
+    var cartoDBLayers;
+    var cartoDBLayerGroup;
+    var layers = [];
+    var interactiveLayers = [];
+    _.each(data.layers, function(layerData) {
+      if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
+        var layersData;
+        var layerGroupClass;
+        if (layerData.type === 'layergroup') {
+          layersData = layerData.options.layer_definition.layers;
+          layerGroupClass = CartoDBLayerGroupAnonymous;
+        } else {
+          layersData = layerData.options.named_map.layers;
+          layerGroupClass = CartoDBLayerGroupNamed;
+        }
+        cartoDBLayers = _.map(layersData, function(layerData) {
+          var cartoDBLayer = Layers.create("cartodb", self, layerData);
+          interactiveLayers.push(cartoDBLayer);
+          return cartoDBLayer;
+        });
+        cartoDBLayerGroup = new layerGroupClass({}, {
+          layers: cartoDBLayers
+        });
+        layers.push(cartoDBLayerGroup);
+      } else {
+        var layer = Layers.create(layerData.type, self, layerData);
+        layers.push(layer);
+        if (layerData.type === 'torque') {
+          interactiveLayers.push(layer);
+        }
+      }
+    });
 
+    // TODO: We can probably move this logic somewhere in cdb.geo.ui.Widget
+    var widgetClasses = {
+      "list": {
+        model: 'ListModel'
+      },
+      "histogram": {
+        model: 'HistogramModel',
+        filter: 'RangeFilter'
+      },
+      "aggregation": {
+        model: 'CategoryModel',
+        filter: 'CategoryFilter'
+      }
+    };
+
+    _.each(interactiveLayers, function(layer, index) {
+      var widgets = layer.get('widgets') || {};
+
+      for (var widgetId in widgets) {
+        var widgetData = widgets[widgetId];
+        var widgetType = widgetData.type;
+
+        if (!widgetClasses[widgetData.type]) {
+          throw 'Widget type \'' + widgetType + '\' is not supported!';
+        }
+
+        widgetData.id = widgetId;
+        widgetData.layerId = layer.get('id');
+
+        // Instantiate a filter (if needed)
+        var filterClass = widgetClasses[widgetType].filter;
+        var filterModel;
+        if (filterClass) {
+          filterModel = new cdb.windshaft.filters[filterClass]({
+            widgetId: widgetId,
+            // TODO: check this thing
+            layerIndex: index,
+            layerId: widgetData.layerId
+          });
+        }
+
+        // Instantiate the model
+        var modelClass = widgetClasses[widgetType].model;
+        var widgetModel = new cdb.geo.ui.Widget[modelClass](widgetData, { filter: filterModel });
+        layer.widgets.add(widgetModel);
+      }
+    });
+
+    // TODO: This will need to change when new layers are added / removed
+    var layersWithWidgets = new Backbone.Collection(interactiveLayers);
+    var widgetsView = new WidgetsView({
+      layers: layersWithWidgets
+    });
+    $('.js-dashboard').append(widgetsView.render().el);
+
+    // Time widget view
+    var timeWidgetModel = new Model({});
+    var timeWidgetView = new TimeWidgetView({
+      model: timeWidgetModel
+    });
+    this.addView(timeWidgetView);
+    $('.js-dashboard-map-wrapper').append(timeWidgetView.render().el);
+
+    // TODO: Perhaps this "endpoint" could be part of the "datasource"?
+    var endpoint = cdb.windshaft.config.MAPS_API_BASE_URL;
+    var configGenerator = cdb.windshaft.PublicDashboardConfig;
+    var datasource = data.datasource;
+    // TODO: We can use something else to differentiate types of "datasource"s
+    if (datasource.template_name) {
+      endpoint = [cdb.windshaft.config.MAPS_API_BASE_URL, 'named', datasource.template_name].join('/');
+      configGenerator = cdb.windshaft.PrivateDashboardConfig;
+    }
+
+    var windshaftClient = new cdb.windshaft.Client({
+      endpoint: endpoint,
+      windshaftURLTemplate: datasource.maps_api_template,
+      userName: datasource.user_name,
+      statTag: datasource.stat_tag,
+      forceCors: datasource.force_cors
+    });
+
+    var dashboard = new cdb.windshaft.Dashboard({
+      client: windshaftClient,
+      configGenerator: configGenerator,
+      statTag: datasource.stat_tag,
+      //TODO: assuming here all viz.json has a layergroup and that may not be true
+      layerGroup: cartoDBLayerGroup,
+      layers: interactiveLayers,
+      map: map
+    });
+
+    this.map.layers.reset(layers);
     this.overlayModels.reset(data.overlays);
 
     // if there are no sublayer_options fill it
@@ -437,11 +554,16 @@ var Vis = View.extend({
 
     }
 
+
     _.defer(function() {
-      self.trigger('done', self, self.getLayers());
+      self.trigger('done', self, map.layers);
     })
 
     return this;
+
+  },
+
+  _addWidget: function() {
 
   },
 
@@ -1049,11 +1171,12 @@ var Vis = View.extend({
   },
 
   addTooltip: function(layerView) {
-    if(!layerView || !layerView.containTooltip || !layerView.containTooltip()) {
-      return;
-    }
-    for(var i = 0; i < layerView.getLayerCount(); ++i) {
-      var t = layerView.getTooltipData(i);
+
+    var layers = layerView.model && layerView.model.layers || [];
+
+    for(var i = 0; i < layers.length; ++i) {
+      var layerModel = layers.at(i);
+      var t = layerModel.getTooltipData();
       if (t) {
         if (!layerView.tooltip) {
           var tooltip = new Tooltip({
@@ -1072,13 +1195,12 @@ var Vis = View.extend({
             this.tooltip.clean();
           });
         }
-        layerView.setInteraction(i, true);
       }
     }
 
     if (layerView.tooltip) {
       layerView.bind("featureOver", function(e, latlng, pos, data, layer) {
-        var t = layerView.getTooltipData(layer);
+        var t = layers.at(layer).getTooltipData();
         if (t) {
           layerView.tooltip.setTemplate(t.template);
           layerView.tooltip.setFields(t.fields);
@@ -1093,23 +1215,17 @@ var Vis = View.extend({
 
   addInfowindow: function(layerView) {
 
-    if(!layerView.containInfowindow || !layerView.containInfowindow()) {
-      return;
-    }
-
     var mapView = this.mapView;
-    var eventType = 'featureClick';
     var infowindow = null;
+    var layers = layerView.model && layerView.model.layers || [];
 
-    // activate interactivity for layers with infowindows
-    for(var i = 0; i < layerView.getLayerCount(); ++i) {
-
-      if (layerView.getInfowindowData(i)) {
+    for(var i = 0; i < layers.length; ++i) {
+      var layerModel = layers.at(i);
+      if (layerModel.getInfowindowData()) {
         if(!infowindow) {
-          infowindow = Overlay.create('infowindow', this, layerView.getInfowindowData(i), true);
+          infowindow = Overlay.create('infowindow', this, layerModel.getInfowindowData(), true);
           mapView.addInfowindow(infowindow);
         }
-        layerView.setInteraction(i, true);
       }
     }
 
@@ -1120,7 +1236,7 @@ var Vis = View.extend({
     infowindow.bind('close', function() {
       // when infowindow is closed remove all the filters
       // for tooltips
-      for(var i = 0; i < layerView.getLayerCount(); ++i) {
+      for(var i = 0; i < layers; ++i) {
         var t = layerView.tooltip;
         if (t) {
           t.setFilter(null);
@@ -1130,14 +1246,13 @@ var Vis = View.extend({
 
     // if the layer has no infowindow just pass the interaction
     // data to the infowindow
-    layerView.bind(eventType, function(e, latlng, pos, data, layer) {
+    layerView.bind('featureClick', function(e, latlng, pos, data, layer) {
 
-        var infowindowFields = layerView.getInfowindowData(layer);
+        var infowindowFields = layers.at(layer).getInfowindowData();
         if (!infowindowFields) return;
-        var fields = _.pluck(infowindowFields.fields, 'name');
         var cartodb_id = data.cartodb_id;
 
-        layerView.fetchAttributes(layer, cartodb_id, fields, function(attributes) {
+        layerView.model.fetchAttributes(layer, cartodb_id, function(attributes) {
 
           // Old viz.json doesn't contain width and maxHeight properties
           // and we have to get the default values if there are not defined.

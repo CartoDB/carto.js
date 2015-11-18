@@ -90,12 +90,7 @@ var layerView = function layerView(base) {
 
     ok: function(e) {
       this.model.trigger('tileOk');
-    },
-
-    onLayerDefinitionUpdated: function() {
-      this.__update();
     }
-
   });
 
   return layerViewClass;

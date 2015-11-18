@@ -2,6 +2,7 @@ var isLeafletAlreadyLoaded = !!window.L;
 
 var _ = require('underscore');
 var L = require('leaflet');
+var d3 = require('d3');
 require('mousewheel'); // registers itself to $.event; TODO what's this required for? still relevant for supported browsers?
 require('mwheelIntent'); // registers itself to $.event; TODO what's this required for? still relevant for supported browsers?
 
@@ -11,12 +12,13 @@ cdb.Mustache = require('mustache');
 cdb.$ = require('jquery');
 cdb._ = _;
 cdb.L = L;
+cdb.d3 = d3;
 
 if (isLeafletAlreadyLoaded) L.noConflict();
 _.extend(L, require('./geo/leaflet-extensions'));
 _.extend(cdb.geo, require('./geo/leaflet'));
 
-cdb.Image = require('./vis/image')
+cdb.Image = require('./vis/image');
 cdb.SQL = require('./api/sql');
 
 cdb.config = require('cdb.config');
@@ -70,9 +72,9 @@ cdb.geo.WMSLayer = require('./geo/map/wms-layer');
 cdb.geo.PlainLayer = require('./geo/map/plain-layer');
 cdb.geo.TorqueLayer = require('./geo/map/torque-layer');
 cdb.geo.CartoDBLayer = require('./geo/map/cartodb-layer');
-cdb.geo.CartoDBNamedMapLayer = require('./geo/map/cartodb-named-map-layer');
+cdb.geo.CartoDBLayerGroupNamed = require('./geo/map/cartodb-layer-group-named');
+cdb.geo.CartoDBLayerGroupAnonymous = require('./geo/map/cartodb-layer-group-anonymous');
 cdb.geo.Layers = require('./geo/map/layers');
-cdb.geo.CartoDBGroupLayer = require('./geo/map/cartodb-group-layer');
 cdb.geo.Map = require('./geo/map');
 cdb.geo.MapView = require('./geo/map-view');
 
@@ -119,5 +121,44 @@ cdb.vis.Layers = require('./vis/vis/layers');
 cdb.vis.Vis = require('./vis/vis');
 require('./vis/overlays'); // Overlay.register calls
 require('./vis/layers'); // Layers.register calls
+
+
+cdb.geo.ui.Widget.View = require('./geo/ui/widget');
+cdb.geo.ui.Widget.Content = require('./geo/ui/widgets/standard/widget_content_view');
+cdb.geo.ui.Widget.Error = require('./geo/ui/widgets/standard/widget_error_view');
+cdb.geo.ui.Widget.Loader = require('./geo/ui/widgets/standard/widget_loader_view');
+cdb.geo.ui.Widget.Category.Content = require('./geo/ui/widgets/category/content_view');
+cdb.geo.ui.Widget.Category.FilterView = require('./geo/ui/widgets/category/filter_view');
+cdb.geo.ui.Widget.Category.ItemView = require('./geo/ui/widgets/category/item_view');
+cdb.geo.ui.Widget.Category.ItemsView = require('./geo/ui/widgets/category/items_view');
+cdb.geo.ui.Widget.CategoryModel = require('./geo/ui/widgets/category/model');
+cdb.geo.ui.Widget.Category.PaginatorView = require('./geo/ui/widgets/category/paginator_view');
+cdb.geo.ui.Widget.Category.View = require('./geo/ui/widgets/category/view');
+cdb.geo.ui.Widget.Formula.Content = require('./geo/ui/widgets/formula/content_view');
+cdb.geo.ui.Widget.FormulaModel = require('./geo/ui/widgets/formula/model');
+cdb.geo.ui.Widget.Formula.View = require('./geo/ui/widgets/formula/view');
+cdb.geo.ui.Widget.Histogram.Chart = require('./geo/ui/widgets/histogram/chart');
+cdb.geo.ui.Widget.Histogram.Content = require('./geo/ui/widgets/histogram/content_view');
+cdb.geo.ui.Widget.HistogramModel = require('./geo/ui/widgets/histogram/model');
+cdb.geo.ui.Widget.Histogram.View = require('./geo/ui/widgets/histogram/view');
+cdb.geo.ui.Widget.ListModel = require('./geo/ui/widgets/list/model');
+cdb.geo.ui.Widget.List.View = require('./geo/ui/widgets/list/view');
+cdb.geo.ui.Widget.List.EdgesView = require('./geo/ui/widgets/list/edges_view');
+cdb.geo.ui.Widget.List.PaginatorView = require('./geo/ui/widgets/list/paginator_view');
+cdb.geo.ui.Widget.List.ItemView = require('./geo/ui/widgets/list/item_view');
+cdb.geo.ui.Widget.List.ItemsView = require('./geo/ui/widgets/list/items_view');
+cdb.geo.ui.Widget.List.Content = require('./geo/ui/widgets/list/content_view');
+
+cdb.windshaft.filters.FilterBase = require('./windshaft/filters/base');
+cdb.windshaft.filters.BoundingBoxFilter = require('./windshaft/filters/bounding_box');
+cdb.windshaft.filters.CategoryFilter = require('./windshaft/filters/category');
+cdb.windshaft.filters.Collection = require('./windshaft/filters/collection');
+cdb.windshaft.filters.RangeFilter = require('./windshaft/filters/range');
+cdb.windshaft.Client = require('./windshaft/client');
+cdb.windshaft.config = require('./windshaft/config');
+cdb.windshaft.Dashboard = require('./windshaft/dashboard');
+cdb.windshaft.DashboardInstance = require('./windshaft/dashboard_instance');
+cdb.windshaft.PrivateDashboardConfig = require('./windshaft/private_dashboard_config');
+cdb.windshaft.PublicDashboardConfig = require('./windshaft/public_dashboard_config');
 
 module.exports = cdb;

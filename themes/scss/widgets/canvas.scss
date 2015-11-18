@@ -1,0 +1,61 @@
+// Canvas for widgets
+// --------------------------------------------------
+
+@import '../variables/sizes';
+@import '../variables/mixins';
+
+.Widget-canvas {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  width: 352px;
+  min-width: 352px;
+  max-width: 352px;
+  margin-left: 8px;
+  overflow-y: auto;
+  overflow-x: visible;
+  border-radius: 4px;
+  background: #FFF; // Canvas is out of widget themes
+}
+.Widget-canvas .simplebar-track {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: #EEE;
+}
+.Widget-canvas .simplebar-track .simplebar-scrollbar {
+  right: 0;
+  width: 2px;
+  border-radius: 4px;
+  background: #AAA;
+}
+.Widget-canvas .simplebar-scroll-content {
+  height: auto!important; // Fix for firefox
+}
+
+// Widget media query
+@include media-query() {
+  .Widget-canvas {
+    @include display-flex();
+    @include flex-wrap(nowrap);
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: 350px;
+    margin-top: 8px;
+    margin-left: 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    border-radius: 0;
+  }
+  .LayerWidgets-canvas {
+    @include display-flex();
+    @include flex-wrap(nowrap);
+    position: relative;
+  }
+  .Widget-canvas .simplebar-content {
+    @include display-flex();
+    @include flex-wrap(nowrap);
+  }
+}

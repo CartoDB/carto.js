@@ -2,12 +2,13 @@ var _ = require('underscore');
 var MapBase = require('./map-base');
 var SubLayerFactory = require('../sub-layer/sub-layer-factory');
 
-function NamedMap(named_map, options) {
+function NamedMap(named_map, options, widgets) {
   MapBase.call(this, options);
-  this.options.pngParams.push('auth_token')
-  this.options.gridParams.push('auth_token')
-  this.setLayerDefinition(named_map, options)
+  this.options.pngParams.push('auth_token');
+  this.options.gridParams.push('auth_token');
+  this.setLayerDefinition(named_map, options);
   this.stat_tag = named_map.stat_tag;
+  this.widgets = widgets;
 }
 
 NamedMap.prototype = _.extend({}, MapBase.prototype, {
@@ -46,9 +47,9 @@ NamedMap.prototype = _.extend({}, MapBase.prototype, {
   },
 
   setAuthToken: function(token) {
-    if(!this.isHttps()) {
-      throw new Error("https must be used when map has token authentication");
-    }
+    // if(!this.isHttps()) {
+    //   throw new Error("https must be used when map has token authentication");
+    // }
     this.options.extra_params = this.options.extra_params || {};
     this.options.extra_params.auth_token = token;
     this.invalidate();

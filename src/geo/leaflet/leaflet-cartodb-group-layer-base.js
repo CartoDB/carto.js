@@ -44,17 +44,6 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
     // Set options
     L.Util.setOptions(this, options);
 
-    // Some checks
-    if (!options.layer_definition && !options.sublayers) {
-        throw new Error('cartodb-leaflet needs at least the layer_definition or sublayer list');
-    }
-
-    if(!options.layer_definition) {
-      this.options.layer_definition = LayerDefinition.layerDefFromSubLayers(options.sublayers);
-    }
-
-    LayerDefinition.call(this, this.options.layer_definition, this.options);
-
     this.fire = this.trigger;
 
     CartoDBLayerCommon.call(this);
@@ -133,19 +122,20 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
     // Add cartodb logo
     if (this.options.cartodb_logo != false)
       CartoDBLogo.addWadus({ left:8, bottom:8 }, 0, map._container);
-
-    this.__update(function() {
-      // if while the layer was processed in the server is removed
-      // it should not be added to the map
-      var id = L.stamp(self);
-      if (!map._layers[id]) {
-        return;
-      }
-      L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
-      L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.options.options.layer_definition.layers[0].options.cartocss]); 
-      // L.TileLayer.prototype.onAdd.call(self, map);
-      self.fire('added');
-      self.options.added = true;
+    // TODO: We can probably move this to an initialize method
+    this.model.bind('change:urls', function() {
+      self.__update(function() {
+        // if while the layer was processed in the server is removed
+        // it should not be added to the map
+        var id = L.stamp(self);
+        if (!map._layers[id]) {
+          return;
+        }
+        L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
+        L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.options.options.layer_definition.layers[0].options.cartocss]); 
+        self.fire('added');
+        self.options.added = true;
+      });
     });
   },
 
@@ -170,20 +160,18 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
     this.fire('updated');
     this.fire('loading');
     var map = this.options.map;
-
-    this.getTiles(function(urls, err) {
-      if(urls) {
-        self.tilejson = urls;
-        //self.setUrl(self.tilejson.tiles[0]);
-        // manage interaction
-        self._reloadInteraction();
-        self.ok && self.ok();
-        done && done();
-      } else {
-        self.error && self.error(err);
-        done && done();
-      }
-    });
+    var tilejson = self.model.get('urls');
+    if(tilejson) {
+      self.tilejson = tilejson;
+      self.setUrl(self.tilejson.tiles[0]);
+      // manage interaction
+      self._reloadInteraction();
+      self.ok && self.ok();
+      done && done();
+    } else {
+      self.error && self.error(err);
+      done && done();
+    }
   },
 
 

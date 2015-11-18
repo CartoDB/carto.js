@@ -242,6 +242,7 @@ var LeafletMapView = MapView.extend({
     return LeafletMapView.createLayer(layer, this.map_leaflet);
   },
 
+  // LAYER VIEWS ARE CREATED HERE
   _addLayer: function(layer, layers, opts) {
     var self = this;
     var lyr, layer_view;

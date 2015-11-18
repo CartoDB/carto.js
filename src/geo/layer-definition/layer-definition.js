@@ -3,10 +3,11 @@ var cdb = require('cdb'); // cdb.CARTOCSS_DEFAULT_VERSION
 var MapBase = require('./map-base');
 
 // TODO: This is actually an AnonymousMap -> Rename?
-function LayerDefinition(layerDefinition, options) {
+function LayerDefinition(layerDefinition, options, widgets) {
   MapBase.call(this, options);
   this.endPoint = MapBase.BASE_URL;
   this.setLayerDefinition(layerDefinition, { silent: true });
+  this.widgets = widgets;
 }
 
 /**
@@ -61,6 +62,23 @@ LayerDefinition.prototype = _.extend({}, MapBase.prototype, {
       var sublayer = this.getSubLayer(this.getLayerNumberByIndex(i));
       obj.layers.push(sublayer.toJSON());
     }
+
+    // Widgets
+    if (this.widgets && this.widgets.length) {
+      obj.lists = {};
+
+      var lists = _.filter(this.widgets, function(widget){
+        return widget.type === 'list'
+      });
+
+      lists.forEach(function(list) {
+        obj.lists[list.options.id] = {
+          "sql": list.options.sql,
+          "columns": list.options.columns
+        }
+      })
+    }
+
     return obj;
   },
 

@@ -1,3 +1,5 @@
+var Backbone = require('backbone');
+var _ = require('underscore');
 var config = require('cdb.config');
 var MapLayer = require('./map-layer');
 
@@ -20,18 +22,32 @@ var CartoDBLayer = MapLayer.extend({
     sql_api_protocol: "http",
     extra_params: {},
     cdn_url: null,
-    maxZoom: 28
+    maxZoom: 28,
+    cartocss_version: '2.1.0'
+  },
+
+  initialize: function() {
+    this.widgets = new Backbone.Collection([]);
+
+    // Re-trigger the change:filter event
+    this.widgets.bind('change:filter', function(widget, filter) {
+      this.trigger('change:filter', this, widget, filter);
+    }, this);
+
+    MapLayer.prototype.initialize.apply(this, arguments);
   },
 
   activate: function() {
-    this.set({active: true, opacity: 0.99, visible: true})
+    this.set({active: true, opacity: 0.99, visible: true});
   },
 
   deactivate: function() {
-    this.set({active: false, opacity: 0, visible: false})
+    this.set({active: false, opacity: 0, visible: false});
   },
 
-  // refresh the layer
+  /**
+   * refresh the layer
+   */
   invalidate: function() {
     var e = this.get('extra_params') || e;
     e.cache_buster = new Date().getTime();
@@ -46,6 +62,70 @@ var CartoDBLayer = MapLayer.extend({
       this.activate();
     }
   },
+
+  hasInteraction: function() {
+    return this.isVisible() && (this.containInfowindow() || this.containTooltip());
+  },
+
+  isVisible: function() {
+    return this.get('visible');
+  },
+
+  getTooltipFieldNames: function() {
+    var names = [];
+    var tooltip = this.getTooltipData();
+    if (tooltip && tooltip.fields) {
+      names = _.pluck(tooltip.fields, 'name');
+    }
+    return names;
+  },
+
+  getTooltipData: function() {
+    var tooltip = this.get('tooltip');
+    if (tooltip && tooltip.fields && tooltip.fields.length) {
+      return tooltip;
+    }
+    return null;
+  },
+
+  containInfowindow: function() {
+    return !!this.getTooltipData();
+  },
+
+  getInfowindowFieldNames: function() {
+    var names = [];
+    var infowindow = this.getInfowindowData();
+    if (infowindow  && infowindow.fields) {
+      names = _.pluck(infowindow.fields, 'name');
+    }
+    return names;
+  },
+
+  getInfowindowData: function() {
+    var infowindow = this.get('infowindow');
+    if (infowindow && infowindow.fields && infowindow.fields.length) {
+      return infowindow;
+    }
+    return null;
+  },
+
+  containTooltip: function() {
+    return !!this.getInfowindowData();
+  },
+
+  getInteractiveColumnNames: function() {
+    return _.uniq(
+      ['cartodb_id']
+        .concat(this.getInfowindowFieldNames())
+         .concat(this.getTooltipFieldNames())
+    );
+  },
+
+  getFilters: function() {
+    return this.widgets.map(function(widget) {
+      return widget.getFilter();
+    });
+  }
 });
 
 module.exports = CartoDBLayer;

@@ -18,6 +18,7 @@ module.exports = {
         'test/spec/geo/**/*',
         'test/spec/ui/**/*',
         'test/spec/vis/**/*',
+        'test/spec/windshaft/**/*',
 
         // not actually used anywhere in cartodb.js, only for editor?
         // TODO can be (re)moved?

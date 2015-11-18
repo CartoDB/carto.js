@@ -1,0 +1,30 @@
+// Buttons styles
+// ----------------------------------------------
+
+@import '../variables/sizes';
+@import '../variables/mixins';
+
+.Widget-button {
+  @include transition(background, 250ms);
+  display: inline-block;
+  padding: 0 26px;
+  border-radius: 4px;
+  font-family: 'Open Sans';
+  line-height: 40px;
+}
+
+.Widget-link {
+  font-size: $sFontSize-smaller;
+  font-weight: $sFontWeight-normal;
+  text-transform: uppercase;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.Widget-link,
+.Widget-button {
+  &:hover {
+    cursor: pointer;
+  }
+}
