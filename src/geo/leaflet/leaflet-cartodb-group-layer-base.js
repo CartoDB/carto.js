@@ -125,11 +125,8 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
    * @params {map}
    */
   onAdd: function(map) {
-    this.options.user = this.options.user_name;
-    this.options.table = this.options.layer_definition.layers[0].options.layer_name;
-    L.CartoDBd3Layer.prototype.onAdd.apply(this, [map]);
-    L.CartoDBd3Layer.prototype.setCartoCSS.apply(this, [this.options.options.layer_definition.layers[0].options.cartocss]);
-    this._initTileLoader();
+    // this.options.user = this.options.user_name;
+    // this.options.table = this.options.layer_definition.layers[0].options.layer_name;
     var self = this;
     this.options.map = map;
 
@@ -144,8 +141,9 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
       if (!map._layers[id]) {
         return;
       }
-
-      L.TileLayer.prototype.onAdd.call(self, map);
+      L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
+      L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.options.options.layer_definition.layers[0].options.cartocss]); 
+      // L.TileLayer.prototype.onAdd.call(self, map);
       self.fire('added');
       self.options.added = true;
     });
@@ -176,7 +174,7 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
     this.getTiles(function(urls, err) {
       if(urls) {
         self.tilejson = urls;
-        self.setUrl(self.tilejson.tiles[0]);
+        //self.setUrl(self.tilejson.tiles[0]);
         // manage interaction
         self._reloadInteraction();
         self.ok && self.ok();
