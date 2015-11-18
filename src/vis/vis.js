@@ -567,6 +567,11 @@ var Vis = View.extend({
       self.trigger('done', self, map.layers);
     })
 
+    // FIXME - See: https://github.com/CartoDB/cartodb.js/issues/793#issuecomment-157442059
+    if(this.mapView.map_leaflet) {
+      this.mapView.map_leaflet.invalidateSize();
+    }
+
     return this;
 
   },
