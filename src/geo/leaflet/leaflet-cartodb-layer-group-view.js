@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var LeafletCartoDBGroupLayerBase = require('./leaflet-cartodb-group-layer-base');
+var LeafletCartoDBGroupLayerBase = require('./leaflet-vector-cartodb-group-layer-base');
 
 var LeafletCartoDBLayerGroupView = LeafletCartoDBGroupLayerBase.extend({
 
