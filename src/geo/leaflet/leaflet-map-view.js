@@ -361,7 +361,7 @@ var LeafletMapView = MapView.extend({
     "gmapsbase": LeafletGmapsTiledLayerView,
 
     //"layergroup": LeafletCartoDBLayerGroupView,
-    "layergroup": LeafletCartoDBGroupLayerBase,
+    "layergroup": LeafletCartoDBLayerGroupView,
     "torque": function(layer, map) {
       // TODO for now adding this error to be thrown if object is not present, since it's dependency
       // is not included in the standard bundle
