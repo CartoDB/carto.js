@@ -36,7 +36,7 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
   },
 
 
-  initialize: function (options) {
+  initialize: function (options, layerModel, leafletMap) {
     L.CartoDBd3Layer.prototype.initialize.apply(this, [options]);
     options = options || {};
     // Set options
@@ -48,6 +48,7 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
     L.TileLayer.prototype.initialize.call(this);
     this.interaction = [];
     this.addProfiling();
+    LeafletLayerView.call(this, layerModel, this, leafletMap);
   },
 
   addProfiling: function() {
