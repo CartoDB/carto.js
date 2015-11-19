@@ -4,14 +4,8 @@ var config = require('cdb.config');
 var Profiler = require('cdb.core.Profiler');
 var LeafletLayerView = require('./leaflet-layer-view');
 var CartoDBLayerCommon = require('../cartodb-layer-common');
-var LayerDefinition = require('../layer-definition/layer-definition');
 var CartoDBLogo = require('../cartodb-logo');
 var d3cdb = require('d3.cartodb');
-
-var layerView = require('./leaflet-layer-view-fn');
-
-
-
 
 var LeafletCartoDBGroupLayerBase = L.Class.extend({
 
@@ -19,7 +13,6 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
 
   includes: [
     LeafletLayerView.prototype,
-    // LayerDefinition.prototype,
     CartoDBLayerCommon.prototype
   ],
 
@@ -136,6 +129,8 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
         if (!map._layers[id]) {
           return;
         }
+        debugger;
+        self.model.collection.models
         L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
         L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.model.collection.models[1].layers.models[0].get("cartocss")]); 
         self.fire('added');
@@ -306,4 +301,4 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
   }
 });
 
-module.exports = layerView(LeafletCartoDBGroupLayerBase);
+module.exports = LeafletCartoDBGroupLayerBase;
