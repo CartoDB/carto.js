@@ -7,7 +7,7 @@ var CartoDBLayerCommon = require('../cartodb-layer-common');
 var CartoDBLogo = require('../cartodb-logo');
 var d3cdb = require('d3.cartodb');
 
-var LeafletCartoDBGroupLayerBase = L.Class.extend({
+var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
 
   interactionClass: wax.leaf.interaction,
 
@@ -130,10 +130,11 @@ var LeafletCartoDBGroupLayerBase = L.Class.extend({
         if (!map._layers[id]) {
           return;
         }
-        debugger;
-        self.model.collection.models
-        L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
-        L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.model.collection.models[1].layers.models[0].get("cartocss")]); 
+        this.layers = self.model.layers.models.map(function(model){
+          var layer = new L.CartoDBd3Layer({tilejson: self.model.get("urls"), cartocss: model.get("cartocss")})
+          layer.addTo(self.options.map);
+          return layer;
+        });
         self.fire('added');
         self.options.added = true;
       });
