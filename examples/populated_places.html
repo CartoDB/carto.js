@@ -245,14 +245,14 @@
             },
             "datasource": {
               "type": "public_map",
-              "user_name": "rochoa-st",
-              "maps_api_template": "https://{user}.cartodb-staging.com:443",
+              "user_name": "development",
+              "maps_api_template": "http://{user}.localhost.lan:8181",
               "force_cors": true // This is sometimes set in the editor
             }
           }
 
           cartodb.createVis('map', vizJSON1, {
-            no_cdn: false,
+            no_cdn: false
           })
           .done(function(vis, layers) {
 
