@@ -28,7 +28,7 @@
     }
   ],
   "scripts": {
-    "jsdoc": "./node_modules/jsdoc/jsdoc.js -c jsdoc-conf.json -p"
+    "jsdoc": "./node_modules/jsdoc/jsdoc.js --configure jsdoc-conf.json --private --package package.json --readme README.md"
   },
   "devDependencies": {
     "backbone": "1.2.3",
