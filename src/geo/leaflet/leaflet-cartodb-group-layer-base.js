@@ -6,9 +6,8 @@ var LeafletLayerView = require('./leaflet-layer-view');
 var CartoDBLayerCommon = require('../cartodb-layer-common');
 var LayerDefinition = require('../layer-definition/layer-definition');
 var CartoDBLogo = require('../cartodb-logo');
-var d3cdb = require('d3.cartodb');
 
-var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
+var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
 
   interactionClass: wax.leaf.interaction,
 
@@ -39,7 +38,6 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
 
 
   initialize: function (options) {
-    L.CartoDBd3Layer.prototype.initialize.apply(this, [options]);
     options = options || {};
     // Set options
     L.Util.setOptions(this, options);
@@ -114,14 +112,13 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
    * @params {map}
    */
   onAdd: function(map) {
-    // this.options.user = this.options.user_name;
-    // this.options.table = this.options.layer_definition.layers[0].options.layer_name;
     var self = this;
     this.options.map = map;
 
     // Add cartodb logo
     if (this.options.cartodb_logo != false)
       CartoDBLogo.addWadus({ left:8, bottom:8 }, 0, map._container);
+
     // TODO: We can probably move this to an initialize method
     this.model.bind('change:urls', function() {
       self.__update(function() {
@@ -131,8 +128,8 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
         if (!map._layers[id]) {
           return;
         }
-        L.CartoDBd3Layer.prototype.onAdd.apply(self, [map]);
-        L.CartoDBd3Layer.prototype.setCartoCSS.apply(self, [self.options.options.layer_definition.layers[0].options.cartocss]); 
+
+        L.TileLayer.prototype.onAdd.call(self, map);
         self.fire('added');
         self.options.added = true;
       });
@@ -160,6 +157,7 @@ var LeafletCartoDBGroupLayerBase = L.CartoDBd3Layer.extend({
     this.fire('updated');
     this.fire('loading');
     var map = this.options.map;
+
     var tilejson = self.model.get('urls');
     if(tilejson) {
       self.tilejson = tilejson;
