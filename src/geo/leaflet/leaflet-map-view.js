@@ -14,6 +14,7 @@ var LeafletCartoDBLayerGroupView = require('./leaflet-cartodb-layer-group-view')
 var LeafletCartoDBNamedMapView = require('./leaflet-cartodb-named-map-view');
 var LeafletPointView = require('./leaflet-point-view');
 var LeafletPathView = require('./leaflet-path-view');
+var LeafletCartoDBGroupLayerBase = require('./leaflet-vector-cartodb-group-layer-base');
 
 /**
  * leaflet implementation of a map
@@ -363,7 +364,9 @@ var LeafletMapView = MapView.extend({
     // Substitutes the GMaps baselayer w/ an equivalent Leaflet tiled layer, since not supporting Gmaps anymore
     "gmapsbase": LeafletGmapsTiledLayerView,
 
-    "layergroup": LeafletCartoDBLayerGroupView,
+    //"layergroup": LeafletCartoDBLayerGroupView,
+    "layergroup": LeafletCartoDBGroupLayerBase,
+
     "namedmap": LeafletCartoDBNamedMapView,
     "torque": function(layer, map) {
       // TODO for now adding this error to be thrown if object is not present, since it's dependency
