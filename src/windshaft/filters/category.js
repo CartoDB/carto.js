@@ -3,10 +3,12 @@ var Backbone = require('backbone');
 var WindshaftFilterBase = require('./base');
 
 /**
- *  Filter used by the category widget
+ *  @classdesc Filter used by the category widget
  *
+ * 	@class
+ * 	@extends FilterBase
  */
-module.exports = WindshaftFilterBase.extend({
+var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.prototype */ {
 
   initialize: function() {
     this.rejectedCategories = new Backbone.Collection();
@@ -100,6 +102,10 @@ module.exports = WindshaftFilterBase.extend({
     return this.rejectedCategories.size() > 0;
   },
 
+  /**
+   * @override
+   * @inheritdoc
+   */
   toJSON: function() {
     var filter = {};
     var dataCount = this._dataOrigin.size();
@@ -130,3 +136,6 @@ module.exports = WindshaftFilterBase.extend({
     return json;
   }
 });
+
+
+module.exports = FilterCategory;
