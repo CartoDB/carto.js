@@ -12,7 +12,7 @@ var LeafletGmapsTiledLayerView = require('./leaflet-gmaps-tiled-layer-view');
 var LeafletCartoDBLayerGroupView = require('./leaflet-cartodb-layer-group-view');
 var LeafletPointView = require('./leaflet-point-view');
 var LeafletPathView = require('./leaflet-path-view');
-var LeafletCartoDBGroupLayerBase = require('./leaflet-cartodb-group-layer-base');
+var LeafletCartoDBGroupLayerBase = require('./leaflet-vector-cartodb-group-layer-base');
 
 /**
  * leaflet implementation of a map
