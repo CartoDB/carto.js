@@ -1,110 +1,151 @@
-(function() {
+var _ = require('underscore');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var cdb = require('cdb'); // cdb.odyssey (set through cdb.moduleLoad())
+var config = require('cdb.config');
+var log = require('cdb.log');
+var util = require('cdb.core.util');
+var Loader = require('../core/loader');
+var View = require('../core/view');
+var Model = require('cdb/core/model');
+var StackedLegend = require('../geo/ui/legend/stacked-legend');
+var Map = require('../geo/map');
+var MapView = require('../geo/map-view');
+var LegendModel = require('../geo/ui/legend-model');
+var Legend = require('../geo/ui/legend');
+var SQL = require('../api/sql');
+var Tooltip = require('../geo/ui/tooltip');
+var InfowindowModel = require('../geo/ui/infowindow-model');
+var Infowindow = require('../geo/ui/infowindow');
+var Template = require('../core/template');
+var Layers = require('./vis/layers');
+var Overlay = require('./vis/overlay');
+var INFOWINDOW_TEMPLATE = require('./vis/infowindow-template');
+var WidgetsView = require('cdb/geo/ui/widgets/widgets_view');
+var CartoDBLayerGroupNamed = require('cdb/geo/map/cartodb-layer-group-named');
+var CartoDBLayerGroupAnonymous = require('cdb/geo/map/cartodb-layer-group-anonymous');
+var RangeFilter = require('cdb/windshaft/filters/range');
+var CategoryFilter = require('cdb/windshaft/filters/category');
+var WidgetModelFactory = require('cdb/geo/ui/widgets/widget-model-factory');
+var ListModel = require('cdb/geo/ui/widgets/list/model');
+var HistogramModel = require('cdb/geo/ui/widgets/histogram/model');
+var CategoryModel = require('cdb/geo/ui/widgets/category/model');
+var FormulaModel = require('cdb/geo/ui/widgets/formula/model');
+var WidgetViewFactory = require('cdb/geo/ui/widgets/widget-view-factory');
+var ListContentView = require('cdb/geo/ui/widgets/list/content_view');
+var HistogramContentView = require('cdb/geo/ui/widgets/histogram/content-view');
+var TimeSeriesContentView = require('cdb/geo/ui/widgets/time-series/content-view');
+var CategoryContentView = require('cdb/geo/ui/widgets/category/content_view');
+var FormulaContentView = require('cdb/geo/ui/widgets/formula/content_view');
+var WindshaftConfig = require('cdb/windshaft/config');
+var WindshaftClient = require('cdb/windshaft/client');
+var WindshaftDashboard = require('cdb/windshaft/dashboard');
+var WindshaftPrivateDashboardConfig = require('cdb/windshaft/private_dashboard_config');
+var WindshaftPublicDashboardConfig = require('cdb/windshaft/public_dashboard_config');
 
-var _requestCache = {};
-
-/**
- * defines the container for an overlay.
- * It places the overlay
- */
-var Overlay = {
-
-  _types: {},
-
-  // register a type to be created
-  register: function(type, creatorFn) {
-    Overlay._types[type] = creatorFn;
-  },
-
-  // create a type given the data
-  // raise an exception if the type does not exist
-  create: function(type, vis, data) {
-    var t = Overlay._types[type];
-
-    if (!t) {
-      cdb.log.error("Overlay: " + type + " does not exist");
-      return;
-    }
-
-    data.options = typeof data.options === 'string' ? JSON.parse(data.options): data.options;
-    data.options = data.options || {}
-    var widget = t(data, vis);
-
-    if (widget) {
-      widget.type = type;
-      return widget;
-    }
-
-    return false;
-  }
-};
-
-cdb.vis.Overlay = Overlay;
-
-cdb.vis.Overlays = Backbone.Collection.extend({
-  comparator: function() {
-  }
-});
-
-// layer factory
-var Layers = {
-
-  _types: {},
-
-  register: function(type, creatorFn) {
-    this._types[type] = creatorFn;
-  },
-
-  create: function(type, vis, data) {
-    if (!type) {
-      cdb.log.error("creating a layer without type");
-      return null;
-    }
-    var t = this._types[type.toLowerCase()];
-
-    var c = {};
-    c.type = type;
-    _.extend(c, data, data.options);
-    return new t(vis, c);
-  },
-
-  moduleForLayer: function(type) {
-    if (type.toLowerCase() === 'torque') {
-      return 'torque';
-    }
-    return null;
-  },
-
-  modulesForLayers: function(layers) {
-    var modules = _(layers).map(function(layer) {
-      return Layers.moduleForLayer(layer.type || layer.kind);
-    });
-    return _.compact(_.uniq(modules));
-  }
-
-};
-
-cdb.vis.Layers = Layers;
-
-cartodb.moduleLoad = function(name, mod) {
-  cartodb[name] = mod;
-  cartodb.config.modules.add({
-    name: name,
-    mod: mod
-  });
+// Used to identify time-series widget for both the widget view factory as well as render it below the map instead of
+// the default widgets list view
+var isTimeSeriesWidget = function(m) {
+  return m.isForTimeSeries;
 };
 
 /**
- * visulization creation
+ * Visualization creation
  */
-var Vis = cdb.core.View.extend({
+var Vis = View.extend({
 
   initialize: function() {
     _.bindAll(this, 'loadingTiles', 'loadTiles', '_onResize');
 
+    var createFilter = function(Klass, attrs, layerIndex) {
+      return new Klass({
+        widgetId: attrs.id,
+        layerIndex: layerIndex
+      });
+    };
+    this.widgetModelFactory = new WidgetModelFactory({
+      list: function(attrs) {
+        return new ListModel(attrs);
+      },
+      formula: function(attrs) {
+        return new FormulaModel(attrs);
+      },
+      histogram: function(attrs, layerIndex) {
+        return new HistogramModel(attrs, {
+          filter: createFilter(RangeFilter, attrs, layerIndex)
+        });
+      },
+      'time-series': function(attrs, layerIndex) {
+        // change type because time-series because it's really a histogram (for the tiler at least)
+        attrs.type = 'histogram';
+        var model = new HistogramModel(attrs, {
+          filter: createFilter(RangeFilter, attrs, layerIndex)
+        });
+
+        // since we changed the type of we need some way to identify that it's intended for a time-series view later
+        model.isForTimeSeries = true;
+
+        return model;
+      },
+      aggregation: function(attrs, layerIndex) {
+        return new CategoryModel(attrs, {
+          filter: createFilter(CategoryFilter, attrs, layerIndex)
+        });
+      }
+    });
+
+    // TODO this should probably be extracted, together with the .load method
+    this.widgetViewFactory = new WidgetViewFactory([
+      {
+        type: 'formula',
+        createContentView: function(widget) {
+          return new FormulaContentView({
+            model: widget
+          });
+        }
+      }, {
+        type: 'list',
+        createContentView: function(widget) {
+          return new ListContentView({
+            model: widget
+          });
+        }
+      }, {
+        match: isTimeSeriesWidget,
+        createContentView: function(widget) {
+          return new TimeSeriesContentView({
+            model: widget,
+            filter: widget.filter
+          });
+        },
+        customizeWidgetAttrs: function(attrs) {
+          attrs.className += ' Dashboard-time';
+          return attrs;
+        },
+      }, {
+        type: 'histogram',
+        createContentView: function(widget) {
+          return new HistogramContentView({
+            dataModel: widget,
+            viewModel: new Model(),
+            filter: widget.filter
+          });
+        }
+      }, {
+        type: 'aggregation',
+        createContentView: function(widget) {
+          return new CategoryContentView({
+            model: widget,
+            filter: widget.filter
+          });
+        }
+      }
+    ]);
+
     this.https = false;
     this.overlays = [];
     this.moduleChecked = false;
-    this.layersLoading = 0;
+    this.layersing = 0;
 
     if (this.options.mapView) {
       this.mapView = this.options.mapView;
@@ -129,7 +170,7 @@ var Vis = cdb.core.View.extend({
    */
   checkModules: function(layers) {
     var mods = Layers.modulesForLayers(layers);
-    return _.every(_.map(mods, function(m) { return cartodb[m] !== undefined; }));
+    return _.every(_.map(mods, function(m) { return cdb[m] !== undefined; }));
   },
 
   loadModules: function(layers, done) {
@@ -140,12 +181,12 @@ var Vis = cdb.core.View.extend({
     }
     function loaded () {
       if (self.checkModules(layers)) {
-        cdb.config.unbind('moduleLoaded', loaded);
+        config.unbind('moduleLoaded', loaded);
         done();
       }
     }
 
-    cdb.config.bind('moduleLoaded', loaded);
+    config.bind('moduleLoaded', loaded);
     _.defer(loaded);
   },
 
@@ -154,7 +195,7 @@ var Vis = cdb.core.View.extend({
       this.legends.remove();
     }
 
-    this.legends = new cdb.geo.ui.StackedLegend({
+    this.legends = new StackedLegend({
       legends: legends
     });
 
@@ -260,12 +301,12 @@ var Vis = cdb.core.View.extend({
 
   load: function(data, options) {
     var self = this;
+    this._data = data;
 
     if (typeof(data) === 'string') {
-
       var url = data;
 
-      cdb.core.Loader.get(url, function(data) {
+      Loader.get(url, function(data) {
         if (data) {
           self.load(data, options);
         } else {
@@ -274,7 +315,6 @@ var Vis = cdb.core.View.extend({
       });
 
       return this;
-
     }
 
     // if the viz.json contains slides, discard the main viz.json and use the slides
@@ -293,23 +333,18 @@ var Vis = cdb.core.View.extend({
     }
 
     if (!this.checkModules(layers)) {
-
       if (this.moduleChecked) {
-
         self.throwError("modules couldn't be loaded");
         return this;
-
       }
 
       this.moduleChecked = true;
-
 
       this.loadModules(layers, function() {
         self.load(data, options);
       });
 
       return this;
-
     }
 
     // configure the vis in http or https
@@ -366,13 +401,14 @@ var Vis = cdb.core.View.extend({
           data.map_provider = 'googlemaps';
           data.layers[0].options.attribution = ''; //GMaps has its own attribution
         } else {
-          cdb.log.error('No base map loaded. Using Leaflet.');
+          log.error('No base map loaded. Using Leaflet.');
         }
       } else {
-        cdb.log.error('GMaps base_type "' + this.gmaps_base_type + ' is not supported. Using leaflet.');
+        log.error('GMaps base_type "' + this.gmaps_base_type + ' is not supported. Using leaflet.');
       }
     }
 
+    // Create the instance of the cdb.geo.Map model
     var mapConfig = {
       title: data.title,
       description: data.description,
@@ -386,17 +422,13 @@ var Vis = cdb.core.View.extend({
 
     // if the boundaries are defined, we add them to the map
     if (data.bounding_box_sw && data.bounding_box_ne) {
-
       mapConfig.bounding_box_sw = data.bounding_box_sw;
       mapConfig.bounding_box_ne = data.bounding_box_ne;
-
     }
 
     if (data.bounds) {
-
       mapConfig.view_bounds_sw = data.bounds[0];
       mapConfig.view_bounds_ne = data.bounds[1];
-
     } else {
       var center = data.center;
 
@@ -408,7 +440,7 @@ var Vis = cdb.core.View.extend({
       mapConfig.zoom = data.zoom === undefined ? 4: data.zoom;
     }
 
-    var map = new cdb.geo.Map(mapConfig);
+    var map = new Map(mapConfig);
     this.map = map;
     this.overlayModels = new Backbone.Collection();
 
@@ -452,7 +484,7 @@ var Vis = cdb.core.View.extend({
     this.$el.append(div);
 
     // Create the map
-    var mapView  = new cdb.geo.MapView.create(div_hack, map);
+    var mapView  = new MapView.create(div_hack, map);
 
     this.mapView = mapView;
 
@@ -479,10 +511,104 @@ var Vis = cdb.core.View.extend({
       this.mapView.bind('newLayerView', this.addTooltip, this);
     }
 
-    this.map.layers.reset(_.map(data.layers, function(layerData) {
-      return Layers.create(layerData.type || layerData.kind, self, layerData);
-    }));
+    var cartoDBLayers;
+    var cartoDBLayerGroup;
+    var layers = [];
+    var interactiveLayers = [];
+    _.each(data.layers, function(layerData) {
+      if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
+        var layersData;
+        var layerGroupClass;
+        if (layerData.type === 'layergroup') {
+          layersData = layerData.options.layer_definition.layers;
+          layerGroupClass = CartoDBLayerGroupAnonymous;
+        } else {
+          layersData = layerData.options.named_map.layers;
+          layerGroupClass = CartoDBLayerGroupNamed;
+        }
+        cartoDBLayers = _.map(layersData, function(layerData) {
+          var cartoDBLayer = Layers.create("cartodb", self, layerData);
+          interactiveLayers.push(cartoDBLayer);
+          return cartoDBLayer;
+        });
+        cartoDBLayerGroup = new layerGroupClass({}, {
+          layers: cartoDBLayers
+        });
+        layers.push(cartoDBLayerGroup);
+      } else {
+        // Treat differently since this kind of layer is rendered client-side (and not through the tiler)
+        var layer = Layers.create(layerData.type, self, layerData);
+        layers.push(layer);
+        if (layerData.type === 'torque') {
+          interactiveLayers.push(layer);
+        }
+      }
+    });
 
+    // TODO: We can probably move this logic somewhere else
+    _.each(interactiveLayers, function(layer, layerIndex) {
+      var widgetsAttrs = layer.get('widgets') || {};
+      for (var id in widgetsAttrs) {
+        var attrs = _.extend({
+          id: id,
+          layerId: layer.get('id')
+        }, widgetsAttrs[id]);
+        var widgetModel = this.widgetModelFactory.createModel(attrs, layerIndex);
+        layer.widgets.add(widgetModel);
+      }
+    }, this);
+
+    var isLayerWithTimeWidget = function(m) {
+      return m.widgets.any(isTimeSeriesWidget);
+    };
+
+    // TODO WidgetView assumes all widgets to be rendered in one place which won't work for the time widget, could we
+    // solve this differently/better? for now extract the layer (assumes there to only be one) and attach the view here
+    var layer = _.find(interactiveLayers, isLayerWithTimeWidget);
+    if (layer) {
+      var widgetModel = layer.widgets.find(isTimeSeriesWidget);
+      var view = this.widgetViewFactory.createWidgetView(widgetModel, layer);
+      this.addView(view);
+      $('.js-dashboard-map-wrapper').append(view.render().el);
+    }
+
+    // TODO: This will need to change when new layers are added / removed
+    var layersWithWidgets = new Backbone.Collection(_.reject(interactiveLayers, isLayerWithTimeWidget));
+    var widgetsView = new WidgetsView({
+      widgetViewFactory: this.widgetViewFactory,
+      layers: layersWithWidgets
+    });
+    $('.js-dashboard').append(widgetsView.render().el);
+
+    // TODO: Perhaps this "endpoint" could be part of the "datasource"?
+    var endpoint = WindshaftConfig.MAPS_API_BASE_URL;
+    var configGenerator = WindshaftPublicDashboardConfig;
+    var datasource = data.datasource;
+    // TODO: We can use something else to differentiate types of "datasource"s
+    if (datasource.template_name) {
+      endpoint = [WindshaftConfig.MAPS_API_BASE_URL, 'named', datasource.template_name].join('/');
+      configGenerator = WindshaftPrivateDashboardConfig;
+    }
+
+    var windshaftClient = new WindshaftClient({
+      endpoint: endpoint,
+      windshaftURLTemplate: datasource.maps_api_template,
+      userName: datasource.user_name,
+      statTag: datasource.stat_tag,
+      forceCors: datasource.force_cors
+    });
+
+    var dashboard = new WindshaftDashboard({
+      client: windshaftClient,
+      configGenerator: configGenerator,
+      statTag: datasource.stat_tag,
+      //TODO: assuming here all viz.json has a layergroup and that may not be true
+      layerGroup: cartoDBLayerGroup,
+      layers: interactiveLayers,
+      map: map
+    });
+
+    this.map.layers.reset(layers);
     this.overlayModels.reset(data.overlays);
 
     // if there are no sublayer_options fill it
@@ -500,20 +626,29 @@ var Vis = cdb.core.View.extend({
         self._createSlides([data].concat(data.slides));
       };
 
-      if (cartodb.odyssey === undefined) {
-        cdb.config.bind('moduleLoaded:odyssey', odysseyLoaded);
+      if (cdb.odyssey === undefined) {
+        config.bind('moduleLoaded:odyssey', odysseyLoaded);
         Loader.loadModule('odyssey');
       } else {
         odysseyLoaded();
       }
-
     }
 
     _.defer(function() {
-      self.trigger('done', self, self.getLayers());
-    })
+      self.trigger('done', self, map.layers);
+    });
+
+    // TODO: rethink this
+    if (layersWithWidgets.size() > 0) {
+      setTimeout(function() {
+        self.mapView.invalidateSize();
+      }, 0);
+    }
 
     return this;
+  },
+
+  _addWidget: function() {
 
   },
 
@@ -702,7 +837,7 @@ var Vis = cdb.core.View.extend({
       if (this.mobile_enabled && (type === "zoom" || type === "header" || type === "loader")) return;
 
       // IE<10 doesn't support the Fullscreen API
-      if (type === 'fullscreen' && cdb.core.util.browser.ie && cdb.core.util.browser.ie.version <= 10) return;
+      if (type === 'fullscreen' && util.browser.ie && util.browser.ie.version <= 10) return;
 
       // Decide to create or not the custom overlays
       if (type === 'image' || type === 'text' || type === 'annotation') {
@@ -823,8 +958,8 @@ var Vis = cdb.core.View.extend({
         var legendAttrs = _.extend(layer.legend, {
           visible: layer.visible
         });
-        var legendModel = new cdb.geo.ui.LegendModel(legendAttrs);
-        var legendView = new cdb.geo.ui.Legend({ model: legendModel });
+        var legendModel = new LegendModel(legendAttrs);
+        var legendView = new Legend({ model: legendModel });
         layerView.bind('change:visibility', function(layer, hidden) {
           legendView[hidden ? 'hide': 'show']();
         });
@@ -1110,7 +1245,7 @@ var Vis = cdb.core.View.extend({
       version = 'v2';
     }
 
-    var sql = new cartodb.SQL({
+    var sql = new SQL({
       user: attrs.user_name,
       protocol: protocol,
       host: domain,
@@ -1121,14 +1256,15 @@ var Vis = cdb.core.View.extend({
   },
 
   addTooltip: function(layerView) {
-    if(!layerView || !layerView.containTooltip || !layerView.containTooltip()) {
-      return;
-    }
-    for(var i = 0; i < layerView.getLayerCount(); ++i) {
-      var t = layerView.getTooltipData(i);
+
+    var layers = layerView.model && layerView.model.layers || [];
+
+    for(var i = 0; i < layers.length; ++i) {
+      var layerModel = layers.at(i);
+      var t = layerModel.getTooltipData();
       if (t) {
         if (!layerView.tooltip) {
-          var tooltip = new cdb.geo.ui.Tooltip({
+          var tooltip = new Tooltip({
             mapView: this.mapView,
             layer: layerView,
             template: t.template,
@@ -1144,13 +1280,12 @@ var Vis = cdb.core.View.extend({
             this.tooltip.clean();
           });
         }
-        layerView.setInteraction(i, true);
       }
     }
 
     if (layerView.tooltip) {
       layerView.bind("featureOver", function(e, latlng, pos, data, layer) {
-        var t = layerView.getTooltipData(layer);
+        var t = layers.at(layer).getTooltipData();
         if (t) {
           layerView.tooltip.setTemplate(t.template);
           layerView.tooltip.setFields(t.fields);
@@ -1165,23 +1300,28 @@ var Vis = cdb.core.View.extend({
 
   addInfowindow: function(layerView) {
 
-    if(!layerView.containInfowindow || !layerView.containInfowindow()) {
-      return;
+    var mapView = this.mapView;
+    var infowindow = null;
+    var layers = [];
+    // TODO: this should be managed at a different level so each layer knows if
+    // the infowindow needs to be added
+    if (layerView.model) {
+      if (layerView.model.layers) {
+        layers = layerView.model.layers;
+      } else {
+        if (layerView.model.getInfowindowData) {
+          layers = new Backbone.Collection([layerView.model]);
+        }
+      }
     }
 
-    var mapView = this.mapView;
-    var eventType = 'featureClick';
-    var infowindow = null;
-
-    // activate interactivity for layers with infowindows
-    for(var i = 0; i < layerView.getLayerCount(); ++i) {
-
-      if (layerView.getInfowindowData(i)) {
+    for(var i = 0; i < layers.length; ++i) {
+      var layerModel = layers.at(i);
+      if (layerModel.getInfowindowData()) {
         if(!infowindow) {
-          infowindow = Overlay.create('infowindow', this, layerView.getInfowindowData(i), true);
+          infowindow = Overlay.create('infowindow', this, layerModel.getInfowindowData(), true);
           mapView.addInfowindow(infowindow);
         }
-        layerView.setInteraction(i, true);
       }
     }
 
@@ -1192,7 +1332,7 @@ var Vis = cdb.core.View.extend({
     infowindow.bind('close', function() {
       // when infowindow is closed remove all the filters
       // for tooltips
-      for(var i = 0; i < layerView.getLayerCount(); ++i) {
+      for(var i = 0; i < layers; ++i) {
         var t = layerView.tooltip;
         if (t) {
           t.setFilter(null);
@@ -1202,14 +1342,13 @@ var Vis = cdb.core.View.extend({
 
     // if the layer has no infowindow just pass the interaction
     // data to the infowindow
-    layerView.bind(eventType, function(e, latlng, pos, data, layer) {
+    layerView.bind('featureClick', function(e, latlng, pos, data, layer) {
 
-        var infowindowFields = layerView.getInfowindowData(layer);
+        var infowindowFields = layers.at(layer).getInfowindowData();
         if (!infowindowFields) return;
-        var fields = _.pluck(infowindowFields.fields, 'name');
         var cartodb_id = data.cartodb_id;
 
-        layerView.fetchAttributes(layer, cartodb_id, fields, function(attributes) {
+        layerView.model.fetchAttributes(layer, cartodb_id, function(attributes) {
 
           // Old viz.json doesn't contain width and maxHeight properties
           // and we have to get the default values if there are not defined.
@@ -1219,7 +1358,7 @@ var Vis = cdb.core.View.extend({
               width: infowindowFields.width,
               maxHeight: infowindowFields.maxHeight
             },
-            cdb.geo.ui.InfowindowModel.prototype.defaults
+            InfowindowModel.prototype.defaults
           );
 
           infowindow.model.set({
@@ -1319,7 +1458,7 @@ var Vis = cdb.core.View.extend({
   },
 
   throwError: function(msg, lyr) {
-    cdb.log.error(msg);
+    log.error(msg);
     var self = this;
     _.defer(function() {
       self.trigger('error', msg, lyr);
@@ -1409,7 +1548,7 @@ var Vis = cdb.core.View.extend({
    */
   addInfowindow: function(map, layer, fields, opts) {
     var options = _.defaults(opts || {}, {
-      infowindowTemplate: cdb.vis.INFOWINDOW_TEMPLATE.light,
+      infowindowTemplate: INFOWINDOW_TEMPLATE.light,
       templateType: 'mustache',
       triggerEvent: 'featureClick',
       templateName: 'light',
@@ -1427,15 +1566,15 @@ var Vis = cdb.core.View.extend({
       f.push({ name: fields, order: i});
     }
 
-    var infowindowModel = new cdb.geo.ui.InfowindowModel({
+    var infowindowModel = new InfowindowModel({
       fields: f,
       template_name: options.templateName
     });
 
-    var infowindow = new cdb.geo.ui.Infowindow({
+    var infowindow = new Infowindow({
        model: infowindowModel,
        mapView: map.viz.mapView,
-       template: new cdb.core.Template({
+       template: new Template({
          template: options.infowindowTemplate,
          type: options.templateType
        }).asFunction()
@@ -1484,7 +1623,7 @@ var Vis = cdb.core.View.extend({
     });
 
     if(options.cursorInteraction) {
-      cdb.vis.Vis.addCursorInteraction(map, layer);
+      Vis.addCursorInteraction(map, layer);
     }
 
     return infowindow;
@@ -1509,28 +1648,4 @@ var Vis = cdb.core.View.extend({
 
 });
 
-cdb.vis.INFOWINDOW_TEMPLATE = {
-  light: [
-    '<div class="cartodb-popup v2">',
-    '<a href="#close" class="cartodb-popup-close-button close">x</a>',
-    '<div class="cartodb-popup-content-wrapper">',
-      '<div class="cartodb-popup-content">',
-        '{{#content.fields}}',
-          '{{#title}}<h4>{{title}}</h4>{{/title}}',
-          '{{#value}}',
-            '<p {{#type}}class="{{ type }}"{{/type}}>{{{ value }}}</p>',
-          '{{/value}}',
-          '{{^value}}',
-            '<p class="empty">null</p>',
-          '{{/value}}',
-        '{{/content.fields}}',
-      '</div>',
-    '</div>',
-    '<div class="cartodb-popup-tip-container"></div>',
-  '</div>'
-  ].join('')
-};
-
-cdb.vis.Vis = Vis;
-
-})();
+module.exports = Vis;

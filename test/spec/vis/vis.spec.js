@@ -1,22 +1,21 @@
+var $ = require('jquery');
+var _ = require('underscore');
+var L = require('leaflet');
+var Backbone = require('backbone');
 
-describe("Overlay", function() {
+// required due to implicit dependency in vis --> map-view
+var cdb = require('cdb');
+_.extend(cdb.geo, require('cdb/geo/leaflet'));
+_.extend(cdb.geo, require('cdb/geo/gmaps'));
 
-  it("should register and create a type", function() {
-    var _data;
-    cdb.vis.Overlay.register('test', function(data) {
-      _data = data;
-      return new cdb.core.View();
-    });
+var createVis = require('cdb/api/create-vis');
+var View = require('cdb/core/view');
+var Overlay = require('cdb/vis/vis/overlay');
+var Vis = require('cdb/vis/vis');
+require('cdb/vis/overlays'); // Overlay.register calls
+require('cdb/vis/layers'); // Layers.register calls
 
-    var opt = {a : 1, b:2, pos: [10, 20]};
-    var v = cdb.vis.Overlay.create('test', null, opt);
-    expect(_data).toEqual(opt);
-
-  });
-
-});
-
-describe("Vis", function() {
+describe('vis/vis', function() {
 
   beforeEach(function(){
     this.container = $('<div>').css('height', '200px');
@@ -31,18 +30,27 @@ describe("Vis", function() {
       bounds: [
         [1, 2],
         [3, 4],
-      ]
+      ],
+      datasource: {
+        user_name: "wadus",
+        maps_api_template: "https://{user}.example.com:443",
+        stat_tag: "ece6faac-7271-11e5-a85f-04013fc66a01",
+        force_cors: true // This is sometimes set in the editor
+      }
     };
 
-    this.vis = new cdb.vis.Vis({el: this.container});
+    this.vis = new Vis({el: this.container});
     this.vis.load(this.mapConfig);
-  })
+  });
+
+  afterEach(function() {
+    jasmine.clock().uninstall();
+  });
 
   it("should insert  default max and minZoom values when not provided", function() {
     expect(this.vis.mapView.map_leaflet.options.maxZoom).toEqual(20);
     expect(this.vis.mapView.map_leaflet.options.minZoom).toEqual(0);
   });
-
 
   it("should insert user max and minZoom values when provided", function() {
     this.container = $('<div>').css('height', '200px');
@@ -53,7 +61,6 @@ describe("Vis", function() {
     expect(this.vis.mapView.map_leaflet.options.maxZoom).toEqual(10);
     expect(this.vis.mapView.map_leaflet.options.minZoom).toEqual(5);
   })
-
 
   it("should insert the max boundaries when provided", function() {
     this.container = $('<div>').css('height', '200px');
@@ -129,8 +136,9 @@ describe("Vis", function() {
   });
 
   it("should not invalidate map if map height is 0", function(done) {
+    jasmine.clock().install();
     var container = $('<div>').css('height', '0');
-    var vis = new cdb.vis.Vis({el: container});
+    var vis = new Vis({el: container});
     this.mapConfig.map_provider = "googlemaps";
 
     vis.load(this.mapConfig);
@@ -140,11 +148,12 @@ describe("Vis", function() {
       expect(vis.mapView.invalidateSize).not.toHaveBeenCalled();
       done();
     }, 4000);
+    jasmine.clock().tick(4000);
   });
 
   it("should bind resize changes when map height is 0", function() {
     var container = $('<div>').css('height', '0');
-    var vis = new cdb.vis.Vis({el: container});
+    var vis = new Vis({el: container});
     spyOn(vis, '_onResize');
 
     this.mapConfig.map_provider = "googlemaps";
@@ -156,7 +165,7 @@ describe("Vis", function() {
 
   it("shouldn't bind resize changes when map height is greater than 0", function() {
     var container = $('<div>').css('height', '200px');
-    var vis = new cdb.vis.Vis({el: container});
+    var vis = new Vis({el: container});
     spyOn(vis, '_onResize');
 
     this.mapConfig.map_provider = "googlemaps";
@@ -169,11 +178,11 @@ describe("Vis", function() {
 
   it("should pass map to overlays", function() {
     var _map;
-    cdb.vis.Overlay.register('jaja', function(data, vis){
+    Overlay.register('jaja', function(data, vis){
       _map = vis.map
-      return new cdb.core.View()
+      return new View()
     })
-    var vis = new cdb.vis.Vis({el: this.container});
+    var vis = new Vis({el: this.container});
     this.mapConfig.overlays = [ {type: 'jaja'}];
     vis.load(this.mapConfig);
     expect(_map).not.toEqual(undefined);
@@ -182,7 +191,7 @@ describe("Vis", function() {
   it("when https is false all the urls should be transformed to http", function() {
     this.vis.https = false;
     this.mapConfig.layers = [{
-      kind: 'tiled',
+      type: 'tiled',
       options: {
         urlTemplate: 'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
       }
@@ -198,8 +207,10 @@ describe("Vis", function() {
   })
 
   it("load should call done", function(done) {
+    jasmine.clock().install();
+
     this.mapConfig.layers = [{
-      kind: 'tiled',
+      type: 'tiled',
       options: {
         urlTemplate: 'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
       }
@@ -213,6 +224,7 @@ describe("Vis", function() {
       done();
     }, 100);
 
+    jasmine.clock().tick(1000);
   });
 
   it("should add header", function() {
@@ -305,39 +317,29 @@ describe("Vis", function() {
     expect(this.vis.map.getZoom()).toEqual(10);
   });
 
-
   it("should retrieve the overlays of a given type", function() {
-    var v = this.vis.addOverlay({
-      type: 'tooltip',
-      template: 'test',
-      layer: new L.CartoDBGroupLayer({
-        layer_definition: {version: '1.0.0', layers: [] }
-      })
-    });
-    var v1 = this.vis.addOverlay({
-      type: 'tooltip',
-      template: 'test',
-      layer: new L.CartoDBGroupLayer({
-        layer_definition: {version: '1.0.0', layers: [] }
-      })
-    });
-    var v2 = this.vis.addOverlay({
-      type: 'tooltip',
-      template: 'test',
-      layer: new L.CartoDBGroupLayer({
-        layer_definition: {version: '1.0.0', layers: [] }
-      })
+    Overlay.register('wadus', function(data, vis) {
+      return new View();
     });
 
-    var tooltips = this.vis.getOverlaysByType('tooltip');
+    var tooltip1 = this.vis.addOverlay({
+      type: 'wadus'
+    });
+    var tooltip2 = this.vis.addOverlay({
+      type: 'wadus'
+    });
+    var tooltip3 = this.vis.addOverlay({
+      type: 'wadus'
+    });
+    var tooltips = this.vis.getOverlaysByType('wadus');
     expect(tooltips.length).toEqual(3);
-    expect(tooltips[0]).toEqual(v);
-    expect(tooltips[1]).toEqual(v1);
-    expect(tooltips[2]).toEqual(v2);
-    v.clean();
-    v1.clean();
-    v2.clean();
-    expect(this.vis.getOverlaysByType("tooltip").length).toEqual(0);
+    expect(tooltips[0]).toEqual(tooltip1);
+    expect(tooltips[1]).toEqual(tooltip2);
+    expect(tooltips[2]).toEqual(tooltip3);
+    tooltip1.clean();
+    tooltip2.clean();
+    tooltip3.clean();
+    expect(this.vis.getOverlaysByType("wadus").length).toEqual(0);
   });
 
   describe('addOverlay', function() {
@@ -352,9 +354,12 @@ describe("Vis", function() {
     });
 
     it("should add an overlay to the specified layer and enable interaction", function() {
-      var layer = new L.CartoDBGroupLayer({
-        layer_definition: {version: '1.0.0', layers: [] }
-      });
+      var FakeLayer = function(){};
+      FakeLayer.prototype.setInteraction = function(){};
+      _.extend(FakeLayer.prototype, Backbone.Events);
+
+      var layer = new FakeLayer();
+      spyOn(layer, 'setInteraction');
 
       var tooltip = this.vis.addOverlay({
         type: 'tooltip',
@@ -363,7 +368,7 @@ describe("Vis", function() {
       });
 
       expect(tooltip.options.layer).toEqual(layer);
-      expect(layer.interactionEnabled).toEqual([true]);
+      expect(layer.setInteraction).toHaveBeenCalledWith(true);
     });
 
     it("should add an overlay to the first layer and enable interaction", function(done) {
@@ -384,9 +389,15 @@ describe("Vis", function() {
               }
             }
           }
-        ]
+        ],
+        datasource: {
+          user_name: "wadus",
+          maps_api_template: "https://{user}.example.com:443",
+          stat_tag: "ece6faac-7271-11e5-a85f-04013fc66a01",
+          force_cors: true // This is sometimes set in the editor
+        }
       };
-      cartodb.createVis('map', vizjson, {})
+      createVis('map', vizjson, {})
         .done(function(vis, layers) {
           var tooltip = vis.addOverlay({
             type: 'tooltip',
@@ -404,8 +415,13 @@ describe("Vis", function() {
   });
 
   it ("should load modules", function(done) {
+    // Ensure the torque module is not loaded (might have been loaded in other tests)
+    delete cdb.torque;
+
+    jasmine.clock().install();
+
     this.mapConfig.layers = [
-      {kind: 'torque', options: { tile_style: 'test', user_name: 'test', table_name: 'test'}}
+      {type: 'torque', options: { tile_style: 'test', user_name: 'test', table_name: 'test'}}
     ];
 
     this.vis.load(this.mapConfig);
@@ -420,13 +436,15 @@ describe("Vis", function() {
       }
       expect(found).toEqual(true);
       done()
-    }, 20);
+    }, 200);
+
+    jasmine.clock().tick(1000);
   });
 
   it ("should force GMaps", function() {
     this.mapConfig.map_provider = "leaflet";
     this.mapConfig.layers = [{
-      kind: 'tiled',
+      type: 'tiled',
       options: {
         urlTemplate: 'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
       }
@@ -444,11 +462,8 @@ describe("Vis", function() {
 
   describe("dragging option", function() {
 
-    it("should be enabled with zoom overlay and scrollwheel enabled", function() {
-      var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
-
-      var mapConfig = {
+    beforeEach(function() {
+      this.mapConfig = {
         updated_at: 'cachebuster',
         title: "irrelevant",
         url: "http://cartodb.com",
@@ -458,95 +473,75 @@ describe("Vis", function() {
         zoom: 4,
         bounds: [[1, 2],[3, 4]],
         scrollwheel: true,
-        overlays: [
-          {
-            type: "zoom",
-            order: 6,
-            options: {
-              x: 20,
-              y: 20,
-              display: true
-            },
-            template: ""
-          }
-        ],
+        overlays: [],
+        datasource: {
+          user_name: "wadus",
+          maps_api_template: "https://{user}.example.com:443",
+          stat_tag: "ece6faac-7271-11e5-a85f-04013fc66a01",
+          force_cors: true // This is sometimes set in the editor
+        }
       };
+    });
 
-      vis.load(mapConfig);
+    it("should be enabled with zoom overlay and scrollwheel enabled", function() {
+      var container = $('<div>').css('height', '200px');
+      var vis = new Vis({el: container});
+
+      this.mapConfig.overlays = [
+        {
+          type: "zoom",
+          order: 6,
+          options: {
+            x: 20,
+            y: 20,
+            display: true
+          },
+          template: ""
+        }
+      ];
+
+      vis.load(this.mapConfig);
       expect(vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be enabled with zoom overlay and scrollwheel disabled", function() {
       var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
+      var vis = new Vis({el: container});
 
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: false,
-        overlays: [
-          {
-            type: "zoom",
-            order: 6,
-            options: {
-              x: 20,
-              y: 20,
-              display: true
-            },
-            template: ""
-          }
-        ],
-      };
+      this.mapConfig.overlays = [
+        {
+          type: "zoom",
+          order: 6,
+          options: {
+            x: 20,
+            y: 20,
+            display: true
+          },
+          template: ""
+        }
+      ];
 
-      vis.load(mapConfig);
+      vis.load(this.mapConfig);
       expect(vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be enabled without zoom overlay and scrollwheel enabled", function() {
       var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
+      var vis = new Vis({el: container});
 
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: true,
-        overlays: [],
-      };
+      this.mapConfig.scrollwheel = true;
 
-      vis.load(mapConfig);
+      vis.load(this.mapConfig);
       expect(vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be disabled without zoom overlay and scrollwheel disabled", function() {
       var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
+      var vis = new Vis({el: container});
 
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: false,
-        overlays: [],
-      };
+      this.mapConfig.scrollwheel = false;
 
-      vis.load(mapConfig);
+      vis.load(this.mapConfig);
       expect(vis.map.get('drag')).toBeFalsy();
     });
 
@@ -557,7 +552,7 @@ describe("Vis", function() {
     it('should only display legends for visible layers', function() {
       this.mapConfig.layers = [
         {
-          kind: 'tiled',
+          type: 'tiled',
           legend: {
             type: "custom",
             show_title: false,
@@ -578,7 +573,7 @@ describe("Vis", function() {
         },
         {
           visible: false,
-          kind: 'tiled',
+          type: 'tiled',
           legend: {
             type: "custom",
             show_title: false,
@@ -604,42 +599,5 @@ describe("Vis", function() {
       expect(this.vis.legends.$el.html()).toContain('visible legend item');
       expect(this.vis.legends.$el.html()).not.toContain('invisible legend item');
     })
-  })
-
-  describe("Torque time slider", function() {
-
-    beforeEach(function() {
-      // Load torque module
-      cartodb.torque = torque;
-    })
-
-    it ("should display the time slider if a torque layer is present", function(done) {
-      this.mapConfig.layers = [
-        {
-          kind: 'torque',
-          options: { user_name: 'test', table_name: 'test', tile_style: 'Map { -torque-frame-count: 10;} #test { marker-width: 10; }'}
-        }
-      ];
-
-      this.vis.load(this.mapConfig).done(function(vis, layers){
-        expect(vis.timeSlider).toBeDefined();
-        done();
-      });
-    });
-
-    it ("should NOT display the time slider if a torque layer is not visible", function(done) {
-      this.mapConfig.layers = [
-        {
-          kind: 'torque',
-          visible: false,
-          options: { user_name: 'test', table_name: 'test', tile_style: 'Map { -torque-frame-count: 10;} #test { marker-width: 10; }'}
-        }
-      ];
-
-      this.vis.load(this.mapConfig).done(function(vis, layers){
-        expect(vis.timeSlider).toBeUndefined();
-        done();
-      });
-    });
   })
 });
