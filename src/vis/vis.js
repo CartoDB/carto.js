@@ -35,6 +35,7 @@ var WidgetViewFactory = require('cdb/geo/ui/widgets/widget-view-factory');
 var ListContentView = require('cdb/geo/ui/widgets/list/content_view');
 var HistogramContentView = require('cdb/geo/ui/widgets/histogram/content-view');
 var TimeSeriesContentView = require('cdb/geo/ui/widgets/time-series/content-view');
+var TorqueTimeSeriesContentView = require('cdb/geo/ui/widgets/time-series/torque-content-view');
 var CategoryContentView = require('cdb/geo/ui/widgets/category/content_view');
 var FormulaContentView = require('cdb/geo/ui/widgets/formula/content_view');
 var WindshaftConfig = require('cdb/windshaft/config');
@@ -135,6 +136,22 @@ var Vis = View.extend(/** @lends Vis.prototype */{
           });
         }
       }, {
+        // Torque time-series widget, keep before the normal time-series type to be instantiated if it's an torque layer
+        match: function(widget, layer) {
+          return layer.get('type') === 'torque' && isTimeSeriesWidget(widget);
+        },
+        createContentView: function(widget, layer) {
+          return new TorqueTimeSeriesContentView({
+            model: widget,
+            filter: widget.filter,
+            torqueLayerModel: layer
+          });
+        },
+        customizeWidgetAttrs: function(attrs) {
+          attrs.className += ' Dashboard-time';
+          return attrs;
+        }
+      }, {
         match: isTimeSeriesWidget,
         createContentView: function(widget) {
           return new TimeSeriesContentView({
@@ -145,7 +162,7 @@ var Vis = View.extend(/** @lends Vis.prototype */{
         customizeWidgetAttrs: function(attrs) {
           attrs.className += ' Dashboard-time';
           return attrs;
-        },
+        }
       }, {
         type: 'histogram',
         createContentView: function(widget) {
@@ -275,9 +292,6 @@ var Vis = View.extend(/** @lends Vis.prototype */{
       if(subLayer.model && subLayer.model.get('type') === 'torque') {
         if (o.visible === false) {
           subLayer.model.set('visible', false);
-          if (this.timeSlider) {
-            this.timeSlider.hide();
-          }
         }
       }
     }
@@ -297,28 +311,6 @@ var Vis = View.extend(/** @lends Vis.prototype */{
     }
 
     this._createOverlays(overlays, data, options);
-  },
-
-  /**
-   * Adds time slider to the given torque layer.
-   *
-   * @param  {TorqueLayer} torqueLayer Torque layer model instance.
-   */
-  addTimeSlider: function(torqueLayer) {
-    // if a timeslides already exists don't create it again
-    if (torqueLayer && (torqueLayer.options.steps > 1) && !this.timeSlider) {
-      var self = this;
-      // dont use add overlay since this overlay is managed by torque layer
-      var timeSlider = Overlay.create('time_slider', this, { layer: torqueLayer });
-      this.mapView.addOverlay(timeSlider);
-      this.timeSlider = timeSlider;
-      // remove when layer is done
-      torqueLayer.bind('remove', function _remove() {
-        self.timeSlider = null;
-        timeSlider.remove();
-        torqueLayer.unbind('remove', _remove);
-      });
-    }
   },
 
   _setupSublayers: function(layers, options) {
@@ -552,10 +544,6 @@ var Vis = View.extend(/** @lends Vis.prototype */{
 
     this.mapView.bind('newLayerView', this._addLoading, this);
 
-    if (options.time_slider) {
-      this.mapView.bind('newLayerView', this._addTimeSlider, this);
-    }
-
     if (this.infowindow) {
       this.mapView.bind('newLayerView', this.addInfowindow, this);
     }
@@ -706,23 +694,6 @@ var Vis = View.extend(/** @lends Vis.prototype */{
    */
   _addWidget: function() {
 
-  },
-
-  _addTimeSlider: function() {
-    var self = this;
-    var torque = _(this.getLayers()).find(function(layer) {
-      return layer.model.get('type') === 'torque' && layer.model.get('visible');
-    });
-    if (torque) {
-      this.torqueLayer = torque;
-      // send step events from torque layer
-      this.torqueLayer.bind('change:time', function(s) {
-        this.trigger('change:step', this.torqueLayer, this.torqueLayer.getStep());
-      }, this);
-      if (!this.mobile_enabled && this.torqueLayer) {
-        this.addTimeSlider(this.torqueLayer);
-      }
-    }
   },
 
   /**
