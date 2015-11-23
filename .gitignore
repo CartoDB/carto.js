@@ -4,7 +4,7 @@
 .rvmrc
 .tmp
 *.swp
-apidoc
+apidoc*
 bower_components
 cartodb.js-bower/
 dist
