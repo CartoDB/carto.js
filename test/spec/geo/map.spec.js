@@ -234,7 +234,7 @@ describe("geo.map", function() {
 
       // Map has the default CartoDB attribution
       expect(map.get('attribution')).toEqual([
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>"
+        cdb.core.sanitize.html("CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>")
       ]);
 
       var layer1 = new cdb.geo.CartoDBLayer({ attribution: 'attribution1' });
@@ -248,7 +248,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       var layer = new cdb.geo.CartoDBLayer({ attribution: 'attribution2' });
@@ -260,7 +260,7 @@ describe("geo.map", function() {
         "attribution1",
         "wadus",
         "attribution2",
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       layer.set('attribution', 'new attribution');
@@ -270,7 +270,7 @@ describe("geo.map", function() {
         "attribution1",
         "wadus",
         "new attribution",
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       map.layers.remove(layer);
@@ -278,7 +278,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       // Addind a layer with the default attribution
@@ -290,7 +290,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
     })
   });
