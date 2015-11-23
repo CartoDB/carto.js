@@ -52,7 +52,10 @@ var WidgetsView = View.extend(/** @lends WidgetsView.prototype */ {
    * @param  {Layer} layer **TODO what is the type???**
    */
   _renderLayerWidgetsView: function(layer) {
-    var layerWidgetsView = new LayerWidgetsView({ model: layer });
+    var layerWidgetsView = new LayerWidgetsView({
+      widgetViewFactory: this.options.widgetViewFactory,
+      model: layer
+    });
     this.$el.append(layerWidgetsView.render().el);
     this.addView(layerWidgetsView);
   }

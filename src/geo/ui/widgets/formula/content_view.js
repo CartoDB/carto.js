@@ -1,5 +1,7 @@
 var _ = require('underscore');
 var WidgetContent = require('../standard/widget_content_view');
+var template = require('./template.tpl');
+var d3 = require('d3');
 
 /**
  * Default widget content view:
@@ -11,33 +13,19 @@ module.exports = WidgetContent.extend({
     WidgetContent.prototype.initialize.call(this);
   },
 
-  _TEMPLATE: ' ' +
-    '<div class="Widget-header">'+
-      '<div class="Widget-title">'+
-        '<h3 class="Widget-textBig"><%= title %></h3>'+
-        '<div class="Widget-tag Widget-tag--green">'+
-          '<span class="Widget-textSmaller Widget-textSmaller--upper"><%- operation %></span>'+
-        '</div>'+
-      '</div>'+
-      '<dl class="Widget-info">'+
-        '<dt class="Widget-infoItem Widget-textSmaller Widget-textSmaller--upper"><%- nulls %> null rows</dt>'+
-      '</dl>'+
-    '</div>'+
-    '<div class="Widget-content">'+
-      '<% if (!_.isUndefined(value)) { %>'+
-        '<h4 class="Widget-textBigger" title="<%- value %>"><%- value %></h4>'+
-      '<% } else { %>'+
-        '<div class="Widget-listItem--fake"></div>'+
-      '<% } %>'+
-    '</div>',
-
   render: function() {
     this.clearSubViews();
-    var template = _.template(this._TEMPLATE);
+    var value = this.dataModel.get('data');
+    var format = d3.format('0,000');
+
+    if (_.isNumber(value)) {
+      value = format(value.toFixed(2));
+    }
+
     this.$el.html(
       template({
         title: this.dataModel.get('title'),
-        value: this.dataModel.get('data'),
+        value: value,
         operation: this.dataModel.get('operation'),
         nulls: this.dataModel.get('nulls')
       })
