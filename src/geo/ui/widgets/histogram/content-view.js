@@ -4,7 +4,7 @@ var d3 = require('d3');
 var Model = require('cdb/core/model');
 var View = require('cdb/core/view');
 var WidgetContent = require('../standard/widget_content_view');
-var WidgetHistogramChart = require('./chart');
+var HistogramChartView = require('./chart');
 var placeholder = require('./placeholder.tpl');
 var template = require('./content.tpl');
 var xAxisTickFormatter = d3.format('.2s');
@@ -33,8 +33,8 @@ module.exports = WidgetContent.extend({
 
   _initViews: function() {
     this._setupDimensions();
-    this._renderMainChart();
     this._renderMiniChart();
+    this._renderMainChart();
   },
 
   _initBinds: function() {
@@ -74,12 +74,12 @@ module.exports = WidgetContent.extend({
         this.originalData = this.dataModel.getData();
       }
 
-      this.chart.replaceData(this.dataModel.getData());
+      this.histogramChartView.replaceData(this.dataModel.getData());
     }
 
     if (this.unsettingRange) {
       this.unsettingRange = false;
-      this.chart.replaceData(this.originalData);
+      this.histogramChartView.replaceData(this.originalData);
       this.viewModel.set({ lo_index: null, hi_index: null });
     } else {
       if (this._isZoomed() && !this.lockZoomedData) {
@@ -126,56 +126,46 @@ module.exports = WidgetContent.extend({
 
   _onWindowResize: function() {
     this._setupDimensions();
-    if (this.chart) this.chart.resize(this.canvasWidth);
-    if (this.miniChart) this.miniChart.resize(this.canvasWidth);
+    if (this.histogramChartView) this.histogramChartView.resize(this.canvasWidth);
+    if (this.miniHistogramChartView) this.miniHistogramChartView.resize(this.canvasWidth);
   },
 
   _renderMainChart: function() {
-    this.chart = new WidgetHistogramChart(({
+    this.histogramChartView = new HistogramChartView(({
       y: 0,
       margin: { top: 4, right: 4, bottom: 20, left: 4 },
       handles: true,
       width: this.canvasWidth,
       height: this.canvasHeight,
-      data: this.dataModel.getData(),
-      xAxisTickFormat: this._xAxisTickFormat.bind(this)
+      data: this.dataModel.getData()
     }));
-    this.$('.js-content').append(this.chart.el);
-    this.addView(this.chart);
 
-    this.chart.bind('range_updated', this._onRangeUpdated, this);
-    this.chart.bind('on_brush_end', this._onBrushEnd, this);
-    this.chart.bind('hover', this._onValueHover, this);
-    this.chart.render().show();
+    this.$('.js-content').append(this.histogramChartView.el);
+    this.addView(this.histogramChartView);
+
+    this.histogramChartView.bind('range_updated', this._onRangeUpdated, this);
+    this.histogramChartView.bind('on_brush_end', this._onBrushEnd, this);
+    this.histogramChartView.bind('hover', this._onValueHover, this);
+    this.histogramChartView.render().show();
 
     this._updateStats();
   },
 
-  _xAxisTickFormat: function(d, i, data) {
-    return (i === data.length - 1)
-      ? this._formatNumber(data[i].end)
-      : this._formatNumber(data[i].start);
-  },
-
-  _formatNumber: function(value, unit) {
-    return xAxisTickFormatter(value) + (unit ? ' ' + unit : '');
-  },
-
   _renderMiniChart: function() {
-    this.miniChart = new WidgetHistogramChart(({
+    this.miniHistogramChartView = new HistogramChartView(({
       className: 'mini',
-      el: this.chart.$el, // TODO the mini-histogram should not depend on the chart histogram's DOM
       handles: false,
       width: this.canvasWidth,
-      margin: { top: 0, right: 0, bottom: 0, left: 4 },
+      margin: { top: 0, right: 0, bottom: 20, left: 4 },
       y: 0,
-      height: 20,
-      data: this.dataModel.getData(),
-      xAxisTickFormat: this._xAxisTickFormat.bind(this)
+      height: 40,
+      data: this.dataModel.getData()
     }));
 
-    this.miniChart.bind('on_brush_end', this._onMiniRangeUpdated, this);
-    this.miniChart.render().hide();
+    this.addView(this.miniHistogramChartView);
+    this.$('.js-content').append(this.miniHistogramChartView.el);
+    this.miniHistogramChartView.bind('on_brush_end', this._onMiniRangeUpdated, this);
+    this.miniHistogramChartView.render().hide();
   },
 
   _setupBindings: function() {
@@ -217,7 +207,7 @@ module.exports = WidgetContent.extend({
     this.lockZoomedData = false;
 
     this._clearTooltip();
-    this.chart.removeSelection();
+    this.histogramChartView.removeSelection();
 
     var data = this.originalData;
     var start = data[loBarIndex].start;
@@ -284,7 +274,7 @@ module.exports = WidgetContent.extend({
 
   _onChangeTotal: function() {
     //this._animateValue('.js-val', 'total', ' SELECTED');
-    this.$('.js-val').text(this.chart.formatNumber(this.viewModel.get('total')) + ' SELECTED');
+    this.$('.js-val').text(this.histogramChartView.formatNumber(this.viewModel.get('total')) + ' SELECTED');
   },
 
   _onChangeMax: function() {
@@ -292,7 +282,7 @@ module.exports = WidgetContent.extend({
     if (this.viewModel.get('max') === undefined) {
       return '0 MAX';
     }
-    this.$('.js-max').text(this.chart.formatNumber(this.viewModel.get('max')) + ' MAX');
+    this.$('.js-max').text(this.histogramChartView.formatNumber(this.viewModel.get('max')) + ' MAX');
   },
 
   _onChangeMin: function() {
@@ -300,11 +290,11 @@ module.exports = WidgetContent.extend({
     if (this.viewModel.get('min') === undefined) {
       return '0 MIN';
     }
-    this.$('.js-min').text(this.chart.formatNumber(this.viewModel.get('min')) + ' MIN');
+    this.$('.js-min').text(this.histogramChartView.formatNumber(this.viewModel.get('min')) + ' MIN');
   },
 
   _onChangeAvg: function() {
-    this.$('.js-avg').text(this.chart.formatNumber(this.viewModel.get('avg')) + ' AVG');
+    this.$('.js-avg').text(this.histogramChartView.formatNumber(this.viewModel.get('avg')) + ' AVG');
     //this._animateValue('.js-avg', 'avg', 'AVG');
   },
 
@@ -369,8 +359,8 @@ module.exports = WidgetContent.extend({
   },
 
   _onZoomIn: function() {
-    this.miniChart.show();
-    this.chart.expand(this.canvasHeight + 60);
+    this.miniHistogramChartView.show();
+    this.histogramChartView.expand(this.canvasHeight + 60);
 
     this._showMiniRange();
 
@@ -380,9 +370,9 @@ module.exports = WidgetContent.extend({
   },
 
   _zoom: function() {
-    this.chart.removeSelection();
     this.lockedByUser = true;
     this.viewModel.set({ zoomed: true, zoom_enabled: false });
+    this.histogramChartView.removeSelection();
   },
 
   _onZoomOut: function() {
@@ -394,12 +384,10 @@ module.exports = WidgetContent.extend({
     this.viewModel.set({ zoom_enabled: false, filter_enabled: false, lo_index: null, hi_index: null });
     this.filter.unsetRange();
 
-    this.chart.contract(this.canvasHeight);
-    this.chart.resetIndexes();
+    this.histogramChartView.contract(this.canvasHeight);
+    this.histogramChartView.resetIndexes();
 
-    this.miniChart.hide();
-
-    this.chart.removeSelection();
+    this.miniHistogramChartView.hide();
   },
 
   _showMiniRange: function() {
@@ -408,11 +396,12 @@ module.exports = WidgetContent.extend({
     var loBarIndex = this.viewModel.get('lo_index');
     var hiBarIndex = this.viewModel.get('hi_index');
 
-    this.miniChart.selectRange(loBarIndex, hiBarIndex);
-    this.miniChart.show();
+    this.miniHistogramChartView.selectRange(loBarIndex, hiBarIndex);
+    this.miniHistogramChartView.show();
   },
 
   _clear: function() {
+    this.histogramChartView.removeSelection();
     this.viewModel.set({ zoomed: false, zoom_enabled: false });
     this.viewModel.trigger('change:zoomed');
   },
