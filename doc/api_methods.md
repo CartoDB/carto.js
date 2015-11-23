@@ -202,32 +202,13 @@ cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
 
 Layer metadata must take one of the following forms:
 
+## Layer Source Object
+
 ### Standard Layer Source Object (_type: 'cartodb'_)
 
 Used for most maps with tables that are set to public or public with link.
 
-```javascript
-{
-  user_name: 'your_user_name', // Required
-  type: 'cartodb', // Required
-  sublayers: [{
-    sql: "SELECT * FROM table_name", // Required
-    cartocss: '#table_name {marker-fill: #F0F0F0;}', // Required
-    interactivity: "column1, column2, ...", // Optional
-  },
-  {
-    sql: "SELECT * FROM table_name", // Required
-    cartocss: '#table_name {marker-fill: #F0F0F0;}', // Required
-    interactivity: "column1, column2, ...", // Optional
-   },
-   ...
-  ]
-}
-```
-
-### Torque Layer Source Object (_type: 'torque'_)
-
-Used for [Torque maps](https://github.com/CartoDB/torque). Note that it does not allow sublayers.
+#### Example
 
 ```javascript
 {
@@ -242,9 +223,11 @@ Used for [Torque maps](https://github.com/CartoDB/torque). Note that it does not
 }
 ```
 
-#### Interaction Methods for a Torque Layer
+### Torque Layer Source Object (_type: 'torque'_)
 
-Used to create an animated torque layer with customized settings.
+Used for [Torque maps](https://github.com/CartoDB/torque). Note that it does not allow sublayers.
+
+#### Example
 
 ```javascript
 // initialize a torque layer that uses the CartoDB account details and SQL API to pull in data
@@ -255,36 +238,40 @@ var torqueLayer = new L.TorqueLayer({
 });
 ```
 
-`getValueForPos(x, y[, step])` |
+### Interaction Methods for a Torque Layer
+
+Used to create an animated torque layer with customized settings.
+
+#### getValueForPos(_x, y[, step]_)
+
 --- | ---
 Description | Allows to get the value for the coordinate (in map reference system) for a concrete step. If a step is not specified, the animation step is used. Use caution, as this method increases CPU usage. It returns the value from the raster data, not the rendered data.
 Returns |  An object, such as a { bbox:[], value: VALUE } if there is value for the pos, otherwise, it is null.
 
+#### getValueForBBox(_xstart, ystart, xend, yend_)
 
-`getValueForBBox(xstart, ystart, xend, yend)` |
 --- | ---
 Description | Returns an accumulated numerical value from all the torque areas, within the specified bounds.
 Returns |  A number.
 
+#### getActivePointsBBox(_step_)
 
-`getActivePointsBBox(step)` |
 --- | ---
 Description | Returns the list of bounding boxes active for `step`.
 Returns |  List of bbox:[].
 
+#### getValues(_step_)
 
-`getValues(step)` |
 --- | ---
 Description | Returns the list of values for the pixels active in `step`.
 Returns |  List of values.
 
+#### invalidate()
 
-`invalidate()` |
 --- | ---
 Description | Forces a reload of the layer data.
 
-
-#### Example of Interaction Methods for a Torque Layer
+#### Example
 
 ```javascript
  <script>
@@ -341,6 +328,8 @@ map.on('click', function(e) {
 
 Used for making public maps with private data. See [Named Maps](/cartodb-platform/maps-api/named-maps/) for more information.
 
+#### Example
+
 ```javascript
 {
   user_name: 'your_user_name', // Required
@@ -367,9 +356,11 @@ Used for making public maps with private data. See [Named Maps](/cartodb-platfor
 }
 ```
 
-#### Example
+### Multiple types of layers Source Object
 
 `cartodb.createLayer` combining multiple types of layers and setting a filter
+
+#### Example
 
 ```javascript
 cartodb.createLayer(map, {
