@@ -7,7 +7,7 @@ var CartoDBLayerCommon = require('../cartodb-layer-common');
 var CartoDBLogo = require('../cartodb-logo');
 var d3cdb = require('d3.cartodb');
 
-var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
+var LeafletVectorCartoDBGroupLayerView = L.CartoDBd3Layer.extend({
 
   interactionClass: wax.leaf.interaction,
 
@@ -16,33 +16,36 @@ var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
     CartoDBLayerCommon.prototype
   ],
 
-  options: {
-    opacity:        0.99,
-    attribution:    config.get('cartodb_attributions'),
-    debug:          false,
-    visible:        true,
-    added:          false,
-    tiler_domain:   "cartodb.com",
-    tiler_port:     "80",
-    tiler_protocol: "http",
-    sql_api_domain:     "cartodb.com",
-    sql_api_port:       "80",
-    sql_api_protocol:   "http",
-    maxZoom: 30, // default leaflet zoom level for a layers is 18, raise it
-    extra_params:   {
-    },
-    cdn_url:        null,
-    subdomains:     null
-  },
-
-
-  initialize: function (options, layerModel, leafletMap) {
-    L.CartoDBd3Layer.prototype.initialize.apply(this, [options]);
-    options = options || {};
-    // Set options
-    L.Util.setOptions(this, options);
+  initialize: function (layerModel, leafletMap) {
+    var self = this;
+    var map = leafletMap;
+    L.CartoDBd3Layer.prototype.initialize.apply(this, {});
 
     this.fire = this.trigger;
+
+    // TODO: We can probably move this to an initialize method
+    layerModel.bind('change:urls', function() {
+      self.__update(function() {
+        // if while the layer was processed in the server is removed
+        // it should not be added to the map
+        var id = L.stamp(self);
+        if (!map._layers[id]) {
+          return;
+        }
+        this.layers = self.model.layers.models.map(function(model){
+          var layer = new L.CartoDBd3Layer({
+            tilejson: self.model.get("urls"),
+            cartocss: model.get("cartocss")
+          })
+          layer.addTo(self.options.map);
+          return layer;
+        });
+        self.fire('added');
+        self.options.added = true;
+      });
+    });
+
+
 
     CartoDBLayerCommon.call(this);
     L.TileLayer.prototype.initialize.call(this);
@@ -119,26 +122,9 @@ var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
     this.options.map = map;
 
     // Add cartodb logo
-    if (this.options.cartodb_logo != false)
+    if (this.options.cartodb_logo != false) {
       CartoDBLogo.addWadus({ left:8, bottom:8 }, 0, map._container);
-    // TODO: We can probably move this to an initialize method
-    this.model.bind('change:urls', function() {
-      self.__update(function() {
-        // if while the layer was processed in the server is removed
-        // it should not be added to the map
-        var id = L.stamp(self);
-        if (!map._layers[id]) {
-          return;
-        }
-        this.layers = self.model.layers.models.map(function(model){
-          var layer = new L.CartoDBd3Layer({tilejson: self.model.get("urls"), cartocss: model.get("cartocss")})
-          layer.addTo(self.options.map);
-          return layer;
-        });
-        self.fire('added');
-        self.options.added = true;
-      });
-    });
+    }
   },
 
 
@@ -303,4 +289,4 @@ var LeafletCartoDBGroupLayerBase = L.TileLayer.extend({
   }
 });
 
-module.exports = LeafletCartoDBGroupLayerBase;
+module.exports = LeafletVectorCartoDBGroupLayerView;

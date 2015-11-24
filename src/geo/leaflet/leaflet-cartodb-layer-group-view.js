@@ -7,7 +7,6 @@ var CartoDBLayerCommon = require('../cartodb-layer-common');
 var CartoDBLogo = require('../cartodb-logo');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var LeafletCartoDBGroupLayerBase = require('./leaflet-vector-cartodb-group-layer-base');
 
 var LeafletCartoDBLayerGroupView = L.TileLayer.extend({
 
