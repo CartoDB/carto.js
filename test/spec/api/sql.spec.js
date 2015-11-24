@@ -387,7 +387,7 @@ describe("column descriptions", function(){
     it("should return correct properties", function(){
       expect(description.type).toEqual("number");
       expect(["A", "U", "F", "J"].indexOf(description.dist_type) > -1).toBe(true);
-      var numTypes = ["avg", "max", "min", "stddevmean", "weight", "stddev", "null_ratio", "count"];
+      var numTypes = ["avg", "max", "min", "weight", "stddev", "null_ratio", "count"];
       for(var i = 0; i < numTypes.length; i++){
         expect(typeof description[numTypes[i]]).toEqual("number");
       }

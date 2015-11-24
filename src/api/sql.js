@@ -598,7 +598,7 @@
             'SELECT CDB_QuantileBins(array_agg(distinct({{column}}::numeric)), 7) As quantiles, ',
             '       CDB_EqualIntervalBins(array_agg({{column}}::numeric), 7) As equalint, ',
             '       CDB_JenksBins(array_agg(distinct({{column}}::numeric)), 7) As jenks, ',
-            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) As headstails ',
+            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) As headtails ',
             'FROM ({{sql}}) _table_sql where {{column}} is not null',
          ')',
          'SELECT * FROM histogram, stats, buckets, hist'
@@ -632,7 +632,7 @@
           distinct: row.uniq,
           dist_type: row.dist_type,
           equalint: row.equalint,
-          headstails: row.headstails,
+          headtails: row.headtails,
           jenks: row.jenks,
           kurtosis: row.kurtosis,
           max: row.max,
