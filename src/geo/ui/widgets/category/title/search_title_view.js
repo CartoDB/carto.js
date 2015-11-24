@@ -5,7 +5,9 @@ var View = require('cdb/core/view');
 var template = require('./search_title_template.tpl');
 
 /**
- * Show category title or search any category
+ *  Show category title or search any category
+ *  + another options for this widget, as in,
+ *  colorize categories, lock defined categories...
  *
  */
 
@@ -89,16 +91,17 @@ module.exports = View.extend({
   ),
 
   _bindESC: function() {
-    $(window).bind("keyup." + this.cid, _.bind(this._onKeyUp, this));
+    $(document).bind("keyup." + this.cid, _.bind(this._onKeyUp, this));
   },
 
   _unbindESC: function() {
-    $(window).unbind("keyup." + this.cid);
+    $(document).unbind("keyup." + this.cid);
   },
 
   _onKeyUp: function(ev) {
     if (ev.keyCode === 27) {
-      this.viewModel.disableSearch();
+      this._cancelSearch();
+      return false;
     }
   },
 
@@ -121,6 +124,11 @@ module.exports = View.extend({
 
   _cancelColors: function() {
     this.dataModel.cancelCategoryColors();
+  },
+
+  _cancelSearch: function() {
+    this.dataModel.cleanSearch();
+    this.viewModel.disableSearch();
   },
 
   clean: function() {
