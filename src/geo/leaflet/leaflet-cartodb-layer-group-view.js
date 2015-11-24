@@ -1,4 +1,4 @@
-src/geo/leaflet/leaflet-cartodb-layer-group-view.jsvar wax = require('wax.cartodb.js');
+var wax = require('wax.cartodb.js');
 var L = require('leaflet');
 var config = require('cdb.config');
 var Profiler = require('cdb.core.Profiler');
