@@ -1,9 +1,15 @@
+var _ = require('underscore');
+var Backbone = require('backbone');
 var L = require('leaflet');
 var d3cdb = require('d3.cartodb');
 
 var LeafletVectorCartoDBGroupLayerView = L.Class.extend({
 
-  initialize: function (layerModel, leafletMap) {
+  initialize: function(layerModel, leafletMap) {
+    this.leafletLayer = this;
+    this.leafletMap = this.map = leafletMap;
+    this.model = layerModel;
+
     this.model = layerModel;
     this.map = leafletMap;
 
@@ -31,6 +37,11 @@ var LeafletVectorCartoDBGroupLayerView = L.Class.extend({
 
   onRemove: function(map) {
   },
+
+  setZIndex: function() {
+  }
 });
+
+_.extend(LeafletVectorCartoDBGroupLayerView.prototype, Backbone.Events);
 
 module.exports = LeafletVectorCartoDBGroupLayerView;
