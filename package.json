@@ -28,7 +28,7 @@
     }
   ],
   "scripts": {
-    "jsdoc": "jsdoc --configure jsdoc-conf.json --private --package package.json --readme README.md",
+    "jsdoc": "rm -rf apidoc; jsdoc --configure jsdoc-conf.json --private --package package.json --readme README.md",
     "jsdoc2": "documentation -f html src/cartodb.js -o apidoc2/"
   },
   "devDependencies": {
