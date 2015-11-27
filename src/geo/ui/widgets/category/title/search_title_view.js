@@ -5,7 +5,9 @@ var View = require('cdb/core/view');
 var template = require('./search_title_template.tpl');
 
 /**
- * Show category title or search any category
+ *  Show category title or search any category
+ *  + another options for this widget, as in,
+ *  colorize categories, lock defined categories...
  *
  */
 
@@ -18,7 +20,8 @@ module.exports = View.extend({
     'click .js-unlock': '_unlockCategories',
     'click .js-applyLocked': '_applyLocked',
     'click .js-applyColors': '_applyColors',
-    'click .js-cancelColors': '_cancelColors'
+    'click .js-cancelColors': '_cancelColors',
+    'click .js-collapse': '_toggleCollapse'
   },
 
   initialize: function() {
@@ -30,6 +33,7 @@ module.exports = View.extend({
   render: function() {
     this.$el.html(
       template({
+        isCollapsed: this.viewModel.isCollapsed(),
         isColorApplied: this.dataModel.isColorApplied(),
         title: this.dataModel.get('title'),
         columnName: this.dataModel.get('column'),
@@ -45,6 +49,7 @@ module.exports = View.extend({
 
   _initBinds: function() {
     this.viewModel.bind('change:search', this._onSearchToggled, this);
+    this.viewModel.bind('change:collapsed', this.render, this);
     this.dataModel.bind('change:filter change:locked change:lockCollection change:categoryColors', this.render, this);
     this.add_related_model(this.dataModel);
     this.add_related_model(this.viewModel);
@@ -89,16 +94,17 @@ module.exports = View.extend({
   ),
 
   _bindESC: function() {
-    $(window).bind("keyup." + this.cid, _.bind(this._onKeyUp, this));
+    $(document).bind("keyup." + this.cid, _.bind(this._onKeyUp, this));
   },
 
   _unbindESC: function() {
-    $(window).unbind("keyup." + this.cid);
+    $(document).unbind("keyup." + this.cid);
   },
 
   _onKeyUp: function(ev) {
     if (ev.keyCode === 27) {
-      this.viewModel.disableSearch();
+      this._cancelSearch();
+      return false;
     }
   },
 
@@ -121,6 +127,15 @@ module.exports = View.extend({
 
   _cancelColors: function() {
     this.dataModel.cancelCategoryColors();
+  },
+
+  _cancelSearch: function() {
+    this.dataModel.cleanSearch();
+    this.viewModel.disableSearch();
+  },
+
+  _toggleCollapse: function() {
+    this.viewModel.toggleCollapsed();
   },
 
   clean: function() {

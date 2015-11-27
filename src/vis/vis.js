@@ -143,7 +143,7 @@ var Vis = View.extend(/** @lends Vis.prototype */{
         createContentView: function(widget, layer) {
           return new TorqueTimeSeriesContentView({
             model: widget,
-            filter: widget.filter,
+            rangeFilter: widget.filter,
             torqueLayerModel: layer
           });
         },
@@ -1395,7 +1395,11 @@ var Vis = View.extend(/** @lends Vis.prototype */{
           t.setFilter(null);
         }
       }
-    })
+    });
+
+    infowindow.model.bind('domready', function() {
+      layerView.trigger('infowindow_ready', infowindow, this);
+    }, this);
 
     // if the layer has no infowindow just pass the interaction
     // data to the infowindow

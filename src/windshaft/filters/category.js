@@ -30,7 +30,7 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
   },
 
   isEmpty: function() {
-    return this.rejectedCategories.size() === 0 && this.acceptedCategories.size() === 0;
+    return this.rejectedCategories.size() === 0 && this.acceptedCategories.size() === 0 && !this.get('rejectAll');
   },
 
   accept: function(values, applyFilter) {
@@ -56,9 +56,7 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
 
   acceptAll: function() {
     this.set('rejectAll', false);
-    this.acceptedCategories.reset();
-    this.rejectedCategories.reset();
-    this.applyFilter();
+    this.cleanFilter();
   },
 
   isAccepted: function(name) {
@@ -108,11 +106,9 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     return this.rejectedCategories;
   },
 
-  rejectAll: function(d) {
-    this.acceptedCategories.reset();
-    this.reject(d, false);
+  rejectAll: function() {
     this.set('rejectAll', true);
-    this.applyFilter();
+    this.cleanFilter();
   },
 
   cleanFilter: function(triggerChange) {
@@ -139,8 +135,7 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     var rejectedCats = { reject: _.pluck(this.rejectedCategories.toJSON(), 'name') };
 
     if (this.get('rejectAll')) {
-      // TODO: replace this by empty array when it is available through API
-      filter = { accept: ['___@___'] };
+      filter = { accept: [] };
     } else if (acceptCount > 0) {
       filter = acceptedCats;
     } else if (rejectCount > 0 && acceptCount === 0) {

@@ -3,6 +3,16 @@ var WidgetModel = require('../widget_model');
 
 module.exports = WidgetModel.extend({
 
+  defaults: _.extend(
+    {},
+    WidgetModel.prototype.defaults,
+    {
+      data: '',
+      suffix: '',
+      prefix: ''
+    }
+  ),
+
   // TODO: The response format has probably changed
   parse: function(r) {
     return {
@@ -12,12 +22,13 @@ module.exports = WidgetModel.extend({
   },
 
   toJSON: function(d) {
-      return {
-          type: "formula",
-          options: {
-              column: this.get('column'),
-              operation: this.get('operation')
-          }
-      };
+    return {
+      type: "formula",
+      options: {
+        column: this.get('column'),
+        operation: this.get('operation')
+      }
+    };
   }
+
 });

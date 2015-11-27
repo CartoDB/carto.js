@@ -1,13 +1,15 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var d3 = require('d3');
+var formatter = require('cdb/core/format');
 var Model = require('cdb/core/model');
 var View = require('cdb/core/view');
+var HistogramTitleView = require('./histogram_title_view');
 var WidgetContent = require('../standard/widget_content_view');
+var WidgetViewModel = require('../widget_content_model');
 var HistogramChartView = require('./chart');
 var placeholder = require('./placeholder.tpl');
 var template = require('./content.tpl');
-var xAxisTickFormatter = d3.format('.2s');
 
 /**
  * Widget content view for a histogram
@@ -26,12 +28,19 @@ module.exports = WidgetContent.extend({
   initialize: function() {
     this.dataModel = this.options.dataModel;
     this.firstData = _.clone(this.options.dataModel);
-    this.viewModel = new Model();
+    this.viewModel = new WidgetViewModel();
     this.lockedByUser = false;
     WidgetContent.prototype.initialize.call(this);
   },
 
   _initViews: function() {
+    var titleView = new HistogramTitleView({
+      viewModel: this.viewModel,
+      dataModel: this.dataModel
+    });
+    this.$('.js-title').html(titleView.render().el);
+    this.addView(titleView);
+
     this._setupDimensions();
     this._renderMiniChart();
     this._renderMainChart();
@@ -39,7 +48,11 @@ module.exports = WidgetContent.extend({
 
   _initBinds: function() {
     this.dataModel.once('change:data', this._onFirstLoad, this);
+    this.viewModel.bind('change:collapsed', function(mdl, isCollapsed) {
+      this.$el.toggleClass('is-collapsed', !!isCollapsed);
+    }, this);
     this.add_related_model(this.dataModel);
+    this.add_related_model(this.viewModel);
   },
 
   _onFirstLoad: function() {
@@ -134,10 +147,12 @@ module.exports = WidgetContent.extend({
     this.histogramChartView = new HistogramChartView(({
       margin: { top: 4, right: 4, bottom: 20, left: 4 },
       handles: true,
+      axis_tip: true,
       width: this.canvasWidth,
       height: this.canvasHeight,
       data: this.dataModel.getData()
     }));
+    window.c = this.histogramChartView;
 
     this.$('.js-content').append(this.histogramChartView.el);
     this.addView(this.histogramChartView);
@@ -171,6 +186,7 @@ module.exports = WidgetContent.extend({
     this.viewModel.bind('change:zoom_enabled', this._onChangeZoomEnabled, this);
     this.viewModel.bind('change:filter_enabled', this._onChangeFilterEnabled, this);
     this.viewModel.bind('change:total', this._onChangeTotal, this);
+    this.viewModel.bind('change:nulls', this._onChangeNulls, this);
     this.viewModel.bind('change:max',   this._onChangeMax, this);
     this.viewModel.bind('change:min',   this._onChangeMin, this);
     this.viewModel.bind('change:avg',   this._onChangeAvg, this);
@@ -208,15 +224,16 @@ module.exports = WidgetContent.extend({
     this.histogramChartView.removeSelection();
 
     var data = this.originalData;
-    var start = data[loBarIndex].start;
-    var end = data[hiBarIndex - 1].end;
 
-    this._setRange(start, end);
-    this._updateStats();
-  },
-
-  _setRange: function(start, end) {
-    this.filter.setRange({ min: start, max: end });
+    if (loBarIndex >= 0 && loBarIndex < data.length && (hiBarIndex - 1) >= 0 && (hiBarIndex - 1) < data.length) {
+      this.filter.setRange(
+        data[loBarIndex].start,
+        data[hiBarIndex - 1].end
+      );
+      this._updateStats();
+    } else {
+      console.error('Error accessing array bounds', loBarIndex, hiBarIndex, data);
+    }
   },
 
   _onBrushEnd: function(loBarIndex, hiBarIndex) {
@@ -234,10 +251,15 @@ module.exports = WidgetContent.extend({
 
     this.viewModel.set(properties);
 
-    var start = data[loBarIndex].start;
-    var end = data[hiBarIndex - 1].end;
-
-    this._setRange(start, end);
+    if (loBarIndex >= 0 && loBarIndex < data.length && (hiBarIndex - 1) >= 0 && (hiBarIndex - 1) < data.length) {
+      this.filter.setRange(
+        data[loBarIndex].start,
+        data[hiBarIndex - 1].end
+      );
+      this._updateStats();
+    } else {
+      console.error('Error accessing array bounds', loBarIndex, hiBarIndex, data);
+    }
   },
 
   _onRangeUpdated: function(loBarIndex, hiBarIndex) {
@@ -270,30 +292,41 @@ module.exports = WidgetContent.extend({
     this.$(".js-zoom").toggleClass('is-hidden', !this.viewModel.get('zoom_enabled'));
   },
 
+  _onChangeNulls: function() {
+    this.$('.js-nulls').text(formatter.formatNumber(this.viewModel.get('nulls')) + ' NULLS');
+    this.$('.js-nulls').attr('title', this._formatNumberWithCommas(this.viewModel.get('nulls').toFixed(2)) + ' NULLS');
+  },
+
   _onChangeTotal: function() {
-    //this._animateValue('.js-val', 'total', ' SELECTED');
-    this.$('.js-val').text(this.histogramChartView.formatNumber(this.viewModel.get('total')) + ' SELECTED');
+    this.$('.js-val').text(formatter.formatNumber(this.viewModel.get('total')) + ' SELECTED');
+    this.$('.js-val').attr('title', this._formatNumberWithCommas(this.viewModel.get('total').toFixed(2)) + ' SELECTED');
   },
 
   _onChangeMax: function() {
-    //this._animateValue('.js-max', 'max', 'MAX');
     if (this.viewModel.get('max') === undefined) {
-      return '0 MAX';
+      this.$('.js-min').text('0 MAX');
+      return;
     }
-    this.$('.js-max').text(this.histogramChartView.formatNumber(this.viewModel.get('max')) + ' MAX');
+    this.$('.js-max').text(formatter.formatNumber(this.viewModel.get('max')) + ' MAX');
+    this.$('.js-max').attr('title', this._formatNumberWithCommas(this.viewModel.get('max').toFixed(2)) + ' MAX');
   },
 
   _onChangeMin: function() {
-    //this._animateValue('.js-min', 'min', 'MIN');
     if (this.viewModel.get('min') === undefined) {
-      return '0 MIN';
+      this.$('.js-min').text('0 MIN');
+      return;
     }
-    this.$('.js-min').text(this.histogramChartView.formatNumber(this.viewModel.get('min')) + ' MIN');
+    this.$('.js-min').text(formatter.formatNumber(this.viewModel.get('min')) + ' MIN');
+    this.$('.js-min').attr('title', this._formatNumberWithCommas(this.viewModel.get('min').toFixed(2)) + ' MIN');
   },
 
   _onChangeAvg: function() {
-    this.$('.js-avg').text(this.histogramChartView.formatNumber(this.viewModel.get('avg')) + ' AVG');
-    //this._animateValue('.js-avg', 'avg', 'AVG');
+    this.$('.js-avg').text(formatter.formatNumber(this.viewModel.get('avg')) + ' AVG');
+    this.$('.js-avg').attr('title', this._formatNumberWithCommas(this.viewModel.get('avg').toFixed(2)) + ' AVG');
+  },
+
+  _formatNumberWithCommas: function(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   },
 
   _animateValue: function(className, what, unit) {
@@ -316,30 +349,51 @@ module.exports = WidgetContent.extend({
   },
 
   _updateStats: function() {
-    var data = this._getData();
+    var data = this.originalData;
+
+    if (this._isZoomed()) {
+      data = this.zoomedData;
+    }
+
+    var nulls = this.dataModel.get('nulls');
+
     var min, max;
 
     if (data && data.length) {
+
       var loBarIndex = this.viewModel.get('lo_index') || 0;
       var hiBarIndex = this.viewModel.get('hi_index') || data.length;
 
       var sum = this._calcSum(data, loBarIndex, hiBarIndex);
-      var avg = this._calcAvg(data);
+      var avg = this._calcAvg(data, loBarIndex, hiBarIndex);
 
       if (loBarIndex >= 0 && loBarIndex < data.length) {
-        min = data[loBarIndex].min;
+        min = data[loBarIndex].start;
       }
 
       if (hiBarIndex >= 0 && hiBarIndex - 1 < data.length) {
-        max = data[hiBarIndex - 1].max;
+        max = data[hiBarIndex - 1].end;
       }
 
-      this.viewModel.set({ total: sum, min: min, max: max, avg: avg });
+      this.viewModel.set({ total: sum, nulls: nulls, min: min, max: max, avg: avg });
     }
   },
 
-  _calcAvg: function(data) {
-    return Math.round(d3.mean(data, function(d) { return _.isEmpty(d) ? 0 : d.freq; }));
+  _calcAvg: function(data, start, end) {
+
+    var selectedData = data.slice(start, end);
+
+    var total = this._calcSum(data, start, end, total);
+
+    if (!total) {
+      return 0;
+    }
+
+    var area = _.reduce(selectedData, function(memo, d) {
+      return (d.avg && d.freq) ? (d.avg * d.freq) + memo : memo;
+    }, 0);
+
+    return area / total;
   },
 
   _calcSum: function(data, start, end) {
@@ -358,7 +412,7 @@ module.exports = WidgetContent.extend({
 
   _onZoomIn: function() {
     this.miniHistogramChartView.show();
-    this.histogramChartView.expand(this.canvasHeight + 60);
+    this.histogramChartView.expand(20);
 
     this._showMiniRange();
 
@@ -380,6 +434,7 @@ module.exports = WidgetContent.extend({
 
     this.dataModel.set({ own_filter: null });
     this.viewModel.set({ zoom_enabled: false, filter_enabled: false, lo_index: null, hi_index: null });
+
     this.filter.unsetRange();
 
     this.histogramChartView.contract(this.canvasHeight);

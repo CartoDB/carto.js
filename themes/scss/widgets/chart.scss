@@ -2,11 +2,15 @@
   position: relative;
 }
 
+.Widget-chart.Widget-chart--fake {
+  text-align: center;
+}
 .Widget-chartItem.Widget-chartItem--fake {
   display: inline-block;
-  width: 5%;
+  width: 4%;
   height: 40px;
-  margin: 0 1px 0 0;
+  margin: 0;
+  padding: 0;
 }
 .Widget-chartItem--fake.Widget-chartItem--small {
   height: 20px;
@@ -29,6 +33,10 @@
   font-size: 10px;
   text-align: center;
   pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .Widget-chartTooltip:after {
   display: inline-block;
@@ -121,6 +129,10 @@
   shape-rendering: crispEdges;
   font: 10px sans-serif;
   fill: #979EA1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .Axis path {
@@ -131,4 +143,16 @@
   stroke: #EEE;
   stroke-width: 1;
   shape-rendering: crispEdges;
+}
+
+.AxisTip-text {
+  fill: #3AA9E3;
+  font-size: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.AxisTip-rect {
+  fill: #FFF;
 }
