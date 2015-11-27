@@ -1,0 +1,25 @@
+// Namespaces required for classes documentation.
+
+/**
+ * @namespace windshaft
+ */
+
+/**
+ * @namespace windshaft.filters
+ */
+
+/**
+ * @namespace vis
+ */
+
+/**
+ * @namespace geo
+ */
+
+/**
+ * @namespace geo.ui
+ */
+
+/**
+ * @namespace geo.ui.widgets
+ */

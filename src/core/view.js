@@ -1,23 +1,35 @@
+/**
+ * @namespace core
+ */
+
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Profiler = require('cdb.core.Profiler');
 var templates = require('cdb.templates');
 
+/**
+ * Allowed options for {@link core.View} constructor.
+ * @typedef {Object} core.ViewOptions
+ * @property {String} template     **TODO Document**
+ */
 
-var View = Backbone.View.extend(/** @lends View.prototype */ {
+/**
+ * @classdesc Base View for all CartoDB views.
+ * DO NOT USE `Backbone.View` directly !!!
+ *
+ * @class core.View
+ * @name core.View
+ * @extends Backbone.View
+ *
+ * @param {core.ViewOptions} options Options
+ */
+var View = Backbone.View.extend(/** @lends core.View.prototype */ {
 
-  // FIXME: Where this is used ?
+  // TODO: Where this is used ?
   classLabel: 'cdb.core.View',
 
   /**
-   * View constructor
-   *
-   * @classdesc Base View for all CartoDB views.
-   * DO NOT USE `Backbone.View` directly !!!
-   *
-   * @constructs
-   * @extends Backbone.View
-   * @param {Object} options Options **TODO document this options**
+   * Backbone's constructor
    */
   constructor: function(options) {
     this.options = _.defaults(options, this.options);
@@ -158,7 +170,7 @@ var View = Backbone.View.extend(/** @lends View.prototype */ {
     this.$('.tipsy').remove();
   }
 
-}, /** @lends View */ {
+}, /** @lends core.View */ {
 
   viewCount: 0,
   views: {},

@@ -14,10 +14,10 @@ var WidgetErrorView = require('./standard/widget_error_view');
  *  - Sync or unsync widget (sync/unsync), making the proper view
  *  listen or not changes from the current datasource.
  *
- * @class
- * @extends View
+ * @class geo.ui.widgets.WidgetView
+ * @extends core.View
  */
-var Widget = View.extend(/** @lends Widget.prototype */{
+var Widget = View.extend(/** @lends geo.ui.widgets.WidgetView.prototype */ {
 
   /**
    * CSS class name
@@ -35,6 +35,10 @@ var Widget = View.extend(/** @lends Widget.prototype */{
     sync: true
   },
 
+  /**
+   * Render's the current widget. This method must be called by subclasses.
+   * @return {geo.ui.widgets.WidgetView} This instance.
+   */
   render: function() {
     this._loader = new WidgetLoaderView({
       model: this.model

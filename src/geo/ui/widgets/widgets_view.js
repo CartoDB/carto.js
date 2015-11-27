@@ -2,8 +2,15 @@ var View = require('cdb/core/view');
 var LayerWidgetsView = require('cdb/geo/ui/widgets/layer_widgets_view');
 require('simplebar');
 
-
-var WidgetsView = View.extend(/** @lends WidgetsView.prototype */ {
+/**
+ * @classdesc Container for the widgets, which is place within the
+ * visualization {@link Vis} instance.
+ *
+ * @class geo.ui.widgets.WidgetsView
+ * @extends core.View
+ * @param {Object} options Options **TODO document this options**
+ */
+var WidgetsView = View.extend(/** @lends geo.ui.widgets.WidgetsView.prototype */ {
 
   /**
    * CSS class name.
@@ -20,14 +27,8 @@ var WidgetsView = View.extend(/** @lends WidgetsView.prototype */ {
   },
 
   /**
-   * Create a new container view instance.
-   *
-   * @classdesc Container for the widgets, which is place within the
-   * visualization {@link Vis} instance.
-   *
-   * @constructs
-   * @extends View
-   * @param {Object} options Options **TODO document this options**
+   * Backbone' initialize
+   * @private
    */
   initialize: function(options) {
     this.layers = options.layers;

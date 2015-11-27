@@ -3,23 +3,36 @@ var Backbone = require('backbone');
 var WindshaftFilterBase = require('./base');
 
 /**
- *  @classdesc Filter used by the category widget
+ *  @classdesc Category filter used to maintain a list of categories. Allows to
+ *  specify which are accepted and which are rejected.
  *
- * 	@class
- * 	@extends FilterBase
+ * 	@class windshaft.filters.FilterCategory
+ * 	@extends windshaft.filters.FilterBase
  */
-var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.prototype */ {
+var FilterCategory = WindshaftFilterBase.extend( /** @lends windshaft.filters.FilterCategory.prototype */ {
 
+  /**
+   * Default values.
+   * @property {bool} rejectAll By default all categories are accepted
+   */
   defaults: {
     rejectAll: false
   },
 
+  /**
+   * Backbone's initialize
+   * @private
+   */
   initialize: function() {
     this.rejectedCategories = new Backbone.Collection();
     this.acceptedCategories = new Backbone.Collection();
     this._initBinds();
   },
 
+  /**
+   * Binds events.
+   * @private
+   */
   _initBinds: function() {
     this.rejectedCategories.bind('add remove', function() {
       this.set('rejectAll', false);
@@ -29,10 +42,20 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     }, this);
   },
 
+  /**
+   * @override
+   * @inheritdoc
+   */
   isEmpty: function() {
     return this.rejectedCategories.size() === 0 && this.acceptedCategories.size() === 0 && !this.get('rejectAll');
   },
 
+  /**
+   * Accept a set of categories.
+   *
+   * @param  {(Array.<String>|Sting)} values  Category or array of categories.
+   * @param  {Function} applyFilter **TODO Document this callback**
+   */
   accept: function(values, applyFilter) {
     values = !_.isArray(values) ? [values] : values;
     var acceptedCount = this.acceptedCategories.size();
@@ -54,19 +77,40 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     }
   },
 
+  /**
+   * Accept all categories (simply clearing the filter and setting the
+   * `rejectAll` attribute to false).
+   */
   acceptAll: function() {
     this.set('rejectAll', false);
     this.cleanFilter();
   },
 
+  /**
+   * Determines if a category is accepted or not.
+   *
+   * @param  {String} name Category to check.
+   * @return {bool} True if the category is whithin the accepted categories of
+   * the filter, false otherwise.
+   */
   isAccepted: function(name) {
     return this.acceptedCategories.where({ name: name }).length > 0;
   },
 
+  /**
+   * Returns the collection of accepted categories.
+   * @return {Backbone.Collection} Collection of categories
+   */
   getAccepted: function() {
     return this.acceptedCategories;
   },
 
+  /**
+   * Reject a set of categories.
+   *
+   * @param  {(Array.<String>|Sting)} values  Category or array of categories.
+   * @param  {Function} applyFilter **TODO Document this callback**
+   */
   reject: function(values, applyFilter) {
     values = !_.isArray(values) ? [values] : values;
 
@@ -88,6 +132,13 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     }
   },
 
+  /**
+   * Determines if a category is rejected or not.
+   *
+   * @param  {String} name Category to check.
+   * @return {bool} True if the category is whithin the rejected categories of
+   * the filter, false otherwise.
+   */
   isRejected: function(name) {
     var rejectCount = this.rejectedCategories.size();
     var acceptCount = this.acceptedCategories.size();
@@ -102,15 +153,28 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     }
   },
 
+  /**
+   * Returns the collection of rejected categories.
+   * @return {Backbone.Collection} Collection of categories
+   */
   getRejected: function() {
     return this.rejectedCategories;
   },
 
+  /**
+   * Reject all categories (simply clearing the filter and setting the
+   * `rejectAll` attribute to true).
+   */
   rejectAll: function() {
     this.set('rejectAll', true);
     this.cleanFilter();
   },
 
+  /**
+   * Cleans the filter
+   * @param  {bool} triggerChange Indicates if the clean acction must involve
+   * triggering a `change` event so that listeners can be notified.
+   */
   cleanFilter: function(triggerChange) {
     this.acceptedCategories.reset();
     this.rejectedCategories.reset();
@@ -119,6 +183,10 @@ var FilterCategory = WindshaftFilterBase.extend( /** @lends FilterCategory.proto
     }
   },
 
+  /**
+   * Triggers a `change` event so listener classes knows the filter has changes.
+   * @private
+   */
   applyFilter: function() {
     this.trigger('change', this);
   },

@@ -1,16 +1,15 @@
 var Model = require('cdb/core/model');
 
-
 /**
  * @classdesc Abstract base class for all filters. **Do not use directly**
  *
  * Any filter must implement at
  * least the operations `isEmpty()` and `toJSON()`.
  *
- * @class
- * @extends Model
+ * @class windshaft.filters.FilterBase
+ * @extends core.Model
  */
-var FilterBase = Model.extend( /** @lends FilterBase.prototype */ {
+var FilterBase = Model.extend( /** @lends windshaft.filters.FilterBase.prototype */ {
 
   /**
    * Informs if the filter is empty.

@@ -4,6 +4,7 @@ var LZMA = require('lzma');
 var util = require('cdb/core/util');
 var WindshaftDashboardInstance = require('cdb/windshaft/dashboard-instance');
 
+
 var validatePresenceOfOptions = function(options, requiredOptions) {
   var missingOptions = _.filter(requiredOptions, function(option) {
     return !options[option];
@@ -14,8 +15,16 @@ var validatePresenceOfOptions = function(options, requiredOptions) {
 };
 
 /**
- * Windshaft client. It provides a method to create instances of dashboards.
+ * @classdesc Windshaft client. It provides a method to create instances of dashboards.
+ *
+ * @class windshaft.WindshaftClient
+ *
  * @param {object} options Options to set up the client
+ * @param {String} options.urlTemplate **TODO document !!!***
+ * @param {String} options.userName **TODO document !!!***
+ * @param {String} options.endpoint **TODO document !!!***
+ * @param {String} options.statTag **TODO document !!!***
+ * @param {String} options.forceCors **TODO document !!!***
  */
 WindshaftClient = function(options) {
   validatePresenceOfOptions(options, ['urlTemplate', 'userName', 'endpoint', 'statTag']);
@@ -29,14 +38,23 @@ WindshaftClient = function(options) {
   this.url = this.urlTemplate.replace('{user}', this.userName);
 };
 
+/**
+ * Compresion level.
+ * @type {Number}
+ * @memberof windshaft.WindshaftClient
+ */
 WindshaftClient.DEFAULT_COMPRESSION_LEVEL = 3;
 WindshaftClient.MAX_GET_SIZE = 2033;
 
 /**
+ * **TODO Review documentation !!! Document options and callbacks.**
  * Creates an instance of a map in Windshaft
+ *
+ * @method windshaft.WindshaftClient#instantiateMap
+ *
  * @param {object} mapDefinition An object that responds to .toJSON with the definition of the map
  * @param  {function} callback A callback that will get the public or private map
- * @return {cdb.windshaft.DashboardInstance} The instance of the dashboard
+ * @return {windshaft.DashboardInstance} The instance of the dashboard
  */
 WindshaftClient.prototype.instantiateMap = function(options) {
   var mapDefinition = options.mapDefinition;
@@ -81,6 +99,17 @@ WindshaftClient.prototype.instantiateMap = function(options) {
   }
 }
 
+/**
+ * Given a payload and an array of parameters checks if request must be made
+ * using post mechanism.
+ *
+ * @method windshaft.WindshaftClient#_usePost
+ * @private
+ *
+ * @param  {Object} payload [description]
+ * @param  {Array.<String>} params  Array of parameters
+ * @return {bool} True if we must use post, false otherwise.
+ */
 WindshaftClient.prototype._usePOST = function(payload, params) {
   if (util.isCORSSupported() && this.forceCors) {
     return true;
@@ -88,6 +117,18 @@ WindshaftClient.prototype._usePOST = function(payload, params) {
   return payload.length >= this.constructor.MAX_GET_SIZE;
 }
 
+/**
+ * Make a post request.
+ *
+ * @method windshaft.WindshaftClient#_post
+ * @private
+ *
+ * @param  {Object} payload Request payload
+ * @param  {Array.<String>} params  Request params
+ * @param  {Object} options
+ * @param  {Function} options.success Success callback
+ * @param  {Function} options.error Error callback
+ */
 WindshaftClient.prototype._post = function(payload, params, options) {
   $.ajax({
     crossOrigin: true,
@@ -101,6 +142,18 @@ WindshaftClient.prototype._post = function(payload, params, options) {
   });
 }
 
+/**
+ * Make a get request.
+ *
+ * @method windshaft.WindshaftClient#_get
+ * @private
+ *
+ * @param  {Object} payload Request payload
+ * @param  {Array.<String>} params  Request params
+ * @param  {Object} options
+ * @param  {Function} options.success Success callback
+ * @param  {Function} options.error Error callback
+ */
 WindshaftClient.prototype._get = function(payload, params, options) {
   var compressFunction = this._getCompressor(payload);
   compressFunction(payload, this.constructor.DEFAULT_COMPRESSION_LEVEL, function(dataParameter) {
@@ -117,6 +170,15 @@ WindshaftClient.prototype._get = function(payload, params, options) {
   }.bind(this));
 }
 
+/**
+ * Obtains a compressor function.
+ *
+ * @method windshaft.WindshaftClient#_getCompressor
+ * @private
+ *
+ * @param {Object} payload   Payload for the request.
+ * @returns {Function} **TODO Document the compressor function**
+ */
 WindshaftClient.prototype._getCompressor = function(payload) {
   if (payload.length < this.constructor.MAX_GET_SIZE) {
     return function(data, level, callback) {
@@ -132,7 +194,15 @@ WindshaftClient.prototype._getCompressor = function(payload) {
   };
 }
 
-
+/**
+ * Comptue the URL to be queries with a set of params.
+ *
+ * @method windshaft.WindshaftClient#_getCompressor
+ * @private
+ *
+ * @param  {Array.<String>} params Array of params
+ * @return {String} URL to be requestes.
+ */
 WindshaftClient.prototype._getURL = function(params) {
   return [this.url, this.endpoint].join('/') + '?' + params.join('&');
 }

@@ -51,19 +51,19 @@ var isTimeSeriesWidget = function(m) {
 };
 
 /**
- * Triggered when visualization data has been loaded.
+ * Event triggered when visualization data has been loaded.
  *
- * @event Vis#done
+ * @event vis.Vis#done
  * @type {Object}
- * @property {Vis} vis Vis instance
+ * @property {vis.Vis} vis Visualization instance.
  * @property {Layer[]}  layers Array with the layers contained in the visualization.
  */
 
 /**
  * Callback executed once visualization data is loaded.
  *
- * @callback Vis~DoneCallback
- * @param {Vis} vi  Visualization instance.
+ * @callback vis.Vis~doneCallback
+ * @param {vis.Vis} vis  Visualization instance.
  * @param {Layer[]} layers  Layers of the visualization.
  */
 
@@ -71,10 +71,10 @@ var isTimeSeriesWidget = function(m) {
  * @classdesc Main view of a cartodb.js visulization. Contains the map, overlays
  * and any other elements.
  *
- * @class
- * @extends View
+ * @class vis.Vis
+ * @extends core.View
  */
-var Vis = View.extend(/** @lends Vis.prototype */{
+var Vis = View.extend(/** @lends vis.Vis.prototype */ {
 
   /**
    * Initializes new instances.
@@ -342,7 +342,7 @@ var Vis = View.extend(/** @lends Vis.prototype */{
    * @param  {CreateVisOptions} options Options to apply to the visualization.
    * @return {Vis}  Reference to this visualization instance.
    *
-   * @fires Vis#done
+   * @fires vis.Vis#done
    */
   load: function(data, options) {
     var self = this;
@@ -1534,7 +1534,7 @@ var Vis = View.extend(/** @lends Vis.prototype */{
    * Binds a function that is called when the `done` event is triggered, that is,
    * when data is loaded.
    *
-   * @param  {Vis~DoneCallback} fn Callback invoked when data is loaded.
+   * @param  {vis.Vis~doneCallback} fn Callback invoked when data is loaded.
    * @return {Function}      Binded function.
    */
   done: function(fn) {
@@ -1605,7 +1605,7 @@ var Vis = View.extend(/** @lends Vis.prototype */{
     }, 150);
   }
 
-}, {
+}, /** @lends vis.Vis */ {
 
   /**
    * adds an infowindow to the map controlled by layer events.
