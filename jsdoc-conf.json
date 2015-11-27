@@ -19,6 +19,7 @@
       "template": "templates/default",
       "encoding": "utf8",
       "destination": "./apidoc/",
-      "recurse": true
+      "recurse": true,
+      "private": true
   }
 }
