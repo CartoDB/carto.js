@@ -6,5 +6,7 @@
     ">
     <i class="CDBIcon CDBIcon-Syringe CDBIcon--top"></i>
   </button>
-  <button class="Widget-arrow js-collapse <%- isCollapsed ? 'Widget-arrow--down' : 'Widget-arrow--up' %> "></button>
+  <button class="Widget-threePoints js-collapse">
+    <span class="Widget-threePointsItem"></span>
+  </button>
 </div>

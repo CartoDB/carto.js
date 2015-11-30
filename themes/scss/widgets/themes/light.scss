@@ -148,6 +148,24 @@ $commonBkg: rgba(#FFF, 1);
     }
   }
 
+
+  .Widget-threePoints:before,
+  .Widget-threePoints:after {
+    background-color: $link;
+  }
+  .Widget-threePoints:hover {
+    &:before,
+    &:after {
+      background-color: $linkHover;
+    }
+    .Widget-threePointsItem {
+      background-color: $linkHover;
+    }
+  }
+  .Widget-threePointsItem {
+    background-color: $link;
+  }
+
   .Widget-arrow:after,
   .Widget-arrow:before {
     background-color: $link;
@@ -199,5 +217,9 @@ $commonBkg: rgba(#FFF, 1);
       background-color: rgba($disabled, 0.3) !important;
       background-image: repeating-linear-gradient(45deg, transparent 0, rgba($secondary, 0.3) 1px, transparent 1px, transparent 2px) !important;
     }
+  }
+
+  .Widget-arrowCircle {
+    background: $link;
   }
 }

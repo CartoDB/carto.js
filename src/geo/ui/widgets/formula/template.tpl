@@ -6,7 +6,9 @@
         <span class="Widget-textSmaller Widget-textSmaller--upper"><%- operation %></span>
       </div>
     </div>
-    <button class="Widget-arrow js-collapse <%- isCollapsed ? 'Widget-arrow--down' : 'Widget-arrow--up' %> "></button>
+    <button class="Widget-threePoints js-collapse">
+      <span class="Widget-threePointsItem"></span>
+    </button>
   </div>
   <dl class="Widget-info">
     <dt class="Widget-infoItem Widget-textSmaller Widget-textSmaller--upper"><%- nulls %> null rows</dt>
@@ -21,4 +23,3 @@
     <div class="Widget-listItem--fake"></div>
   <% } %>
 </div>
-

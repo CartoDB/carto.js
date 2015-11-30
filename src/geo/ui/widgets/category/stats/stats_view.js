@@ -2,8 +2,11 @@ var $ = require('jquery');
 var _ = require('underscore');
 var cdb = require('cdb');
 var template = require('./stats_template.tpl');
+var animationTemplate = require('./cats_template.tpl');
 var View = require('cdb/core/view');
 var d3 = require('d3');
+var formatter = require('cdb/core/format');
+var AnimateValues = require('../../animate_values');
 
 /**
  * Category stats info view
@@ -29,9 +32,18 @@ module.exports = View.extend({
         resultsCount: this.dataModel.getSearchCount(),
         totalCats: this._getCategoriesSize(),
         nullsPer: this._getNullPercentage(),
-        catsPer: this._getCagetoriesPercentage()
+        catsPer: this._getCurrentCategoriesPercentage()
       })
     );
+
+    var animator = new AnimateValues({
+      el: this.$el
+    });
+
+    animator.animateFromValues(this._getPreviousCategoriesPercentage(), this._getCurrentCategoriesPercentage(), '.js-cats',
+      animationTemplate, { defaultValue: '-', animationSpeed: 700, formatter: formatter.formatValue }
+    );
+
     return this;
   },
 
@@ -42,25 +54,32 @@ module.exports = View.extend({
     this.add_related_model(this.viewModel);
   },
 
-  _getNullPercentage: function(attr) {
+  _getNullPercentage: function() {
     var nulls = this.dataModel.get('nulls');
     var total = this.dataModel.get('totalCount') || 0;
-    var per = !nulls ? 0 : ((nulls/total) * 100).toFixed(2);
-    return per;
+    return !nulls ? 0 : ((nulls/total) * 100).toFixed(2);
   },
 
-  _getCagetoriesPercentage: function(attr) {
+  _getPreviousCategoriesPercentage: function() {
+    var total = this.dataModel.previous('totalCount') || 0;
+    var data = this.dataModel.getPreviousData();
+    return this._getCategoriesPercentage(data, total);
+  },
+
+  _getCurrentCategoriesPercentage: function() {
     var total = this.dataModel.get('totalCount') || 0;
-    var data = this.dataModel.getData();
+    var data = this.dataModel.getData().toJSON();
+    return this._getCategoriesPercentage(data, total);
+  },
+
+  _getCategoriesPercentage: function(data, total) {
     if (!total) {
       return 0;
     }
 
     var currentTotal = data.reduce(function(memo, mdl) {
-        return !mdl.get('agg') ? ( memo + parseFloat(mdl.get('value'))) : memo;
-      },
-      0
-    );
+      return !mdl.agg ? ( memo + parseFloat(mdl.value)) : memo;
+    }, 0);
 
     if (!currentTotal) {
       return 0;
@@ -72,10 +91,7 @@ module.exports = View.extend({
   _getCategoriesSize: function() {
     return _.pluck(
       this.dataModel.getData().reject(function(mdl) {
-        return mdl.get('agg')
-      }),
-      'name'
-    ).length;
+        return mdl.get('agg');
+      }), 'name').length;
   }
-
 });
