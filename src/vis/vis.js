@@ -427,34 +427,14 @@ var Vis = View.extend({
       $(window).bind('resize', this._onResize);
     }
 
+    // Create a concrete MapView subclass from map model configuration.
     var div = $('<div>').css({
       position: 'relative',
       width: '100%',
       height: '100%'
     });
-
-    this.container = div;
-
-    // Another div to prevent leaflet grabbing the div
-    var div_hack = $('<div>')
-      .addClass("cartodb-map-wrapper")
-      .css({
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%'
-      });
-
-    div.append(div_hack);
-
     this.$el.append(div);
-
-    // Create the map
-    var mapView  = new MapView.create(div_hack, map);
-
-    this.mapView = mapView;
+    this.mapView = MapView.create(div, map);
 
     if (options.legends || (options.legends === undefined && this.map.get("legends") !== false)) {
       map.layers.bind('reset', this.addLegends, this);

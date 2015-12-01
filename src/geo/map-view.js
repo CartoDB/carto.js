@@ -4,6 +4,26 @@ var log = require('cdb.log');
 var View = require('../core/view');
 var Infowindow = require('./ui/infowindow');
 
+/**
+ * @classdesc Base class for map view implementations. **Do not use directly**.
+ *
+ * A MapView has attached a {@link MapModel} configuration. It is responsible
+ * to hold a concrete map instance (given the specified map provider)
+ * i.e.: leaflet, googlemaps.
+ *
+ * Currently available implementations are {@link LeafletMapView} and {@link GoogleMapsMapView}.
+ *
+ * Given a MapModel instance you can easily create a new concrete implementation
+ * instance using the `create` method:
+ *
+ * @example
+ * var mapView = MapView.create(div, mapModel);
+ *
+ * @abstract
+ *
+ * @param {Object} options  Allowed set of options.
+ * @param {MapModel} options.mapModel MapModel reference
+ */
 var MapView = View.extend({
 
   initialize: function() {
@@ -204,10 +224,37 @@ var MapView = View.extend({
     return mapViewClass;
   },
 
+  /**
+   * Factory method that given a {@link MapModel} instance with visualization
+   * configuration creates a new concrete view instance depending on the provider.
+   *
+   * @param {HTMLElement} el HTML element where to attach the map.
+   * @param  {MapModel} mapModel MapModel instance
+   * @return {(LeafletMapView|GoogleMapsMapView)}  New MapView's subclass instance.
+   */
   create: function(el, mapModel) {
     var _mapViewClass = MapView._getClass(mapModel.get('provider'));
+
+    //
+    // TODO - Is this really necessary? I have tested in the examples and works
+    // fine without it.
+    //
+    // Another div to prevent leaflet grabbing the div
+    var div_hack = $('<div>')
+      .addClass("cartodb-map-wrapper")
+      .css({
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%'
+      });
+
+    el.append(div_hack);
+
     return new _mapViewClass({
-      el: el,
+      el: div_hack,
       map: mapModel
     });
   }
