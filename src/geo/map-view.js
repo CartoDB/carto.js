@@ -212,18 +212,7 @@ var MapView = View.extend({
 
 
 }, {
-  _getClass: function(provider) {
-    var mapViewClass = cdb.geo.LeafletMapView;
-    if(provider === 'googlemaps') {
-      if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
-        mapViewClass = cdb.geo.GoogleMapsMapView;
-      } else {
-        log.error("you must include google maps library _before_ include cdb");
-      }
-    }
-    return mapViewClass;
-  },
-
+  
   /**
    * Factory method that given a {@link MapModel} instance with visualization
    * configuration creates a new concrete view instance depending on the provider.
@@ -233,28 +222,20 @@ var MapView = View.extend({
    * @return {(LeafletMapView|GoogleMapsMapView)}  New MapView's subclass instance.
    */
   create: function(el, mapModel) {
-    var _mapViewClass = MapView._getClass(mapModel.get('provider'));
 
-    //
-    // TODO - Is this really necessary? I have tested in the examples and works
-    // fine without it.
-    //
-    // Another div to prevent leaflet grabbing the div
-    var div_hack = $('<div>')
-      .addClass("cartodb-map-wrapper")
-      .css({
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%'
-      });
+    // Choose a concrete subclass implementation
+    var provider = mapModel.get('provider');
+    var mapViewClass = cdb.geo.LeafletMapView;
+    if(provider === 'googlemaps') {
+      if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
+        mapViewClass = cdb.geo.GoogleMapsMapView;
+      } else {
+        log.error("you must include google maps library _before_ include cdb");
+      }
+    }
 
-    el.append(div_hack);
-
-    return new _mapViewClass({
-      el: div_hack,
+    return new mapViewClass({
+      el: el,
       map: mapModel
     });
   }

@@ -434,7 +434,24 @@ var Vis = View.extend({
       height: '100%'
     });
     this.$el.append(div);
-    this.mapView = MapView.create(div, map);
+    //
+    // TODO - Is this really necessary? I have tested in the examples and works
+    // fine without it.
+    //
+    // Another div to prevent leaflet grabbing the div
+    var div_hack = $('<div>')
+      .addClass("cartodb-map-wrapper")
+      .css({
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%'
+      });
+    div.append(div_hack);
+    this.mapView = MapView.create(div_hack, map);
+
 
     if (options.legends || (options.legends === undefined && this.map.get("legends") !== false)) {
       map.layers.bind('reset', this.addLegends, this);
