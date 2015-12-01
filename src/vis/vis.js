@@ -509,7 +509,47 @@ var Vis = View.extend({
       }
     });
 
-    // TODO: We can probably move this logic somewhere else
+    // Initialize widgets
+    var hasLayersWithWidgets = this._initializeWidgets(data, interactiveLayers, cartoDBLayerGroup);
+
+    this.map.layers.reset(layers);
+    this.overlayModels.reset(data.overlays);
+
+    // if there are no sublayer_options fill it
+    if (!options.sublayer_options) {
+      this._setupSublayers(data.layers, options);
+    }
+
+    this._setLayerOptions(options);
+
+    _.defer(function() {
+      self.trigger('done', self, map.layers);
+    });
+
+    // TODO: rethink this, it is only a hack
+    if (hasLayersWithWidgets) {
+      setTimeout(function() {
+        self.mapView.invalidateSize();
+      }, 0);
+    }
+
+    return this;
+  },
+
+  /**
+   * Initializes the widgets related classes.
+   *
+   * @private
+   * @param  {Object} vizconfig         Object with viz data configuration.
+   * @param  {Array.<Object>} interactiveLayers Array with references to
+   * the layers withint the viz config.
+   * @param  {(CartoDBLayerGroupNamed|CartoDBLayerGroupAnonymous)} cartoDBLayerGroup Layer group reference.
+   * @return {boolean}  True if any layer contains widgets and has been initialized,
+   * false otherwise.
+   */
+  _initializeWidgets: function(vizconfig, interactiveLayers, cartoDBLayerGroup) {
+
+    // Create the widgets of each layer
     _.each(interactiveLayers, function(layer, layerIndex) {
       var widgetsAttrs = layer.get('widgets') || {};
       for (var id in widgetsAttrs) {
@@ -545,11 +585,11 @@ var Vis = View.extend({
     $('.js-dashboard').append(widgetsView.render().el);
 
     var dashboard = new Model({
-      title: data.title,
-      description: data.description,
-      updatedAt: data.updated_at,
-      userName: data.user.fullname,
-      userAvatarURL: data.user.avatar_url
+      title: vizconfig.title,
+      description: vizconfig.description,
+      updatedAt: vizconfig.updated_at,
+      userName: vizconfig.user.fullname,
+      userAvatarURL: vizconfig.user.avatar_url
     });
     var dashboardInfoView = new DashboardInfoView({
       model: dashboard
@@ -559,7 +599,7 @@ var Vis = View.extend({
     // TODO: Perhaps this "endpoint" could be part of the "datasource"?
     var endpoint = WindshaftConfig.MAPS_API_BASE_URL;
     var configGenerator = WindshaftPublicDashboardConfig;
-    var datasource = data.datasource;
+    var datasource = vizconfig.datasource;
     // TODO: We can use something else to differentiate types of "datasource"s
     if (datasource.template_name) {
       endpoint = [WindshaftConfig.MAPS_API_BASE_URL, 'named', datasource.template_name].join('/');
@@ -581,31 +621,16 @@ var Vis = View.extend({
       //TODO: assuming here all viz.json has a layergroup and that may not be true
       layerGroup: cartoDBLayerGroup,
       layers: interactiveLayers,
-      map: map
+      map: this.map
     });
 
-    this.map.layers.reset(layers);
-    this.overlayModels.reset(data.overlays);
-
-    // if there are no sublayer_options fill it
-    if (!options.sublayer_options) {
-      this._setupSublayers(data.layers, options);
-    }
-
-    this._setLayerOptions(options);
-
-    _.defer(function() {
-      self.trigger('done', self, map.layers);
-    });
-
-    // TODO: rethink this
+    // TODO - Returns true or false depending if we found layers with widgets.
+    // NOTE - This is only a fix to invoke the `map.invalidateSize()` method.
+    var result = false;
     if (layersWithWidgets.size() > 0) {
-      setTimeout(function() {
-        self.mapView.invalidateSize();
-      }, 0);
+      result = true;
     }
-
-    return this;
+    return result;
   },
 
   _createOverlays: function(overlays, vis_data, options) {
