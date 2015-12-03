@@ -199,6 +199,7 @@ var Vis = View.extend({
     _.defer(loaded);
   },
 
+  // TODO - This is called from createLayers file. Avoid external calls to private methods !!!
   _addLegends: function(legends) {
     if (this.legends) {
       this.legends.remove();
@@ -213,6 +214,7 @@ var Vis = View.extend({
     }
   },
 
+  // TODO - This is related with MapModel layers. Modify to follow SOLID.
   addLegends: function(layers) {
     this._addLegends(this.createLegendView(layers));
   },
@@ -287,6 +289,8 @@ var Vis = View.extend({
   load: function(data, options) {
     var self = this;
 
+    // If data is a string it is suppose to be an URL, otherwise it is
+    // suppose to be a configuration object
     if (typeof(data) === 'string') {
       var url = data;
 
@@ -301,9 +305,11 @@ var Vis = View.extend({
       return this;
     }
 
-    // load modules needed for layers
+    // Load modules needed for layers
     var layers = data.layers;
 
+    // TODO - Is the module loading necessary. We are using browserify so we
+    // know dependencies are loaded.
     if (!this.checkModules(layers)) {
       if (this.moduleChecked) {
         self.throwError("modules couldn't be loaded");
@@ -319,7 +325,9 @@ var Vis = View.extend({
       return this;
     }
 
-    // TODO: This should be part of a model
+    // TODO: This should be part of a model.
+    // The this.https is mainly used
+    // on vis.layers file. Try change.
     if (window && window.location.protocol && window.location.protocol === 'https:') {
       this.https = true;
     }
@@ -333,7 +341,9 @@ var Vis = View.extend({
     this._applyOptions(data, options);
 
     // to know if the logo is enabled search in the overlays and see if logo overlay is included and is shown
-    var has_logo_overlay = !!_.find(data.overlays, function(o) { return o.type === 'logo' && o.options.display; });
+    var has_logo_overlay = !!_.find(data.overlays, function(o) {
+      return o.type === 'logo' && o.options.display;
+    });
 
     this.cartodb_logo = (options.cartodb_logo !== undefined) ? options.cartodb_logo: has_logo_overlay;
 
@@ -754,7 +764,6 @@ var Vis = View.extend({
       if (layer.visible) {
         var layerView = this.mapView.getLayerByCid(cid);
         if (layerView) {
-          var layerView = this.mapView.getLayerByCid(cid);
           legends.push(this._createLayerLegendView(layer, layerView));
         }
       }
