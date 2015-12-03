@@ -452,25 +452,37 @@ describe("Vis", function() {
     });
 
     it("should be enabled with zoom overlay and scrollwheel enabled", function() {
-      var mapConfig = mapConfigCustom(true, true);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: true
+      });
       this.vis.load(mapConfig);
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be enabled with zoom overlay and scrollwheel disabled", function() {
-      var mapConfig = mapConfigCustom(false, true);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: true
+      });
       this.vis.load(mapConfig);
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be enabled without zoom overlay and scrollwheel enabled", function() {
-      var mapConfig = mapConfigCustom(true, false);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: false
+      });
       this.vis.load(mapConfig);
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be disabled without zoom overlay and scrollwheel disabled", function() {
-      var mapConfig = mapConfigCustom(false, false);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: false
+      });
       this.vis.load(mapConfig);
       expect(this.vis.map.get('drag')).toBeFalsy();
     });
@@ -481,20 +493,26 @@ describe("Vis", function() {
       });
 
       it("should be enabled if scrollwheel is enabled (no matter zoom overlay) but device is mobile", function() {
-        var mapConfig = mapConfigCustom(true, false);
+        var mapConfig = createMapConfig({
+          scrollwheel: true,
+          zoom: false
+        });
         this.vis.load(mapConfig);
         expect(this.vis.map.get('drag')).toBeTruthy();
       });
 
       it("should be enabled if scrollwheel is disabled (no matter zoom overlay) but device is mobile", function() {
-        var mapConfig = mapConfigCustom(false, false);
+        var mapConfig = createMapConfig({
+          scrollwheel: false,
+          zoom: false
+        });
         this.vis.load(mapConfig);
         expect(this.vis.map.get('drag')).toBeTruthy();
       });
     });
 
-    function mapConfigCustom(scrollwheel, zoom) {
-      var obj = {
+    function createMapConfig(obj) {
+      var r = {
         updated_at: 'cachebuster',
         title: "irrelevant",
         url: "http://cartodb.com",
@@ -506,11 +524,11 @@ describe("Vis", function() {
         scrollwheel: false,
         overlays: []
       };
-      if (scrollwheel) {
-        obj.scrollwheel = true;
+      if (obj.scrollwheel) {
+        r.scrollwheel = true;
       }
-      if (zoom) {
-        obj.overlays = [
+      if (obj.zoom) {
+        r.overlays = [
           {
             type: "zoom",
             order: 6,
@@ -523,7 +541,7 @@ describe("Vis", function() {
           }
         ];
       }
-      return obj;
+      return r;
     }
 
   });
