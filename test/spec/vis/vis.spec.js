@@ -36,7 +36,6 @@ describe("Vis", function() {
     };
 
     this.vis = new cdb.vis.Vis({el: this.container});
-    spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
     this.vis.load(this.mapConfig);
   })
 
@@ -451,7 +450,8 @@ describe("Vis", function() {
       this.vis = new cdb.vis.Vis({el: container});
     });
 
-    it("should be enabled with zoom overlay and scrollwheel enabled", function() {
+    it("should be enabled with zoom overlay, scrollwheel enabled and not under a mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
       var mapConfig = createMapConfig({
         scrollwheel: true,
         zoom: true
@@ -460,7 +460,8 @@ describe("Vis", function() {
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
-    it("should be enabled with zoom overlay and scrollwheel disabled", function() {
+    it("should be enabled with zoom overlay, scrollwheel disabled and not under a mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
       var mapConfig = createMapConfig({
         scrollwheel: false,
         zoom: true
@@ -469,7 +470,8 @@ describe("Vis", function() {
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
-    it("should be enabled without zoom overlay and scrollwheel enabled", function() {
+    it("should be enabled without zoom overlay, scrollwheel enabled and not under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
       var mapConfig = createMapConfig({
         scrollwheel: true,
         zoom: false
@@ -478,7 +480,8 @@ describe("Vis", function() {
       expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
-    it("should be disabled without zoom overlay and scrollwheel disabled", function() {
+    it("should be disabled without zoom overlay, scrollwheel disabled and not under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
       var mapConfig = createMapConfig({
         scrollwheel: false,
         zoom: false
@@ -487,28 +490,44 @@ describe("Vis", function() {
       expect(this.vis.map.get('drag')).toBeFalsy();
     });
 
-    describe('over mobile', function() {
-      beforeEach(function() {
-        spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+    it("should be enabled without zoom, scrollwheel is enabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: false
       });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
 
-      it("should be enabled if scrollwheel is enabled (no matter zoom overlay) but device is mobile", function() {
-        var mapConfig = createMapConfig({
-          scrollwheel: true,
-          zoom: false
-        });
-        this.vis.load(mapConfig);
-        expect(this.vis.map.get('drag')).toBeTruthy();
+    it("should be enabled without zoom, scrollwheel disabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: false
       });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
 
-      it("should be enabled if scrollwheel is disabled (no matter zoom overlay) but device is mobile", function() {
-        var mapConfig = createMapConfig({
-          scrollwheel: false,
-          zoom: false
-        });
-        this.vis.load(mapConfig);
-        expect(this.vis.map.get('drag')).toBeTruthy();
+    it("should be enabled with zoom, scrollwheel disabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: true
       });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled if all parameters are enabled or present", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: true
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
     function createMapConfig(obj) {
