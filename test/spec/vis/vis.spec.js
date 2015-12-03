@@ -19,6 +19,7 @@ describe("Overlay", function() {
 describe("Vis", function() {
 
   beforeEach(function(){
+
     this.container = $('<div>').css('height', '200px');
     this.mapConfig = {
       updated_at: 'cachebuster',
@@ -35,10 +36,11 @@ describe("Vis", function() {
     };
 
     this.vis = new cdb.vis.Vis({el: this.container});
+    spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
     this.vis.load(this.mapConfig);
   })
 
-  it("should insert  default max and minZoom values when not provided", function() {
+  it("should insert default max and minZoom values when not provided", function() {
     expect(this.vis.mapView.map_leaflet.options.maxZoom).toEqual(20);
     expect(this.vis.mapView.map_leaflet.options.minZoom).toEqual(0);
   });
@@ -444,43 +446,55 @@ describe("Vis", function() {
 
   describe("dragging option", function() {
 
-    it("should be enabled with zoom overlay and scrollwheel enabled", function() {
+    beforeEach(function() {
       var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
+      this.vis = new cdb.vis.Vis({el: container});
+    });
 
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: true,
-        overlays: [
-          {
-            type: "zoom",
-            order: 6,
-            options: {
-              x: 20,
-              y: 20,
-              display: true
-            },
-            template: ""
-          }
-        ],
-      };
-
-      vis.load(mapConfig);
-      expect(vis.map.get('drag')).toBeTruthy();
+    it("should be enabled with zoom overlay and scrollwheel enabled", function() {
+      var mapConfig = mapConfigCustom(true, true);
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
     });
 
     it("should be enabled with zoom overlay and scrollwheel disabled", function() {
-      var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
+      var mapConfig = mapConfigCustom(false, true);
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
 
-      var mapConfig = {
+    it("should be enabled without zoom overlay and scrollwheel enabled", function() {
+      var mapConfig = mapConfigCustom(true, false);
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be disabled without zoom overlay and scrollwheel disabled", function() {
+      var mapConfig = mapConfigCustom(false, false);
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeFalsy();
+    });
+
+    describe('over mobile', function() {
+      beforeEach(function() {
+        spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      });
+
+      it("should be enabled if scrollwheel is enabled (no matter zoom overlay) but device is mobile", function() {
+        var mapConfig = mapConfigCustom(true, false);
+        this.vis.load(mapConfig);
+        expect(this.vis.map.get('drag')).toBeTruthy();
+      });
+
+      it("should be enabled if scrollwheel is disabled (no matter zoom overlay) but device is mobile", function() {
+        var mapConfig = mapConfigCustom(false, false);
+        this.vis.load(mapConfig);
+        expect(this.vis.map.get('drag')).toBeTruthy();
+      });
+    });
+
+    function mapConfigCustom(scrollwheel, zoom) {
+      var obj = {
         updated_at: 'cachebuster',
         title: "irrelevant",
         url: "http://cartodb.com",
@@ -490,7 +504,13 @@ describe("Vis", function() {
         zoom: 4,
         bounds: [[1, 2],[3, 4]],
         scrollwheel: false,
-        overlays: [
+        overlays: []
+      };
+      if (scrollwheel) {
+        obj.scrollwheel = true;
+      }
+      if (zoom) {
+        obj.overlays = [
           {
             type: "zoom",
             order: 6,
@@ -501,54 +521,10 @@ describe("Vis", function() {
             },
             template: ""
           }
-        ],
-      };
-
-      vis.load(mapConfig);
-      expect(vis.map.get('drag')).toBeTruthy();
-    });
-
-    it("should be enabled without zoom overlay and scrollwheel enabled", function() {
-      var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
-
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: true,
-        overlays: [],
-      };
-
-      vis.load(mapConfig);
-      expect(vis.map.get('drag')).toBeTruthy();
-    });
-
-    it("should be disabled without zoom overlay and scrollwheel disabled", function() {
-      var container = $('<div>').css('height', '200px');
-      var vis = new cdb.vis.Vis({el: container});
-
-      var mapConfig = {
-        updated_at: 'cachebuster',
-        title: "irrelevant",
-        url: "http://cartodb.com",
-        center: [40.044, -101.95],
-        bounding_box_sw: [20, -140],
-        bounding_box_ne: [ 55, -50],
-        zoom: 4,
-        bounds: [[1, 2],[3, 4]],
-        scrollwheel: false,
-        overlays: [],
-      };
-
-      vis.load(mapConfig);
-      expect(vis.map.get('drag')).toBeFalsy();
-    });
+        ];
+      }
+      return obj;
+    }
 
   });
 
