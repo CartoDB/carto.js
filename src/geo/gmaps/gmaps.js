@@ -49,7 +49,7 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
           scrollwheel: this.map.get("scrollwheel"),
           // Allow dragging (and double click zoom)
           draggable: this.map.get("drag"),
-          disableDoubleClickZoom: this.map.get("drag"),
+          disableDoubleClickZoom: !this.map.get("drag"),
           mapTypeControl:false,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           backgroundColor: 'white',

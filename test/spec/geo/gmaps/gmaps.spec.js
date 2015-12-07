@@ -249,7 +249,7 @@
       });
 
       expect(mapView.map_googlemaps.get('draggable')).toBeFalsy();
-      expect(mapView.map_googlemaps.get('disableDoubleClickZoom')).toBeFalsy();
+      expect(mapView.map_googlemaps.get('disableDoubleClickZoom')).toBeTruthy();
     });
 
   });
