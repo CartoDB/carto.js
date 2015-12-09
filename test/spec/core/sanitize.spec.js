@@ -46,7 +46,11 @@ describe("core.core.sanitize", function() {
 
       var attacks = [
         '<iframe><iframe src="/>"><p <a><img/src="x"/onerror="prompt(document.cookie)">',
-        "<iframe srcdoc='&lt;svg/onload=alert(document.cookie)&gt;’>"
+        "<iframe srcdoc='&lt;svg/onload=alert(document.cookie)&gt;'>",
+        "<img src=x onerror=alert(/XSS/)>",
+        "<iframe src=j&NewLine;&Tab;a&NewLine;&Tab;&Tab;v&NewLine;&Tab;&Tab;&Tab;a&NewLine;&Tab;&Tab;&Tab;&Tab;s&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;c&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;r&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;i&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;p&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;t&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&colon;a&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;l&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;e&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;r&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;t&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;%28&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;1&NewLine;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;&Tab;%29></iframe>",
+        '"><img src="C" onerror=alert(1)>',
+        '"><img src="C" onerror=alert(document.cookie)>'
       ];
 
       it('should avoid `' + attacks[0] + '`', function() {
@@ -55,6 +59,22 @@ describe("core.core.sanitize", function() {
 
       it('should avoid `' + attacks[1] + '`', function() {
         expect(cdb.core.sanitize.html(attacks[1])).toEqual('');
+      });
+
+      it('should avoid `' + attacks[2] + '`', function() {
+        expect(cdb.core.sanitize.html(attacks[2])).toEqual('<img src="x">');
+      });
+
+      it('should avoid `' + attacks[3] + '`', function() {
+        expect(cdb.core.sanitize.html(attacks[3])).toEqual('');
+      });
+
+      it('should avoid `' + attacks[4] + '`', function() {
+        expect(cdb.core.sanitize.html(attacks[4])).toEqual('"&gt;<img src="C">');
+      });
+
+      it('should avoid `' + attacks[5] + '`', function() {
+        expect(cdb.core.sanitize.html(attacks[5])).toEqual('"&gt;<img src="C">');
       });
 
     });
