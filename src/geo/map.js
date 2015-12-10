@@ -154,6 +154,16 @@ cdb.geo.CartoDBLayer = cdb.geo.MapLayer.extend({
     maxZoom: 28
   },
 
+  /**
+   * Override constructor to create models with attribution sanitized.
+   */
+  constructor: function(attributes, options){
+    if(attributes  && attributes.attribution) {
+      attributes.attribution = cdb.core.sanitize.html(attributes.attribution);
+    }
+    cdb.geo.MapLayer.prototype.constructor.apply(this, arguments);
+  },
+
   activate: function() {
     this.set({active: true, opacity: 0.99, visible: true})
   },

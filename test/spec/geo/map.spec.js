@@ -30,6 +30,13 @@ describe("geo.map", function() {
       var layer = new cdb.geo.CartoDBLayer();
       expect(layer.get('type')).toEqual("CartoDB");
     });
+
+    it("should auto-sanitize attribution", function() {
+      var layer = new cdb.geo.CartoDBLayer({
+        attribution: "<img src='x' onerror=alert('bad')>"
+      });
+      expect(layer.get('attribution')).toEqual('<img src="x">');
+    });
   });
 
   describe('CartoDBGroupLayer', function() {
