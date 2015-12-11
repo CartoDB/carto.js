@@ -13,13 +13,17 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
   },
 
   /**
-   * Override constructor to create layer models with attribution sanitized.
+   * Override set method to always sanitize attribution.
    */
-  constructor: function(attributes, options){
-    if(attributes  && attributes.attribution) {
-      attributes.attribution = cdb.core.sanitize.html(attributes.attribution);
+  set: function(key, value, options) {
+    if(key == "attribution") {
+      value = cdb.core.sanitize.html(value);
     }
-    cdb.core.Model.prototype.constructor.apply(this, arguments);
+    if(key && key.attribution) {
+      key.attribution = cdb.core.sanitize.html(key.attribution);
+    }
+
+    cdb.core.Model.prototype.set.apply(this, arguments);
   },
 
   /***
