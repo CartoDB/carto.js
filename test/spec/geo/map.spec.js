@@ -11,6 +11,15 @@ describe("geo.map", function() {
     });
   });
 
+  describe('MapLayer', function() {
+    it("should auto-sanitize attribution", function() {
+      var layer = new cdb.geo.MapLayer({
+        attribution: "<img src='x' onerror=alert('bad')>"
+      });
+      expect(layer.get('attribution')).toEqual('<img src="x">');
+    });
+  });
+
   describe('GMapsBaseLayer', function() {
     it("should be type GMapsBase", function() {
       var layer = new cdb.geo.GMapsBaseLayer();
@@ -29,13 +38,6 @@ describe("geo.map", function() {
     it("should be type CartoDB", function() {
       var layer = new cdb.geo.CartoDBLayer();
       expect(layer.get('type')).toEqual("CartoDB");
-    });
-
-    it("should auto-sanitize attribution", function() {
-      var layer = new cdb.geo.CartoDBLayer({
-        attribution: "<img src='x' onerror=alert('bad')>"
-      });
-      expect(layer.get('attribution')).toEqual('<img src="x">');
     });
   });
 

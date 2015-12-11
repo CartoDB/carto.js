@@ -12,6 +12,16 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
     type: 'Tiled'
   },
 
+  /**
+   * Override constructor to create layer models with attribution sanitized.
+   */
+  constructor: function(attributes, options){
+    if(attributes  && attributes.attribution) {
+      attributes.attribution = cdb.core.sanitize.html(attributes.attribution);
+    }
+    cdb.core.Model.prototype.constructor.apply(this, arguments);
+  },
+
   /***
   * Compare the layer with the received one
   * @method isEqual
@@ -152,16 +162,6 @@ cdb.geo.CartoDBLayer = cdb.geo.MapLayer.extend({
     extra_params: {},
     cdn_url: null,
     maxZoom: 28
-  },
-
-  /**
-   * Override constructor to create models with attribution sanitized.
-   */
-  constructor: function(attributes, options){
-    if(attributes  && attributes.attribution) {
-      attributes.attribution = cdb.core.sanitize.html(attributes.attribution);
-    }
-    cdb.geo.MapLayer.prototype.constructor.apply(this, arguments);
   },
 
   activate: function() {
