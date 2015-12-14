@@ -60,25 +60,20 @@
 
 // Widget media query
 @include media-query() {
-  .CDB-Dashboard-mapWrapper {
-    flex: 1;
-  }
-  .CDB-Dashboard-canvas {
-    position: absolute;
-  }
   .CDB-Widget-canvas {
-    @include display-flex();
-    @include flex-wrap(nowrap);
     width: calc(100% - 88px);
     min-width: calc(100% - 88px);
     max-width: calc(100% - 88px);
-    height: inherit;
+    height: auto;
     margin-top: 8px;
     margin-left: 88px;
     border-radius: 0;
-    overflow-x: auto;
-    overflow-y: visible;
-    flex: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .CDB-Map-canvas {
+    @include display-flex();
+    flex: 2;
   }
   .CDB-LayerWidgets-canvas {
     @include display-flex();
@@ -94,6 +89,7 @@
   }
   .CDB-Widget-canvasInner {
     @include display-flex();
+    position: static;
   }
 }
 
@@ -108,6 +104,8 @@
     width: 100%;
     min-width: 100%;
     max-width: 100%;
+    height: 168px;
+    min-height: 168px;
     margin-left: 0;
   }
 }
