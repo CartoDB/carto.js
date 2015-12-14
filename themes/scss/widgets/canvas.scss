@@ -60,14 +60,12 @@
 
 // Widget media query
 @include media-query() {
-
-.CDB-Dashboard-mapWrapper {
-  flex: 1;
-}
+  .CDB-Dashboard-mapWrapper {
+    flex: 1;
+  }
   .CDB-Dashboard-canvas {
     position: absolute;
   }
-
   .CDB-Widget-canvas {
     @include display-flex();
     @include flex-wrap(nowrap);
@@ -77,9 +75,9 @@
     height: inherit;
     margin-top: 8px;
     margin-left: 88px;
+    border-radius: 0;
     overflow-x: auto;
     overflow-y: visible;
-    border-radius: 0;
     flex: 1;
   }
   .CDB-LayerWidgets-canvas {
