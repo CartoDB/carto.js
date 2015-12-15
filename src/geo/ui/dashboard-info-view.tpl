@@ -5,7 +5,7 @@
   <div class="CDB-Dashboard-infoActions">
     <button class="CDB-Dashboard-infoActionsLink js-toggle-view-link"></button>
   </div>
-  <div class="CDB-Dashboard-infoTexts">
+  <div class="CDB-Dashboard-infoTexts CDB-Dashboard-hideMobile">
     <p class="CDB-Dashboard-infoUpdate">UPDATED <%- updatedAt %></p>
     <h1 class="CDB-Dashboard-infoTitle"><%- title %></h1>
     <h2 class="CDB-Dashboard-infoDescription"><%- description %></h2>
@@ -26,7 +26,7 @@
       </div>
       <p class="CDB-Dashboard-info-footer-txt">Share view</p>
     </li>-->
-    <li class="CDB-Dashboard-infoFooterItem">
+    <li class="CDB-Dashboard-infoFooterItem ">
       <div class="CDB-Dashboard-infoMedia CDB-Dashboard-infoAvatar">
         <img src="<%- userAvatarURL %>" alt="avatar" class="inline-block"/>
       </div>
