@@ -184,6 +184,10 @@
   line-height: $sLineHeight-smaller;
 }
 
+.CDB-Dashboard-infoMobile {
+  display: none;
+}
+
 @include media-query-mobile() {
   .CDB-Dashboard-info {
     right: 0;
@@ -229,3 +233,44 @@
     opacity: 1;
   }
 }
+
+@include media-query-mobile() {
+  .CDB-Dashboard-info {
+    overflow: visible;
+  }
+  .CDB-Dashboard-infoMobile {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 40px;
+    left: 0;
+    height: calc (100vh - 32px);
+    padding: 16px;
+    background: #3AA9E3;
+    
+    .CDB-Dashboard-infoFooter {
+      position: absolute;
+      top: auto;
+      right: 24px;
+      bottom: 24px;
+      left: 24px;
+      width: 280px;
+    }
+  }
+  .CDB-Dashboard-infoLogo,
+  .CDB-Dashboard-infoActions {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+  }
+  .CDB-Dashboard-infoActions {
+    height: auto;
+  }
+  .CDB-Dashboard-infoTexts {
+    top: 75px;
+    left: 16px;
+    opacity: 1;
+  }
+
+}
+
