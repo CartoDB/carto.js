@@ -223,10 +223,6 @@ Used for most maps with tables that are set to public or public with link.
   ]
 }
 ```
-
-
-
-
 ### Named Maps Layer Source Object (_type: 'namedmap'_)
 
 Used for making public maps with private data. See [Named Maps](/cartodb-platform/maps-api/named-maps/) for more information.
