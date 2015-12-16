@@ -1,7 +1,6 @@
 
 describe("Overlay", function() {
 
-
   it("should register and create a type", function() {
     var _data;
     cdb.vis.Overlay.register('test', function(data) {
@@ -20,6 +19,7 @@ describe("Overlay", function() {
 describe("Vis", function() {
 
   beforeEach(function(){
+
     this.container = $('<div>').css('height', '200px');
     this.mapConfig = {
       updated_at: 'cachebuster',
@@ -39,7 +39,7 @@ describe("Vis", function() {
     this.vis.load(this.mapConfig);
   })
 
-  it("should insert  default max and minZoom values when not provided", function() {
+  it("should insert default max and minZoom values when not provided", function() {
     expect(this.vis.mapView.map_leaflet.options.maxZoom).toEqual(20);
     expect(this.vis.mapView.map_leaflet.options.minZoom).toEqual(0);
   });
@@ -89,7 +89,7 @@ describe("Vis", function() {
     expect(this.mapConfig.center[0]).not.toEqual(43.3);
     expect(this.mapConfig.center[1]).not.toEqual("ham");
   })
-  
+
   it("should parse bounds values if they are correct", function() {
     this.container = $('<div>').css('height', '200px');
     var opts = {
@@ -410,7 +410,7 @@ describe("Vis", function() {
     ];
 
     this.vis.load(this.mapConfig);
-    
+
     setTimeout(function() {
       var scripts = document.getElementsByTagName('script'),
           torqueRe = /\/cartodb\.mod\.torque\.js/;
@@ -438,9 +438,131 @@ describe("Vis", function() {
     };
 
     layers = null;
-    
+
     this.vis.load(this.mapConfig, opts);
     expect(this.vis.map.layers.at(0).get('type')).toEqual('GMapsBase');
+  });
+
+  describe("dragging option", function() {
+
+    beforeEach(function() {
+      var container = $('<div>').css('height', '200px');
+      this.vis = new cdb.vis.Vis({el: container});
+    });
+
+    it("should be enabled with zoom overlay, scrollwheel enabled and not under a mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: true
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled with zoom overlay, scrollwheel disabled and not under a mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: true
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled without zoom overlay, scrollwheel enabled and not under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: false
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be disabled without zoom overlay, scrollwheel disabled and not under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(false);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: false
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeFalsy();
+    });
+
+    it("should be enabled without zoom, scrollwheel is enabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: false
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled without zoom, scrollwheel disabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: false
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled with zoom, scrollwheel disabled and under mobile device", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: false,
+        zoom: true
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    it("should be enabled if all parameters are enabled or present", function() {
+      spyOn(this.vis, 'isMobileDevice').and.returnValue(true);
+      var mapConfig = createMapConfig({
+        scrollwheel: true,
+        zoom: true
+      });
+      this.vis.load(mapConfig);
+      expect(this.vis.map.get('drag')).toBeTruthy();
+    });
+
+    function createMapConfig(obj) {
+      var r = {
+        updated_at: 'cachebuster',
+        title: "irrelevant",
+        url: "http://cartodb.com",
+        center: [40.044, -101.95],
+        bounding_box_sw: [20, -140],
+        bounding_box_ne: [ 55, -50],
+        zoom: 4,
+        bounds: [[1, 2],[3, 4]],
+        scrollwheel: false,
+        overlays: []
+      };
+      if (obj.scrollwheel) {
+        r.scrollwheel = true;
+      }
+      if (obj.zoom) {
+        r.overlays = [
+          {
+            type: "zoom",
+            order: 6,
+            options: {
+              x: 20,
+              y: 20,
+              display: true
+            },
+            template: ""
+          }
+        ];
+      }
+      return r;
+    }
+
   });
 
   describe("Legends", function() {

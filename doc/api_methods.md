@@ -15,7 +15,7 @@ Name |Description
 map_id | a DOM object, for example `$('#map')` or a DOM id.
 vizjson_url | url of the vizjson object.
 
-options | 
+options |
 --- | ---
 &#124;_ shareable | add facebook and twitter share buttons.
 &#124;_ title | adds a header with the title of the visualization.
@@ -139,7 +139,7 @@ Name |Description
 map | Leaflet `L.Map` object. The map should be initialized before calling this function.
 layerSource | contains information about the layer. It can be specified in 2 ways
 
-options | 
+options |
 --- | ---
 &#124;_ https | force https
 &#124;_ refreshTime | if is set, the layer is refreshed each refreshTime milliseconds.
@@ -149,6 +149,7 @@ options |
 &#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/>. For details about customizing the time slider, see the [Torque.js](/cartodb-platform/torque/torqueslidertimevalue/) documentation.
 &#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).
 &#124;_ filter | a string or array of strings to specify the type(s) of sublayers that will be rendered (eg: `['http', 'mapnik']`). All non-torque layers (http and mapnik) will be rendered if this option is not present.
+&#124;_ no_cdn | true to disable CDN when fetching tiles
 callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.
 
 #### Passing the url where the layer data is located
@@ -201,9 +202,13 @@ cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
 
 Layer metadata must take one of the following forms:
 
+## Layer Source Object
+
 ### Standard Layer Source Object (_type: 'cartodb'_)
 
 Used for most maps with tables that are set to public or public with link.
+
+#### Example
 
 ```javascript
 {
@@ -223,9 +228,12 @@ Used for most maps with tables that are set to public or public with link.
   ]
 }
 ```
+
 ### Named Maps Layer Source Object (_type: 'namedmap'_)
 
 Used for making public maps with private data. See [Named Maps](/cartodb-platform/maps-api/named-maps/) for more information.
+
+#### Example
 
 ```javascript
 {
@@ -252,9 +260,12 @@ Used for making public maps with private data. See [Named Maps](/cartodb-platfor
   }
 }
 ```
-#### Example
+
+### Multiple types of layers Source Object
 
 `cartodb.createLayer` combining multiple types of layers and setting a filter
+
+#### Example
 
 ```javascript
 cartodb.createLayer(map, {
