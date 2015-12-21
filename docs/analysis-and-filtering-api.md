@@ -57,13 +57,13 @@ dataview.on('dataChanged', function(dataview) {
 ```
 Depending on the dataview (and layer) type, the data might change at any time and thus will trigger this event again (e.g. when a filter is applied, more on this later).
 
-### Types of datavies
+### Types of dataviews
 
-#### Clusters
+#### cartodb.dataviews.ClustersDataView
 
 Clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters) [(from wikipedia)](https://en.wikipedia.org/wiki/Cluster_analysis).
 
-Use the `cluster` type, as follows:
+Use the `clusters` type, as follows:
 
 ```
 var dataview = cartodb.dataviews.create(layer, {
@@ -74,7 +74,7 @@ var dataview = cartodb.dataviews.create(layer, {
 })
 ```
 
-The following **options** can be used:
+##### Options
 
 |name|description|type|default|
 |---|---|---|---|
@@ -83,13 +83,11 @@ The following **options** can be used:
 |method|clustering method|jenks|jenks|
 
 
-##### cartodb.dataviews.ClustersDataView
-
-**Methods**
+##### Methods
 
 `cartodb.dataviews.ClustersDataView#getClusters`
 
-#### Categories
+#### cartodb.dataviews.CategoriesDataView
 
 Use the `categories` type, as follows:
 
@@ -100,20 +98,19 @@ var dataview = cartodb.dataviews.create(layer, {
 })
 ```
 
-The following **options** can be used:
+##### Options
 
 |name|description|type|default|
 |---|---|---|---|
 |column*|name of the column|string|
 
-##### cartodb.dataviews.CategoriesDataView
-
-**Methods**
+##### Methods
 
 `cartodb.dataviews.CategoriesDataView#getCategories`
+
 `cartodb.dataviews.CategoriesDataView#search`
 
-#### Aggregation
+#### cartodb.dataviews.AggregationDataView
 
 Use the `aggregation` type, as follows:
 
@@ -125,16 +122,14 @@ var dataview = cartodb.dataviews.create(layer, {
 })
 ```
 
-The following **options** can be used:
+###### Options
 
 |name|description|type|default|
 |---|---|---|---|
 |column*|name of the column|string|
 |function*|function that will be used to calculate the results|string: `count`, `max`,  `min`, `avg` ||
 
-##### cartodb.dataviews.AggregationDataView
-
-**Methods**
+##### Methods
 
 `cartodb.dataviews.AggregationDataView#getValue`
 
@@ -170,32 +165,35 @@ populationFilter.setRange({ min: 10000, max: 100000 });
 
 ### Types of filters
 
-#### Category filters
+#### cartodb.filters.CategoryFilter
 
 Type: `category`.
+
+##### Options
 
 |name|description|type|default|
 |---|---|---|---|
 |column*|name of the column|string||
 
-##### cartodb.filters.CategoryFilter
+##### Methods
 
 **Methods**
 
 `cartodb.filters.CategoryFilter.add(category)`
+
 `cartodb.filters.CategoryFilter.remove(category)`
 
-#### Range filters
+#### cartodb.filters.RangeFilter
 
 Type: `range`.
+
+##### Options
 
 |name|description|type|default|
 |---|---|---|---|
 |column*|name of the column|string||
 
-##### cartodb.filters.RangeFilter
-
-**Methods**
+##### Methods
 
 ```
 cartodb.filters.RangeFilter.setRange({
@@ -204,18 +202,17 @@ cartodb.filters.RangeFilter.setRange({
 });
 ```
 
+#### cartodb.filters.BoundingBoxFilter
 
-#### Bounding box filter
+Type: `bbox`.
 
-Type: `bbox`
+##### Options
 
 |name|description|type|default|
 |---|---|---|---|
 |map*|map object|cartodb.Map||
 
-##### cartodb.filters.BoundingBoxFilter
-
-**Methods**
+##### Methods
 
 ```
 cartodb.filters.BoundingBoxFilter.setBounds([
