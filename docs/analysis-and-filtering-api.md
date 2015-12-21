@@ -20,11 +20,9 @@ var clusterDataview = cartodb.dataviews.create(layer, {
   clusters: 10
 });
 
-// Options are diferent for each type
-
 ```
 
-An instance of dataview provides methods to extract the information about a specific kind of analysis (see documentation below).
+Each type of dataview needs different options, and instances of the different dataview types provide methods to extract the information about the specific kind of analysis (see documentation below).
 
 ### Defining dataviews
 
