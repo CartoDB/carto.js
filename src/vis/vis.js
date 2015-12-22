@@ -392,6 +392,10 @@ var Vis = View.extend({
     this._setLayerOptions(options);
 
     _.defer(function () {
+      // TODO: We wan't to expose a "flat" array of layer objects that users
+      // can easily work with and don't expose a lot of the internals of CartoDB.js.
+      // We should expose instances of objects that belong to one of the classes
+      // in src/api/v4/layers
       self.trigger('done', self, map.layers);
     });
 
