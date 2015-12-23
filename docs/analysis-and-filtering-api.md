@@ -4,7 +4,6 @@
 
 - [Analysis API](#analysis-api)
 - [Filtering API](#filtering-api)
-- [Usage example](#usage-example)
 
 ## Analysis API
 
