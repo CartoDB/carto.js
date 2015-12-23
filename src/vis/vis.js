@@ -416,16 +416,17 @@ var Vis = View.extend({
       return layer.get('type') === 'CartoDB' || layer.get('type') === 'Torque';
     });
     if (cartoDBLayerGroup) {
-      this._createWindshaftMapInstance(cartoDBLayerGroup, interactiveLayers, this.dataviews);
+      this._createWindshaftMapInstance(map, cartoDBLayerGroup, interactiveLayers, this.dataviews);
     }
 
     return this;
   },
 
-  _createWindshaftMapInstance: function (layerGroup, layers, dataviews) {
+  _createWindshaftMapInstance: function (map, layerGroup, layers, dataviews) {
     var windshaftClient = WindshaftClientFactory.createClient(layerGroup);
     var windshaftMap = new WindshaftMap({
       client: windshaftClient,
+      map: map,
       layerGroup: layerGroup,
       layers: layers,
       dataviews: dataviews
