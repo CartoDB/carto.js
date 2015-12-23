@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 
 var CategoriesDataview = Backbone.Model.extend({
 
-  initialize: function(attrs, options) {
+  initialize: function (attrs, options) {
     this._map = options.map;
     this._layer = options.layer;
   },

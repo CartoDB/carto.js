@@ -1,4 +1,3 @@
-var Map = require('./map');
 var Config = require('./config');
 var LayerGroupConfig = require('./layergroup-config');
 var NamedMapConfig = require('./namedmap-config');

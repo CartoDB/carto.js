@@ -1,4 +1,4 @@
-var Map = function (options) {
+var _Map = function (options) {
   this._client = options.client;
   this._layerGroup = options.layerGroup;
   this._layers = options.layers;
@@ -11,7 +11,7 @@ var Map = function (options) {
   this.createInstance();
 };
 
-Map.prototype.createInstance = function () {
+_Map.prototype.createInstance = function () {
   this._client.instantiateMap({
     layers: this._layers,
     dataviews: this._dataviews,
@@ -19,11 +19,11 @@ Map.prototype.createInstance = function () {
   });
 };
 
-Map.prototype._onInstanceCreated = function (mapInstance) {
+_Map.prototype._onInstanceCreated = function (mapInstance) {
   this._layerGroup.set({
     baseURL: mapInstance.getBaseURL(),
     urls: mapInstance.getTiles('mapnik')
   });
 };
 
-module.exports = Map;
+module.exports = _Map;
