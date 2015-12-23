@@ -3,6 +3,7 @@ var LayerGroupConfig = {};
 
 LayerGroupConfig.generate = function (options) {
   var layers = options.layers;
+  var dataviews = options.dataviews;
   var config = { layers: [] };
   _.each(layers, function (layer) {
     if (layer.isVisible()) {
@@ -21,6 +22,14 @@ LayerGroupConfig.generate = function (options) {
           columns: layer.getInfowindowFieldNames()
         };
       }
+
+      layerConfig.options.widgets = {};
+      var layerId = layer.get('id');
+      dataviews.each(function (dataview) {
+        if (layerId === dataview.getLayerId()) {
+          layerConfig.options.widgets[dataview.getId()] = dataview.toJSON();
+        }
+      });
       config.layers.push(layerConfig);
     }
   });
