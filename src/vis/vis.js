@@ -22,11 +22,9 @@ var Overlay = require('./vis/overlay');
 var INFOWINDOW_TEMPLATE = require('./vis/infowindow-template');
 var CartoDBLayerGroupNamed = require('../geo/map/cartodb-layer-group-named');
 var CartoDBLayerGroupAnonymous = require('../geo/map/cartodb-layer-group-anonymous');
-var WindshaftConfig = require('../windshaft/config');
-var WindshaftClient = require('../windshaft/client');
-var WindshaftLayerGroupConfig = require('../windshaft/layergroup-config');
-var WindshaftNamedMapConfig = require('../windshaft/namedmap-config');
 var DataviewsCollection = require('../dataviews/collection');
+var WindshaftClientFactory = require('../windshaft/client-factory');
+var WindshaftMap = require('../windshaft/map');
 
 /**
  * Visualization creation
@@ -343,6 +341,7 @@ var Vis = View.extend({
     var cartoDBLayerGroup;
     var layers = [];
     var apiLayers = [];
+    var interactiveLayers = [];
     _.each(data.layers, function (layerData) {
       if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
         var layersData;
@@ -412,62 +411,27 @@ var Vis = View.extend({
     // cause the layergroup view to fetch and render the tiles. This needs
     // to happen everytime a layer that belongs to the layerGroup changes
     // (eg: when the layer is hidden or it's SQL is changed)
-    if (cartoDBLayerGroup) {
-      this._createLayerGroupInstance(cartoDBLayerGroup);
 
-      this.dataviews.bind('add remove reset', function () {
-        console.log('New dataview created - creating layerGroupInstance');
-        this._createLayerGroupInstance(cartoDBLayerGroup);
-      }, this);
+    var interactiveLayers = _.filter(apiLayers, function (layer) {
+      return layer.get('type') === 'CartoDB' || layer.get('type') === 'Torque';
+    });
+    if (cartoDBLayerGroup) {
+      this._createWindshaftMapInstance(map, cartoDBLayerGroup, interactiveLayers, this.dataviews);
     }
 
     return this;
   },
 
-  _createLayerGroupInstance: function (layerGroup) {
-    if (!layerGroup) {
-      throw new Error('Error creating instance of layergroup, layerGroup is not defined.');
-    }
-    if (layerGroup.get('type') === 'namedmap') {
-      var userName = layerGroup.get('userName');
-      var mapsApiTemplate = layerGroup.get('mapsApiTemplate');
-      var namedMapId = layerGroup.get('namedMapId');
-      var statTag = layerGroup.get('statTag');
-      var endpoint = [
-        WindshaftConfig.MAPS_API_BASE_URL, 'named', namedMapId
-      ].join('/');
-      var configGenerator = WindshaftNamedMapConfig;
-    } else if (layerGroup.get('type') === 'layergroup') {
-      var userName = layerGroup.get('userName');
-      var mapsApiTemplate = layerGroup.get('mapsApiTemplate');
-      var statTag = layerGroup.get('statTag');
-      var endpoint = WindshaftConfig.MAPS_API_BASE_URL;
-      var configGenerator = WindshaftLayerGroupConfig;
-    }
-
-    var windshaftClient = new WindshaftClient({
-      endpoint: endpoint,
-      urlTemplate: mapsApiTemplate,
-      userName: userName,
-      statTag: statTag,
-      forceCors: true,
-      layer: layerGroup.layers.models
+  _createWindshaftMapInstance: function (map, layerGroup, layers, dataviews) {
+    var windshaftClient = WindshaftClientFactory.createClient(layerGroup);
+    var windshaftMap = new WindshaftMap({
+      client: windshaftClient,
+      map: map,
+      layerGroup: layerGroup,
+      layers: layers,
+      dataviews: dataviews
     });
-
-    var mapConfig = configGenerator.generate({
-      layers: layerGroup.layers.models,
-      dataviews: this.dataviews
-    });
-
-    windshaftClient.instantiateMap({
-      mapDefinition: mapConfig,
-      success: function (dashboardInstance) {
-        layerGroup.set({
-          baseURL: dashboardInstance.getBaseURL(),
-          urls: dashboardInstance.getTiles('mapnik')
-        });
-      }
-    });
+    windshaftMap.createInstance();
   },
 
   _createOverlays: function (overlays, vis_data, options) {
