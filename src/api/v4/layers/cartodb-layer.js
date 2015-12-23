@@ -1,1 +1,0 @@
-// TODO: Should we use Backbone.Model for this?
