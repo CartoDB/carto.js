@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var LZMA = require('lzma');
 var util = require('../core/util');
-var WindshaftDashboardInstance = require('./dashboard-instance');
+var MapInstance = require('./map-instance');
 
 var validatePresenceOfOptions = function (options, requiredOptions) {
   var missingOptions = _.filter(requiredOptions, function (option) {
@@ -14,17 +14,19 @@ var validatePresenceOfOptions = function (options, requiredOptions) {
 };
 
 /**
- * Windshaft client. It provides a method to create instances of dashboards.
+ * Windshaft client. It provides a method to create instances of maps in Windshaft.
  * @param {object} options Options to set up the client
  */
 var WindshaftClient = function (options) {
   validatePresenceOfOptions(options, ['urlTemplate', 'userName', 'endpoint', 'statTag']);
 
+  // TODO: Separate attributes, from related objects in the arguments
   this.urlTemplate = options.urlTemplate;
   this.userName = options.userName;
   this.endpoint = options.endpoint;
   this.statTag = options.statTag;
   this.forceCors = options.forceCors || false;
+  this.configGenerator = options.configGenerator;
 
   this.url = this.urlTemplate.replace('{user}', this.userName);
 };
@@ -32,18 +34,20 @@ var WindshaftClient = function (options) {
 WindshaftClient.DEFAULT_COMPRESSION_LEVEL = 3;
 WindshaftClient.MAX_GET_SIZE = 2033;
 
-/**
- * Creates an instance of a map in Windshaft
- * @param {object} mapDefinition An object that responds to .toJSON with the definition of the map
- * @param  {function} callback A callback that will get the public or private map
- * @return {cdb.windshaft.DashboardInstance} The instance of the dashboard
- */
 WindshaftClient.prototype.instantiateMap = function (options) {
-  var mapDefinition = options.mapDefinition;
+  var layers = options.layers;
+  var dataviews = options.dataviews;
+
   var filters = options.filters || {};
   var successCallback = options.success;
   var errorCallback = options.error;
-  var payload = JSON.stringify(mapDefinition);
+
+  var mapConfig = this.configGenerator.generate({
+    layers: layers,
+    dataviews: dataviews
+  });
+
+  var payload = JSON.stringify(mapConfig);
 
   var ajaxOptions = {
     success: function (data) {
@@ -52,7 +56,7 @@ WindshaftClient.prototype.instantiateMap = function (options) {
       } else {
         data.urlTemplate = this.urlTemplate;
         data.userName = this.userName;
-        successCallback(new WindshaftDashboardInstance(data));
+        successCallback(new MapInstance(data));
       }
     }.bind(this),
     error: function (xhr) {
