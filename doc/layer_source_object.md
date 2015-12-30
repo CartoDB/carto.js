@@ -1,6 +1,6 @@
 # Layer Source Object
 
-### Standard Layer Source Object (_type: 'cartodb'_)
+## Standard Layer Source Object (_type: 'cartodb'_)
 
 Used for most maps with tables that are set to public or public with link.
 
@@ -19,7 +19,7 @@ Used for most maps with tables that are set to public or public with link.
 }
 ```
 
-### Torque Layer Source Object (_type: 'torque'_)
+## Torque Layer Source Object (_type: 'torque'_)
 
 Used for [Torque maps](https://github.com/CartoDB/torque). Note that it does not allow sublayers.
 
@@ -120,7 +120,7 @@ map.on('click', function(e) {
 });
 ```
 
-### Named Maps Layer Source Object (_type: 'namedmap'_)
+## Named Maps Layer Source Object (_type: 'namedmap'_)
 
 Used for making public maps with private data. See [Named Maps](/cartodb-platform/maps-api/named-maps/) for more information.
 
