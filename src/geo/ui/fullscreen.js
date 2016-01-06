@@ -79,7 +79,7 @@ cdb.ui.common.FullScreen = cdb.core.View.extend({
     var options = _.extend(
       this.options,
       {
-        mapUrl: location.href || ''
+        mapUrl: location.href || ''
       }
     );
     this.$el.html(this.options.template(options));
