@@ -1,6 +1,6 @@
 # API methods
 
-The documentation below refers to CartoDB.js v3. For major changes in the library we will update the documentation here. This documentation is meant to help developers find specific methods from the CartoDB.js library.
+This documentation is intended for developers and describes specific methods from the [latest version](https://github.com/CartoDB/cartodb.js/releases) of the CartoDB.js library.
 
 ## cartodb.createVis
 
