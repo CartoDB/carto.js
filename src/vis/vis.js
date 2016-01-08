@@ -26,6 +26,7 @@ var WindshaftConfig = require('../windshaft/config');
 var WindshaftClient = require('../windshaft/client');
 var WindshaftLayerGroupConfig = require('../windshaft/layergroup-config');
 var WindshaftNamedMapConfig = require('../windshaft/namedmap-config');
+var DataviewsCollection = require('../dataviews/collection');
 
 /**
  * Visualization creation
@@ -338,6 +339,7 @@ var Vis = View.extend({
     var cartoDBLayers;
     var cartoDBLayerGroup;
     var layers = [];
+    var apiLayers = [];
     _.each(data.layers, function (layerData) {
       if (layerData.type === 'layergroup' || layerData.type === 'namedmap') {
         var layersData;
@@ -364,6 +366,7 @@ var Vis = View.extend({
         }
         cartoDBLayers = _.map(layersData, function (layerData) {
           var cartoDBLayer = Layers.create('cartodb', self, layerData);
+          apiLayers.push(cartoDBLayer);
           return cartoDBLayer;
         });
 
@@ -372,8 +375,8 @@ var Vis = View.extend({
         });
         layers.push(cartoDBLayerGroup);
       } else {
-        // Treat differently since this kind of layer is rendered client-side (and not through the tiler)
         var layer = Layers.create(layerData.type, self, layerData);
+        apiLayers.push(layer);
         layers.push(layer);
       }
     });
@@ -388,8 +391,17 @@ var Vis = View.extend({
 
     this._setLayerOptions(options);
 
+    // Dataviewfactory
+    this.dataviews = new DataviewsCollection(null, { map: map });
+
     _.defer(function () {
-      self.trigger('done', self, map.layers);
+      // TODO: We wan't to expose a "flat" array of layer objects that users
+      // can easily work with and don't expose a lot of the internals of CartoDB.js.
+      // We should expose instances of objects that belong to one of the classes
+      // in src/api/v4/layers
+      window.vis = self;
+      window.layers = apiLayers;
+      self.trigger('done', self, apiLayers);
     });
 
     // TODO: This method is creating an instance of the layer group
@@ -399,6 +411,11 @@ var Vis = View.extend({
     // (eg: when the layer is hidden or it's SQL is changed)
     if (cartoDBLayerGroup) {
       this._createLayerGroupInstance(cartoDBLayerGroup);
+
+      this.dataviews.bind('add remove reset', function () {
+        console.log('New dataview created - creating layerGroupInstance');
+        this._createLayerGroupInstance(cartoDBLayerGroup);
+      }, this);
     }
 
     return this;
@@ -430,11 +447,13 @@ var Vis = View.extend({
       urlTemplate: mapsApiTemplate,
       userName: userName,
       statTag: statTag,
-      forceCors: true
+      forceCors: true,
+      layer: layerGroup.layers.models
     });
 
     var mapConfig = configGenerator.generate({
-      layers: layerGroup.layers.models
+      layers: layerGroup.layers.models,
+      dataviews: this.dataviews
     });
 
     windshaftClient.instantiateMap({

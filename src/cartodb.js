@@ -28,6 +28,7 @@ cdb.errors = require('cdb.errors');
 cdb.templates = require('cdb.templates');
 cdb.createVis = require('./api/create-vis');
 cdb.createLayer = require('./api/create-layer');
+
 cdb.LZMA = require('lzma');
 
 // used in libs like torque to add themselves here (or so it seems)
