@@ -8,7 +8,7 @@ Used for most maps with tables that are set to public or public with link.
 
 ```javascript
 {
-  type: 'torque', // Required
+  type: 'cartodb', // Required
   order: 1, // Optional
   options: {
     query: "SQL statement",   // Required if table_name is not given
