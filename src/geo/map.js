@@ -288,8 +288,36 @@ var Map = Model.extend({
     }
 
     return zoom - 1;
-  }
+  },
 
+  getLayerGroup: function () {
+    return this.layers.find(function (layer) {
+      return layer.get('type') === 'layergroup' || layer.get('type') === 'namedmap';
+    });
+  },
+
+  getInteractiveLayers: function () {
+    if (!this._interactiveLayers) {
+      this._interactiveLayers = new Backbone.Collection();
+    }
+
+    var interactiveLayers = [];
+
+    // TODO: We'd also need to do this every time a layer is added/removed to the collection of layers
+    // to keep this collection in sync with map.layer
+    this.layers.each(function (layer) {
+      if (layer.get('type') === 'layergroup' || layer.get('type') === 'namedmap') {
+        layer.layers.each(function (cartoDBlayer) {
+          interactiveLayers.push(cartoDBlayer);
+        });
+      } else if (layer.get('type') === 'torque') {
+        interactiveLayers.push(layer);
+      }
+    });
+    this._interactiveLayers.reset(interactiveLayers);
+
+    return this._interactiveLayers;
+  }
 }, {
   latlngToMercator: function(latlng, zoom) {
     var ll = new L.LatLng(latlng[0], latlng[1]);
