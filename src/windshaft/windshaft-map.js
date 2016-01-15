@@ -14,11 +14,12 @@ var WindshaftMapInstance = require('./windshaft-map-instance');
 var WindshaftMap = function (options) {
   var BOUNDING_BOX_FILTER_WAIT = 500;
 
-  this.layerGroup = options.layerGroup;
-  this.layers = options.layers;
-  this.dataviews = options.dataviews;
   this.map = options.map;
+  this.layers = this.map.getInteractiveLayers();
+  this.dataviews = options.dataviews;
   this.client = options.client;
+
+  // TODO: This could probably be a property of the map object
   this.statTag = options.statTag;
   this.configGenerator = options.configGenerator;
   this.instance = new WindshaftMapInstance();
@@ -64,7 +65,8 @@ WindshaftMap.prototype._createInstance = function (options) {
       this.instance.set(mapInstance.toJSON());
 
       // TODO: Extract this.
-      this.layerGroup && this.layerGroup.set({
+      var layerGroup = this.map.getLayerGroup();
+      layerGroup && layerGroup.set({
         baseURL: mapInstance.getBaseURL(),
         urls: mapInstance.getTiles('mapnik')
       });

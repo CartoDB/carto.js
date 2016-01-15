@@ -61,10 +61,13 @@ describe('windshaft/map', function () {
       view_bounds_ne: []
     });
 
-    this.cartoDBLayerGroup = new Model();
     this.cartoDBLayer1 = new CartoDBLayer({ id: '12345-67890' });
     this.cartoDBLayer2 = new CartoDBLayer({ id: '09876-54321' });
-    this.torqueLayer = new TorqueLayer();
+    this.cartoDBLayerGroup = new Model({
+      type: 'layergroup'
+    });
+    this.cartoDBLayerGroup.layers = new Backbone.Collection([this.cartoDBLayer1, this.cartoDBLayer2]);
+    this.map.layers.reset([this.cartoDBLayerGroup]);
   });
 
   afterEach(function () {
@@ -72,6 +75,9 @@ describe('windshaft/map', function () {
   });
 
   it('should create an instance of the windshaft map and update the URLs of layers and dataviews', function () {
+    var torqueLayer = new TorqueLayer();
+    this.map.layers.reset([this.cartoDBLayerGroup, torqueLayer]);
+
     var dataview = new HistogramDataviewModel({
       id: 'dataviewId',
       type: 'list'
@@ -84,8 +90,6 @@ describe('windshaft/map', function () {
       client: this.client,
       configGenerator: this.configGenerator,
       statTag: 'stat_tag',
-      layerGroup: this.cartoDBLayerGroup,
-      layers: new Backbone.Collection([ this.cartoDBLayer1, this.cartoDBLayer2, this.torqueLayer ]),
       dataviews: this.dataviews,
       map: this.map
     });
@@ -96,7 +100,7 @@ describe('windshaft/map', function () {
     expect(this.cartoDBLayerGroup.get('urls')).toEqual('tileURLs');
 
     // urls of torque layers have been updated too!
-    expect(this.torqueLayer.get('urls')).toEqual('torqueTileURLs');
+    expect(torqueLayer.get('urls')).toEqual('torqueTileURLs');
 
     // url of dataview have been updated
     expect(dataview.url()).toEqual('http://example.com');

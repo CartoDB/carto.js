@@ -1,7 +1,10 @@
 var config = require('cdb.config');
 var PlainLayer = require('../../../src/geo/map/plain-layer');
-var CartoDBLayer = require('../../../src/geo/map/cartodb-layer');
 var Map = require('../../../src/geo/map');
+var CartoDBLayer = require('../../../src/geo/map/cartodb-layer');
+var TorqueLayer = require('../../../src/geo/map/torque-layer');
+var CartoDBLayerGroupAnonymous = require('../../../src/geo/map/cartodb-layer-group-anonymous');
+var CartoDBLayerGroupNamed = require('../../../src/geo/map/cartodb-layer-group-named');
 
 describe('core/geo/map', function() {
   var map;
@@ -121,4 +124,92 @@ describe('core/geo/map', function() {
       "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>",
     ]);
   })
+
+  describe('.getInteractiveLayers', function () {
+    it('should return layers inside of a layergroup layer model', function () {
+      map = new Map();
+      var cartodbLayer1 = new CartoDBLayer();
+      var cartodbLayer2 = new CartoDBLayer();
+
+      var layerGroup = new CartoDBLayerGroupAnonymous(null, {
+        layers: [cartodbLayer1, cartodbLayer2]
+      });
+
+      map.layers.reset([layerGroup]);
+
+      var interactiveLayers = map.getInteractiveLayers();
+      expect(interactiveLayers.size()).toEqual(2);
+      expect(interactiveLayers.at(0)).toEqual(cartodbLayer1);
+      expect(interactiveLayers.at(1)).toEqual(cartodbLayer2);
+    });
+
+    it('should return layers inside of a namedmap layer model', function () {
+      map = new Map();
+      var cartodbLayer1 = new CartoDBLayer();
+      var cartodbLayer2 = new CartoDBLayer();
+
+      var layerGroup = new CartoDBLayerGroupNamed(null, {
+        layers: [cartodbLayer1, cartodbLayer2]
+      });
+
+      map.layers.reset([layerGroup]);
+
+      var interactiveLayers = map.getInteractiveLayers();
+      expect(interactiveLayers.size()).toEqual(2);
+      expect(interactiveLayers.at(0)).toEqual(cartodbLayer1);
+      expect(interactiveLayers.at(1)).toEqual(cartodbLayer2);
+    });
+
+    it('should return torque layers', function () {
+      map = new Map();
+      var torqueLayer = new TorqueLayer();
+
+      map.layers.reset([torqueLayer]);
+
+      var interactiveLayers = map.getInteractiveLayers();
+      expect(interactiveLayers.size()).toEqual(1);
+      expect(interactiveLayers.at(0)).toEqual(torqueLayer);
+    });
+  });
+
+  describe('.getLayerGroup', function () {
+    it('should NOT return the layer group', function () {
+      map = new Map();
+
+      expect(map.getLayerGroup()).toBeUndefined();
+
+      var torqueLayer = new TorqueLayer();
+      map.layers.reset([torqueLayer]);
+
+      expect(map.getLayerGroup()).toBeUndefined();
+    });
+
+    it('should return a CartoDBLayerGroupAnonymous layergroup', function () {
+      map = new Map();
+      var cartodbLayer1 = new CartoDBLayer();
+      var cartodbLayer2 = new CartoDBLayer();
+
+      var layerGroup = new CartoDBLayerGroupAnonymous(null, {
+        layers: [cartodbLayer1, cartodbLayer2]
+      });
+
+      map.layers.reset([layerGroup]);
+
+      expect(map.getLayerGroup()).toEqual(layerGroup);
+    });
+
+    it('should return a CartoDBLayerGroupNamed layergroup', function () {
+      map = new Map();
+      var cartodbLayer1 = new CartoDBLayer();
+      var cartodbLayer2 = new CartoDBLayer();
+
+      var layerGroup = new CartoDBLayerGroupNamed(null, {
+        layers: [cartodbLayer1, cartodbLayer2]
+      });
+
+      map.layers.reset([layerGroup]);
+
+      expect(map.getLayerGroup()).toEqual(layerGroup);
+    });
+  });
 });
