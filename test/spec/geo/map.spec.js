@@ -164,11 +164,7 @@ describe('core/geo/map', function() {
       map = new Map();
       var torqueLayer = new TorqueLayer();
 
-      var layerGroup = new CartoDBLayerGroupNamed(null, {
-        layers: [torqueLayer]
-      });
-
-      map.layers.reset([layerGroup]);
+      map.layers.reset([torqueLayer]);
 
       var interactiveLayers = map.getInteractiveLayers();
       expect(interactiveLayers.size()).toEqual(1);
