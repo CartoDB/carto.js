@@ -121,12 +121,25 @@ Adds an infowindow to the map controlled by layer events. It enables interaction
 Option | Description
 --- | ---
 map | native map object or leaflet
+infowindowTemplate | the script type and id defined for your infowindow_template
+templateType | the type defined with [Mustache template](http://mustache.github.io/mustache.5.html) placeholders
 layer | cartodb layer (or sublayer)
 fields | array of column names
 
 #### Returns
 
 An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
+
+#### Example
+
+{% highlight html %}
+<script>
+    cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
+      infowindowTemplate: $('#infowindow_template').html(),
+      templateType: 'mustache'
+    });
+</script>
+{% endhighlight %}
 
 ### cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
