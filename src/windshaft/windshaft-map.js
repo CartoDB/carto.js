@@ -16,7 +16,6 @@ var WindshaftMap = function (options) {
 
   this.map = options.map;
   this.layers = this.map.getInteractiveLayers();
-  this.layerGroup = this.map.getLayerGroup();
   this.dataviews = options.dataviews;
   this.client = options.client;
 
@@ -66,7 +65,8 @@ WindshaftMap.prototype._createInstance = function (options) {
       this.instance.set(mapInstance.toJSON());
 
       // TODO: Extract this.
-      this.layerGroup && this.layerGroup.set({
+      var layerGroup = this.map.getLayerGroup();
+      layerGroup && layerGroup.set({
         baseURL: mapInstance.getBaseURL(),
         urls: mapInstance.getTiles('mapnik')
       });
