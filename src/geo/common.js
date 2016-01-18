@@ -1,9 +1,11 @@
 
+
 /*
  *  common functions for cartodb connector
  */
 
 function CartoDBLayerCommon() {
+  this.visible = true;
 }
 
 CartoDBLayerCommon.prototype = {
@@ -13,7 +15,8 @@ CartoDBLayerCommon.prototype = {
   show: function() {
     this.setOpacity(this.options.previous_opacity === undefined ? 0.99: this.options.previous_opacity);
     delete this.options.previous_opacity;
-    this.setInteraction(true);
+    this._interactionDisabled = false;
+    this.visible = true;
   },
 
   hide: function() {
@@ -21,7 +24,14 @@ CartoDBLayerCommon.prototype = {
       this.options.previous_opacity = this.options.opacity;
     }
     this.setOpacity(0);
-    this.setInteraction(false);
+    // disable here interaction for all the layers
+    this._interactionDisabled = true;
+    this.visible = false;
+  },
+
+  toggle: function() {
+    this.isVisible() ? this.hide() : this.show();
+    return this.isVisible();
   },
 
   /**
@@ -56,7 +66,8 @@ CartoDBLayerCommon.prototype = {
       // layer will be created
       if(this.urls) {
         // generate the tilejson from the urls. wax needs it
-        var tilejson = this._tileJSONfromTiles(layer, this.urls);
+        var layer_index = this.getLayerIndexByNumber(+layer);
+        var tilejson = this._tileJSONfromTiles(layer_index, this.urls);
 
         // remove previous
         layerInteraction = this.interaction[layer];
@@ -70,14 +81,14 @@ CartoDBLayerCommon.prototype = {
           .map(this.options.map)
           .tilejson(tilejson)
           .on('on', function(o) {
-            o.layer = layer || 0;
-            o.layer = self.getLayerNumberByIndex(o.layer);
+            if (self._interactionDisabled) return;
+            o.layer = +layer;
             self._manageOnEvents(self.options.map, o);
           })
           .on('off', function(o) {
+            if (self._interactionDisabled) return;
             o = o || {}
-            o.layer = layer || 0;
-            o.layer = self.getLayerNumberByIndex(o.layer);
+            o.layer = +layer;
             self._manageOffEvents(self.options.map, o);
           });
       }
@@ -110,7 +121,6 @@ CartoDBLayerCommon.prototype = {
     opts.visible ? this.show() : this.hide();
     this.setSilent(false);
     this._definitionUpdated();
-
   },
 
   _getLayerDefinition: function() {
@@ -136,7 +146,6 @@ CartoDBLayerCommon.prototype = {
     cartocss = cartocss.replace(/\{\{table_name\}\}/g, opts.table_name);
     cartocss = cartocss.replace(new RegExp( opts.table_name, "g"), "layer0");
 
-
     return {
       sql: sql,
       cartocss: cartocss,
@@ -144,7 +153,6 @@ CartoDBLayerCommon.prototype = {
       params: params,
       interactivity: opts.interactivity
     }
-
   },
 
   error: function(e) {
@@ -156,7 +164,8 @@ CartoDBLayerCommon.prototype = {
 
   _clearInteraction: function() {
     for(var i in this.interactionEnabled) {
-      if(this.interactionEnabled[i]) {
+      if (this.interactionEnabled.hasOwnProperty(i) &&
+        this.interactionEnabled[i]) {
         this.setInteraction(i, false);
       }
     }
@@ -164,9 +173,10 @@ CartoDBLayerCommon.prototype = {
 
   _reloadInteraction: function() {
     for(var i in this.interactionEnabled) {
-      if(this.interactionEnabled[i]) {
-        this.setInteraction(i, false);
-        this.setInteraction(i, true);
+      if (this.interactionEnabled.hasOwnProperty(i) &&
+        this.interactionEnabled[i]) {
+          this.setInteraction(i, false);
+          this.setInteraction(i, true);
       }
     }
   },
@@ -209,9 +219,6 @@ CartoDBLayerCommon.prototype = {
 
   }
 };
-
-
-
 
 cdb.geo.common = {};
 
@@ -262,3 +269,4 @@ cdb.geo.common.CartoDBLogo = {
     },( timeout || 0 ));
   }
 };
+

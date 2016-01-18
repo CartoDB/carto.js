@@ -1,10 +1,7 @@
 /**
  * public api for cartodb
  */
-
 (function() {
-
-
   function _Promise() {
 
   }
@@ -42,12 +39,12 @@
     } else if(layer.table !== undefined && layer.user !== undefined) {
       // layer object points to cartodbjson
       url = cartodbUrl(layer);
-    } else if(layer.indexOf && layer.indexOf('http') === 0) {
+    } else if(layer.indexOf) {
       // fetch from url
       url = layer;
     }
     if(url) {
-      cdb.vis.Loader.get(url, callback);
+      cdb.core.Loader.get(url, callback);
     } else {
       _.defer(function() { callback(null); });
     }
@@ -56,28 +53,27 @@
   /**
    * create a layer for the specified map
    *
-   * @param map should be a L.Map or google.maps.Map object
+   * @param map should be a L.Map object, or equivalent depending on what provider you have.
    * @param layer should be an url or a javascript object with the data to create the layer
    * @param options layer options
    *
    */
-
   cartodb.createLayer = function(map, layer, options, callback) {
-
-    var promise = new _Promise();
-    var layerView, MapType;
-    options = options || {};
     if(map === undefined) {
       throw new TypeError("map should be provided");
     }
     if(layer === undefined) {
       throw new TypeError("layer should be provided");
     }
-    var args = arguments,
-    fn = args[args.length -1];
+
+    var layerView, MapType;
+    var options = options || {};
+    var args = arguments;
+    var fn = args[args.length -1];
     if(_.isFunction(fn)) {
       callback = fn;
     }
+    var promise = new _Promise();
 
     promise.addTo = function(map, position) {
       promise.on('done', function() {
@@ -94,17 +90,27 @@
         promise.trigger('error');
         return;
       }
+
       // extract layer data from visualization data
       if(visData.layers) {
         if(visData.layers.length < 2) {
           promise.trigger('error', "visualization file does not contain layer info");
         }
-        var idx = options.layerIndex === undefined ? 1: options.layerIndex;
-        if(visData.layers.length <= idx) {
-          promise.trigger('error', 'layerIndex out of bounds');
-          return;
+        var index = options.layerIndex;
+        if (index !== undefined) {
+          if(visData.layers.length <= index) {
+            promise.trigger('error', 'layerIndex out of bounds');
+            return;
+          }
+          layerData = visData.layers[index];
+        } else {
+          var DATA_LAYER_TYPES = ['namedmap', 'layergroup', 'torque'];
+
+          // Select the first data layer (namedmap or layergroup)
+          layerData = _.find(visData.layers, function(layer){
+            return DATA_LAYER_TYPES.indexOf(layer.type) !== -1;
+          });
         }
-        layerData = visData.layers[idx];
       } else {
         layerData = visData;
       }
@@ -113,7 +119,6 @@
         promise.trigger('error');
         return;
       }
-
 
       // update options
       if(options && !_.isFunction(options)) {
@@ -125,7 +130,8 @@
         infowindow: true,
         https: false,
         legends: true,
-        time_slider: true
+        time_slider: true,
+        tooltip: true
       });
 
       // check map type
@@ -158,18 +164,50 @@
 
       function createLayer() {
         layerView = viz.createLayer(layerData, { no_base_layer: true });
+
+        var torqueLayer;
+        var mobileEnabled = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var addMobileLayout = (options.mobile_layout && mobileEnabled) || options.force_mobile;
+
         if(!layerView) {
           promise.trigger('error', "layer not supported");
           return promise;
         }
+
         if(options.infowindow) {
           viz.addInfowindow(layerView);
         }
-        if(options.legends) {
-          viz.addLegends([layerData]);
+
+        if(options.tooltip) {
+          viz.addTooltip(layerView);
         }
+
+        if(options.legends) {
+          var layerModel = cdb.vis.Layers.create(layerData.type || layerData.kind, viz, layerData);
+
+          viz._addLegends(viz._createLayerLegendView(layerModel.attributes,  layerView))
+        }
+
         if(options.time_slider && layerView.model.get('type') === 'torque') {
-          viz.addTimeSlider(layerView);
+
+          if (!addMobileLayout) { // don't add the overlay if we are in mobile
+            viz.addTimeSlider(layerView);
+          }
+
+          torqueLayer = layerView;
+        }
+
+        if (addMobileLayout) {
+
+          options.mapView = map.viz.mapView;
+
+          viz.addOverlay({
+            type: 'mobile',
+            layerView: layerView,
+            overlays: [],
+            torqueLayer: torqueLayer,
+            options: options
+          });
         }
 
         callback && callback(layerView);
@@ -184,12 +222,8 @@
       } else {
         createLayer();
       }
-
     });
 
     return promise;
-
   };
-
-
 })();

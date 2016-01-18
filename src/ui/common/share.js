@@ -5,12 +5,12 @@ cdb.ui.common.ShareDialog = cdb.ui.common.Dialog.extend({
   className: 'cartodb-share-dialog',
 
   events: {
-    'click .ok': '_ok',
-    'click .cancel': '_cancel',
-    'click .close': '_cancel',
-    "click":                      '_stopPropagation',
-    "dblclick":                   '_stopPropagation',
-    "mousedown":                  '_stopPropagation'
+    'click .ok':       '_ok',
+    'click .cancel':   '_cancel',
+    'click .close':    '_cancel',
+    "click":           '_stopPropagation',
+    "dblclick":        '_stopPropagation',
+    "mousedown":       '_stopPropagation'
   },
 
   default_options: {
@@ -22,7 +22,7 @@ cdb.ui.common.ShareDialog = cdb.ui.common.Dialog.extend({
     height: 200,
     clean_on_hide: false,
     enter_to_confirm: false,
-    template_name: 'common/views/dialog_base',
+    template_name: 'old_common/views/dialog_base',
     ok_button_classes: 'button green',
     cancel_button_classes: '',
     modal_type: '',
@@ -42,8 +42,12 @@ cdb.ui.common.ShareDialog = cdb.ui.common.Dialog.extend({
     var self = this;
 
     if (this.options.target) {
-      this.options.target.on("click", function() {
+      this.options.target.on("click", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
         self.open();
+
       })
     }
 
@@ -58,6 +62,20 @@ cdb.ui.common.ShareDialog = cdb.ui.common.Dialog.extend({
   _stopPropagation: function(ev) {
 
     ev.stopPropagation();
+
+  },
+
+  _stripHTML: function(input, allowed) {
+
+    allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
+
+    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+
+    if (!input || (typeof input != "string")) return '';
+
+    return input.replace(tags, function ($0, $1) {
+      return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    });
 
   },
 
@@ -105,23 +123,24 @@ cdb.ui.common.ShareDialog = cdb.ui.common.Dialog.extend({
 
     var $el = this.$el;
 
-    var title       = this.options.title;
-    var description = this.options.description;
-    var share_url   = this.options.share_url;
+    var title             = cdb.core.sanitize.html(this.options.title);
+    var description       = cdb.core.sanitize.html(this.options.description);
+    var clean_description = this._stripHTML(this.options.description);
+    var share_url         = this.options.share_url;
 
     var facebook_url, twitter_url;
 
     this.$el.addClass(this.options.size);
 
-    var full_title    = title + ": " + description;
+    var full_title    = title + ": " + clean_description;
     var twitter_title;
 
-    if (title && description) {
-      twitter_title = this._truncateTitle(title + ": " + description, 112) + " %23map "
+    if (title && clean_description) {
+      twitter_title = this._truncateTitle(title + ": " + clean_description, 112) + " %23map "
     } else if (title) {
       twitter_title = this._truncateTitle(title, 112) + " %23map"
-    } else if (description){
-      twitter_title = this._truncateTitle(description, 112) + " %23map"
+    } else if (clean_description){
+      twitter_title = this._truncateTitle(clean_description, 112) + " %23map"
     } else {
       twitter_title = "%23map"
     }

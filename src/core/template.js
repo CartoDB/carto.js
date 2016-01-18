@@ -56,10 +56,7 @@ cdb.core.Template = Backbone.Model.extend({
    */
   render: function(vars) {
     var c = this.compiled = this.compiled || this.get('compiled') || this.compile();
-    var r = cdb.core.Profiler.metric('template_render');
-    r.start();
     var rendered = c(vars);
-    r.end();
     return rendered;
   },
 
@@ -70,7 +67,15 @@ cdb.core.Template = Backbone.Model.extend({
 }, {
   compilers: {
     'underscore': _.template,
-    'mustache': typeof(Mustache) === 'undefined' ? null: Mustache.compile
+    'mustache': typeof(Mustache) === 'undefined' ?
+      null :
+      // Replacement for Mustache.compile, which was removed in version 0.8.0
+      function compile(template) {
+        Mustache.parse(template);
+        return function (view, partials) {
+          return Mustache.render(template, view, partials);
+        };
+      }
   },
   compile: function(tmpl, type) {
     var t = new cdb.core.Template({

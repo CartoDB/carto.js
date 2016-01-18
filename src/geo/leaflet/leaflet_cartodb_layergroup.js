@@ -17,7 +17,7 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
 
   options: {
     opacity:        0.99,
-    attribution:    "CartoDB",
+    attribution:    cdb.config.get('cartodb_attributions'),
     debug:          false,
     visible:        true,
     added:          false,
@@ -27,6 +27,7 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
     sql_api_domain:     "cartodb.com",
     sql_api_port:       "80",
     sql_api_protocol:   "http",
+    maxZoom: 30, // default leaflet zoom level for a layers is 18, raise it 
     extra_params:   {
     },
     cdn_url:        null,
@@ -55,6 +56,23 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
     CartoDBLayerCommon.call(this);
     L.TileLayer.prototype.initialize.call(this);
     this.interaction = [];
+    this.addProfiling();
+  },
+
+  addProfiling: function() {
+    this.bind('tileloadstart', function(e) {
+      var s = this.tileStats || (this.tileStats = {});
+      s[e.tile.src] = cartodb.core.Profiler.metric('cartodb-js.tile.png.load.time').start();
+    });
+    var finish = function(e) {
+      var s = this.tileStats && this.tileStats[e.tile.src];
+      s && s.end();
+    };
+    this.bind('tileload', finish);
+    this.bind('tileerror', function(e) {
+      cartodb.core.Profiler.metric('cartodb-js.tile.png.error').inc();
+      finish(e);
+    });
   },
 
 
@@ -197,11 +215,16 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
    * @param {Event} Wax event
    */
   _manageOnEvents: function(map, o) {
-    var layer_point = this._findPos(map,o),
-        latlng = map.layerPointToLatLng(layer_point);
+    var layer_point = this._findPos(map,o);
+
+    if (!layer_point || isNaN(layer_point.x) || isNaN(layer_point.y)) {
+      // If layer_point doesn't contain x and y,
+      // we can't calculate event map position
+      return false;
+    }
+
+    var latlng = map.layerPointToLatLng(layer_point);
     var event_type = o.e.type.toLowerCase();
-
-
     var screenPos = map.layerPointToContainerPoint(layer_point);
 
     switch (event_type) {
@@ -213,7 +236,10 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
 
       case 'click':
       case 'touchend':
+      case 'touchmove': // for some reason android browser does not send touchend
       case 'mspointerup':
+      case 'pointerup':
+      case 'pointermove':
         if (this.options.featureClick) {
           this.options.featureClick(o.e,latlng, screenPos, o.data, o.layer);
         }
@@ -238,30 +264,56 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
    * @params {Object} Map object
    * @params {Object} Wax event object
    */
-  _findPos: function (map,o) {
-    var curleft = 0, curtop = 0;
+  _findPos: function (map, o) {
+    var curleft = 0;
+    var curtop = 0;
     var obj = map.getContainer();
 
+    var x, y;
+    if (o.e.changedTouches && o.e.changedTouches.length > 0) {
+      x = o.e.changedTouches[0].clientX + window.scrollX;
+      y = o.e.changedTouches[0].clientY + window.scrollY;
+    } else {
+      x = o.e.clientX;
+      y = o.e.clientY;
+    }
 
-    if (obj.offsetParent) {
-      // Modern browsers
+    // If the map is fixed at the top of the window, we can't use offsetParent
+    // cause there might be some scrolling that we need to take into account.
+    if (obj.offsetParent && obj.offsetTop > 0) {
       do {
         curleft += obj.offsetLeft;
         curtop += obj.offsetTop;
       } while (obj = obj.offsetParent);
-      return map.containerPointToLayerPoint(new L.Point((o.e.clientX || o.e.changedTouches[0].clientX) - curleft,(o.e.clientY || o.e.changedTouches[0].clientY) - curtop))
+      var point = this._newPoint(
+        x - curleft, y - curtop);
     } else {
-      // IE
-      return map.mouseEventToLayerPoint(o.e)
+      var rect = obj.getBoundingClientRect();
+      var scrollX = (window.scrollX || window.pageXOffset);
+      var scrollY = (window.scrollY || window.pageYOffset);
+      var point = this._newPoint(
+        (o.e.clientX? o.e.clientX: x) - rect.left - obj.clientLeft - scrollX,
+        (o.e.clientY? o.e.clientY: y) - rect.top - obj.clientTop - scrollY);
     }
-  }
+    return map.containerPointToLayerPoint(point);
+  },
 
+  /**
+   * Creates an instance of a Leaflet Point
+   */
+  _newPoint: function(x, y) {
+    return new L.Point(x, y);
+  }
 });
 
 L.CartoDBGroupLayer = L.CartoDBGroupLayerBase.extend({
   includes: [
     LayerDefinition.prototype,
-  ]
+  ],
+
+  _modelUpdated: function() {
+    this.setLayerDefinition(this.model.get('layer_definition'));
+  }
 });
 
 function layerView(base) {
@@ -274,12 +326,7 @@ function layerView(base) {
 
     initialize: function(layerModel, leafletMap) {
       var self = this;
-
-      //_.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
-
-      // CartoDB new attribution,
-      // also we have the logo
-      layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
+      var hovers = [];
 
       var opts = _.clone(layerModel.attributes);
 
@@ -290,20 +337,46 @@ function layerView(base) {
       _featureOut   = opts.featureOut,
       _featureClick = opts.featureClick;
 
-      opts.featureOver  = function() {
-        _featureOver  && _featureOver.apply(self, arguments);
+      var previousEvent;
+      var eventTimeout = -1;
+
+      opts.featureOver  = function(e, latlon, pxPos, data, layer) {
+        if (!hovers[layer]) {
+          self.trigger('layerenter', e, latlon, pxPos, data, layer);
+        }
+        hovers[layer] = 1;
+        _featureOver  && _featureOver.apply(this, arguments);
         self.featureOver  && self.featureOver.apply(self, arguments);
+        // if the event is the same than before just cancel the event
+        // firing because there is a layer on top of it
+        if (e.timeStamp === previousEvent) {
+          clearTimeout(eventTimeout);
+        }
+        eventTimeout = setTimeout(function() {
+          self.trigger('mouseover', e, latlon, pxPos, data, layer);
+          self.trigger('layermouseover', e, latlon, pxPos, data, layer);
+        }, 0);
+        previousEvent = e.timeStamp;
+
       };
 
-      opts.featureOut  = function() {
-        _featureOut  && _featureOut.apply(self, arguments);
+      opts.featureOut  = function(m, layer) {
+        if (hovers[layer]) {
+          self.trigger('layermouseout', layer);
+        }
+        hovers[layer] = 0;
+        if(!_.any(hovers)) {
+          self.trigger('mouseout');
+        }
+        _featureOut  && _featureOut.apply(this, arguments);
         self.featureOut  && self.featureOut.apply(self, arguments);
       };
 
-      opts.featureClick  = function() {
+      opts.featureClick  = _.debounce(function() {
         _featureClick  && _featureClick.apply(self, arguments);
         self.featureClick  && self.featureClick.apply(self, arguments);
-      };
+      }, 10);
+
 
       base.prototype.initialize.call(this, opts);
       cdb.geo.LeafLetLayerView.call(this, layerModel, this, leafletMap);
@@ -325,7 +398,7 @@ function layerView(base) {
     },
 
     error: function(e) {
-      this.trigger('error', e ? e.errors : 'unknown error');
+      this.trigger('error', e ? (e.errors || e) : 'unknown error');
       this.model.trigger('error', e?e.errors:'unknown error');
     },
 
@@ -359,10 +432,6 @@ L.NamedMap = L.CartoDBGroupLayerBase.extend({
         throw new Error('cartodb-leaflet needs at least the named_map');
     }
 
-    /*if(!options.layer_definition) {
-      this.options.layer_definition = LayerDefinition.layerDefFromSubLayers(options.sublayers);
-    }*/
-
     NamedMap.call(this, this.options.named_map, this.options);
 
     this.fire = this.trigger;
@@ -370,6 +439,11 @@ L.NamedMap = L.CartoDBGroupLayerBase.extend({
     CartoDBLayerCommon.call(this);
     L.TileLayer.prototype.initialize.call(this);
     this.interaction = [];
+    this.addProfiling();
+  },
+
+  _modelUpdated: function() {
+    this.setLayerDefinition(this.model.get('named_map'));
   }
 });
 

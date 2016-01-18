@@ -26,6 +26,7 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
     template_name: 'infowindow_light',
     latlng: [0, 0],
     offset: [28, 0], // offset of the tip calculated from the bottom left corner
+    maxHeight: 180, // max height of the content, not the whole infowindow
     autoPan: true,
     template: "",
     content: "",
@@ -44,7 +45,9 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
   },
 
   fieldCount: function() {
-    return this.get('fields').length
+    var fields = this.get('fields')
+    if (!fields) return 0;
+    return fields.length
   },
 
   restoreFields: function(whiteList, from) {
@@ -85,7 +88,7 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
         fields.push({ name: fieldName, title: true, position: at });
       } else {
         at = at === undefined ? 0 : at;
-        this.set('fields', [{ name: fieldName, title: true, position: at }])
+        this.set('fields', [{ name: fieldName, title: true, position: at }], { silent: true});
       }
     }
     dfd.resolve();
@@ -167,15 +170,28 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
   // updates content with attributes
   updateContent: function(attributes) {
     var fields = this.get('fields');
+    this.set('content', cdb.geo.ui.InfowindowModel.contentForFields(attributes, fields));
+  },
+
+  closeInfowindow: function(){
+  if (this.get('visibility')) {
+      this.set("visibility", false);
+      this.trigger('close');
+    }
+  }
+
+}, {
+  contentForFields: function(attributes, fields, options) {
+    options = options || {};
     var render_fields = [];
     for(var j = 0; j < fields.length; ++j) {
-      var f = fields[j];
-      var value = String(attributes[f.name]);
-      if(attributes[f.name] !== undefined && value != "") {
+      var field = fields[j];
+      var value = attributes[field.name];
+      if(options.empty_fields || (value !== undefined && value !== null)) {
         render_fields.push({
-          title: f.title ? f.name : null,
-          value: attributes[f.name],
-          index: j ? j : null
+          title: field.title ? field.name : null,
+          value: attributes[field.name],
+          index: j
         });
       }
     }
@@ -185,19 +201,16 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
       render_fields.push({
         title: null,
         value: 'No data available',
-        index: j ? j : null,
+        index: 0,
         type: 'empty'
       });
     }
 
-    this.set({
-      content:  {
-        fields: render_fields,
-        data: attributes
-      }
-    });
+    return {
+      fields: render_fields,
+      data: attributes
+    };
   }
-
 });
 
 cdb.geo.ui.Infowindow = cdb.core.View.extend({
@@ -220,8 +233,9 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     "touchstart":           "_checkOrigin",
     "MSPointerDown":        "_checkOrigin",
     "dblclick":             "_stopPropagation",
-    "mousewheel":           "_stopPropagation",
-    "DOMMouseScroll":       "_stopPropagation",
+    "DOMMouseScroll":       "_stopBubbling",
+    'MozMousePixelScroll':  "_stopBubbling",
+    "mousewheel":           "_stopBubbling",
     "dbclick":              "_stopPropagation",
     "click":                "_stopPropagation"
   },
@@ -245,12 +259,15 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
       this._setTemplate();
     }
 
-    this.model.bind('change:content',           this.render, this);
-    this.model.bind('change:template_name',     this._setTemplate, this);
-    this.model.bind('change:latlng',            this._update, this);
-    this.model.bind('change:visibility',        this.toggle, this);
-    this.model.bind('change:template',          this._compileTemplate, this);
-    this.model.bind('change:alternative_names', this.render, this);
+    this.model.bind('change:content',             this.render, this);
+    this.model.bind('change:template_name',       this._setTemplate, this);
+    this.model.bind('change:latlng',              this._update, this);
+    this.model.bind('change:visibility',          this.toggle, this);
+    this.model.bind('change:template',            this._compileTemplate, this);
+    this.model.bind('change:sanitizeTemplate',    this._compileTemplate, this);
+    this.model.bind('change:alternative_names',   this.render, this);
+    this.model.bind('change:width',               this.render, this);
+    this.model.bind('change:maxHeight',           this.render, this);
 
     this.mapView.map.bind('change',             this._updatePosition, this);
 
@@ -263,9 +280,6 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     });
 
     this.add_related_model(this.mapView.map);
-
-    // Set min height to show the scroll
-    this.minHeightToScroll = 180;
 
     // Hide the element
     this.$el.hide();
@@ -280,7 +294,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     if(this.template) {
 
       // If there is content, destroy the jscrollpane first, then remove the content.
-      var $jscrollpane = this.$el.find(".cartodb-popup-content");
+      var $jscrollpane = this.$(".cartodb-popup-content");
       if ($jscrollpane.length > 0 && $jscrollpane.data() != null) {
         $jscrollpane.data().jsp && $jscrollpane.data().jsp.destroy();
       }
@@ -314,19 +328,27 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
           }
         },values);
 
-      this.$el.html(this.template(obj));
+      this.$el.html(
+        cdb.core.sanitize.html(this.template(obj), this.model.get('sanitizeTemplate'))
+      );
 
+      // Set width and max-height from the model only
+      // If there is no width set, we don't force our infowindow
+      if (this.model.get('width')) {
+        this.$('.cartodb-popup').css('width', this.model.get('width') + 'px');
+      }
+      this.$('.cartodb-popup .cartodb-popup-content').css('max-height', this.model.get('maxHeight') + 'px');
 
       // Hello jscrollpane hacks!
       // It needs some time to initialize, if not it doesn't render properly the fields
       // Check the height of the content + the header if exists
       var self = this;
       setTimeout(function() {
-        var actual_height = self.$el.find(".cartodb-popup-content").outerHeight() + self.$el.find(".cartodb-popup-header").outerHeight();
-        if (self.minHeightToScroll <= actual_height)
-          self.$el.find(".cartodb-popup-content").jScrollPane({
-            maintainPosition:       false,
-            verticalDragMinHeight:  20
+        var actual_height = self.$(".cartodb-popup-content").outerHeight();
+        if (self.model.get('maxHeight') <= actual_height)
+          self.$(".cartodb-popup-content").jScrollPane({
+            verticalDragMinHeight: 20,
+            autoReinitialise: true
           });
       }, 1);
 
@@ -335,6 +357,11 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
       // If the template is 'cover-enabled', load the cover
       this._loadCover();
+
+      if(!this.isLoadingData()) {
+        this.model.trigger('domready', this, this.$el);
+        this.trigger('domready', this, this.$el);
+      }
     }
 
     return this;
@@ -457,16 +484,19 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     return attr;
   },
 
+  isLoadingData: function() {
+    var content = this.model.get("content");
+    return content.fields && content.fields.length == 1 && content.fields[0].type === "loading";
+  },
+
   /**
    *  Check if infowindow is loading the row content
    */
   _checkLoading: function() {
-    var content = this.model.get("content");
-
-    if (content.fields && content.fields.length == 1 && content.fields[0].type == "loading") {
-      this._startSpinner()
+    if (this.isLoadingData()) {
+      this._startSpinner();
     } else {
-      this._stopSpinner()
+      this._stopSpinner();
     }
   },
 
@@ -529,26 +559,25 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
     if (!this._containsCover()) return;
 
-    var
-    self = this,
-    $cover = this.$(".cover"),
-    $shadow = this.$(".shadow"),
-    url = this._getCoverURL();
+    var self = this;
+    var $cover = this.$(".cover");
+    var $img = $cover.find("img");
+    var $shadow = this.$(".shadow");
+    var url = this._getCoverURL();
 
     if (!this._isValidURL(url)) {
+      $img.hide();
       $shadow.hide();
       cdb.log.info("Header image url not valid");
       return;
     }
 
     // configure spinner
-    var
-    target  = document.getElementById('spinner'),
-    opts    = { lines: 9, length: 4, width: 2, radius: 4, corners: 1, rotate: 0, color: '#ccc', speed: 1, trail: 60, shadow: true, hwaccel: false, zIndex: 2e9 },
-    spinner = new Spinner(opts).spin(target);
+    var target  = document.getElementById('spinner');
+    var opts    = { lines: 9, length: 4, width: 2, radius: 4, corners: 1, rotate: 0, color: '#ccc', speed: 1, trail: 60, shadow: true, hwaccel: false, zIndex: 2e9 };
+    var spinner = new Spinner(opts).spin(target);
 
     // create the image
-    var $img = $cover.find("img");
 
     $img.hide(function() {
       this.remove();
@@ -604,6 +633,14 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
    */
   toggle: function() {
     this.model.get("visibility") ? this.show() : this.hide();
+  },
+
+  /**
+   *  Stop event bubbling
+   */
+  _stopBubbling: function (e) {
+    e.preventDefault();
+    e.stopPropagation();
   },
 
   /**
@@ -664,11 +701,13 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
    */
   _closeInfowindow: function(ev) {
     if (ev) {
-      ev.preventDefault()
+      ev.preventDefault();
       ev.stopPropagation();
     }
-
-    this.model.set("visibility",false);
+    if (this.model.get("visibility")) {
+       this.model.set("visibility", false);
+       this.trigger('close');
+    }
   },
 
   /**
@@ -725,10 +764,11 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
    *  Animate infowindow to show up
    */
   _animateIn: function(delay) {
-    if (!$.browser.msie || ($.browser.msie && parseInt($.browser.version) > 8 )) {
+    if (!cdb.core.util.ie || (cdb.core.util.browser.ie && cdb.core.util.browser.ie.version > 8)) {
       this.$el.css({
         'marginBottom':'-10px',
-        'display':'block',
+        'display': 'block',
+        'visibility':'visible',
         opacity:0
       });
 
@@ -754,7 +794,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
         opacity:      "0",
         display:      "block"
       }, 180, function() {
-        self.$el.css({display: "none"});
+        self.$el.css({visibility: "hidden"});
       });
     } else {
       this.$el.hide();
@@ -768,7 +808,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
     if(this.isHidden()) return;
 
     var
-    offset          = this.model.get("offset")
+    offset          = this.model.get("offset"),
     pos             = this.mapView.latLonToPixel(this.model.get("latlng")),
     x               = this.$el.position().left,
     y               = this.$el.position().top,
@@ -784,7 +824,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
   /**
    *  Adjust pan to show correctly the infowindow
    */
-  adjustPan: function (callback) {
+  adjustPan: function () {
     var offset = this.model.get("offset");
 
     if (!this.model.get("autoPan") || this.isHidden()) { return; }

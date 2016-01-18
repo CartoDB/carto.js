@@ -1,110 +1,77 @@
-cartodb.js
-==========
-
-This library allows to embed you visualizations created with CartoDB in your map or website in a simple way.
-
-
-quick start
+CartoDB.js (v3.15)
 ===========
 
-  1. add cartodb.js and css to your site (and google maps if you are using it):
+This library allows to embed visualizations created with CartoDB in your map or website in a simple way.
+
+
+## Quick start
+
+  1. Add cartodb.js and css to your site:
 
     ```html
 
-        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-        <!--[if lte IE 8]>
-            <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.ie.css" />
-        <![endif]-->
-
-
-        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-        <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+        <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
         <!-- use these cartodb.css links if you are using https -->
-
-        <!--link rel="stylesheet" href="https://d3voyrscnb0slx.cloudfront.net/cartodb.js/v3/themes/css/cartodb.css" /-->
-        <!--[if lte IE 8]>
-            <!--link rel="stylesheet" href="https://d3voyrscnb0slx.cloudfront.net/cartodb.js/v3/themes/css/cartodb.ie.css" /-->
-        <![endif]-->
-
+        <!--link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" /-->
 
         <!-- use this cartodb.js link if you are using https -->
-        <!-- script src="https://d3voyrscnb0slx.cloudfront.net/cartodb.js/v3/cartodb.js"></script -->
+        <!-- script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script -->
     ```
 
 
-  2. create the map and add the layer 
-  
-    **gmaps**
-
-    ```javascript
-
-        // create google map
-        var map;
-        var mapOptions = {
-          zoom: 7,
-          center: new google.maps.LatLng(43, -68),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        map = new google.maps.Map(document.getElementById('map'),  mapOptions);
-
-        // add the cartodb layer
-        // you can find this url in CartoDB interface:
-        // - go to map
-        // - click on share
-        // - API tab
-        var layerUrl = 'http://examples.cartodb.com/api/v1/viz/15589/viz.json';
-        cartodb.createLayer(map, layerUrl).addTo(map)
-
-    ```
-
-    **leaflet**
+  2. Create the map and add the layer
 
     ```javascript
       var map = L.map('map').setView([0, 0], 3);
 
-      // set a base layer 
+      // set a base layer
       L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         attribution: 'stamen http://maps.stamen.com/'
       }).addTo(map);
-      
+
       // add the cartodb layer
-      var layerUrl = 'http://examples.cartodb.com/api/v1/viz/15589/viz.json';
+      var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
       cartodb.createLayer(map, layerUrl).addTo(map);
     ```
 
+### Usage with Bower
 
-examples
-========
+You can install **cartodb.js** with [bower](http://bower.io/) by running
 
- - [Load a layer with Google Maps](http://cartodb.github.io/cartodb.js/examples/gmaps.html)
- - [Load a layer with Leaflet](http://cartodb.github.io/cartodb.js/examples/leaflet.html)
- - [Show a complete visualization](http://cartodb.github.io/cartodb.js/examples/easy.html)
- - [A visualization with a layer selector](http://cartodb.github.io/cartodb.js/examples/layer_selector.html)
- - [How to create a custom infowindow](http://cartodb.github.io/cartodb.js/examples/custom_infowindow.html)
- - [The Hobbit filming location paths](http://cartodb.github.io/cartodb.js/examples/TheHobbitLocations/) a full example with some widgets
- - [Load a vector layer with Google Maps](http://cartodb.github.io/cartodb.js/examples/gmaps_vector.html)
- - [Load a vector layer with Leaflet](http://cartodb.github.io/cartodb.js/examples/leaflet_vector.html)
- - [Load a vector layer to Leaflet with hover effect](http://cartodb.github.io/cartodb.js/examples/leaflet_vector_hover.html)
- - [Add cursor interaction without a visualization](http://cartodb.github.io/cartodb.js/examples/cursor_interaction.html)
+```sh
+bower install cartodb.js
+```
 
 
-next steps
-==========
+## Documentation
+You can find the documentation online [here](http://docs.cartodb.com/cartodb-platform/cartodb-js.html) and the [source](https://github.com/CartoDB/cartodb.js/blob/develop/doc/API.md) inside this repository.
 
-  - see our [examples](https://github.com/CartoDB/cartodb.js/tree/develop/examples)
-  - read the [API reference](https://github.com/CartoDB/cartodb.js/tree/develop/doc/API.md)
-  - read our mailing list
+## Examples
+
+ - [Load a layer with google maps](http://cartodb.github.com/cartodb.js/examples/gmaps_force_basemap.html)
+ - [Load a layer with Leaflet](http://cartodb.github.com/cartodb.js/examples/leaflet.html)
+ - [Show a complete visualization](http://cartodb.github.com/cartodb.js/examples/easy.html)
+ - [A visualization with a layer selector](http://cartodb.github.com/cartodb.js/examples/layer_selector.html)
+ - [How to create a custom infowindow](http://cartodb.github.com/cartodb.js/examples/custom_infowindow.html)
+ - [The Hobbit filming location paths](http://cartodb.github.com/cartodb.js/examples/TheHobbitLocations/) a full example with some widgets
 
 
+## How to build
+Build CartoDB.js library:
 
-how to build
-============
+  - Install [node.js](http://nodejs.org/download/), from 0.10 version
+  - Install grunt & bower: `npm install -g grunt-cli bower`
+  - Install node dependencies: `npm install`
+  - Install bower dependencies: `bower install`
+  - Install [ruby](https://www.ruby-lang.org/en/installation/) and [bundler](https://github.com/bundler/bundler)
+  - Install ruby dependencies: `bundle install` (necessary for compass gem)
+  - Start the server: `grunt build`
+  - Happy mapping!
+  - 
+  
+## Submitting Contributions
 
-    
-    ```
-    open test/SpecRunner.html
-    make release
-    ```
-
+You will need to sign a Contributor License Agreement (CLA) before making a submission. [Learn more here.](https://cartodb.com/contributing)
 

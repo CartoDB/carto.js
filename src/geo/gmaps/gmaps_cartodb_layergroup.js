@@ -26,7 +26,7 @@ Projector.prototype.pixelToLatLng = function(point) {
 
 var default_options = {
   opacity:        0.99,
-  attribution:    "CartoDB",
+  attribution:    cdb.config.get('cartodb_attributions'),
   debug:          false,
   visible:        true,
   added:          false,
@@ -42,6 +42,7 @@ var default_options = {
   subdomains:     null
 };
 
+var OPACITY_FILTER = "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)";
 
 var CartoDBNamedMap = function(opts) {
 
@@ -103,6 +104,15 @@ var CartoDBLayerGroup = function(opts) {
   this.update();
 };
 
+function setImageOpacityIE8(img, opacity) {
+    var v = Math.round(opacity*100);
+    if (v >= 99) {
+      img.style.filter = OPACITY_FILTER;
+    } else {
+      img.style.filter = "alpha(opacity=" + (opacity) + ");";
+    }
+}
+
 function CartoDBLayerGroupBase() {}
 
 CartoDBLayerGroupBase.prototype.setOpacity = function(opacity) {
@@ -113,8 +123,7 @@ CartoDBLayerGroupBase.prototype.setOpacity = function(opacity) {
   for(var key in this.cache) {
     var img = this.cache[key];
     img.style.opacity = opacity;
-    img.style.filter = "alpha(opacity=" + (opacity*100) + ");"
-    //img.setAttribute("style","opacity: " + opacity + "; filter: alpha(opacity="+(opacity*100)+");");
+    setImageOpacityIE8(img, opacity);
   }
 
 };
@@ -125,10 +134,12 @@ CartoDBLayerGroupBase.prototype.getTile = function(coord, zoom, ownerDocument) {
   var EMPTY_GIF = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
 
   var self = this;
+  var ie = 'ActiveXObject' in window,
+      ielt9 = ie && !document.addEventListener;
 
   this.options.added = true;
 
-  if(this.tilejson == null) {
+  if(this.tilejson === null) {
     var key = zoom + '/' + coord.x + '/' + coord.y;
     var i = this.cache[key] = new Image(256, 256);
     i.src = EMPTY_GIF;
@@ -139,18 +150,31 @@ CartoDBLayerGroupBase.prototype.getTile = function(coord, zoom, ownerDocument) {
 
   var im = wax.g.connector.prototype.getTile.call(this, coord, zoom, ownerDocument);
 
+  // in IE8 semi transparency does not work and needs filter
+  if( ielt9 ) {
+    setImageOpacityIE8(im, this.options.opacity);
+  }
+  im.style.opacity = this.options.opacity;
   if (this.tiles === 0) {
     this.loading && this.loading();
   }
 
   this.tiles++;
 
-  im.onload = im.onerror = function() {
+  var loadTime = cartodb.core.Profiler.metric('cartodb-js.tile.png.load.time').start();
+
+  var finished = function() {
+    loadTime.end();
     self.tiles--;
     if (self.tiles === 0) {
       self.finishLoading && self.finishLoading();
     }
   };
+  im.onload = finished;
+  im.onerror = function() {
+    cartodb.core.Profiler.metric('cartodb-js.tile.png.error').inc();
+    finished();
+  }
 
   return im;
 };
@@ -183,7 +207,6 @@ CartoDBLayerGroupBase.prototype.update = function (done) {
   });
 };
 
-
 CartoDBLayerGroupBase.prototype.refreshView = function() {
   var self = this;
   var map = this.options.map;
@@ -207,17 +230,44 @@ CartoDBLayerGroupBase.prototype._checkLayer = function() {
 }
 
 CartoDBLayerGroupBase.prototype._findPos = function (map,o) {
-  var curleft, cartop;
-  curleft = curtop = 0;
+  var curleft = 0;
+  var curtop = 0;
   var obj = map.getDiv();
-  do {
-    curleft += obj.offsetLeft;
-    curtop += obj.offsetTop;
-  } while (obj = obj.offsetParent);
-  return new google.maps.Point(
-      (o.e.clientX || o.e.changedTouches[0].clientX) - curleft,
-      (o.e.clientY || o.e.changedTouches[0].clientY) - curtop
-  );
+
+  var x, y;
+  if (o.e.changedTouches && o.e.changedTouches.length > 0) {
+    x = o.e.changedTouches[0].clientX + window.scrollX;
+    y = o.e.changedTouches[0].clientY + window.scrollY;
+  } else {
+    x = o.e.clientX;
+    y = o.e.clientY;
+  }
+
+  // If the map is fixed at the top of the window, we can't use offsetParent
+  // cause there might be some scrolling that we need to take into account.
+  if (obj.offsetParent && obj.offsetTop > 0) {
+    do {
+      curleft += obj.offsetLeft;
+      curtop += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+    var point = this._newPoint(
+      x - curleft, y - curtop);
+  } else {
+    var rect = obj.getBoundingClientRect();
+    var scrollX = (window.scrollX || window.pageXOffset);
+    var scrollY = (window.scrollY || window.pageYOffset);
+    var point = this._newPoint(
+      (o.e.clientX? o.e.clientX: x) - rect.left - obj.clientLeft - scrollX,
+      (o.e.clientY? o.e.clientY: y) - rect.top - obj.clientTop - scrollY);
+  }
+  return point;
+};
+
+/**
+ * Creates an instance of a google.maps Point
+ */
+CartoDBLayerGroupBase.prototype._newPoint = function(x, y) {
+  return new google.maps.Point(x, y);
 };
 
 CartoDBLayerGroupBase.prototype._manageOffEvents = function(map, o){
@@ -242,7 +292,10 @@ CartoDBLayerGroupBase.prototype._manageOnEvents = function(map,o) {
 
     case 'click':
     case 'touchend':
+    case 'touchmove': // for some reason android browser does not send touchend
     case 'mspointerup':
+    case 'pointerup':
+    case 'pointermove':
       if (this.options.featureClick) {
         this.options.featureClick(o.e,latlng, point, o.data, o.layer);
       }
@@ -261,7 +314,7 @@ CartoDBLayerGroup.prototype.interactionClass = wax.g.interaction;
 
 // CartoDBNamedMap
 CartoDBNamedMap.prototype = new wax.g.connector();
-_.extend(CartoDBNamedMap.prototype, CartoDBLayerGroupBase.prototype, CartoDBLayerCommon.prototype, NamedMap.prototype);
+_.extend(CartoDBNamedMap.prototype, NamedMap.prototype, CartoDBLayerGroupBase.prototype, CartoDBLayerCommon.prototype);
 CartoDBNamedMap.prototype.interactionClass = wax.g.interaction;
 
 
@@ -278,12 +331,9 @@ cdb.geo.CartoDBNamedMapGMaps = CartoDBNamedMap;
 function LayerGroupView(base) {
   var GMapsCartoDBLayerGroupView = function(layerModel, gmapsMap) {
     var self = this;
+    var hovers = [];
 
     _.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
-
-    // CartoDB new attribution,
-    // also we have the logo
-    layerModel.attributes.attribution = cdb.config.get('cartodb_attributions');
 
     var opts = _.clone(layerModel.attributes);
 
@@ -294,28 +344,51 @@ function LayerGroupView(base) {
     _featureOut   = opts.featureOut,
     _featureClick = opts.featureClick;
 
-    opts.featureOver  = function() {
+    var previousEvent;
+    var eventTimeout = -1;
+
+    opts.featureOver  = function(e, latlon, pxPos, data, layer) {
+      if (!hovers[layer]) {
+        self.trigger('layerenter', e, latlon, pxPos, data, layer);
+      }
+      hovers[layer] = 1;
       _featureOver  && _featureOver.apply(this, arguments);
       self.featureOver  && self.featureOver.apply(this, arguments);
+
+      // if the event is the same than before just cancel the event
+      // firing because there is a layer on top of it
+      if (e.timeStamp === previousEvent) {
+        clearTimeout(eventTimeout);
+      }
+      eventTimeout = setTimeout(function() {
+        self.trigger('mouseover', e, latlon, pxPos, data, layer);
+        self.trigger('layermouseover', e, latlon, pxPos, data, layer);
+      }, 0);
+      previousEvent = e.timeStamp;
     };
 
-    opts.featureOut  = function() {
+    opts.featureOut  = function(m, layer) {
+      if (hovers[layer]) {
+        self.trigger('layermouseout', layer);
+      }
+      hovers[layer] = 0;
+      if(!_.any(hovers)) {
+        self.trigger('mouseout');
+      }
       _featureOut  && _featureOut.apply(this, arguments);
       self.featureOut  && self.featureOut.apply(this, arguments);
     };
 
-    opts.featureClick  = function() {
+    opts.featureClick  = _.debounce(function() {
       _featureClick  && _featureClick.apply(this, arguments);
       self.featureClick  && self.featureClick.apply(opts, arguments);
-    };
+    }, 10);
 
     
     //CartoDBLayerGroup.call(this, opts);
     base.call(this, opts);
     cdb.geo.GMapsLayerView.call(this, layerModel, this, gmapsMap);
   };
-
-
 
   _.extend(
     GMapsCartoDBLayerGroupView.prototype,

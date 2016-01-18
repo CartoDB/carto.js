@@ -45,7 +45,11 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
           minZoom: this.map.get('minZoom'),
           maxZoom: this.map.get('maxZoom'),
           disableDefaultUI: true,
+          // Set scrollwheel options
           scrollwheel: this.map.get("scrollwheel"),
+          // Allow dragging (and double click zoom)
+          draggable: this.map.get("drag"),
+          disableDoubleClickZoom: !this.map.get("drag"),
           mapTypeControl:false,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           backgroundColor: 'white',
@@ -83,6 +87,7 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
 
       this._bindModel();
       this._addLayers();
+      this.setAttribution();
 
       google.maps.event.addListener(this.map_googlemaps, 'center_changed', function() {
         var c = self.map_googlemaps.getCenter();
@@ -99,6 +104,11 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
         self.trigger('click', e, [e.latLng.lat(), e.latLng.lng()]);
       });
 
+      google.maps.event.addListener(this.map_googlemaps, 'dragend', function(e) {
+        var c = self.map_googlemaps.getCenter();
+        self.trigger('dragend', e, [c.lat(), c.lng()]);
+      });
+
       google.maps.event.addListener(this.map_googlemaps, 'dblclick', function(e) {
         self.trigger('dblclick', e);
       });
@@ -111,13 +121,16 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
       this.projector = new cdb.geo.CartoDBLayerGroupGMaps.Projector(this.map_googlemaps);
 
       this.projector.draw = this._ready;
-
     },
 
     _ready: function() {
       this.projector.draw = function() {};
       this.trigger('ready');
       this._isReady = true;
+    },
+
+    _setKeyboard: function(model, z) {
+      this.map_googlemaps.setOptions({ keyboardShortcuts: z });
     },
 
     _setScrollWheel: function(model, z) {
@@ -142,7 +155,7 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
         try {
           layer_view = new layerClass(layer, this.map_googlemaps);
         } catch(e) {
-          cdb.log.error("MAP: error creating layer" + layer.get('type') + " " + e);
+          cdb.log.error("MAP: error creating '" +  layer.get('type') + "' layer -> " + e.message);
         }
       } else {
         cdb.log.error("MAP: " + layer.get('type') + " can't be created");
@@ -160,12 +173,17 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
       if (!layer_view) {
         return;
       }
+      return this._addLayerToMap(layer_view, opts);
+    },
+
+    _addLayerToMap: function(layer_view, opts) {
+      var layer = layer_view.model;
 
       this.layers[layer.cid] = layer_view;
 
       if (layer_view) {
         var idx = _(this.layers).filter(function(lyr) { return !!lyr.getTile; }).length - 1;
-        var isBaseLayer = _.keys(this.layers).length === 1 || (opts && opts.index === 0);
+        var isBaseLayer = _.keys(this.layers).length === 1 || (opts && opts.index === 0) || layer.get('order') === 0;
         // set base layer
         if(isBaseLayer && !opts.no_base_layer) {
           var m = layer_view.model;
@@ -182,9 +200,9 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
             if (!layer_view.gmapsLayer) {
               cdb.log.error("gmaps layer can't be null");
             }
-            self.map_googlemaps.overlayMapTypes.setAt(idx, layer_view.gmapsLayer);
+            this.map_googlemaps.overlayMapTypes.setAt(idx, layer_view.gmapsLayer);
           } else {
-            layer_view.gmapsLayer.setMap(self.map_googlemaps);
+            layer_view.gmapsLayer.setMap(this.map_googlemaps);
           }
         }
         if(opts === undefined || !opts.silent) {
@@ -194,23 +212,16 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
         cdb.log.error("layer type not supported");
       }
 
-      var attribution = layer.get('attribution');
-
-      if (attribution) {
-        // Setting attribution in map model
-        // it doesn't persist in the backend, so this is needed.
-        var attributions = this.map.get('attribution') || [];
-        if (!_.contains(attributions, attribution)) {
-          attributions.push(attribution);
-        }
-
-        this.map.set({ attribution: attributions });
-      }
-
       return layer_view;
-
     },
 
+    pixelToLatLon: function(pos) {
+      var latLng = this.projector.pixelToLatLng(new google.maps.Point(pos[0], pos[1]));
+      return {
+        lat: latLng.lat(),
+        lng: latLng.lng()
+      }
+    },
 
     latLonToPixel: function(latlon) {
       return this.projector.latLngToPixel(new google.maps.LatLng(latlon[0], latlon[1]));
@@ -245,10 +256,10 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
       return [ [0,0], [0,0] ];
     },
 
-  setAttribution: function(m) {
+  setAttribution: function() {
     // Remove old one
     var old = document.getElementById("cartodb-gmaps-attribution")
-      , attribution = m.get("attribution").join(", ");
+      , attribution = this.map.get("attribution").join(", ");
 
       // If div already exists, remove it
       if (old) {

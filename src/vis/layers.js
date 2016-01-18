@@ -11,7 +11,10 @@ var Layers = cdb.vis.Layers;
 var HTTPS_TO_HTTP = {
   'https://dnv9my2eseobd.cloudfront.net/': 'http://a.tiles.mapbox.com/',
   'https://maps.nlp.nokia.com/': 'http://maps.nlp.nokia.com/',
-  'https://tile.stamen.com/': 'http://tile.stamen.com/'
+  'https://tile.stamen.com/': 'http://tile.stamen.com/',
+  "https://{s}.maps.nlp.nokia.com/": "http://{s}.maps.nlp.nokia.com/",
+  "https://cartocdn_{s}.global.ssl.fastly.net/": "http://{s}.api.cartocdn.com/",
+  "https://cartodb-basemaps-{s}.global.ssl.fastly.net/": "http://{s}.basemaps.cartocdn.com/"
 };
 
 function transformToHTTP(tilesTemplate) {
@@ -23,9 +26,24 @@ function transformToHTTP(tilesTemplate) {
   return tilesTemplate;
 }
 
+function transformToHTTPS(tilesTemplate) {
+  for(var url in HTTPS_TO_HTTP) {
+    var httpsUrl = HTTPS_TO_HTTP[url];
+    if(tilesTemplate.indexOf(httpsUrl) !== -1) {
+      return tilesTemplate.replace(httpsUrl, url);
+    }
+  }
+  return tilesTemplate;
+}
+
 Layers.register('tilejson', function(vis, data) {
   var url = data.tiles[0];
-  url = vis.https ? url: transformToHTTP(url);
+  if(vis.https === true) {
+    url = transformToHTTPS(url);
+  }
+  else if(vis.https === false) { // Checking for an explicit false value. If it's undefined the url is left as is.
+    url = transformToHTTP(url);
+  }
   return new cdb.geo.TileLayer({
     urlTemplate: url
   });
@@ -33,7 +51,13 @@ Layers.register('tilejson', function(vis, data) {
 
 Layers.register('tiled', function(vis, data) {
   var url = data.urlTemplate;
-  url = vis.https ? url: transformToHTTP(url);
+  if(vis.https === true) {
+    url = transformToHTTPS(url);
+  }
+  else if(vis.https === false) { // Checking for an explicit false value. If it's undefined the url is left as is.
+    url = transformToHTTP(url);
+  }
+  
   data.urlTemplate = url;
   return new cdb.geo.TileLayer(data);
 });
@@ -69,6 +93,8 @@ function normalizeOptions(vis, data) {
   if(vis.https) {
     data.tiler_protocol = 'https';
     data.tiler_port = 443;
+    data.sql_api_protocol = 'https';
+    data.sql_api_port = 443;
   }
   data.cartodb_logo = vis.cartodb_logo == undefined ? data.cartodb_logo : vis.cartodb_logo;
 }
@@ -98,6 +124,7 @@ Layers.register('namedmap', function(vis, data) {
 });
 
 Layers.register('torque', function(vis, data) {
+  normalizeOptions(vis, data);
   // default is https
   if(vis.https) {
     if(data.sql_api_domain && data.sql_api_domain.indexOf('cartodb.com') !== -1) {
