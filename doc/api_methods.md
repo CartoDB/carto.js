@@ -116,7 +116,7 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with 'viz.addInfowindow`, and include additional parameters for the hover action with the `visOverlay` options.
+**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with `viz.addInfowindow`, and include additional parameters for the hover action with the `visOverlay` options.
 
 #### Arguments
 
@@ -129,8 +129,7 @@ click | By default, the "click" action is enabled when infowindow interactivity 
 hover | If you want the infowindow to appear with the "hover" action, you must define the additional hover parameters with the `vis.addOverlay` code:
 options |
 --- | ---
-&#124;_ type | defines the `vis.addOverlay` [option](#visaddoverlayoptions)
-) as infowindow.
+&#124;_ type | defines the `vis.addOverlay` [option](#visaddoverlayoptions) as infowindow.
 &#124;_ layer | cartodb layer (or sublayer).
 &#124;_ template | the tooltip content wrapper for the hover template.
 &#124;_ position | defines position of the hover action.
