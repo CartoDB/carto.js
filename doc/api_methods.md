@@ -116,7 +116,7 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with `viz.addInfowindow`, and include additional parameters for the hover action with the `vis.Overlays` options.
+**Note:** By default, the `vis.addInfowindow` code displays interactivity for the infowindow with the "click" action. If you are using the "hover" action, you will still have to define the infowindow options with `viz.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code.
 
 #### Arguments
 
@@ -125,15 +125,25 @@ Option | Description
 map | native map object or leaflet.
 infowindowTemplate | the script type and id defined in your infowindow_template.
 templateType | the infowindow type defined with [Mustache template](http://mustache.github.io/mustache.5.html) placeholders.
-click | By default, the "click" action is enabled when infowindow interactivity is added to the `vis.addInfowindow` code.
-hover | If you want the infowindow to appear with the "hover" action, you must define the additional hover parameters with the `vis.addOverlay` code:
+click | By default, the "click" action is used when infowindow interactivity is enabled with the `vis.addInfowindow` code.
+hover | If you want the infowindow to appear with the "hover" action, you must define additional hover parameters with the `vis.addOverlay` code:
 options |
 --- | ---
 &#124;_ type | defines the `vis.addOverlay` [option](#visaddoverlayoptions) as infowindow.
 &#124;_ layer | cartodb layer (or sublayer).
 &#124;_ template | the tooltip content wrapper for the hover template.
-&#124;_ position | defines position of the hover action.
+&#124;_ position | defines the position of the hover action.
 &#124;_ fields | array of column names.
+
+**Tip:** The workflow for creating infowindows with CartoDB.js includes the following steps:
+
+1. Define infowindow parameters with `vis.addInfowindow(_map, layer, fields [, options]_)`
+
+  **Note:** Infowindows are enabled by default. Optionally, set the [`cartodb.createVis` infowindow](#cartodbcreatevis) argument to `false` to disable infowindows for you map.
+
+2. If using the hover action, specify the hover parameters with `vis.addOverlay`
+
+3. If using infowindows for multiple map layers, define the [sublayer.infowindow](#sublayerinfowindow) parameters
 
 **Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
 
@@ -146,12 +156,10 @@ An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
 The following examples displays how to enable infowindow interactivity with the "click" action.
 
 {% highlight html %}
-<script>
-    cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
-      infowindowTemplate: $('#infowindow_template').html(),
-      templateType: 'mustache'
-    });
-</script>
+ cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
+           infowindowTemplate: $('#infowindow_template').html(),
+           templateType: 'mustache'
+         });
 {% endhighlight %}
 
 #### Example (Hover Infowindow)
@@ -492,7 +500,7 @@ enable | `true` if the interaction needs to be enabled.
 
 ### sublayer.infowindow
 
-`sublayer.infowindow` is a Backbone model where we modify the parameters of the infowindow.
+`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](#visaddinfowindowmap-layer-fields--options).
 
 #### Attributes
 
@@ -502,6 +510,8 @@ template | Custom HTML template for the infowindow. You can write simple HTML or
 sanitizeTemplate | By default all templates are sanitized from unsafe tags/attrs (e.g. `<script>`), set this to `false` to skip sanitization, or a function to provide your own sanitization (e.g. `function(inputHtml) { return inputHtml })`).
 width | Width of the infowindow (value must be a number).
 maxHeight | Max height of the scrolled content (value must be a number).
+
+**Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
 
 #### Example
 
@@ -518,7 +528,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 <script type="infowindow/html" id="infowindow_template">
   <span> custom </span>
-  <div class="cartodb-popup">
+  <div class="cartodb-popup v2">
     <a href="#close" class="cartodb-popup-close-button close">x</a>
 
      <div class="cartodb-popup-content-wrapper">
