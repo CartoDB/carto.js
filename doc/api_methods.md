@@ -135,25 +135,17 @@ options |
 &#124;_ position | defines the position of the hover action.
 &#124;_ fields | array of column names.
 
-**Tip:** The workflow for creating infowindows with CartoDB.js includes the following steps:
+**REVIEWER**: WHAT ARE REQUIRED OPTIONS? ALSO, WHAT ARE SOME OF THE OTHER POSSIBLE VALUES?
 
-1. Define infowindow parameters with `vis.addInfowindow(_map, layer, fields [, options]_)`
-
-  **Note:** Infowindows are enabled by default. Optionally, set the [`cartodb.createVis` infowindow](#cartodbcreatevis) argument to `false` to disable infowindows for you map.
-
-2. If using the hover action, specify the hover parameters with `vis.addOverlay`
-
-3. If using infowindows for multiple map layers, define the [sublayer.infowindow](#sublayerinfowindow) parameters
-
-**Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
+**Tip:** See [How can I use CartoDB.js to create and style infowindows?](http://docs.cartodb.com/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
 #### Returns
 
 An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
 
-#### Example (Click Infowindow)
+#### Example
 
-The following examples displays how to enable infowindow interactivity with the "click" action.
+The following example displays how to enable infowindow interactivity with the "click" action.
 
 {% highlight html %}
  cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
@@ -162,9 +154,11 @@ The following examples displays how to enable infowindow interactivity with the 
          });
 {% endhighlight %}
 
+**Tip:** See [`vis.addOverlay`](#visaddoverlayoptions) for how to define hover actions.
+
 #### Example (Hover Infowindow)
 
-The following examples displays how to enable infowindow interactivity with the mouse "hover" action.
+The following example displays how to enable infowindow interactivity with the mouse "hover" action.
 
 {% highlight html %}
 layer.leafletMap.viz.addOverlay({
