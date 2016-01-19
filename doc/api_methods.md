@@ -70,14 +70,14 @@ Returns an array of layers in the map. The first is the base layer.
 
 ### vis.addOverlay(_options_)
 
-Adds an overlay to the map that can be either a zoom control, a tooltip or an infobox.
+Adds an overlay to the map that can be either a zoom control, a tooltip or an infowindow.
 
 #### Arguments
 
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip / infobox
+type | zoom / tooltip / infowindow
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
@@ -116,23 +116,24 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with 'viz.addInfowindow`, and include additional parameters for the hover action. See [?] for details.
+**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with 'viz.addInfowindow`, and include additional parameters for the hover action with the `visOverlay` options.
 
 #### Arguments
 
 Option | Description
 --- | ---
 map | native map object or leaflet.
-infowindowTemplate | the script type and id defined in your infowindow_template
+infowindowTemplate | the script type and id defined in your infowindow_template.
 templateType | the infowindow type defined with [Mustache template](http://mustache.github.io/mustache.5.html) placeholders.
-click action | By default, the "click" action is enabled when infowindow interactivity is added to the code.
-hover action | If you want the infowindow to appear with the "hover" action, you must define these additional hover parameters:
+click | By default, the "click" action is enabled when infowindow interactivity is added to the `vis.addInfowindow` code.
+hover | If you want the infowindow to appear with the "hover" action, you must define the additional hover parameters with the `vis.addOverlay` code:
 options |
 --- | ---
-&#124;_ type | add facebook and twitter share buttons.
+&#124;_ type | defines the `vis.addOverlay` [option](#visaddoverlayoptions)
+) as infowindow.
 &#124;_ layer | cartodb layer (or sublayer).
-&#124;_ template | ?
-&#124;_ position | ?
+&#124;_ template | the tooltip content wrapper for the hover template.
+&#124;_ position | defines position of the hover action.
 &#124;_ fields | array of column names.
 
 **Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
