@@ -77,7 +77,7 @@ Adds an overlay to the map that can be either a zoom control, a tooltip or an in
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip / infowindow
+type | zoom / tooltip / [infowindow](#visaddinfowindowmap-layer-fields--options)
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
@@ -116,7 +116,7 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with `viz.addInfowindow`, and include additional parameters for the hover action with the `visOverlay` options.
+**Note:** By default, the `vis.addInfowindow` code enables interactivity for the infowindow with the "click" action. If you are using the "hover" action for your infowindow, you will still have to enable interactivity with `viz.addInfowindow`, and include additional parameters for the hover action with the `vis.Overlays` options.
 
 #### Arguments
 
