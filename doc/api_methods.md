@@ -28,7 +28,7 @@ options |
 &#124;_ zoom | initial zoom.
 &#124;_ cartodb_logo | default to true, set to false if you want to remove the cartodb logo.
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](/cartodb-platform/torque/torqueslidertimevalue/) documentation.
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<!-- <br/><br/> For details about customizing the time slider, see the [Torque.js](/cartodb-platform/torque/torqueslidertimevalue/) documentation. -->
 &#124;_ layer_selector | show layer selector (default: false).
 &#124;_ legends | if it's true legends are shown in the map.
 &#124;_ https | if true, it makes sure that basemaps are converted to https when possible. If explicitly false, converts https maps to http when possible. If undefined, the basemap template is left as declared at `urlTemplate` in the viz.json.
@@ -146,7 +146,7 @@ options |
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
 &#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default).
 &#124;_ legends | if it's true legends are shown in the map.
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](/cartodb-platform/torque/torqueslidertimevalue/) documentation.
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<!-- <br/><br/> For details about customizing the time slider, see the [Torque.js](/cartodb-platform/torque/torqueslidertimevalue/) documentation. -->
 &#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).
 &#124;_ filter | a string or array of strings to specify the type(s) of sublayers that will be rendered (eg: `['http', 'mapnik']`). All non-torque layers (http and mapnik) will be rendered if this option is not present.
 &#124;_ no_cdn | true to disable CDN when fetching tiles
