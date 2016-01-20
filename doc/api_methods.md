@@ -95,6 +95,21 @@ Returns the first overlay with the specified **type**.
 var zoom = vis.getOverlay('zoom');
 zoom.clean() // remove it from the screen
 ```
+#### Example (Hover Infowindow)
+
+The following example displays how to enable infowindow interactivity with the mouse "hover" action.
+
+{% highlight html %}
+layer.leafletMap.viz.addOverlay({
+                type: 'tooltip',
+                layer: sublayer,
+                template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
+                position: 'bottom|right',
+                fields: [{ name: 'name' }]
+              });
+{% endhighlight %}
+
+**Tip:** For a description of the infowindow specific parameters, see [`vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/api-methods/#arguments-2). Optionally, you can also use the `vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlays()
 
@@ -137,7 +152,7 @@ options |
 
 **REVIEWER**: WHAT ARE REQUIRED OPTIONS? ALSO, WHAT ARE SOME OF THE OTHER POSSIBLE VALUES?
 
-**Tip:** See [How can I use CartoDB.js to create and style infowindows?](http://docs.cartodb.com/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
+**Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
 #### Returns
 
@@ -154,7 +169,7 @@ The following example displays how to enable infowindow interactivity with the "
          });
 {% endhighlight %}
 
-**Tip:** See [`vis.addOverlay`](#visaddoverlayoptions) for how to define hover actions.
+**Tip:** See [`vis.addOverlay`](#visaddoverlayoptions) for how to define a hover action for an infowindow.
 
 #### Example (Hover Infowindow)
 
