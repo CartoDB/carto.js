@@ -27,6 +27,7 @@ var WindshaftClient = require('../windshaft/client');
 var WindshaftLayerGroupConfig = require('../windshaft/layergroup-config');
 var WindshaftNamedMapConfig = require('../windshaft/namedmap-config');
 var WindshaftMap = require('../windshaft/windshaft-map');
+var ModuleLoader = require('./module-loader');
 
 /**
  * Visualization creation
@@ -40,7 +41,6 @@ var Vis = View.extend({
 
     this.https = false;
     this.overlays = [];
-    this.moduleChecked = false;
 
     if (this.options.mapView) {
       this.mapView = this.options.mapView;
@@ -48,151 +48,39 @@ var Vis = View.extend({
     }
   },
 
-  /**
-   * check if all the modules needed to create layers are loaded
-   */
-  checkModules: function (layers) {
-    var mods = Layers.modulesForLayers(layers);
-    return _.every(_.map(mods, function (m) { return cdb[m] !== undefined; }));
+  load: function (vizJSON, options) {
+    if (typeof (vizJSON) === 'string') {
+      this._fetchAndLoad(vizJSON, options);
+    } else {
+      this._loadModulesAndLoad(vizJSON, options);
+    }
+    return this;
   },
 
-  loadModules: function (layers, done) {
+  _fetchAndLoad: function (vizJSON, options) {
+    Loader.get(vizJSON, function (vizJSON) {
+      if (vizJSON) {
+        this._loadModulesAndLoad(vizJSON, options);
+      } else {
+        this.throwError('error fetching viz.json file');
+      }
+    }.bind(this));
+  },
+
+  _loadModulesAndLoad: function (vizJSON, options) {
+    var moduleLoader = new ModuleLoader(vizJSON);
+    moduleLoader.loadModules(function () {
+      this._load(vizJSON, options);
+    }.bind(this));
+  },
+
+  _load: function (data, options) {
     var self = this;
-    var mods = Layers.modulesForLayers(layers);
-    for (var i = 0; i < mods.length; ++i) {
-      Loader.loadModule(mods[i]);
-    }
-    function loaded () {
-      if (self.checkModules(layers)) {
-        config.unbind('moduleLoaded', loaded);
-        done();
-      }
-    }
-
-    config.bind('moduleLoaded', loaded);
-    _.defer(loaded);
-  },
-
-  _addLegends: function (legends) {
-    if (this.legends) {
-      this.legends.remove();
-    }
-
-    this.legends = new StackedLegend({
-      legends: legends
-    });
-
-    this.mapView.addOverlay(this.legends);
-  },
-
-  addLegends: function (layers) {
-    this._addLegends(this.createLegendView(layers));
-  },
-
-  _setLayerOptions: function (options) {
-    var layers = [];
-
-    // flatten layers (except baselayer)
-    var layers = _.map(this.getLayers().slice(1), function (layer) {
-      if (layer.getSubLayers) {
-        return layer.getSubLayers();
-      }
-      return layer;
-    });
-
-    layers = _.flatten(layers);
-
-    for (i = 0; i < Math.min(options.sublayer_options.length, layers.length); ++i) {
-      var o = options.sublayer_options[i];
-      var subLayer = layers[i];
-      var legend = this.legends && this.legends.getLegendByIndex(i);
-
-      if (legend) {
-        legend[o.visible ? 'show' : 'hide']();
-      }
-
-      // HACK
-      if (subLayer.model && subLayer.model.get('type') === 'torque') {
-        if (o.visible === false) {
-          subLayer.model.set('visible', false);
-        }
-      }
-    }
-  },
-
-  _addOverlays: function (overlays, data, options) {
-    overlays = overlays.toJSON();
-    // Sort the overlays by its internal order
-    overlays = _.sortBy(overlays, function (overlay) {
-      return overlay.order === null ? Number.MAX_VALUE : overlay.order;
-    });
-
-    // clean current overlays
-    while (this.overlays.length !== 0) {
-      this.overlays.pop().clean();
-    }
-
-    this._createOverlays(overlays, data, options);
-  },
-
-  _setupSublayers: function (layers, options) {
-    options.sublayer_options = [];
-
-    _.each(layers.slice(1), function (lyr) {
-      if (lyr.type === 'layergroup') {
-        _.each(lyr.options.layer_definition.layers, function (l) {
-          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
-        });
-      } else if (lyr.type === 'namedmap') {
-        _.each(lyr.options.named_map.layers, function (l) {
-          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
-        });
-      } else if (lyr.type === 'torque') {
-        options.sublayer_options.push({ visible: ( lyr.options.visible !== undefined ? lyr.options.visible : true) });
-      }
-    });
-  },
-
-  load: function (data, options) {
     if (!data.datasource) {
       throw new Error('viz.json needs to include a "datasource" attribute.');
     }
 
-    var self = this;
-
-    // Load the viz.json in case we receive a url instead of a JSON object
-    if (typeof (data) === 'string') {
-      var url = data;
-
-      Loader.get(url, function (data) {
-        if (data) {
-          self.load(data, options);
-        } else {
-          self.throwError('error fetching viz.json file');
-        }
-      });
-
-      return this;
-    }
-
-    // Load the modules (torque) for layers in the viz.json
     var layers = data.layers;
-
-    if (!this.checkModules(layers)) {
-      if (this.moduleChecked) {
-        self.throwError("modules couldn't be loaded");
-        return this;
-      }
-
-      this.moduleChecked = true;
-
-      this.loadModules(layers, function () {
-        self.load(data, options);
-      });
-
-      return this;
-    }
-
     // TODO: This should be part of a model
     if (window && window.location.protocol && window.location.protocol === 'https:') {
       this.https = true;
@@ -417,6 +305,88 @@ var Vis = View.extend({
     });
 
     return this;
+  },
+
+
+
+  _addLegends: function (legends) {
+    if (this.legends) {
+      this.legends.remove();
+    }
+
+    this.legends = new StackedLegend({
+      legends: legends
+    });
+
+    this.mapView.addOverlay(this.legends);
+  },
+
+  addLegends: function (layers) {
+    this._addLegends(this.createLegendView(layers));
+  },
+
+  _setLayerOptions: function (options) {
+    var layers = [];
+
+    // flatten layers (except baselayer)
+    var layers = _.map(this.getLayers().slice(1), function (layer) {
+      if (layer.getSubLayers) {
+        return layer.getSubLayers();
+      }
+      return layer;
+    });
+
+    layers = _.flatten(layers);
+
+    for (i = 0; i < Math.min(options.sublayer_options.length, layers.length); ++i) {
+      var o = options.sublayer_options[i];
+      var subLayer = layers[i];
+      var legend = this.legends && this.legends.getLegendByIndex(i);
+
+      if (legend) {
+        legend[o.visible ? 'show' : 'hide']();
+      }
+
+      // HACK
+      if (subLayer.model && subLayer.model.get('type') === 'torque') {
+        if (o.visible === false) {
+          subLayer.model.set('visible', false);
+        }
+      }
+    }
+  },
+
+  _addOverlays: function (overlays, data, options) {
+    overlays = overlays.toJSON();
+    // Sort the overlays by its internal order
+    overlays = _.sortBy(overlays, function (overlay) {
+      return overlay.order === null ? Number.MAX_VALUE : overlay.order;
+    });
+
+    // clean current overlays
+    while (this.overlays.length !== 0) {
+      this.overlays.pop().clean();
+    }
+
+    this._createOverlays(overlays, data, options);
+  },
+
+  _setupSublayers: function (layers, options) {
+    options.sublayer_options = [];
+
+    _.each(layers.slice(1), function (lyr) {
+      if (lyr.type === 'layergroup') {
+        _.each(lyr.options.layer_definition.layers, function (l) {
+          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
+        });
+      } else if (lyr.type === 'namedmap') {
+        _.each(lyr.options.named_map.layers, function (l) {
+          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
+        });
+      } else if (lyr.type === 'torque') {
+        options.sublayer_options.push({ visible: ( lyr.options.visible !== undefined ? lyr.options.visible : true) });
+      }
+    });
   },
 
   _invalidateSizeOnDataviewsChanges: function () {
