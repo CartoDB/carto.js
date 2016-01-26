@@ -89,37 +89,6 @@ var Vis = View.extend({
     this._addLegends(this.createLegendView(layers));
   },
 
-  _setLayerOptions: function (options) {
-    var layers = [];
-
-    // flatten layers (except baselayer)
-    var layers = _.map(this.getLayers().slice(1), function (layer) {
-      if (layer.getSubLayers) {
-        return layer.getSubLayers();
-      }
-      return layer;
-    });
-
-    layers = _.flatten(layers);
-
-    for (i = 0; i < Math.min(options.sublayer_options.length, layers.length); ++i) {
-      var o = options.sublayer_options[i];
-      var subLayer = layers[i];
-      var legend = this.legends && this.legends.getLegendByIndex(i);
-
-      if (legend) {
-        legend[o.visible ? 'show' : 'hide']();
-      }
-
-      // HACK
-      if (subLayer.model && subLayer.model.get('type') === 'torque') {
-        if (o.visible === false) {
-          subLayer.model.set('visible', false);
-        }
-      }
-    }
-  },
-
   _addOverlays: function (overlays, data, options) {
     overlays = overlays.toJSON();
     // Sort the overlays by its internal order
@@ -133,24 +102,6 @@ var Vis = View.extend({
     }
 
     this._createOverlays(overlays, data, options);
-  },
-
-  _setupSublayers: function (layers, options) {
-    options.sublayer_options = [];
-
-    _.each(layers.slice(1), function (lyr) {
-      if (lyr.type === 'layergroup') {
-        _.each(lyr.options.layer_definition.layers, function (l) {
-          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
-        });
-      } else if (lyr.type === 'namedmap') {
-        _.each(lyr.options.named_map.layers, function (l) {
-          options.sublayer_options.push({ visible: ( l.visible !== undefined ? l.visible : true) });
-        });
-      } else if (lyr.type === 'torque') {
-        options.sublayer_options.push({ visible: ( lyr.options.visible !== undefined ? lyr.options.visible : true) });
-      }
-    });
   },
 
   load: function (data, options) {
@@ -394,13 +345,6 @@ var Vis = View.extend({
 
     // TODO: Bind this through a method
     this.map.windshaftMap = windshaftMap;
-
-    // if there are no sublayer_options fill it
-    if (!options.sublayer_options) {
-      this._setupSublayers(data.layers, options);
-    }
-
-    this._setLayerOptions(options);
 
     // Map layers are resetted and the mapView adds the layers to the map
     this.map.layers.reset(layers);
