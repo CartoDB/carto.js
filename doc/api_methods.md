@@ -70,14 +70,14 @@ Returns an array of layers in the map. The first is the base layer.
 
 ### vis.addOverlay(_options_)
 
-Adds an overlay to the map that can be either a zoom control, a tooltip or an infowindow.
+Adds an overlay to the map that can be either a zoom control, a tooltip or an infowindow (hover action).
 
 #### Arguments
 
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip / [infowindow](#visaddinfowindowmap-layer-fields--options)
+type | zoom / tooltip / [infowindow with hover action](#visaddinfowindowmap-layer-fields--options)
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
@@ -95,7 +95,7 @@ Returns the first overlay with the specified **type**.
 var zoom = vis.getOverlay('zoom');
 zoom.clean() // remove it from the screen
 ```
-#### Example (Hover Infowindow)
+#### Example (Infowindow with Hover Action)
 
 The following example displays how to enable infowindow interactivity with the mouse "hover" action.
 
