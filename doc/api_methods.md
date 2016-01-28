@@ -85,16 +85,6 @@ If no layer is provided, the overlay will be added to the first layer of the vis
 
 An overlay object, see [vis.Overlays](#visoverlays).
 
-### vis.getOverlay(_type_)
-
-Returns the first overlay with the specified **type**.
-
-#### Example
-
-```javascript
-var zoom = vis.getOverlay('zoom');
-zoom.clean() // remove it from the screen
-```
 #### Example (Infowindow with Hover Action)
 
 The following example displays how to enable infowindow interactivity with the mouse "hover" action.
@@ -110,6 +100,17 @@ layer.leafletMap.viz.addOverlay({
 {% endhighlight %}
 
 **Tip:** For a description of the infowindow specific parameters, see [`vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/api-methods/#arguments-2). Optionally, you can also use the `vis.addInfowindow` function to define the click action for an infowindow.
+
+### vis.getOverlay(_type_)
+
+Returns the first overlay with the specified **type**.
+
+#### Example
+
+```javascript
+var zoom = vis.getOverlay('zoom');
+zoom.clean() // remove it from the screen
+```
 
 ### vis.getOverlays()
 
@@ -171,7 +172,7 @@ The following example displays how to enable infowindow interactivity with the "
 
 **Tip:** See [`vis.addOverlay`](#visaddoverlayoptions) for how to define a hover action for an infowindow.
 
-#### Example (Hover Infowindow)
+#### Example (Infowindow with Hover Action)
 
 The following example displays how to enable infowindow interactivity with the mouse "hover" action.
 
