@@ -44,14 +44,27 @@
         getSqlApiUrl: function(version) {
           version = version || 'v2';
           return this.getSqlApiBaseUrl() + "/api/" + version + "/sql";
-        }
+        },
 
+        /**
+         *  returns the maps api host, removing user template
+         *  and the protocol.
+         *  cartodb.com:3333
+         */
+        getMapsApiHost: function() {
+          var url;
+          var mapsApiTemplate = this.get('maps_api_template');
+          if (mapsApiTemplate) {
+            url = mapsApiTemplate.replace(/https?:\/\/{user}\./, '');
+          }
+          return url;
+        }
 
     });
 
     cdb.config = new Config();
     cdb.config.set({
-      cartodb_attributions: "CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>",
+      cartodb_attributions: "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>",
       cartodb_logo_link: "http://www.cartodb.com"
     });
 

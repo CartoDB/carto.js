@@ -1099,7 +1099,8 @@ cdb.geo.ui.Legend.Custom = cdb.geo.ui.CustomLegend.extend({
       type: this.type,
       title: this.options.title,
       show_title: this.options.title ? true : false,
-      items: this.items.models
+      items: this.items.models,
+      template: this.options.template
     });
 
     this._bindModel();

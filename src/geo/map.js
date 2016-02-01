@@ -281,6 +281,7 @@ cdb.geo.Map = cdb.core.Model.extend({
     minZoom: 0,
     maxZoom: 40,
     scrollwheel: true,
+    drag: true,
     keyboard: true,
     provider: 'leaflet'
   },
@@ -303,9 +304,9 @@ cdb.geo.Map = cdb.core.Model.extend({
   },
 
   _updateAttributions: function() {
-    var defaultCartoDBAttribution = this.defaults.attribution[0];
+    var defaultCartoDBAttribution = cdb.core.sanitize.html(this.defaults.attribution[0]);
     var attributions = _.chain(this.layers.models)
-      .map(function(layer) { return layer.get('attribution'); })
+      .map(function(layer) { return cdb.core.sanitize.html( layer.get('attribution') ); })
       .reject(function(attribution) { return attribution == defaultCartoDBAttribution})
       .compact()
       .uniq()
