@@ -128,7 +128,7 @@ fields | array of column names
 
 An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
 
-### cartodb.createLayer(_map, layerSource [, options] [, callback]_)
+## cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
 With visualizations already created through the CartoDB console, you can simply use the `createLayer` function to add them into your web pages. Unlike `createVis`, this method requires an already activated `map` object and it does not load a basemap for you.
 
@@ -137,7 +137,7 @@ With visualizations already created through the CartoDB console, you can simply 
 Name |Description
 --- | ---
 map | Leaflet `L.Map` object. The map should be initialized before calling this function.
-layerSource | contains information about the layer. It can be specified in 2 ways
+layerSource | contains information about the layer. It can be specified in multiple ways<br/><br/>**Tip:** See [Multiple types of layers Source Object](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/#multiple-types-of-layers-source-object)
 
 options |
 --- | ---
@@ -152,12 +152,12 @@ options |
 &#124;_ no_cdn | true to disable CDN when fetching tiles
 callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.
 
-#### Passing the url where the layer data is located
+### Passing the url where the layer data is located
 ```javascript
 cartodb.createLayer(map, 'http://myserver.com/layerdata.json')
 ```
 
-#### Passing the data directly
+### Passing the data directly
 ```javascript
 cartodb.createLayer(map, { layermetadata })
 ```
