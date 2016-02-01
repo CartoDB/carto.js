@@ -77,7 +77,7 @@ Adds an overlay to the map that can be either a zoom control, a tooltip or an in
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip (an infowindow that appears when you hover your mouse over a map feature) / infobox (similar to a tooltip but does not contain any positioning options. It always appears in the same position)
+type | - zoom<br /><br /> - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but does not contain any positioning options. It always appears in the same position)
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
@@ -145,7 +145,7 @@ options |
 --- | ---
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
 &#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
-&#124;_triggerEvent | sets the action of the infowindow, either "click" or "hover".<br /><br />Click infowindows are enabled with `vis.addInfowindow`. Hover (tooltip) infowindows are enabled with `vis.addOverlay`.
+&#124;_triggerEvent | sets the action of the infowindow, either "click" or "hover".<br /><br />- Click infowindows are enabled with `vis.addInfowindow`. <br /><br /> - Hover (tooltip) infowindows are enabled with `vis.addOverlay`.
 
 **Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
