@@ -70,14 +70,14 @@ Returns an array of layers in the map. The first is the base layer.
 
 ### vis.addOverlay(_options_)
 
-Adds an overlay to the map that can be either a zoom control, a tooltip or an infowindow (hover action).
+Adds an overlay to the map that can be either a zoom control, a tooltip or an infobox.
 
 #### Arguments
 
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip / [infowindow with hover action](#visaddinfowindowmap-layer-fields--options)
+type | zoom / tooltip (an infowindow that appears when you hover your mouse over a map feature) / infobox (similar to a tooltip but does not contain any positioning options. It always appears in the same position)
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
@@ -85,18 +85,18 @@ If no layer is provided, the overlay will be added to the first layer of the vis
 
 An overlay object, see [vis.Overlays](#visoverlays).
 
-#### Example (Infowindow with Hover Action)
+#### Example (Infowindow with Tooltip)
 
-The following example displays how to enable infowindow interactivity with the mouse "hover" action.
+The following example displays how to enable infowindow interactivity with the mouse "hover" action. The hover action is referred to as a tooltip, and enables you to control the positioning.
 
 {% highlight html %}
 layer.leafletMap.viz.addOverlay({
-                type: 'tooltip',
-                layer: sublayer,
-                template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
-                position: 'bottom|right',
-                fields: [{ name: 'name' }]
-              });
+  type: 'tooltip',
+  layer: sublayer,
+  template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
+  position: 'bottom|right',
+  fields: [{ name: 'name' }]
+});
 {% endhighlight %}
 
 **Tip:** For a description of the infowindow specific parameters, see [`vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/api-methods/#arguments-2). Optionally, you can also use the `vis.addInfowindow` function to define the click action for an infowindow.
@@ -139,19 +139,13 @@ Infowindows provide additional interactivity for your published map, controlled 
 Option | Description
 --- | ---
 map | native map object or leaflet.
-infowindowTemplate | the script type and id defined in your infowindow_template.
-templateType | the infowindow type defined with [Mustache template](http://mustache.github.io/mustache.5.html) placeholders.
-click | By default, the "click" action is used when infowindow interactivity is enabled with the `vis.addInfowindow` code.
-hover | If you want the infowindow to appear with the "hover" action, you must define additional hover parameters with the `vis.addOverlay` code:
-options |
+layer | cartodb layer (or sublayer).
+fields | array of column names.
+options | 
 --- | ---
-&#124;_ type | defines the `vis.addOverlay` [option](#visaddoverlayoptions) as infowindow.
-&#124;_ layer | cartodb layer (or sublayer).
-&#124;_ template | the tooltip content wrapper for the hover template.
-&#124;_ position | defines the position of the hover action.
-&#124;_ fields | array of column names.
-
-**REVIEWER**: WHAT ARE REQUIRED OPTIONS? ALSO, WHAT ARE SOME OF THE OTHER POSSIBLE VALUES?
+&#124;_ infowindowTemplate | allows you to set the HTML of the template.
+&#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
+&#124;_triggerEvent | sets the action of the infowindow, either "click" or "hover".<br /><br />Click infowindows are enabled with `vis.addInfowindow`. Hover (tooltip) infowindows are enabled with `vis.addOverlay`.
 
 **Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
@@ -165,25 +159,23 @@ The following example displays how to enable infowindow interactivity with the "
 
 {% highlight html %}
  cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
-           infowindowTemplate: $('#infowindow_template').html(),
-           templateType: 'mustache'
-         });
+  infowindowTemplate: $('#infowindow_template').html(),
+  templateType: 'mustache'
+  });
 {% endhighlight %}
 
-**Tip:** See [`vis.addOverlay`](#visaddoverlayoptions) for how to define a hover action for an infowindow.
+#### Example (Infowindow with Tooltip)
 
-#### Example (Infowindow with Hover Action)
-
-The following example displays how to enable infowindow interactivity with the mouse "hover" action.
+The following example displays how to enable infowindow interactivity with the mouse "hover" action. This is referred to as a tooltip, as is defined with [`vis.addOverlay`](#visaddoverlayoptions).
 
 {% highlight html %}
 layer.leafletMap.viz.addOverlay({
-                type: 'tooltip',
-                layer: sublayer,
-                template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
-                position: 'bottom|right',
-                fields: [{ name: 'name' }]
-              });
+  type: 'tooltip',
+  layer: sublayer,
+  template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
+  position: 'bottom|right',
+  fields: [{ name: 'name' }]
+  });
 {% endhighlight %}
 
 ### cartodb.createLayer(_map, layerSource [, options] [, callback]_)
