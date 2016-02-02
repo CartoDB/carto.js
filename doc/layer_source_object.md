@@ -41,6 +41,7 @@ options | Options vary, depending on the `type` of layer source you are using:
   ]
 }
 ```
+For other layer source definitions, see [this example](https://github.com/CartoDB/cartodb.js/blob/4ba5148638091fd2c194f48b2fa3ed6ac4ecdb23/examples/layer_definition.html).
 
 ### Named Maps Layer Source Object (_type: 'namedmap'_)
 
