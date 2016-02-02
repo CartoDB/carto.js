@@ -4,6 +4,21 @@
 
 Used for most maps with tables that are set to public or public with link.
 
+#### Arguments
+
+Layer Source Objects are defined with the [MapConfig](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#mapconfig-file-format) configurations.
+
+Name |Description
+--- | ---
+type | A string value that defines the layer type. Required.<br /><br />Options include: `mapnik', `cartodb`, `torque`, `http`, `plain`, `named`.<br /><br />**Note:** See [Layergroup Configurations](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations) for a description of these layer types.
+options | Options vary, depending on the `type` of layer source you are using.
+--- | ---
+&#124;_ [Mapnik Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#mapnik-layer-options)| 
+&#124;_ [Torque Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#torque-layer-options) | 
+&#124;_ [HTTP Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#http-layer-options) | 
+&#124;_ [Plain Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#plain-layer-options) | 
+&#124;_ [Named Map Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#named-map-layer-options) | 
+
 #### Example
 
 ```javascript
