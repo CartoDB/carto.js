@@ -11,7 +11,8 @@ Layer Source Objects are defined with the [MapConfig](http://docs.cartodb.com/ca
 Name |Description
 --- | ---
 type | A string value that defines the layer type. Required.<br /><br />Options include: `mapnik', `cartodb`, `torque`, `http`, `plain`, `named`.<br /><br />**Note:** See [Layergroup Configurations](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations) for a description of these layer types.
-options | Options vary, depending on the `type` of layer source you are using.
+
+options | Options vary, depending on the `type` of layer source you are using:
 --- | ---
 &#124;_ [Mapnik Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#mapnik-layer-options)| 
 &#124;_ [Torque Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#torque-layer-options) | 
