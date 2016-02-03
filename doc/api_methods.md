@@ -415,7 +415,7 @@ Toggles the visibility of the sublayer and returns a boolean that indicates the 
 
 It returns `true` if the sublayer is visible.
 
-## cartodb.CartoDB.SubLayer
+## cartodb.CartoDBSubLayer
 
 _This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
 
@@ -498,7 +498,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 ---
 
-## cartodb.CartoDBLayer.HttpSubLayer
+## cartodb.HttpSubLayer
 
 _This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
 
