@@ -417,7 +417,7 @@ It returns `true` if the sublayer is visible.
 
 ## cartodb.CartoDBSubLayer
 
-_This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodbsublayerbase)._
 
 ### sublayer.getSQL()
 
@@ -500,7 +500,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 ## cartodb.HttpSubLayer
 
-_This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodbsublayerbase)._
 
 ### sublayer.setURLTemplate(_urlTemplate_)
 
