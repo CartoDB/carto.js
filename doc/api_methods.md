@@ -338,7 +338,9 @@ The layer itself.
 
 ### layer.setParams(_key, value_)
 
-Sets the configuration of a layer when using [named maps](/cartodb-platform/maps-api/named-maps/). It can be invoked in different ways:
+Sets the configuration of a layer when using [named maps](/cartodb-platform/maps-api/named-maps/). It can be invoked in different ways.
+
+**Note:** This function is not supported when using Named maps for Torque.
 
 #### Arguments
 
