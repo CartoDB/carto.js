@@ -145,7 +145,7 @@ options |
 --- | ---
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
 &#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
-&#124;_triggerEvent | sets the action of the infowindow, either "click" or "hover".<br /><br />- Click infowindows are enabled with `vis.addInfowindow`. <br /><br /> - Hover (tooltip) infowindows are enabled with `vis.addOverlay`.
+&#124;_triggerEvent | sets the action of the infowindow, either "click" or "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)".
 
 **Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
