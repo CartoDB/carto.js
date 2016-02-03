@@ -361,9 +361,7 @@ layer.setParams({'test': 1, 'color': '#F00'}); // set more than one parameter at
 
 ---
 
-## cartodb.CartoDBLayer.SubLayer
-
-This is a [subclass](https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)#Subclasses_and_superclasses) of `cartodb.CartoDB.SubLayer`, which is the subLayer base source code.
+## cartodb.SubLayerBase
 
 ### sublayer.set(_layerDefinition_)
 
@@ -417,7 +415,9 @@ Toggles the visibility of the sublayer and returns a boolean that indicates the 
 
 It returns `true` if the sublayer is visible.
 
-## cartodb.CartoDBLayer.CartoDBSubLayer
+## cartodb.CartoDB.SubLayer
+
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
 
 ### sublayer.getSQL()
 
@@ -500,7 +500,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 ## cartodb.CartoDBLayer.HttpSubLayer
 
-This is a [subclass](https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)#Subclasses_and_superclasses) of `cartodb.CartoDB.SubLayer`, which is the subLayer base source code.
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodb-sublayerbase)._
 
 ### sublayer.setURLTemplate(_urlTemplate_)
 
