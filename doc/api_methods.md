@@ -140,7 +140,7 @@ Option | Description
 --- | ---
 map | native map object or leaflet.
 layer | cartodb layer (or sublayer).
-fields | array of column names.
+fields | array of column names.<br /><br />**Note:** This tells CartoDB what columns from your dataset should appear in your infowindow.
 options | 
 --- | ---
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
