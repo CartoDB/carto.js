@@ -132,7 +132,7 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-**Note:** By default, the `vis.addInfowindow` code displays interactivity for the infowindow with the "click" action. If you are using the "hover" action, you will still have to define the infowindow options with `viz.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code.
+_**Note:** By default, the `vis.addInfowindow` code triggers interactivity for the infowindow with the "click" action. If you are using the "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)" action, you will still have to define the infowindow options with `viz.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code._
 
 #### Arguments
 
@@ -145,7 +145,6 @@ options |
 --- | ---
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
 &#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
-&#124;_triggerEvent | sets the action of the infowindow, either "click" or "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)".
 
 **Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
@@ -155,7 +154,7 @@ An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
 
 #### Example
 
-The following example displays how to enable infowindow interactivity with the "click" action.
+The following example displays how to enable infowindow interactivity with the "click" action. This is the default for infowindows.
 
 {% highlight html %}
  cartodb.vis.Vis.addInfowindow(map, sublayer, ['cartodb_id', 'lat', 'lon', 'name'],{
