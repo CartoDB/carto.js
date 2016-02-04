@@ -99,7 +99,7 @@ layer.leafletMap.viz.addOverlay({
 });
 {% endhighlight %}
 
-**Tip:** For a description of the infowindow specific parameters, see [`vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/api-methods/#arguments-2). Optionally, you can also use the `vis.addInfowindow` function to define the click action for an infowindow.
+**Tip:** For a description of the infowindow specific parameters, see [`cdb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/api-methods/#arguments-2). Optionally, you can also use the `cdb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlay(_type_)
 
@@ -132,7 +132,7 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-_**Note:** By default, the `vis.addInfowindow` code triggers interactivity for the infowindow with the "click" action. If you are using the "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)" action, you will still have to define the infowindow options with `viz.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code._
+_**Note:** By default, the `cdb.vis.Vis.addInfowindow` code triggers interactivity for the infowindow with the "click" action. If you are using the "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)" action, you will still have to define the infowindow options with `cbd.vis.Vis.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code._
 
 #### Arguments
 
