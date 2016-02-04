@@ -128,7 +128,7 @@ Overlay objects are always created using the `addOverlay` method of a `cartodb.V
 
 An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if you know how Backbone works you can use it. If you want to use plain DOM objects you can access `overlay.el` (`overlay.$el` for jQuery object).
 
-### vis.addInfowindow(_map, layer, fields [, options]_)
+### Vis.addInfowindow(_map, layer, fields [, options]_)
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
