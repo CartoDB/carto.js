@@ -77,13 +77,29 @@ Adds an overlay to the map that can be either a zoom control, a tooltip or an in
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | zoom / tooltip / infobox
+type | - zoom<br /><br /> - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but does not contain any positioning options. It always appears in the same position)
 
 If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
 
 #### Returns
 
 An overlay object, see [vis.Overlays](#visoverlays).
+
+#### Example (Infowindow with Tooltip)
+
+The following example displays how to enable infowindow interactivity with the mouse "hover" action. The hover action is referred to as a tooltip, and enables you to control the positioning.
+
+{% highlight html %}
+layer.leafletMap.viz.addOverlay({
+  type: 'tooltip',
+  layer: sublayer,
+  template: '<div class="cartodb-tooltip-content-wrapper"><img style="width: 100%" src={{_url}}>{{name}}, {{age}}, {{city}}, {{country}}</div>', 
+  position: 'bottom|right',
+  fields: [{ name: 'name' }]
+});
+{% endhighlight %}
+
+**Tip:** For a description of the infowindow specific parameters, see [`cdb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cdb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlay(_type_)
 
@@ -111,22 +127,6 @@ An overlay is a control shown on top of the map.
 Overlay objects are always created using the `addOverlay` method of a `cartodb.Vis` object.
 
 An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if you know how Backbone works you can use it. If you want to use plain DOM objects you can access `overlay.el` (`overlay.$el` for jQuery object).
-
-### vis.addInfowindow(_map, layer, fields [, options]_)
-
-Adds an infowindow to the map controlled by layer events. It enables interaction and overrides the layer interactivity.
-
-#### Arguments
-
-Option | Description
---- | ---
-map | native map object or leaflet
-layer | cartodb layer (or sublayer)
-fields | array of column names
-
-#### Returns
-
-An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
 
 ## cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
@@ -453,7 +453,7 @@ enable | `true` if the interaction needs to be enabled.
 
 ### sublayer.infowindow
 
-`sublayer.infowindow` is a Backbone model where we modify the parameters of the infowindow.
+`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
 
 #### Attributes
 
@@ -463,6 +463,8 @@ template | Custom HTML template for the infowindow. You can write simple HTML or
 sanitizeTemplate | By default all templates are sanitized from unsafe tags/attrs (e.g. `<script>`), set this to `false` to skip sanitization, or a function to provide your own sanitization (e.g. `function(inputHtml) { return inputHtml })`).
 width | Width of the infowindow (value must be a number).
 maxHeight | Max height of the scrolled content (value must be a number).
+
+**Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
 
 #### Example
 
@@ -479,7 +481,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 <script type="infowindow/html" id="infowindow_template">
   <span> custom </span>
-  <div class="cartodb-popup">
+  <div class="cartodb-popup v2">
     <a href="#close" class="cartodb-popup-close-button close">x</a>
 
      <div class="cartodb-popup-content-wrapper">
