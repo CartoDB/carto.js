@@ -83,7 +83,7 @@ The following example displays how to enable infowindow interactivity with the "
 
 #### Example (Infowindow with Tooltip)
 
-The following example displays how to enable infowindow interactivity with the mouse "hover" action. This is referred to as a tooltip, as is defined with [`vis.addOverlay`](#visaddoverlayoptions).
+The following example displays how to enable infowindow interactivity with the mouse "hover" action. This is referred to as a tooltip, and is defined with [`vis.addOverlay`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions).
 
 {% highlight html %}
 layer.leafletMap.viz.addOverlay({
