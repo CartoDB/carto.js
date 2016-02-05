@@ -50,7 +50,7 @@ The tooltip is not shown when hover on feature.
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
 
-_**Note:** By default, the `cdb.vis.Vis.addInfowindow` code triggers interactivity for the infowindow with the "click" action. If you are using the "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)" action, you will still have to define the infowindow options with `cbd.vis.Vis.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code._
+_**Note:** By default, the `cartodb.vis.Vis.addInfowindow` code triggers interactivity for the infowindow with the "click" action. If you are using the "[hover](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions)" action, you will still have to define the infowindow options with `cartodb.vis.Vis.addInfowindow`, and specify additional parameters for the hover action with the `vis.Overlays` code._
 
 #### Arguments
 
@@ -64,7 +64,7 @@ options |
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
 &#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
 
-**Tip:** See [How can I use CartoDB.js to create and style infowindows?](/faqs/infowindows/#how-can-i-use-cartodb.js-to-create-and-style-infowindows) for an overview of how to create infowindows.
+**Tip:** See [How can I use CartoDB.js to create and style infowindows?](http://docs.cartodb.com/faqs/infowindows/#how-can-i-use-cartodbjs-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
 #### Returns
 
