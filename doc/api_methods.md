@@ -99,7 +99,7 @@ layer.leafletMap.viz.addOverlay({
 });
 {% endhighlight %}
 
-**Tip:** For a description of the infowindow specific parameters, see [`cdb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cdb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
+**Tip:** For a description of the infowindow specific parameters, see [`cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cartodb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlay(_type_)
 
