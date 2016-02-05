@@ -24,20 +24,24 @@ window.onload = function() {
 
 [Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
 
-## Using the library
+## Using the CartoDB.js library
 
-CartoDB.js can be used when you want to embed and use a visualization you have designed using CartoDB's user interface, or to dynamically create visualizations from scratch using your data. If you want to create new maps on your webpage, jump to [Creating a visualization from scratch](#creating-a-visualization-from-scratch). If you already have maps on your webpage and want to add CartoDB visualizations to them, read [Adding CartoDB layers to an existing map](#adding-cartodb-layers-to-an-existing-map).
+CartoDB.js can be used to embed a visualization you have designed using CartoDB's user interface, or to dynamically create visualizations from scratch, using your data. If you want to create new maps on your webpage, jump to [Creating a visualization from scratch](#creating-a-visualization-from-scratch). If you already have maps on your webpage and want to add CartoDB visualizations to them, read [Adding CartoDB layers to an existing map](#adding-cartodb-layers-to-an-existing-map).
 
-You can also use the CartoDB API to create visualizations programmatically. This can be useful when the visualizations react to user interactions. To read more about it jump to [Creating visualizations at runtime](#creating-visualizations-at-runtime).
+You can also use the CartoDB API to create visualizations programmatically. This can be useful when the visualizations react to user interactions. To read more about it, jump to [Creating visualizations at runtime](#creating-visualizations-at-runtime).
 
-We’ve also made it easier than ever for you to build maps using the mapping library of your choice. Whether you are using Leaflet or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to remember and be consistent if you develop or maintain multiple maps online.
-
-To start using CartoDB.js just paste this piece of code within the HEAD tags of your HTML:
+To start using CartoDB.js, paste this piece of code within the HEAD tags of your HTML:
 
 ```html
 <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 ```
+
+### Other Mapping Libraries
+
+We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using Leaflet or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
+
+_**Note:** CartoDB.js automatically includes dependencies from other mapping libraries (such as Leaflet, jQuery, Mustache, Underscore, and so on). You do not have to manually include these libraries, or worry about other mapping library version control, when you are using CartoDB.js._
 
 ### Creating a visualization from scratch
 

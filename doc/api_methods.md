@@ -1,6 +1,6 @@
 # API methods
 
-The documentation below refers to CartoDB.js v3. For major changes in the library we will update the documentation here. This documentation is meant to help developers find specific methods from the CartoDB.js library.
+This documentation is intended for developers and describes specific methods from the [latest version](https://github.com/CartoDB/cartodb.js/releases) of the CartoDB.js library.
 
 ## cartodb.createVis
 
@@ -28,7 +28,7 @@ options |
 &#124;_ zoom | initial zoom.
 &#124;_ cartodb_logo | default to true, set to false if you want to remove the cartodb logo.
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
-&#124;_ time_slider | show time slider with torque layers (enabled by default).
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
 &#124;_ layer_selector | show layer selector (default: false).
 &#124;_ legends | if it's true legends are shown in the map.
 &#124;_ https | if true, it makes sure that basemaps are converted to https when possible. If explicitly false, converts https maps to http when possible. If undefined, the basemap template is left as declared at `urlTemplate` in the viz.json.
@@ -128,7 +128,7 @@ Overlay objects are always created using the `addOverlay` method of a `cartodb.V
 
 An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if you know how Backbone works you can use it. If you want to use plain DOM objects you can access `overlay.el` (`overlay.$el` for jQuery object).
 
-### cartodb.createLayer(_map, layerSource [, options] [, callback]_)
+## cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
 With visualizations already created through the CartoDB console, you can simply use the `createLayer` function to add them into your web pages. Unlike `createVis`, this method requires an already activated `map` object and it does not load a basemap for you.
 
@@ -137,7 +137,7 @@ With visualizations already created through the CartoDB console, you can simply 
 Name |Description
 --- | ---
 map | Leaflet `L.Map` object. The map should be initialized before calling this function.
-layerSource | contains information about the layer. It can be specified in 2 ways
+layerSource | contains information about the layer. It can be specified in multiple ways<br/><br/>**Tip:** See [Multiple types of layers Source Object](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/#multiple-types-of-layers-source-object)
 
 options |
 --- | ---
@@ -146,18 +146,18 @@ options |
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
 &#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default).
 &#124;_ legends | if it's true legends are shown in the map.
-&#124;_ time_slider | show time slider with torque layers (enabled by default)
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
 &#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).
 &#124;_ filter | a string or array of strings to specify the type(s) of sublayers that will be rendered (eg: `['http', 'mapnik']`). All non-torque layers (http and mapnik) will be rendered if this option is not present.
 &#124;_ no_cdn | true to disable CDN when fetching tiles
 callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.
 
-#### Passing the url where the layer data is located
+### Passing the url where the layer data is located
 ```javascript
 cartodb.createLayer(map, 'http://myserver.com/layerdata.json')
 ```
 
-#### Passing the data directly
+### Passing the data directly
 ```javascript
 cartodb.createLayer(map, { layermetadata })
 ```
@@ -201,7 +201,6 @@ cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
 ```
 
 Layer metadata must take one of the forms of the [Layer Source Object](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/).
-
 
 ---
 
@@ -362,7 +361,7 @@ layer.setParams({'test': 1, 'color': '#F00'}); // set more than one parameter at
 
 ---
 
-## cartodb.CartoDBLayer.SubLayer
+## cartodb.SubLayerBase
 
 ### sublayer.set(_layerDefinition_)
 
@@ -416,7 +415,9 @@ Toggles the visibility of the sublayer and returns a boolean that indicates the 
 
 It returns `true` if the sublayer is visible.
 
-## cartodb.CartoDBLayer.CartoDBSubLayer
+## cartodb.CartoDBSubLayer
+
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodbsublayerbase)._
 
 ### sublayer.getSQL()
 
@@ -499,7 +500,9 @@ maxHeight | Max height of the scrolled content (value must be a number).
 
 ---
 
-## cartodb.CartoDBLayer.HttpSubLayer
+## cartodb.HttpSubLayer
+
+_This is a subclass of [`cartodb.SubLayerBase`](#cartodbsublayerbase)._
 
 ### sublayer.setURLTemplate(_urlTemplate_)
 

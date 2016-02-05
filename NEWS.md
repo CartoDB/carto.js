@@ -1,4 +1,4 @@
-3.15.X (dd/mm/yyyy)
+3.15.9 (01/02/2016)
 ------
 * When scrollwheel and zoom are disabled, map panning is disabled unless device is mobile.
 
