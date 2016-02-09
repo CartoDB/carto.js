@@ -68,7 +68,7 @@ options |
 
 #### Returns
 
-An infowindow object, see [sublayer.infowindow](#sublayerinfowindow)
+An infowindow object, see [sublayer.infowindow](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#sublayerinfowindow)
 
 #### Example
 
