@@ -52,7 +52,7 @@ cartodb.Tiles.getTiles(layerData, function(tilesUrl, error) {
     return;
   }
   console.log("url template is ", tilesUrl.tiles[0]);
-}
+});
 ```
 
 The `tilesUrl` object contains url template for tiles and interactivity grids:
