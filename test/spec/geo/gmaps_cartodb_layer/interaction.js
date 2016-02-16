@@ -1,4 +1,4 @@
-describe('Interaction funcionality', function() {
+describe('Interaction functionality', function() {
   var div, map, cdb_layer;
 
   beforeEach(function() {
