@@ -280,7 +280,7 @@ for (var i = 0; i < num_sublayers; i++) {
 
 ### layer.createSubLayer(_layerDefinition_)
 
-Adds a new data to the current layer. With this method, data from multiple tables can be easily visualized. New in V3.
+Adds a new data to the current layer. With this method, data from multiple tables can be easily visualized.
 
 #### Arguments
 
@@ -319,7 +319,7 @@ cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/european_countr
 
 ### layer.invalidate()
 
-Refreshes the data. If the data has been changed in the CartoDB server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually. New in V3.
+Refreshes the data. If the data has been changed in the CartoDB server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually.
 
 ### layer.setAuthToken(_auth_token_)
 
