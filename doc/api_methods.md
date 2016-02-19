@@ -141,16 +141,16 @@ layerSource | contains information about the layer. It can be specified in multi
 
 options |
 --- | ---
-&#124;_ https | force https
-&#124;_ refreshTime | if is set, the layer is refreshed each refreshTime milliseconds.
-&#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
-&#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default).
-&#124;_ legends | if it's true legends are shown in the map.
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
-&#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).
-&#124;_ filter | a string or array of strings to specify the type(s) of sublayers that will be rendered (eg: `['http', 'mapnik']`). All non-torque layers (http and mapnik) will be rendered if this option is not present.
-&#124;_ no_cdn | true to disable CDN when fetching tiles
-callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.
+&#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](http://docs.cartodb.com/cartodb-platform/cartodb-js/other-stuff/#https-support) for example code.
+&#124;_ refreshTime | if is set, the layer is refreshed each refreshTime milliseconds.<br/><br/>See a refreshTime code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createlayer_refresh_time.html).
+&#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).<br/><br/>For details, see [Creating an infowindow with the `createLayer()` function](http://docs.cartodb.com/faqs/infowindows/#creating-an-infowindow-with-the-createlayer-function).
+&#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default). This option is specific for when you create a map using the CartoDB Editor, and have enabled the tooltip [(infowindow hover)](http://docs.cartodb.com/cartodb-editor/maps/#infowindows) option. This option disables the tooltip in createLayer.<br/><br/>See a tooltip code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createlayer_custom_tooltip.html).
+&#124;_ legends | set to true to show legends in the map. .<br/><br/>For an example, see this [CartoDB.js example with legends disabled](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createlayer_nolegend.html).
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See a Torque Time Slider code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/torque_time_slider.html).<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
+&#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).<br/><br/>See [`layer.featureOver(_event, latlng, pos, data, layerIndex_`)](http://docs.cartodb.com/cartodb-platform/cartodb-js/events/#layerfeatureoverevent-latlng-pos-data-layerindex) for details about binding functions to layer events.
+&#124;_ filter | A string, or array of values, that specifies the type(s) of sublayers to be rendered if you are using multiple types of layer source objects (eg: `['http', 'mapnik')](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations). All non-torque layers (http and mapnik) will be rendered if this option is not present.<br/><br/>See a createLayer filter [example](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/#multiple-types-of-layers-source-object).
+&#124;_ no_cdn | set to true to disable CDN when fetching tiles.<br/><br/>For a complete example of this code, see ["odyssey_test.html"](https://github.com/CartoDB/cartodb.js/blob/2983b2fdcef914afdb1f4fdae173471143930452/examples/odyssey_test.html).
+callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.<br/><br/> See the [example of loading multiple layers from Cartodb in a Leaflet Map](https://github.com/CartoDB/cartodb.js/blob/develop/examples/callback_layer.html).
 
 ### Passing the url where the layer data is located
 ```javascript
@@ -280,7 +280,7 @@ for (var i = 0; i < num_sublayers; i++) {
 
 ### layer.createSubLayer(_layerDefinition_)
 
-Adds a new data to the current layer. With this method, data from multiple tables can be easily visualized. New in V3.
+Adds a new data to the current layer. With this method, data from multiple tables can be easily visualized.
 
 #### Arguments
 
@@ -319,7 +319,7 @@ cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/european_countr
 
 ### layer.invalidate()
 
-Refreshes the data. If the data has been changed in the CartoDB server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually. New in V3.
+Refreshes the data. If the data has been changed in the CartoDB server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually.
 
 ### layer.setAuthToken(_auth_token_)
 
