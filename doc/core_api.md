@@ -8,7 +8,7 @@ If you want to use this functionality, you only need to load cartodb.core.js fro
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.core.js"></script>
 ```
 
-An example using this funcionality can be found in a ModestMaps example: [view live](http://cartodb.github.com/cartodb.js/examples/modestmaps.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/modestmaps.html).
+An example using this functionality can be found in a ModestMaps example: [view live](http://cartodb.github.com/cartodb.js/examples/modestmaps.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/modestmaps.html).
 
 Notice that `cartodb.SQL` is also included in that JavaScript file
 

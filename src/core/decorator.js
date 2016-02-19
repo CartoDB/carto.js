@@ -1,5 +1,5 @@
 /**
-* Decorators to extend funcionality of cdb related objects
+* Decorators to extend functionality of cdb related objects
 */
 
 /**

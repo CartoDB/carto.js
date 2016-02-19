@@ -1,4 +1,4 @@
-describe('Show funcionality', function() {
+describe('Show functionality', function() {
   var div, map, cdb_layer;
 
   beforeEach(function() {
