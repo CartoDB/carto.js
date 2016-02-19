@@ -4,7 +4,7 @@
 
 Used for most maps with tables that are set to public or public with link.
 
-### Arguments
+#### Arguments
 
 Layer Source Objects are defined with the [Layergroup Configurations](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations).
 
@@ -21,7 +21,7 @@ options | Options vary, depending on the `type` of layer source you are using:
 &#124;_ `plain` | See [Plain Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#plain-layer-options).
 &#124;_ `named` | See [Named Map Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#named-map-layer-options).
 
-### Example
+#### Example
 
 ```javascript
 {
@@ -47,7 +47,7 @@ For other layer source definitions, see [this example](https://github.com/CartoD
 
 Used for making public maps with private data. See [Named Maps](http://docs.cartodb.com/cartodb-platform/maps-api/named-maps/) for more information.
 
-### Example
+#### Example
 
 ```javascript
 {
@@ -79,7 +79,7 @@ Used for making public maps with private data. See [Named Maps](http://docs.cart
 
 `cartodb.createLayer` combining multiple types of layers and setting a filter
 
-### Example
+#### Example
 
 ```javascript
 cartodb.createLayer(map, {
