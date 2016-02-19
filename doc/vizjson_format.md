@@ -196,7 +196,7 @@ This is the spec for visjson:
             cartocss: "valid cartocss",
             named_map: { //if this key is present named_map is used, if not it means it's an anonymous map
                 name: 'test',
-                layer_index: 1, // layer_index inside named map
+                layer_index: 1, // layer_index inside Named Map
                 params: {
                     //template params
                     color: '#FFF',
