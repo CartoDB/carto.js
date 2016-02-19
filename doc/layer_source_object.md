@@ -1,10 +1,10 @@
 # Layer Source Object
 
-### Standard Layer Source Object (_type: 'cartodb'_)
+## Standard Layer Source Object (_type: 'cartodb'_)
 
 Used for most maps with tables that are set to public or public with link.
 
-#### Arguments
+### Arguments
 
 Layer Source Objects are defined with the [Layergroup Configurations](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations).
 
@@ -21,7 +21,7 @@ options | Options vary, depending on the `type` of layer source you are using:
 &#124;_ `plain` | See [Plain Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#plain-layer-options).
 &#124;_ `named` | See [Named Map Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#named-map-layer-options).
 
-#### Example
+### Example
 
 ```javascript
 {
@@ -43,11 +43,11 @@ options | Options vary, depending on the `type` of layer source you are using:
 ```
 For other layer source definitions, see [this example](https://github.com/CartoDB/cartodb.js/blob/4ba5148638091fd2c194f48b2fa3ed6ac4ecdb23/examples/layer_definition.html).
 
-### Named Maps Layer Source Object (_type: 'namedmap'_)
+## Named Maps Layer Source Object (_type: 'namedmap'_)
 
 Used for making public maps with private data. See [Named Maps](http://docs.cartodb.com/cartodb-platform/maps-api/named-maps/) for more information.
 
-#### Example
+### Example
 
 ```javascript
 {
@@ -75,11 +75,11 @@ Used for making public maps with private data. See [Named Maps](http://docs.cart
 }
 ```
 
-### Multiple types of layers Source Object
+## Multiple types of layers Source Object
 
 `cartodb.createLayer` combining multiple types of layers and setting a filter
 
-#### Example
+### Example
 
 ```javascript
 cartodb.createLayer(map, {
