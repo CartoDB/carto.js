@@ -1,31 +1,31 @@
-# Specific UI functions
+# Specific UI Functions
 
 There are a few functions in CartoDB.js for creating, enabling, and disabling pieces of the user interface.
 
-## cartodb.geo.ui.Tooltip
+## vis.addOverlay(tooltip)
 
-Shows a small tooltip on hover:
+A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). You can customize the placement of your tooltip by modifying the `position` values.
+
+#### Example
 
 ```javascript
 var tooltip = vis.addOverlay({
   type: 'tooltip',
   template: '<p>{{variable}}</p>' // mustache template
+  width: 200,
+  position: 'bottom|right',
+  fields: [{ name: 'name', population: 'pop2005' }]
 });
 ```
+**Note:** If you are using `createLayer` for a map object that contains an enabled tooltip, you can disable the tooltip by applying the `false` value. See the [`cartodb.createLayer(map, layerSource [, options] [, callback])](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#arguments-2) `tooltip` description for how to enable/disable an interactive tooltip.
 
-### cartodb.geo.ui.Tooltip.enable()
+## vis.addOverlay(infobox)
 
-The tooltip is shown when hover on feature when is called.
+Displays a small box when the user hovers on a map feature. This is similar to a tooltip but does not contain any positioning options. _The position is fixed, and always appears in the same position_.
 
-### cartodb.geo.ui.Tooltip.disable()
+#### Example
 
-The tooltip is not shown when hover on feature.
-
----
-
-## cartodb.geo.ui.InfoBox
-
-Shows a small box when the user hovers on a map feature. The position is fixed:
+****** NEED NEW CODE EXAMPLE, INFOBOX SHOULD NOT HAVE POSITION OPTIONS? *****
 
 ```javascript
 var box = vis.addOverlay({
@@ -35,17 +35,6 @@ var box = vis.addOverlay({
   position: 'bottom|right' // top, bottom, left and right are available
 });
 ```
-
-### cartodb.geo.ui.InfoBox.enable()
-
-The tooltip is shown when hover on feature.
-
-### cartodb.geo.ui.InfoBox.disable()
-
-The tooltip is not shown when hover on feature.
-
----
-
 ## cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)
 
 Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
@@ -93,16 +82,22 @@ layer.leafletMap.viz.addOverlay({
   });
 {% endhighlight %}
 
----
+## vis.addOverlay(zoom)
 
-## cartodb.geo.ui.Zoom
+ Zoom control buttons enable you to adjust the zoom level on the map image, by using the increase size (+) or decrease (-) buttons. The position of the zoom control buttons are fixed, and located on the top-left of the map. Zoom control buttons are enabled by default.
 
-Shows the zoom control:
+ IS IT TRUE THAT THE ZOOM CONTROL POSITION IS FIXED????
+
+#### Examples
 
 ```javascript
 vis.addOverlay({ type: 'zoom' });
 ```
+Example of vis.getOverlay(zoom)? Code is different?
+http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#example-1
 
-### cartodb.geo.ui.Zoom.show()
+**Note:** If you are using `createLayer` for a map object that contains an enabled zoom control, you can disable the zoom control by applying the `false` value. See the [`cartodb.createLayer(map, layerSource [, options] [, callback])](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#arguments-2) `zoomControl` description for how to enable/disable the zoom control.
 
-### cartodb.geo.ui.Zoom.hide()
+## cartodb.createLayer() ui functions
+
+??? Add any other ui functions? For createLayer= Search box, scrollwheel, cartodb logo, legends, etc.? All these arguments? [http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#arguments](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#arguments)???
