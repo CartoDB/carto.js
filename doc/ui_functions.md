@@ -21,7 +21,7 @@ var tooltip = vis.addOverlay({
 
 ## vis.addOverlay(infobox)
 
-Similar to a tooltip, an infobox displays a small box when you hover your mouse over a map feature. When opening an infobox on a map, _the position of the infobox is fixed_, and always appears in the same position; depending on how you defined the position values for the infobox.
+Similar to a tooltip, an infobox displays a small box when you hover your mouse over a map feature. When viewing an infobox on a map, _the position of the infobox is fixed_, and always appears in the same position; depending on how you defined the position values for the infobox.
 
 #### Example
 
