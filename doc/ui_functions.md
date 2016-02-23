@@ -4,7 +4,7 @@ There are a few functions in CartoDB.js for creating, enabling, and disabling pi
 
 ## vis.addOverlay(tooltip)
 
-A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). While you can customize the position of where the tooltip initially appears on the map, the placement of the tooltip may change to accommodate the active map (i.e., if you zoomed, scrolled, etc.)
+A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). A tooltip appears where the mouse cursor is located on the map.You can customize the position of how the tooltip appears by defining the position options.
 
 #### Example
 
@@ -13,7 +13,7 @@ var tooltip = vis.addOverlay({
   type: 'tooltip',
   template: '<p>{{variable}}</p>' // mustache template
   width: 200,
-  position: 'bottom|right',
+  position: 'bottom|right', // top, bottom, left and right are available
   fields: [{ name: 'name', population: 'pop2005' }]
 });
 ```
@@ -36,7 +36,7 @@ var infoBox = layer.leafletMap.viz.addOverlay({
 
 ## cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)
 
-Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, select data on your map. 
+Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, a map feature. 
 
 #### Arguments
 
