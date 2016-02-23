@@ -4,7 +4,7 @@ There are a few functions in CartoDB.js for creating, enabling, and disabling pi
 
 ## vis.addOverlay(tooltip)
 
-A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). A tooltip appears where the mouse cursor is located on the map.You can customize the position of how the tooltip appears by defining the position options.
+A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). A tooltip appears where the mouse cursor is located on the map. You can customize the position of how the tooltip appears by defining the position options.
 
 #### Example
 
