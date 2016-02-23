@@ -70,16 +70,16 @@ Returns an array of layers in the map. The first is the base layer.
 
 ### vis.addOverlay(_options_)
 
-Adds an overlay to the map that can be either a zoom control, a tooltip or an infobox.
+Adds an overlay to the map that can be either a tooltip or an infobox.
 
 #### Arguments
 
 Option | Description
 --- | ---
 layer | layer from the visualization where the overlay should be applied (optional)
-type | - zoom<br /><br /> - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but does not contain any positioning options. It always appears in the same position)
+type | - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but always appears in the same fixed position that you define)
 
-If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the specific UI component.
+If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the [specific UI function](http://docs.cartodb.com/cartodb-platform/cartodb-js/ui-functions/#specific-ui-functions).
 
 #### Returns
 
@@ -109,7 +109,6 @@ Returns the first overlay with the specified **type**.
 
 ```javascript
 var zoom = vis.getOverlay('zoom');
-zoom.clean() // remove it from the screen
 ```
 
 ### vis.getOverlays()
