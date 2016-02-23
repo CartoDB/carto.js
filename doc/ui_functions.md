@@ -36,7 +36,7 @@ var infoBox = layer.leafletMap.viz.addOverlay({
 
 ## cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)
 
-Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks, or hovers their mouse over, a map feature. 
+Infowindows provide additional interactivity for your published map, controlled by layer events. It enables interaction and overrides the layer interactivity. A pop-up information window appears when a viewer clicks on a map feature. 
 
 #### Arguments
 
