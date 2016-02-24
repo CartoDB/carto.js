@@ -141,7 +141,7 @@ addCursorInteraction: function(map, layer) {
     });
 {% endhighlight %}
 
-For more examples, see [cursor_interaction.html](https://github.com/CartoDB/cartodb.js/blob/develop/examples/cursor_interaction.html) and the [Google Map Driving Directions](http://docs.cartodb.com/tutorials/google_driving_directions/#google-map-driving-directions) tutorial.
+For more examples, see [cursor_interaction.html](https://github.com/CartoDB/cartodb.js/blob/develop/examples/cursor_interaction.html) and the [Google Map Driving Directions](http://docs.cartodb.com/tutorials/google_driving_directions/#google-map-driving-directions) lesson.
 
 ### vis.removeCursorInteraction
 
