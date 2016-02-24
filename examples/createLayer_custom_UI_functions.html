@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      /* gives the tooltip a margin from the pointer */
+      
+      body > div.cartodb-tooltip{
+        margin-top: 10px !important;
+        margin-left: 10px !important;
+        border-radius: 15px;
+
+      }
+      /* gives to the tooltip different styles */
+      div.cartodb-tooltip-content-wrapper{
+        padding: 10px 10px 10px 10px;
+        max-width:none;
+        text-align: center;
+        background-color: #FFF!important;
+        opacity: 0.9;
+        border-radius: 25px!important;
+      }
+      /* set styles to the <p> tag of the tooltip */
+       div.cartodb-tooltip-content-wrapper p{
+        color: red!important;
+      }
+      /* set infobox styles */
+     .cartodb-infobox{
+        opacity:0.9;
+        background-color: #FFF!important;
+        color: #fdb462!important;
+        border-radius: 25px!important;
+      }
+     /* set styles to the div element with id= box */
+      #box{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 200px;
+        height: 170px;
+        opacity: 0.9;
+        padding: 5px 10px 5px 10px;
+        border-radius: 25px;
+        background-color: #FFF;
+        color: #fdb462;
+
+      }
+      /* set styles to the <h4> tag of the element with id= box */
+      #box h4{
+        font-style: italic;
+      }
+      /* set styles to the <p> tag of the element with id= box */
+      #box p{
+        text-align: center;
+        font-size: 18px;
+        color:red;
+
+      }
+      /* set styles to the custom infowindow */
+      .infowindow-custom{ 
+        position: relative;
+        width: 170px;
+        background-color: #FFF;
+        margin-bottom: 2px;
+        opacity: 0.9;
+        text-align: left;
+        font-style: oblique;
+        background-color: #FFF;
+        color: #fdb462;
+        border-radius: 10px;
+
+        
+      }
+      
+      .cartodb-popup-content .content h3{
+          font-style: italic;
+      }
+      .cartodb-popup-content .content p{
+          text-align: left;
+          font-size: 16px;
+          color:red;
+          margin-left: 20px;
+      }
+       
+      /* set styles to the custom infowindow -> close button */
+      .cartodb-popup-close-button {
+        position: absolute;
+        top: -12px;
+        right: -11px;
+        width: 26px;
+        height: 26px;
+        background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat 0 -23px;
+        text-indent: -9999px;
+        font-size: 0;
+        line-height: 0;
+        opacity: 1;
+        text-transform: uppercase;
+        z-index: 3;
+      }
+      /* set styles to the custom infowindow -> tip container */
+      .cartodb-popup-tip-container{
+        position: absolute;
+        bottom: -13px;
+        left: 23px;
+         width: 16px;
+         height: 14px;
+         background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat -23px -7px;
+         text-indent: -9999px;
+         font-size: 0;
+         line-height: 0;
+         opacity: 1;
+         z-index: 3;
+      }
+      /* change legend's position and style */
+      .cartodb-legend{
+         left: 20px;
+         bottom: 50px!important;
+         width: 90px;
+         height: auto;
+         background-color: #FFF;
+         opacity: 1;
+         border-radius: 25px!important;
+       } 
+       .cartodb-legend ul li{
+        margin-left: 5px!important;
+        font-style: italic!important;
+        font-size: 10px!important;
+
+       }
+
+
+      
+    </style>
+    <!-- include cartodb.js CSS library -->
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+     <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div id ="box"><h4>Latitude</h4><p id="lat">Mouseover on point</p><h4>Longitude</h4><p id="lon">Mouseover on point</p></div>
+
+
+    <!-- HTML template for custom infowindow -->
+    <script type="infowindow/html" id="infowindow_template">
+        <div class="infowindow-custom">
+          <a href="#close" class="cartodb-popup-close-button close">x</a>
+           <div class="cartodb-popup-content">
+            <div class="content" style="padding:20px">
+              <h3>Country:</h3> 
+              <p>{{content.data.adm0name}}</p>
+              <h3>City:</h3>
+              <p>{{content.data.name}}</p>
+              <h3>Max population:</h3>
+              <p>{{content.data.pop_max}}</p>
+              <div>
+          <div>
+          <div class="cartodb-popup-tip-container"></div>
+        </div>
+    </script>
+
+<script>
+  function main() {
+    
+    var lat;
+    var lon;
+
+    // define map object
+    var map = new L.Map('map', {
+      zoomControl: false,
+      center: [43, 0],
+      zoom: 3
+
+    });
+  
+    /* Define CartoDB layer with createLayer(). More information here: 
+
+    http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#cartodbcreatelayermap-layersource--options--callback */
+    cartodb.createLayer(map, {
+      user_name: 'oboix',
+      type: 'cartodb',
+      sublayers: [
+        {
+          type: "http",
+          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+          subdomains: [ "a", "b", "c" ]
+        },
+        {
+           type: "mapnik",
+           sql: 'select * from populated_places_spf',
+           cartocss: '#populated_places_spf[adm0name = "Spain"]{ marker-fill: #fbb4ae; marker-allow-overlap: true;}#populated_places_spf[adm0name = "Portugal"]{ marker-fill: #ccebc5; marker-allow-overlap: true;}#populated_places_spf[adm0name = "France"]{ marker-fill: #b3cde3; marker-allow-overlap: true;}',
+           interactivity: ['cartodb_id','adm0name','name','pop_max']
+         
+        },
+        {
+          type: "http",
+          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}.png",
+          subdomains: [ "a", "b", "c" ]
+        }
+      ]
+    })
+  .addTo(map) // add cartodb layer and basemap to map object
+  .done(function(layer) {
+
+    /*Once that the basemap and cartodb layer are added....*/
+      
+        /* Enable mouse events with CartoDB layers */
+
+        // 1- Set CartoDB layer interaction
+        layer.setInteraction(true);
+
+        // 2- Custom mouseover event on CartoDB layers
+        layer.on('featureOver',function(e,latlng,pos,data){
+          lat = (latlng[0]).toFixed(2) // show latitude of clicked point in the console
+          lon = (latlng[1]).toFixed(2) // show longitude of clicked point in the console
+          
+        // 3- Add coordinates of the selected geometry in the div element 
+        //  with id = "box" 
+           document.getElementById("lat").innerHTML = lat;
+           document.getElementById("lon").innerHTML = lon;
+        });
+
+      /* Set custom infowindow (= click infowindow) More information here:
+      http://docs.cartodb.com/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options
+
+      */
+
+       cdb.vis.Vis.addInfowindow(
+          map, layer, ['adm0name','name','pop_max'],
+          {
+             infowindowTemplate: $('#infowindow_template').html()
+          });
+
+       /* Set custom tooltip (= hover infowindow) More information here:
+            http://docs.cartodb.com/cartodb-platform/cartodb-js/ui-functions/#visaddoverlaytooltip
+
+         */
+
+        // 1- Define tootltip with createLayer
+         var tooltip = layer.leafletMap.viz.addOverlay({
+            type: 'tooltip',
+            layer: layer,
+            template: '<div class="cartodb-tooltip-content-wrapper"><p>{{name}}</p></div>', 
+            width: 200,
+            position: 'bottom|right',
+            fields: [{ name: 'name' }]
+          });
+
+          //2- Add tooltip to map object
+          $('body').append(tooltip.render().el);
+
+         /* Set custom infobox (= hover infowindow) More information here:
+            http://docs.cartodb.com/cartodb-platform/cartodb-js/ui-functions/#visaddoverlayinfobox
+          */
+        
+      // 1- Define infobox with createLayer()        
+
+       var infoBox = layer.leafletMap.viz.addOverlay({
+          type: 'infobox',
+          layer: layer,
+          template: '<div class="cartodb-tooltip-content-wrapper"><h3>Maximum Population</h3><p>{{pop_max}}<span> hab</span></p></div>', 
+          width: 150,
+          position: 'top|right'
+        });
+
+       //2- Add infobox to map object
+        $('body').append(infoBox.render().el);     
+
+        });
+
+        /* Set custom legend */
+
+        //1- Define custom legend
+        var legend = new cdb.geo.ui.Legend({
+             type: "custom",
+             data: [
+               { name: "Spain", value: "#fbb4ae" },
+               { name: "Portugal", value: "#ccebc5" },
+               { name: "France", value: "#b3cde3" }
+             ]
+           });
+
+         //2- Add legend to map object
+        $('#map').append(legend.render().el);
+        
+      }
+      window.onload = main;
+    </script>
+  </body>
+</html>
