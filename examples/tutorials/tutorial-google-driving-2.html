@@ -51,7 +51,6 @@
         .done(function(layers) {
             var subLayer = layers.getSubLayer(0);
             subLayer.setInteraction(true); // Interaction for that layer must be enabled
-            cdb.vis.Vis.addCursorInteraction(map, subLayer); // undo with removeCursorInteraction
             // Setup our event when an object is clicked
             layers.on('featureClick', function(e, latlng, pos, data){
               // the location of the clicked school
