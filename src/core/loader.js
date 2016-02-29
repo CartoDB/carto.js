@@ -13,6 +13,11 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
       script.onerror = function (err) {
         vizjson();
       };
+      script.onload = function () {
+        if (Loader._script == script) {
+          vizjson();
+        }
+      };
       if (!Loader.head) {
         Loader.head = document.getElementsByTagName('head')[0];
       }
