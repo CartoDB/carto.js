@@ -10,7 +10,7 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
       script.type = 'text/javascript';
       script.src = src;
       script.async = true;
-      script.onerror = function (err) {
+      script.onerror = function () {
         window.vizjson();
       };
       script.onload = function () {
