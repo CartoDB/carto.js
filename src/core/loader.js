@@ -11,11 +11,11 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
       script.src = src;
       script.async = true;
       script.onerror = function (err) {
-        vizjson();
+        window.vizjson();
       };
       script.onload = function () {
         if (Loader._script == script) {
-          vizjson();
+          window.vizjson();
         }
       };
       if (!Loader.head) {
