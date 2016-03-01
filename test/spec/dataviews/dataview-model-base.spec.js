@@ -11,6 +11,7 @@ describe('dataviews/dataview-model-base', function () {
 
     this.windshaftMap = new Backbone.Model();
 
+    spyOn(DataviewModelBase.prototype, 'listenTo').and.callThrough();
     this.model = new DataviewModelBase(null, {
       map: this.map,
       windshaftMap: this.windshaftMap,
@@ -23,11 +24,31 @@ describe('dataviews/dataview-model-base', function () {
     expect(this.model.get('boundingBox')).toEqual('2,1,4,3');
   });
 
+  describe('initial binds', function() {
+    it('should have a bind checking map instantiation', function () {
+      expect(this.model.listenTo.calls.argsFor(0)[0]).toEqual(this.model._windshaftMap);
+      expect(this.model.listenTo.calls.argsFor(0)[1]).toEqual('instanceCreated');
+      expect(this.model.listenTo.calls.argsFor(0)[2]).toEqual(this.model._onNewWindshaftMapInstance);
+    });
+
+    it('should have a bind checking layer visibility', function () {
+      expect(this.model.listenTo.calls.argsFor(1)[0]).toEqual(this.model.layer);
+      expect(this.model.listenTo.calls.argsFor(1)[1]).toEqual('change:visible');
+      expect(this.model.listenTo.calls.argsFor(1)[2]).toEqual(this.model._onLayerVisibilityChanged);
+    });
+
+    it('should have a bind listening map center changes', function () {
+      expect(this.model.listenTo.calls.argsFor(2)[0]).toEqual(this.map);
+      expect(this.model.listenTo.calls.argsFor(2)[1]).toEqual('change:center');
+      expect(this.model.listenTo.calls.argsFor(2)[2]).toEqual(this.model._updateBoundingBox);
+    });
+  });
+
   describe('when url changes', function () {
     beforeEach(function () {
       spyOn(this.model, 'fetch');
-      spyOn(this.model, 'listenTo');
       spyOn(this.model, 'on');
+      spyOn(this.map, 'stopListening');
       this.model.set('url', 'new-url');
     });
 
@@ -41,8 +62,9 @@ describe('dataviews/dataview-model-base', function () {
       });
 
       it('should change bounds', function () {
-        expect(this.model.listenTo.calls.argsFor(0)[0]).toEqual(this.model._map);
-        expect(this.model.listenTo.calls.argsFor(0)[1]).toEqual('change:center change:zoom');
+        expect(this.map.stopListening).toHaveBeenCalled();
+        expect(this.model.listenTo.calls.argsFor(4)[0]).toEqual(this.model._map);
+        expect(this.model.listenTo.calls.argsFor(4)[1]).toEqual('change:center change:zoom');
         expect(this.model.on.calls.argsFor(0)[0]).toEqual('change:url');
         expect(this.model.on.calls.argsFor(1)[0]).toEqual('change:boundingBox');
         expect(this.model.on.calls.argsFor(2)[0]).toEqual('change:enabled');
@@ -152,13 +174,14 @@ describe('dataviews/dataview-model-base', function () {
       spyOn(_, 'debounce').and.callFake(function (func) { return function () { func.apply(this, arguments); }; });
     });
 
-    it("should NOT update the bounding box when map bounds change and URL hasn't been set yet", function () {
+    it("should update the bounding box when map bounds change and URL hasn't been set yet", function () {
       var previousBoundingBox = this.model.get('boundingBox');
 
-      this.map.getViewBounds.and.returnValue([100, 200], [300, 400]);
+      this.map.getViewBounds.and.returnValue([[100, 200], [300, 400]]);
       this.map.trigger('change:center');
 
-      expect(this.model.get('boundingBox')).toEqual(previousBoundingBox);
+      expect(this.model.get('boundingBox')).not.toEqual(previousBoundingBox);
+      expect(this.model.get('boundingBox')).toBe('200,100,400,300');
     });
 
     it('should update the bounding box when map bounds change and URL has been set', function () {
