@@ -24,7 +24,7 @@ describe('dataviews/dataview-model-base', function () {
     expect(this.model.get('boundingBox')).toEqual('2,1,4,3');
   });
 
-  describe('initial binds', function() {
+  describe('initial binds', function () {
     it('should have a bind checking map instantiation', function () {
       expect(this.model.listenTo.calls.argsFor(0)[0]).toEqual(this.model._windshaftMap);
       expect(this.model.listenTo.calls.argsFor(0)[1]).toEqual('instanceCreated');
