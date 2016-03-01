@@ -152,7 +152,7 @@ module.exports = Model.extend({
   },
 
   _onChangeBinds: function () {
-    this._map.stopListening();
+    this.stopListening(this._map);
     this.listenTo(this._map, 'change:center change:zoom', _.debounce(this._onMapBoundsChanged.bind(this), BOUNDING_BOX_FILTER_WAIT));
 
     this.on('change:url', function (mdl, attrs, opts) {

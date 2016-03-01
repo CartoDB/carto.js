@@ -48,7 +48,7 @@ describe('dataviews/dataview-model-base', function () {
     beforeEach(function () {
       spyOn(this.model, 'fetch');
       spyOn(this.model, 'on');
-      spyOn(this.map, 'stopListening');
+      spyOn(this.model, 'stopListening');
       this.model.set('url', 'new-url');
     });
 
@@ -62,7 +62,7 @@ describe('dataviews/dataview-model-base', function () {
       });
 
       it('should change bounds', function () {
-        expect(this.map.stopListening).toHaveBeenCalled();
+        expect(this.model.stopListening).toHaveBeenCalledWith(this.map);
         expect(this.model.listenTo.calls.argsFor(4)[0]).toEqual(this.model._map);
         expect(this.model.listenTo.calls.argsFor(4)[1]).toEqual('change:center change:zoom');
         expect(this.model.on.calls.argsFor(0)[0]).toEqual('change:url');
