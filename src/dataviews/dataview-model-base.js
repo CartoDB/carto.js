@@ -62,6 +62,7 @@ module.exports = Model.extend({
   _initBinds: function () {
     this.listenTo(this._windshaftMap, 'instanceCreated', this._onNewWindshaftMapInstance);
     this.listenTo(this.layer, 'change:visible', this._onLayerVisibilityChanged);
+    this.listenTo(this._map, 'change:center', this._updateBoundingBox, this);
 
     if (this._dataProvider) {
       this.listenToOnce(this._dataProvider, 'dataChanged', this._onChangeBinds, this);
@@ -151,6 +152,7 @@ module.exports = Model.extend({
   },
 
   _onChangeBinds: function () {
+    this.stopListening(this._map);
     this.listenTo(this._map, 'change:center change:zoom', _.debounce(this._onMapBoundsChanged.bind(this), BOUNDING_BOX_FILTER_WAIT));
 
     this.on('change:url', function (mdl, attrs, opts) {
