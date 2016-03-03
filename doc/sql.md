@@ -1,4 +1,4 @@
-# Getting data with SQL
+# Getting Data with SQL
 
 CartoDB offers a powerful SQL API for you to query and retreive data from your CartoDB tables. CartoDB.js offers a simple to use wrapper for sending those requests and using the results.
 
