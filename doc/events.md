@@ -1,6 +1,6 @@
 # Events
 
-You can bind custom functions to layer events by adding listeners and callbacks to the async portions of the CartoDB.js library. Active layer events are triggered by layers on your webpage that are already loaded (**Tip:** these are the `createLayer` and `createVis` functions that return the _done_ event. For details, see [Loading Events](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#loading-events)). Each event requires the layer to include an **interactivity** layer. This is useful for integrating your website with your maps, adding events for mouseovers and click events. 
+You can bind custom functions to layer events by adding listeners and callbacks to the async portions of the CartoDB.js library. Active layer events are triggered by layers on your webpage that are already loaded (**Tip:** these are the `createLayer` and `createVis` functions that return the _done_ event. For details, see [Loading Events](http://docs.cartodb.com/cartodb-platform/cartodb-js/getting-started/#loading-listener-events)). Each event requires the layer to include an **interactivity** layer. This is useful for integrating your website with your maps, adding events for mouseovers and click events. 
 
 **Note:** Be mindful of using these events, as these functions can get costly if you have a lot of features on a map.
 

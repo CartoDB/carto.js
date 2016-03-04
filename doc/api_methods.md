@@ -542,23 +542,3 @@ title | Title of the legend.
 show_title | Set this to `false` if you don't want the title to be displayed.
 items | An array with the items that are displayed in the legend.
 visible | Set this to `false` if you want to hide the legend.
-
-## Loading Events
-
-To async portions of the CartoDB.js library, the **createLayer** and **createVis** functions trigger two important listener events for you to take advantage of: 
-
-- **done**, tells your code that the library has successfully read the information from the viz.json, and loaded the layer you requested.
-
-- **error**, tells you that something did not go as expected when trying to load the requested layer:
-
-```javascript
-cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/0001/viz.json')
-  .addTo(map)
-  .on('done', function(layer) {
-    alert(‘CartoDB layer loaded!’);
-  }).on('error', function(err) {
-    alert("some error occurred: " + err);
-  });
-```
-
-**Note:** For information about active layer events, which are triggered by layers on your webpage that are already loaded, see [Events](http://docs.cartodb.com/cartodb-platform/cartodb-js/events/).
