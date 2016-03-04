@@ -37,13 +37,13 @@ To start using CartoDB.js, paste this piece of code within the HEAD tags of your
 <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 ```
 
-### Other Mapping Libraries
+## Other Mapping Libraries
 
-We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using Leaflet or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
+We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using [Leaflet](#leaflet-integration) or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
 
 _**Note:** CartoDB.js automatically includes dependencies from other mapping libraries (such as Leaflet, jQuery, Mustache, Underscore, and so on). You do not have to manually include these libraries, or worry about other mapping library version control, when you are using CartoDB.js._
 
-### Creating a visualization from scratch
+## Creating a visualization from scratch
 
 This is the easiest way to quickly get a CartoDB map onto your webpage. Use this method when there is no map in your application, and you want to add the visualization to hack over it. CartoDB.js handles all the details of loading a map interface, basemap, and your CartoDB visualization.
 
@@ -55,7 +55,7 @@ cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
 
 That’s it! No need to create the map instance, insert controls, or load layers. CartoDB.js takes care of this for you. 
 
-#### VizJSON support
+### VizJSON Support
 
 The viz.json file tells CartoDB.js all the information about your map, including the style you want to use for your data and the filters you want to apply with SQL. The viz.json file is served with each map you create in your CartoDB account.
 
@@ -82,7 +82,7 @@ cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
 
 **Tip:** You can download a viz.json from any visualization you have created and inspect it with a text editor, or view it in your browser if you have a JSON viewer. If you are unfamiliar with the JSON file format, view the [official JSON website](http://json.org/) for more information.
 
-### Adding CartoDB layers to an existing map
+## Adding CartoDB Layers to an Existing Map
 
 In case you already have a map instantiated on your page, you can simply use the [createLayer](#cartodbcreatelayermap-layersource--options--callback) method to add new CartoDB layers to it. This is particullary useful when you have more things on your map apart from CartoDB layers or you have an application where you want to integrate CartoDB layers.
 
@@ -110,7 +110,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 
 [Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
 
-### Creating visualizations at runtime
+## Creating Visualizations at Runtime
 
 All CartoDB services are available through the API, which basically means that you can create a new visualization without doing it before through the CartoDB UI. This is particularly useful when you are modifying the visualization depending on user interactions that change the SQL to get the data or CartoCSS to style it. Although this method requires more programming skills, it provides all the flexibility you might need to create more dynamic visualizations.
 
@@ -144,7 +144,59 @@ Want further information? [Check out the complete list of API methods](#api-meth
 
 ---
 
-## Usage examples
+## Leaflet Integration
+
+If you want to use [Leaflet](http://leafletjs.com), it gets even easier. CartoDB.js handles loading all the [necessary libraries for you](http://docs.cartodb.com/cartodb-platform/cartodb-js/getting-started/#other-mapping-libraries)! Just include CartoDB.js and CartoDB.css in the HEAD of your website and you are ready to go! The CartoDB.css document is not mandatory. However, if you are making a map, and are not familiar with writing your own CSS for the various needed elements, it can help you jumpstart the process. Using Leaflet is as simple as adding the main JavaScript library:
+
+```html
+<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+```
+
+---
+
+## HTTPS Support
+
+You can use all the functionality of CartoDB.js with HTTPs support. Be sure to use https when importing both the JS library and the CSS file. You will also need to use HTTPs in the viz.json URL you pass to **createVis**.
+
+```html
+<div id="map"></div>
+
+<link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+
+<script>
+  var map = new L.Map('map', {
+    center: [0,0],
+    zoom: 2
+  })
+  cartodb.createLayer(map, 'https://examples.cartodb.com/api/v1/viz/15589/viz.json', { https: true })
+    .addTo(map)
+    .on('error', function(err) {
+      alert("some error occurred: " + err);
+    });
+</script>
+```
+
+## Using a Different Host 
+
+CartoDB.js sends all requests to the cartodb.com domain by default. If you are running your own instance of CartoDB, you can change the URLs to specify a different host.
+
+A different host can be configured by using ``sql_api_template`` and ``maps_api_template`` in the ``options`` parameter
+for any ``cartodb`` function call.
+
+The format of these templates is as follows:
+
+```javascript
+sql_api_template: 'https://{user}.test.com'
+```
+
+CartoDB.js will replace ``{user}``.
+
+Note that you do not need to set the path to the endpoint, CartoDB.js sets it automatically.
+
+
+## Usage Examples
 
 The best way to start learning about the library is by taking a look at some of the examples below:
 
