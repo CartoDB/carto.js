@@ -148,6 +148,16 @@
 
     <div id ="box"><h4>Latitude</h4><p id="lat">Mouseover on point</p><h4>Longitude</h4><p id="lon">Mouseover on point</p></div>
 
+    <!-- Create a custom legend -->
+    <div class='cartodb-legend category'>
+      <div class="legend-title" style="color:#284a59">Countries</div>
+        <ul>
+          <li><div class="bullet" style="background-color:#fbb4ae"></div>Spain</li>
+          <li><div class="bullet" style="background-color:#ccebc5"></div>Portugal</li>
+          <li><div class="bullet" style="background-color:#b3cde3"></div>France</li>
+          
+        </ul>
+      </div>
 
     <!-- HTML template for custom infowindow -->
     <script type="infowindow/html" id="infowindow_template">
@@ -276,21 +286,6 @@
 
         });
 
-        /* Set custom legend */
-
-        //1- Define custom legend
-        var legend = new cdb.geo.ui.Legend({
-             type: "custom",
-             data: [
-               { name: "Spain", value: "#fbb4ae" },
-               { name: "Portugal", value: "#ccebc5" },
-               { name: "France", value: "#b3cde3" }
-             ]
-           });
-
-         //2- Add legend to map object
-        $('#map').append(legend.render().el);
-        
       }
       window.onload = main;
     </script>
