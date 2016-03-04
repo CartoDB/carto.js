@@ -63,7 +63,9 @@ sql.execute('SELECT * FROM table_name')
 
 ### sql.getBounds(_sql [,vars][, options][, callback]_)
 
-Returns the bounds `[ [sw_lat, sw_lon], [ne_lat, ne_lon ] ]` for the geometry resulting of specified query.
+This query gets the bounding box for any dataset or filtered query using the CartoDB.js library. The **getBounds** function is useful for guiding users to the right location on a map, or for loading the right data (at the right time), based on user actions.
+
+Returns the bounds `[ [sw_lat, sw_lon], [ne_lat, ne_lon ] ]` for the geometry resulting of specified query. 
 
 #### Arguments
 

@@ -1,12 +1,14 @@
 # Events
 
-You can bind custom functions to layer events. This is useful for integrating your website with your maps, adding events for mouseovers and click events.
+You can bind custom functions to layer events by adding listeners and callbacks to the async portions of the CartoDB.js library. Active layer events are triggered by layers on your webpage that are already loaded (**Tip:** these are the `createLayer` and `createVis` functions that return the _done_ event. For details, see [Loading Events](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#loading-events)). Each event requires the layer to include an **interactivity** layer. This is useful for integrating your website with your maps, adding events for mouseovers and click events. 
+
+**Note:** Be mindful of using these events, as these functions can get costly if you have a lot of features on a map.
 
 ## layer
 
 ### layer.featureOver(_event, latlng, pos, data, layerIndex_)
 
-Triggered when the user hovers on any feature.
+Triggered when the user mouse hovers on any feature. 
 
 #### Callback arguments
 
@@ -28,11 +30,27 @@ layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
 
 ### layer.featureOut(_layerIndex_)
 
-Triggered when the user hovers out any feature.
+Triggered when the user hovers out any feature. For example, you might want to use this event if you highlight polygons on mouseover and need a way to know when to remove the highlighting after the mouse has left.
+
+#### Example 
+
+```javascript
+layer.on('featureOut', function(e, latlng, pos, data, layer) {
+  console.log("mouse left polygon with data: " + data);
+});
+```
 
 ### layer.featureClick(_event, latlng, pos, data, layerIndex_)
 
 Triggered when when the user clicks on a feature of a layer.
+
+#### Example
+
+```javascript
+layer.on('featureClick', function(e, latlng, pos, data, layer) {
+  console.log("mouse clicked polygon with data: " + data);
+});
+```
 
 #### Callback arguments
 

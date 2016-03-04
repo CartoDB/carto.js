@@ -45,15 +45,21 @@ _**Note:** CartoDB.js automatically includes dependencies from other mapping lib
 
 ### Creating a visualization from scratch
 
-The easiest way to quickly get a CartoDB map onto your webpage. Use this when there is no map in your application and you want to add the visualization to hack over it. With this method, CartoDB.js handles all the details of loading a map interface, basemap, and your CartoDB visualization.
+This is the easiest way to quickly get a CartoDB map onto your webpage. Use this method when there is no map in your application, and you want to add the visualization to hack over it. CartoDB.js handles all the details of loading a map interface, basemap, and your CartoDB visualization.
 
-You can start by giving cartodb.js the DIV ID from your HTML where you want to place your map, and the viz.json URL of your visualization, which you can get from the share window.
+You can start by giving cartodb.js the DIV ID from your HTML where you want to place your map, and the viz.json URL of your visualization (which you can get from the [Publish your map](http://docs.cartodb.com/cartodb-editor/maps/#publish-and-share-your-map) options).
 
 ```javascript
 cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
 ```
 
-That’s it! No need to create the map instance, insert controls, or load layers. CartoDB.js takes care of this for you. If you want to modify the result after instantiating your map with this method, take a look at the CartoDB.js API [available methods](#api-methods). For example, you can also use the returned layer to build more functionality (show/hide, click, hover, custom infowindows):
+That’s it! No need to create the map instance, insert controls, or load layers. CartoDB.js takes care of this for you. 
+
+#### VizJSON support
+
+The viz.json file tells CartoDB.js all the information about your map, including the style you want to use for your data and the filters you want to apply with SQL. The viz.json file is served with each map you create in your CartoDB account.
+
+Although the Viz JSON file stores all your map settings, all these settings can be easily customized with CartoDB.js. If you want to modify the result after instantiating your map with the viz.json, reference the CartoDB.js API [available methods](#api-methods). For example, you can also use the returned layer to build more functionality (show/hide, click, hover, custom infowindows):
 
 ```javascript
 cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
@@ -73,6 +79,8 @@ cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
     // map.panTo([50.5, 30.5]);
   });
 ```
+
+**Tip:** You can download a viz.json from any visualization you have created and inspect it with a text editor, or view it in your browser if you have a JSON viewer. If you are unfamiliar with the JSON file format, view the [official JSON website](http://json.org/) for more information.
 
 ### Adding CartoDB layers to an existing map
 
