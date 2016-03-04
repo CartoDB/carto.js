@@ -6,7 +6,7 @@ Be mindful of the CartoDB.js version that you are using for development. For any
 
 Returns the version of the library. It should be something such as, `3.0.1`.
 
-## Persistent version hosting
+## Persistent Version Hosting
 
 CartoDB is committed to making sure your website works as intended, no matter what changes in the future. As time progresses, it is expected that we will find more efficient, and useful, features to add to the library. Since we never want to break things that you have already developed, we provide versioned CartoDB.js libraries. Regardless of the version, the library functionality will never unexpectedly change on you.
 

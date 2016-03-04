@@ -2,7 +2,7 @@
 
 CartoDB offers a powerful SQL API for you to query and retreive data from your CartoDB tables. CartoDB.js offers a simple to use wrapper for sending those requests and using the results.
 
-### cartodb.SQL
+## cartodb.SQL
 
 `cartodb.SQL` is the tool you will use to access data you store in your CartoDB tables. This is a really powerful technique for returning things like: **items closest to a point**, **items ordered by date**, or **GeoJSON vector geometries**. It’s all powered with SQL and our tutorials will show you how easy it is to begin with SQL.
 
@@ -30,7 +30,7 @@ sql.execute("SELECT * FROM table_name WHERE id > {{id}}", { id: 3 })
   })
 ```
 
-### sql.execute(_sql [,vars][, options][, callback]_)
+## sql.execute(_sql [,vars][, options][, callback]_)
 
 It executes a sql query.
 
@@ -61,7 +61,7 @@ sql.execute('SELECT * FROM table_name')
   .error(fnError)
 ```
 
-### sql.getBounds(_sql [,vars][, options][, callback]_)
+## sql.getBounds(_sql [,vars][, options][, callback]_)
 
 This query gets the bounding box for any dataset or filtered query using the CartoDB.js library. The **getBounds** function is useful for guiding users to the right location on a map, or for loading the right data (at the right time), based on user actions.
 
@@ -81,7 +81,7 @@ sql.getBounds('select * from table').done(function(bounds) {
 });
 ```
 
-#### getBounds and Leaflet
+### getBounds and Leaflet
 
 You can use the results from `getBounds` to center data on your maps using Leaflet.
 
