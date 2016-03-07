@@ -302,7 +302,7 @@
       attributionControl._attributions = {};
       var newAttributions = this._originalAttributions.concat(this.map.get('attribution'));
       _.each(newAttributions, function(attribution) {
-        attributionControl.addAttribution(attribution);
+        attributionControl.addAttribution(cdb.core.sanitize.html(attribution));
       });
     },
 
