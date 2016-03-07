@@ -1,4 +1,4 @@
-# Core API functionality
+# Core API Functionality
 
 In case you are not using Leaflet, or you want to implement your own layer object, CartoDB provides a way to get the tiles url for a layer definition.
 

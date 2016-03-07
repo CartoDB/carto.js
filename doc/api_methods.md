@@ -1,4 +1,4 @@
-# API methods
+# API Methods
 
 This documentation is intended for developers and describes specific methods from the [latest version](https://github.com/CartoDB/cartodb.js/releases) of the CartoDB.js library.
 
@@ -141,7 +141,7 @@ layerSource | contains information about the layer. It can be specified in multi
 options |
 --- | ---
 &#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](http://docs.cartodb.com/cartodb-platform/cartodb-js/other-stuff/#https-support) for example code.
-&#124;_ refreshTime | if is set, the layer is refreshed each refreshTime milliseconds. See a refreshTime code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_refresh_time.html).
+&#124;_ refreshTime | if set, the layer is auto refreshed in milliseconds. See a refreshTime code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_refresh_time.html).<br/><br/>**Tip:** To refresh and display the latest data in seconds, include the seconds after the defined milliseconds in the code (i.e., `refreshTime: 2000 // 2 seconds`).
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default). For details, see [Creating an infowindow with the `createLayer()` function](http://docs.cartodb.com/faqs/infowindows/#creating-an-infowindow-with-the-createlayer-function).
 &#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default). This option is specific for when you create a map using the CartoDB Editor, and have enabled the tooltip [(infowindow hover)](http://docs.cartodb.com/cartodb-editor/maps/#infowindows) option. This option disables the tooltip in createLayer.<br/><br/>See a tooltip code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_custom_tooltip.html).
 &#124;_ legends | set to true to show legends in the map. For an example, see this [CartoDB.js example with legends disabled](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_noLegend.html).
