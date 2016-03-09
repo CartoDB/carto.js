@@ -24,7 +24,7 @@ window.onload = function() {
 
 [Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
 
-## Using the CartoDB.js library
+## Using the CartoDB.js Library
 
 CartoDB.js can be used to embed a visualization you have designed using CartoDB's user interface, or to dynamically create visualizations from scratch, using your data. If you want to create new maps on your webpage, jump to [Creating a visualization from scratch](#creating-a-visualization-from-scratch). If you already have maps on your webpage and want to add CartoDB visualizations to them, read [Adding CartoDB layers to an existing map](#adding-cartodb-layers-to-an-existing-map).
 
@@ -39,21 +39,27 @@ To start using CartoDB.js, paste this piece of code within the HEAD tags of your
 
 ### Other Mapping Libraries
 
-We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using Leaflet or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
+We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using [Leaflet](#leaflet-integration) or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
 
 _**Note:** CartoDB.js automatically includes dependencies from other mapping libraries (such as Leaflet, jQuery, Mustache, Underscore, and so on). You do not have to manually include these libraries, or worry about other mapping library version control, when you are using CartoDB.js._
 
-### Creating a visualization from scratch
+## Creating a Visualization from Scratch
 
-The easiest way to quickly get a CartoDB map onto your webpage. Use this when there is no map in your application and you want to add the visualization to hack over it. With this method, CartoDB.js handles all the details of loading a map interface, basemap, and your CartoDB visualization.
+This is the easiest way to quickly get a CartoDB map onto your webpage. Use this method when there is no map in your application, and you want to add the visualization to hack over it. CartoDB.js handles all the details of loading a map interface, basemap, and your CartoDB visualization.
 
-You can start by giving cartodb.js the DIV ID from your HTML where you want to place your map, and the viz.json URL of your visualization, which you can get from the share window.
+You can start by giving cartodb.js the DIV ID from your HTML where you want to place your map, and the viz.json URL of your visualization (which you can get from the [Publish your map](http://docs.cartodb.com/cartodb-editor/maps/#publish-and-share-your-map) options).
 
 ```javascript
 cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
 ```
 
-That’s it! No need to create the map instance, insert controls, or load layers. CartoDB.js takes care of this for you. If you want to modify the result after instantiating your map with this method, take a look at the CartoDB.js API [available methods](#api-methods). For example, you can also use the returned layer to build more functionality (show/hide, click, hover, custom infowindows):
+That’s it! No need to create the map instance, insert controls, or load layers. CartoDB.js takes care of this for you. 
+
+### VizJSON Support
+
+The viz.json file tells CartoDB.js all the information about your map, including the style you want to use for your data and the filters you want to apply with SQL. The viz.json file is served with each map you create in your CartoDB account.
+
+Although the viz.json file stores all your map settings, all these settings can be easily customized with CartoDB.js. If you want to modify the result after instantiating your map with the viz.json, reference the CartoDB.js API [available methods](#api-methods). For example, you can also use the returned layer to build more functionality (show/hide, click, hover, custom infowindows):
 
 ```javascript
 cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
@@ -74,7 +80,9 @@ cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
   });
 ```
 
-### Adding CartoDB layers to an existing map
+**Tip:** You can download a viz.json from any visualization you have created and inspect it with a text editor, or view it in your browser if you have a JSON viewer. If you are unfamiliar with the JSON file format, view the [official JSON website](http://json.org/) for more information.
+
+## Adding CartoDB Layers to an Existing Map
 
 In case you already have a map instantiated on your page, you can simply use the [createLayer](#cartodbcreatelayermap-layersource--options--callback) method to add new CartoDB layers to it. This is particullary useful when you have more things on your map apart from CartoDB layers or you have an application where you want to integrate CartoDB layers.
 
@@ -102,7 +110,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 
 [Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
 
-### Creating visualizations at runtime
+## Creating Visualizations at Runtime
 
 All CartoDB services are available through the API, which basically means that you can create a new visualization without doing it before through the CartoDB UI. This is particularly useful when you are modifying the visualization depending on user interactions that change the SQL to get the data or CartoCSS to style it. Although this method requires more programming skills, it provides all the flexibility you might need to create more dynamic visualizations.
 
@@ -136,7 +144,78 @@ Want further information? [Check out the complete list of API methods](#api-meth
 
 ---
 
-## Usage examples
+## Leaflet Integration
+
+If you want to use [Leaflet](http://leafletjs.com), it gets even easier. CartoDB.js handles loading all the [necessary libraries for you](http://docs.cartodb.com/cartodb-platform/cartodb-js/getting-started/#other-mapping-libraries)! Just include CartoDB.js and CartoDB.css in the HEAD of your website and you are ready to go! The CartoDB.css document is not mandatory. However, if you are making a map, and are not familiar with writing your own CSS for the various needed elements, it can help you jumpstart the process. Using Leaflet is as simple as adding the main JavaScript library:
+
+```html
+<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+```
+
+---
+
+## HTTPS Support
+
+You can use all the functionality of CartoDB.js with HTTPs support. Be sure to use https when importing both the JS library and the CSS file. You will also need to use HTTPs in the viz.json URL you pass to **createVis**.
+
+```html
+<div id="map"></div>
+
+<link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+<script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+
+<script>
+  var map = new L.Map('map', {
+    center: [0,0],
+    zoom: 2
+  })
+  cartodb.createLayer(map, 'https://examples.cartodb.com/api/v1/viz/15589/viz.json', { https: true })
+    .addTo(map)
+    .on('error', function(err) {
+      alert("some error occurred: " + err);
+    });
+</script>
+```
+
+## Using a Different Host 
+
+CartoDB.js sends all requests to the cartodb.com domain by default. If you are running your own instance of CartoDB, you can change the URLs to specify a different host.
+
+A different host can be configured by using ``sql_api_template`` and ``maps_api_template`` in the ``options`` parameter
+for any ``cartodb`` function call.
+
+The format of these templates is as follows:
+
+```javascript
+sql_api_template: 'https://{user}.test.com'
+```
+
+CartoDB.js will replace ``{user}``.
+
+Note that you do not need to set the path to the endpoint, CartoDB.js sets it automatically.
+
+## Loading Listener Events
+
+To async portions of the CartoDB.js library, the [`createLayer`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#cartodbcreatelayermap-layersource--options--callback) and [`createVis`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#cartodbcreatevis) API Methods trigger two important listener events for you to take advantage of: 
+
+- **done**, tells your code that the library has successfully read the information from the viz.json, and loaded the layer you requested.
+
+- **error**, tells you that something did not go as expected when trying to load the requested layer:
+
+```javascript
+cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/0001/viz.json')
+  .addTo(map)
+  .on('done', function(layer) {
+    alert(‘CartoDB layer loaded!’);
+  }).on('error', function(err) {
+    alert("some error occurred: " + err);
+  });
+```
+
+**Note:** For information about active layer events, which are triggered by layers on your webpage that are already loaded, see [Events](http://docs.cartodb.com/cartodb-platform/cartodb-js/events/).
+
+## CartoDB.js Usage Examples
 
 The best way to start learning about the library is by taking a look at some of the examples below:
 
