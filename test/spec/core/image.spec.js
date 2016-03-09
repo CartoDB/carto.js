@@ -1,8 +1,5 @@
 describe("Image", function() {
-  var originalTimeout;
   beforeEach(function() {
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     var img = $('<img id="image" />');
     $("body").append(img);
   });
@@ -558,10 +555,5 @@ describe("Image", function() {
       expect(image.options.layers.layers[1].options.auth_tokens[0]).toBe("e900fe76cc3c1eed4fc018d027d82c8b0e59b2c484d1941954f34b4818a5d660");
       done();
     });
-
-  });
-
-  afterEach(function() {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 });
