@@ -1,6 +1,8 @@
 describe("Image", function() {
-
+  var originalTimeout;
   beforeEach(function() {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     var img = $('<img id="image" />');
     $("body").append(img);
   });
@@ -394,7 +396,7 @@ describe("Image", function() {
       }]
     };
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/8c67df0046ce227a89a65d0e3f87e80e:1398886221740.03/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250\.png");
+    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/8c67df0046ce227a89a65d0e3f87e80e:1398886221740/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250.png");
 
     cartodb.Image(layer_definition).size(250, 250).bbox([[-87.82814025878906,41.88719899247721], [ -27.5936508178711,41.942765696654604]]).getUrl(function(error, url) {
       expect(url.match(regexp).length).toEqual(1);
@@ -559,4 +561,7 @@ describe("Image", function() {
 
   });
 
+  afterEach(function() {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
 });
