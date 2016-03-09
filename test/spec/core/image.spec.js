@@ -1,5 +1,4 @@
 describe("Image", function() {
-
   beforeEach(function() {
     var img = $('<img id="image" />');
     $("body").append(img);
@@ -394,7 +393,7 @@ describe("Image", function() {
       }]
     };
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/8c67df0046ce227a89a65d0e3f87e80e:1398886221740.03/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250\.png");
+    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/8c67df0046ce227a89a65d0e3f87e80e:1398886221740/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250.png");
 
     cartodb.Image(layer_definition).size(250, 250).bbox([[-87.82814025878906,41.88719899247721], [ -27.5936508178711,41.942765696654604]]).getUrl(function(error, url) {
       expect(url.match(regexp).length).toEqual(1);
@@ -556,7 +555,5 @@ describe("Image", function() {
       expect(image.options.layers.layers[1].options.auth_tokens[0]).toBe("e900fe76cc3c1eed4fc018d027d82c8b0e59b2c484d1941954f34b4818a5d660");
       done();
     });
-
   });
-
 });
