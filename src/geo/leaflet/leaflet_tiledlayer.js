@@ -1,12 +1,13 @@
 
 (function() {
 
-if(typeof(L) == "undefined") 
+if(typeof(L) == "undefined")
   return;
 
 var LeafLetTiledLayerView = L.TileLayer.extend({
   initialize: function(layerModel, leafletMap) {
-    L.TileLayer.prototype.initialize.call(this, layerModel.get('urlTemplate'), {
+
+    var tmpLayer = {
       tms:          layerModel.get('tms'),
       attribution:  layerModel.get('attribution'),
       minZoom:      layerModel.get('minZoom'),
@@ -14,7 +15,17 @@ var LeafLetTiledLayerView = L.TileLayer.extend({
       subdomains:   layerModel.get('subdomains') || 'abc',
       errorTileUrl: layerModel.get('errorTileUrl'),
       opacity:      layerModel.get('opacity')
-    });
+    };
+
+    if ( layerModel.get('tileSize') ) {
+      tmpLayer.tileSize = layerModel.get('tileSize');
+    }
+
+    if ( layerModel.get('zoomOffset') ) {
+      tmpLayer.zoomOffset = layerModel.get('zoomOffset');
+    }
+
+    L.TileLayer.prototype.initialize.call(this, layerModel.get('urlTemplate'), tmpLayer);
     cdb.geo.LeafLetLayerView.call(this, layerModel, this, leafletMap);
   }
 
