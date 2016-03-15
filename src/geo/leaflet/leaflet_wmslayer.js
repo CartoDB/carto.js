@@ -7,7 +7,7 @@ if(typeof(L) == "undefined")
 var LeafLetWMSLayerView = L.TileLayer.WMS.extend({
   initialize: function(layerModel, leafletMap) {
 
-    L.TileLayer.WMS.prototype.initialize.call(this, layerModel.get('urlTemplate'), {
+    var tmpLayer = {
       attribution:  layerModel.get('attribution'),
       layers:       layerModel.get('layers'),
       format:       layerModel.get('format'),
@@ -17,7 +17,17 @@ var LeafLetWMSLayerView = L.TileLayer.WMS.extend({
       subdomains:   layerModel.get('subdomains') || 'abc',
       errorTileUrl: layerModel.get('errorTileUrl'),
       opacity:      layerModel.get('opacity')
-    });
+    };
+
+    if ( layerModel.get('tileSize') ) {
+      tmpLayer.tileSize = layerModel.get('tileSize');
+    }
+
+    if ( layerModel.get('zoomOffset') ) {
+      tmpLayer.zoomOffset = layerModel.get('zoomOffset');
+    }
+
+    L.TileLayer.WMS.prototype.initialize.call(this, layerModel.get('urlTemplate'), tmpLayer);
 
     cdb.geo.LeafLetLayerView.call(this, layerModel, this, leafletMap);
   }
