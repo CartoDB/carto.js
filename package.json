@@ -22,9 +22,7 @@
       "Nicklas Gummesson <nicklas@cartodb.com>",
       "Francisco Dans <francisco@cartodb.com>"
     ],
-    "licenses": [{
-      "type": "BSD"
-    }],
+    "license": "BSD-3-Clause",
     "devDependencies": {
       "grunt": "~0.4.5",
       "grunt-autoprefixer": "~0.6.4",
