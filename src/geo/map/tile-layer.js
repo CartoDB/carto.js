@@ -1,8 +1,7 @@
 var LayerModelBase = require('./layer-model-base');
 
 var TileLayer = LayerModelBase.extend({
-  getTileLayer: function() {
-  }
+  getTileLayer: function () {}
 });
 
-module.exports = TileLayer
+module.exports = TileLayer;

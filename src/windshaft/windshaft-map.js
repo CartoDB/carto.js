@@ -5,7 +5,7 @@ var WindshaftLayerGroupConfig = require('./layergroup-config');
 var WindshaftNamedMapConfig = require('./namedmap-config');
 var WindshaftConfig = require('./config');
 var EMPTY_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-
+var LAYER_TYPES = require('../vis/layer-types');
 var WindshaftMap = Backbone.Model.extend({
 
   initialize: function (attrs, options) {
@@ -35,7 +35,7 @@ var WindshaftMap = Backbone.Model.extend({
     options = options || {};
     // WindshaftMap knows what types of layers should be sent to Windshaft:
     var layers = _.select(options.layers, function (layer) {
-      return layer.get('type') === 'CartoDB' || layer.get('type') === 'torque';
+      return layer.get('type') === LAYER_TYPES.CARTODB || layer.get('type') === LAYER_TYPES.TORQUE;
     });
     var dataviews = options.dataviews;
     var sourceLayerId = options.sourceLayerId;
@@ -68,10 +68,10 @@ var WindshaftMap = Backbone.Model.extend({
       success: function (mapInstance) {
         this.set(mapInstance);
         _.each(layers, function (layer, layerIndex) {
-          if (layer.get('type') === 'torque') {
+          if (layer.get('type') === LAYER_TYPES.TORQUE) {
             layer.set('meta', this.getLayerMeta(layerIndex));
             layer.set('urls', this.getTiles('torque'));
-          } else if (layer.get('type') === 'CartoDB') {
+          } else if (layer.get('type') === LAYER_TYPES.CARTODB) {
             layer.set('meta', this.getLayerMeta(layerIndex));
           }
         }, this);

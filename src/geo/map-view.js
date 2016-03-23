@@ -1,14 +1,13 @@
 var _ = require('underscore');
 var log = require('cdb.log');
 var View = require('../core/view');
+var LAYER_TYPES = require('../vis/layer-types');
 
 var CartoDBLayerGroupNamedMap = require('./cartodb-layer-group-named-map');
 var CartoDBLayerGroupAnonymousMap = require('./cartodb-layer-group-anonymous-map');
 
 var MapView = View.extend({
-
   initialize: function () {
-
     if (this.options.map === undefined) {
       throw new Error('you should specify a map model');
     }
@@ -126,7 +125,7 @@ var MapView = View.extend({
 
   _addLayer: function(layerModel, layerCollection, options) {
     var layerView;
-    if (layerModel.get('type') === 'CartoDB') {
+    if (layerModel.get('type') === LAYER_TYPES.CARTODB) {
       layerView = this._addGroupedLayer(layerModel);
     } else {
       layerView = this._addIndividualLayer(layerModel);
@@ -194,7 +193,7 @@ var MapView = View.extend({
 
   _removeLayer: function (layerModel) {
     var layerView = this._layerViews[layerModel.cid];
-    if (layerModel.get('type') === 'CartoDB') {
+    if (layerModel.get('type') === LAYER_TYPES.CARTODB) {
       this._cartoDBLayerGroup.layers.remove(layerModel);
       if (this._cartoDBLayerGroup.layers.size() === 0) {
         delete this._cartoDBLayerGroup;

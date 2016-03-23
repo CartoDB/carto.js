@@ -5,6 +5,7 @@ var GMapsBaseLayer = require('../geo/map/gmaps-base-layer');
 var PlainLayer = require('../geo/map/plain-layer');
 var CartoDBLayer = require('../geo/map/cartodb-layer');
 var TorqueLayer = require('../geo/map/torque-layer');
+var LAYER_TYPES = require('./layer-types');
 
 /*
  *  if we are using http and the tiles of base map need to be fetched from
@@ -38,7 +39,7 @@ function transformToHTTPS (tilesTemplate) {
   return tilesTemplate;
 }
 
-Layers.register('tilejson', function (data, options) {
+Layers.register(LAYER_TYPES.TILEJSON, function (data, options) {
   var url = data.tiles[0];
   if (options.https === true) {
     url = transformToHTTPS(url);
@@ -52,7 +53,7 @@ Layers.register('tilejson', function (data, options) {
   });
 });
 
-Layers.register('tiled', function (data, options) {
+Layers.register(LAYER_TYPES.TILED, function (data, options) {
   var url = data.urlTemplate;
   if (options.https === true) {
     url = transformToHTTPS(url);
@@ -64,30 +65,26 @@ Layers.register('tiled', function (data, options) {
   return new TileLayer(data);
 });
 
-Layers.register('wms', function (data, options) {
+Layers.register(LAYER_TYPES.WMS, function (data, options) {
   return new WMSLayer(data);
 });
 
-Layers.register('gmapsbase', function (data, options) {
+Layers.register(LAYER_TYPES.GMAPSBASE, function (data, options) {
   return new GMapsBaseLayer(data);
 });
 
-Layers.register('plain', function (data, options) {
+Layers.register(LAYER_TYPES.PLAIN, function (data, options) {
   return new PlainLayer(data);
 });
 
-Layers.register('background', function (data, options) {
-  return new PlainLayer(data);
-});
-
-Layers.register('cartodb', function (data, options) {
+Layers.register(LAYER_TYPES.CARTODB, function (data, options) {
   normalizeOptions(data, options);
   return new CartoDBLayer(data, {
     map: options.map
   });
 });
 
-Layers.register('torque', function (data, options) {
+Layers.register(LAYER_TYPES.TORQUE, function (data, options) {
   normalizeOptions(data, options);
   // default is https
   if (options.https) {

@@ -1,12 +1,12 @@
 var _ = require('underscore');
 var config = require('cdb.config');
 var LayerModelBase = require('./layer-model-base');
+var LAYER_TYPES = require('../../vis/layer-types');
 
 var CartoDBLayer = LayerModelBase.extend({
-
   defaults: {
     attribution: config.get('cartodb_attributions'),
-    type: 'CartoDB',
+    type: LAYER_TYPES.CARTODB,
     visible: true
   },
 

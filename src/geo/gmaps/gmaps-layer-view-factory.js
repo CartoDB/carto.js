@@ -1,5 +1,6 @@
 /* global google */
 var log = require('cdb.log');
+var LAYER_TYPES = require('../../vis/layer-types');
 
 var GMapsLayerViewFactory = function () {};
 
@@ -14,15 +15,14 @@ if (typeof (google) !== 'undefined' && typeof (google.maps) !== 'undefined') {
   var GMapsCartoDBLayerGroupView = require('./gmaps-cartodb-layer-group-view');
   var GMapsTorqueLayerView = require('./gmaps-torque-layer-view');
 
-  constructors = {
-    'tiled': GMapsTiledLayerView,
-    'wms': LeafletWMSLayerView,
-    'plain': GMapsPlainLayerView,
-    'gmapsbase': GMapsBaseLayerView,
-    'layergroup': GMapsCartoDBLayerGroupView,
-    'namedmap': GMapsCartoDBLayerGroupView,
-    'torque': GMapsTorqueLayerView
-  };
+  constructors = {};
+  constructors[LAYER_TYPES.TILED] = GMapsTiledLayerView;
+  constructors[LAYER_TYPES.WMS] = LeafletWMSLayerView;
+  constructors[LAYER_TYPES.PLAIN] = GMapsPlainLayerView;
+  constructors[LAYER_TYPES.GMAPSBASE] = GMapsBaseLayerView;
+  constructors[LAYER_TYPES.TORQUE] = GMapsTorqueLayerView;
+  constructors['layergroup'] = GMapsCartoDBLayerGroupView;
+  constructors['namedmap'] = GMapsCartoDBLayerGroupView;
 }
 
 GMapsLayerViewFactory.prototype._constructors = constructors;
