@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var config = require('cdb.config');
-var LayerModelBase = require('./layer-model-base');
 var LAYER_TYPES = require('../../vis/layer-types');
+var LayerModelBase = require('./layer-model-base');
 
 var CartoDBLayer = LayerModelBase.extend({
   defaults: {

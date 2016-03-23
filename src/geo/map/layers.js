@@ -33,7 +33,7 @@ var Layers = Backbone.Collection.extend({
         }
 
         var lastOrder = 0;
-        var sortedTypes = [LAYER_TYPES.CARTODB, LAYER_TYPES.CARTODB, LAYER_TYPES.TILED];
+        var sortedTypes = [LAYER_TYPES.CARTODB, LAYER_TYPES.TORQUE, LAYER_TYPES.TILED];
         for (var i = 0; i < sortedTypes.length; ++i) { // eslint-disable-line
           var type = sortedTypes[i];
           var layers = layersByType[type] || [];

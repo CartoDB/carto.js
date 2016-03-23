@@ -64,7 +64,7 @@ describe('geo/map/layers', function() {
     expect(layer2.get('order')).toEqual(3);
     expect(layer3.get('order')).toEqual(1);
 
-    var torqueLayer = new TorqueLayer({});
+    var torqueLayer = new TorqueLayer();
 
     // Torque layer should be at the top
     layers.add(torqueLayer);
@@ -75,7 +75,7 @@ describe('geo/map/layers', function() {
     expect(layer3.get('order')).toEqual(1);
     expect(torqueLayer.get('order')).toEqual(4);
 
-    var tiledLayer = new TileLayer({});
+    var tiledLayer = new TileLayer();
 
     // Tiled layer should be at the top
     layers.add(tiledLayer);
@@ -87,7 +87,7 @@ describe('geo/map/layers', function() {
     expect(torqueLayer.get('order')).toEqual(4);
     expect(tiledLayer.get('order')).toEqual(5);
 
-    var layer4 = new CartoDBLayer({});
+    var layer4 = new CartoDBLayer();
     layers.add(layer4);
 
     expect(baseLayer.get('order')).toEqual(0);

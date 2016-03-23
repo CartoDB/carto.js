@@ -4,6 +4,6 @@ module.exports = {
   WMS: 'wms',
   GMAPSBASE: 'gmapsbase',
   PLAIN: 'plain',
-  CARTODB: 'cartodb',
+  CARTODB: 'CartoDB',
   TORQUE: 'torque'
 };
