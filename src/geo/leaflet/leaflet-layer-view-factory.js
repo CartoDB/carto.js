@@ -6,6 +6,7 @@ var LeafletGmapsTiledLayerView = require('./leaflet-gmaps-tiled-layer-view');
 var LeafletCartoDBLayerGroupView = require('./leaflet-cartodb-layer-group-view');
 var LeafletTorqueLayer = require('./leaflet-torque-layer');
 var LeafletCartoDBVectorLayerGroupView = require('./leaflet-cartodb-vector-layer-group-view');
+var LAYER_TYPES = require('../../vis/layer-types');
 
 var LayerGroupViewConstructor = function (layerGroupModel, mapModel, options) {
   if (options.vector) {
@@ -21,15 +22,16 @@ var LeafletLayerViewFactory = function (options) {
   this._vector = options.vector;
 };
 
-LeafletLayerViewFactory.prototype._constructors = {
-  'tiled': LeafletTiledLayerView,
-  'wms': LeafletWMSLayerView,
-  'plain': LeafletPlainLayerView,
-  'gmapsbase': LeafletGmapsTiledLayerView,
-  'layergroup': LayerGroupViewConstructor,
-  'namedmap': LayerGroupViewConstructor,
-  'torque': LeafletTorqueLayer
-};
+var constructors = {};
+constructors[LAYER_TYPES.TILED] = LeafletTiledLayerView;
+constructors[LAYER_TYPES.WMS] = LeafletWMSLayerView;
+constructors[LAYER_TYPES.PLAIN] = LeafletPlainLayerView;
+constructors[LAYER_TYPES.GMAPSBASE] = LeafletGmapsTiledLayerView;
+constructors[LAYER_TYPES.TORQUE] = LeafletTorqueLayer;
+constructors['layergroup'] = LayerGroupViewConstructor;
+constructors['namedmap'] = LayerGroupViewConstructor;
+
+LeafletLayerViewFactory.prototype._constructors = constructors;
 
 LeafletLayerViewFactory.prototype.createLayerView = function (layerModel, mapModel) {
   var layerType = layerModel.get('type').toLowerCase();

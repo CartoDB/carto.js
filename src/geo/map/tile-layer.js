@@ -1,8 +1,12 @@
+var LAYER_TYPES = require('../../vis/layer-types');
 var LayerModelBase = require('./layer-model-base');
 
 var TileLayer = LayerModelBase.extend({
-  getTileLayer: function() {
-  }
+  defaults: {
+    type: LAYER_TYPES.TILED
+  },
+
+  getTileLayer: function () {}
 });
 
-module.exports = TileLayer
+module.exports = TileLayer;

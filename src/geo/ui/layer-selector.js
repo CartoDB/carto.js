@@ -2,8 +2,8 @@ var _ = require('underscore');
 var cdb = require('cdb'); // cdb.god, cdb.geo.ui.*
 var Dropdown = require('../../ui/common/dropdown');
 var View = require('../../core/view');
-var Model = require('../../core/model');
 var LayerView = require('./layer-view');
+var LAYER_TYPES = require('../../vis/layer-types');
 
 /**
  *  Layer selector: it allows to select the layers that will be shown in the map
@@ -82,7 +82,7 @@ var LayerSelector = View.extend({
 
   _getLayerModelsFromMap: function () {
     return this.map.layers.filter(function (layer) {
-      return layer.get("type") === 'CartoDB' || layer.get("type") === 'torque';
+      return layer.get("type") === LAYER_TYPES.CARTODB || layer.get("type") === LAYER_TYPES.TORQUE;
     });
   },
 

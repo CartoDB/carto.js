@@ -468,7 +468,7 @@ describe('vis/vis', function () {
     it('should only display legends for visible layers', function () {
       this.mapConfig.layers = [
         {
-          type: 'tiled',
+          type: 'CartoDB',
           legend: {
             type: 'custom',
             show_title: false,
@@ -489,7 +489,7 @@ describe('vis/vis', function () {
         },
         {
           visible: false,
-          type: 'tiled',
+          type: 'CartoDB',
           legend: {
             type: 'custom',
             show_title: false,

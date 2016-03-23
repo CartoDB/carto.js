@@ -8,6 +8,7 @@ var Model = require('../core/model');
 var Layers = require('./map/layers');
 var sanitize = require('../core/sanitize');
 var LayersFactory = require('../vis/layers');
+var LAYER_TYPES = require('../vis/layer-types');
 
 var Map = Model.extend({
 
@@ -57,32 +58,32 @@ var Map = Model.extend({
 
   createCartoDBLayer: function (attrs, options) {
     this._checkProperties(attrs, ['sql', 'cartocss']);
-    return this._addNewLayerModel('cartodb', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.CARTODB, attrs, options);
   },
 
   createTorqueLayer: function (attrs, options) {
     this._checkProperties(attrs, ['sql', 'cartocss']);
-    return this._addNewLayerModel('torque', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.TORQUE, attrs, options);
   },
 
   createTileLayer: function (attrs, options) {
     this._checkProperties(attrs, ['urlTemplate']);
-    return this._addNewLayerModel('tiled', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.TILED, attrs, options);
   },
 
   createWMSLayer: function (attrs, options) {
     this._checkProperties(attrs, ['urlTemplate']);
-    return this._addNewLayerModel('wms', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.WMS, attrs, options);
   },
 
   createGMapsBaseLayer: function (attrs, options) {
     this._checkProperties(attrs, ['base_type']);
-    return this._addNewLayerModel('gmapsbase', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.GMAPSBASE, attrs, options);
   },
 
   createPlainLayer: function (attrs, options) {
     this._checkProperties(attrs, ['image|color']);
-    return this._addNewLayerModel('plain', attrs, options);
+    return this._addNewLayerModel(LAYER_TYPES.PLAIN, attrs, options);
   },
 
   _checkProperties: function (obj, requiredProperties) {

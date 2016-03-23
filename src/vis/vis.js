@@ -26,7 +26,7 @@ var WindshaftLayerGroupConfig = require('../windshaft/layergroup-config');
 var WindshaftNamedMapConfig = require('../windshaft/namedmap-config');
 var WindshaftMap = require('../windshaft/windshaft-map');
 var VizJSON = require('./vizjson');
-var util = require('cdb.core.util');
+var LAYER_TYPES = require('./layer-types');
 
 /**
  * Visualization creation
@@ -452,7 +452,7 @@ var Vis = View.extend({
           layersData = layerData.options.named_map.layers;
         }
         _.each(layersData, function (layerData) {
-          layerModels.push(Layers.create('CartoDB', layerData, layersOptions));
+          layerModels.push(Layers.create(LAYER_TYPES.CARTODB, layerData, layersOptions));
         });
       } else {
         layerModels.push(Layers.create(layerData.type, layerData, layersOptions));

@@ -15,7 +15,7 @@ var Layers = {
       log.error('creating a layer without type');
       return null;
     }
-    var LayerClass = this._types[type.toLowerCase()];
+    var LayerClass = this._types[type];
 
     var layerAttributes = {};
     layerAttributes.type = type;
