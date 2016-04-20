@@ -30,18 +30,11 @@
     // visualization description
     "description": ""
 
-    // mandatory 
+    // mandatory, "leaflet" or "googlemaps"
     map_provider: "leaflet",
     
     // mandatory
     legends: true,
-    
-    // optional (default: [])
-    next: null,
-    prev: null,
-    
-    // optional (default: time 0)
-    transition_options: { time: 0 },
     
     // mandatory
     scrollwheel: false,
