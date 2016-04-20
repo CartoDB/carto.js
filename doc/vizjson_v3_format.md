@@ -57,13 +57,9 @@
        order: 0,
        options: {
           attribution: "© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="http://cartodb.com/attributions#basemaps">CartoDB</a>",
-          className: "positron_rainbow_labels",
-          default: true,
           labels: { url: "http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png" },
           minZoom: 0,
           maxZoom: 10,
-          name: "Positron",
-          url: "http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png",
           urlTemplate: "http://{s}.api.cartocdn.com/base-flatblue/{z}/{x}/{y}.png"
          },
        },
