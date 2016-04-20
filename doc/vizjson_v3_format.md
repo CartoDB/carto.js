@@ -138,8 +138,6 @@
          },
          options: {
             stat_tag: "d4a5c7e4-4ad6-11e3-ab17-3085a9a9563c",
-            maps_api_template: "http://{user}.localhost.lan:8181",
-            sql_api_template: "http://{user}.localhost.lan:8080",
             table_name: "sensor_log_2013_10_27_12_01",
             user_name: "javi",
             visible: true,
