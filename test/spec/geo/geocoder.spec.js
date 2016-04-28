@@ -48,8 +48,6 @@ describe('MAPZEN', function() {
 
     it("don't remove the spaces in the user-submitted addresses [MAPZEN]", function(done) {
       var regexp = new RegExp(/http:\/\/search.mapzen.com\/v1\/search\?text\=bn20%208qt/);
-     
-
       cdb.geo.geocoder.MAPZEN.geocode('bn20 8qt', function(d) {
         expect(this.url).toMatch(regexp);
         done();

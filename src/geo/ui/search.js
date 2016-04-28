@@ -163,7 +163,7 @@ cdb.geo.ui.Search = cdb.core.View.extend({
   _destroySearchPin: function() {
     this._unbindEvents();
     this._destroyPin();
-    this._destroyInfowindow()
+    this._destroyInfowindow();
   },
 
   _createInfowindow: function(position, address) {

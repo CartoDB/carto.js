@@ -76,7 +76,7 @@ describe('cdb.geo.ui.Search', function() {
       this.result = {
         lat: 43.0,
         lon: -3.0
-      }
+      };
       this.view.$('form').submit();
       var center = this.map.get('center');
       expect(center[0]).toBe(43.0);
@@ -264,6 +264,6 @@ describe('cdb.geo.ui.Search', function() {
 
   afterEach(function() {
     this.$el.remove();
-  })
+  });
 
 });
