@@ -206,7 +206,7 @@ Layer metadata must take one of the forms of the [Layer Source Object](http://do
 
 ## cartodb.CartoDBLayer
 
-CartoDBLayer allows you to manage tiled layers from CartoDB. It manages the sublayers.
+CartoDBLayer allows you to manage tiled layers from CartoDB, and manage sublayers.
 
 ### layer.clear()
 
@@ -296,10 +296,10 @@ layerDefinition | an object with the sql and cartocss that defines the data, sho
 }
 ```
 
-`sql` and `cartocss` are mandatory. An exception is raised if either of them are not present. If the interactivity is not set, there is no interactivity enabled for that layer (better performance). SQL and CartoCSS syntax should be correct. Look at the documentation for  [PostgreSQL](http://www.postgresql.org/docs/9.3/interactive/sql-syntax.html) and [CartoCSS](https://github.com/mapbox/carto/blob/master/docs/latest.md) for more information. There are some restrictions in the SQL queries:
+`sql` and `cartocss` are mandatory. An exception is raised if either of them are not present. If the interactivity is not set, there is no interactivity enabled for that layer (better performance). SQL and CartoCSS syntax should be correct. View the documentation for [PostgreSQL](http://www.postgresql.org/docs/9.3/interactive/sql-syntax.html) and [CartoCSS](http://docs.cartodb.com/cartodb-platform/cartocss/) for more information. There are some restrictions in the SQL queries:
 
 - Must not write. INSERT, DELETE, UPDATE, ALTER and so on are not allowed (the query will fail)
-- Must not contain trialing semicolon
+- Must not contain trailing semicolon
 
 #### Returns
 
@@ -360,6 +360,14 @@ layer.setParams('test', 10); // sets test = 10
 layer.setParams('test', null); // unset test
 layer.setParams({'test': 1, 'color': '#F00'}); // set more than one parameter at once
 ```
+
+### layer.setSQL()
+
+Sets the 'sql' request to the user database that will create the layer from the fetched data
+
+### layer.setCartoCSS()
+
+Sets the 'cartocss' attribute that will render the tiles to create the layer, based on the specified CartoCSS style
 
 ---
 
