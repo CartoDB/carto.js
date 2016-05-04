@@ -41,7 +41,7 @@ To start using CartoDB.js, paste this piece of code within the HEAD tags of your
 
 We have also made it easy for you to build maps using the mapping library of your choice. Whether you are using [Leaflet](#leaflet-integration) or something else, our CartoDB.js code remains the same. This makes our API documentation simple and straightforward. It also makes it easy for you to consistently develop, or maintain, multiple maps online.
 
-_**Note:** CartoDB.js automatically includes dependencies from other mapping libraries (such as Leaflet, jQuery, Mustache, Underscore, and so on). You do not have to manually include these libraries, or worry about other mapping library version control, when you are using CartoDB.js._
+_**Note:** CartoDB.js automatically includes dependencies from other mapping libraries (such as Leaflet, jQuery, Mustache, Underscore, and so on). You do not have to manually include these libraries, or worry about other mapping library version control, when you are using CartoDB.js. If you need to see which version of other mapping libraries are included, view the [vendor](https://github.com/CartoDB/cartodb.js/tree/3.15.9/vendor) folder for each CartoDB.js release._
 
 ## Creating a Visualization from Scratch
 
