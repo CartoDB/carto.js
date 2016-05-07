@@ -11,6 +11,8 @@ cdb.geo.ui.Search = cdb.core.View.extend({
   _ZOOM_BY_CATEGORY: {
     'building': 18,
     'postal-area': 15,
+    'residential':18,
+    'tertiary': 18,
     'default': 12
   },
 
@@ -82,11 +84,23 @@ cdb.geo.ui.Search = cdb.core.View.extend({
     this._showLoader();
     // Remove previous pin
     this._destroySearchPin();
-    cdb.geo.geocoder.NOKIA.geocode(address, function(places) {
-      self._onResult(places);
-      // Hide loader
-      self._hideLoader();
+    var geocoder = "cdb_Nokia";
+
+    if (geocoder == "" || geocoder == "cdb_Nokia") {
+      cdb.geo.geocoder.NOKIA.geocode(address, function(places) {
+        self._onResult(places);
+        // Hide loader
+        self._hideLoader();
     });
+    }
+    if (geocoder == "cdb_Nominatim"){
+      cdb.geo.geocoder.Nominatim.geocode(address, function(places) {
+        self._onResult(places);
+        // Hide loader
+        self._hideLoader();
+        
+    });
+  }
   },
 
   _onResult: function(places) {

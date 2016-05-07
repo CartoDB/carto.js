@@ -126,3 +126,58 @@ cdb.geo.geocoder.NOKIA = {
       });
   }
 }
+
+
+
+cdb.geo.geocoder.Nominatim = {
+
+  geocode: function(address, callback) {
+    address = address.toLowerCase()
+      .replace(/é/g,'e')
+      .replace(/á/g,'a')
+      .replace(/í/g,'i')
+      .replace(/ó/g,'o')
+      .replace(/ú/g,'u');
+
+      var protocol = '';
+      
+      if(location.protocol.indexOf('http') === -1) {
+        protocol = 'http:';
+      }
+      
+      $.getJSON(protocol + '//nominatim.openstreetmap.org/search?q='+encodeURIComponent(address)+'&format=json&polygon=1&addressdetails=1', function(data) {
+
+         var coordinates = [];
+        
+         if (data.length > 0) {
+
+          var res = data;
+
+          for(var i in res) {
+            var r = res[i]
+              , position;
+
+            position = {
+              lat: r.lat,
+              lon: r.lon,
+            };
+
+            if (r.boundingbox) {
+              position.boundingbox = {
+                north: r.boundingbox[1],
+                south: r.boundingbox[0],
+                east: r.boundingbox[3],
+                west: r.boundingbox[2] 
+              }
+            }
+            position.type = r.type;
+            coordinates.push(position);
+          }
+        }
+
+        if (callback) {
+          callback.call(this, coordinates);
+        }
+      });
+  }
+}
