@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
-    
+
     <style>
       html, body, #map {
         height: 100%;
@@ -14,20 +14,19 @@
       }
     </style>
 
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
-  </head>
+    <link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" />
   <body>
     <div id="map"></div>
 
     <!-- include cartodb.js library -->
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
 
-    
+
     <!-- Drop your code between the script tags below! -->
     <script>
 	function main() {
 	  // create leaflet map
-	  var map = L.map('map', { 
+	  var map = L.map('map', {
 	    zoomControl: false,
 	    scrollWheelZoom: false,
 	    center: [0, 0],
@@ -61,7 +60,7 @@
 	        // print data to console log
 	        console.log("Event #" + data.cartodb_id + ", name " + data.name + ", max population: " + data.pop_max);
 	      });
- 
+
 	      // show infowindows on click
 	      cdb.vis.Vis.addInfowindow(map, layer.getSubLayer(0), ['cartodb_id','name', 'pop_max']);
 	    });
