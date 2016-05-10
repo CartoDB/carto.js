@@ -703,7 +703,7 @@ describe('vis/vis-view', function () {
         'last_updated': '1970-01-01T00:00:00.000Z'
       });
 
-      // Polling has NOT started, there was only on ajax call to instantiate the map
+      // Polling has NOT started, there was only one ajax call to instantiate the map
       expect($.ajax.calls.count()).toEqual(1);
     });
 
@@ -765,7 +765,7 @@ describe('vis/vis-view', function () {
         'last_updated': '1970-01-01T00:00:00.000Z'
       });
 
-      // Polling has NOT started, there was only on ajax call to instantiate the map
+      // Polling has NOT started, there was only one ajax call to instantiate the map
       expect($.ajax.calls.count()).toEqual(1);
     });
 
