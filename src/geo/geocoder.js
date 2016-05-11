@@ -66,7 +66,7 @@ cdb.geo.geocoder.YAHOO = {
 
 cdb.geo.geocoder.MAPZEN = {
   keys:{
-    app_id: "search-DH1Lkhw"
+    app_id:  "search-DH1Lkhw"
   },
 
   geocode: function(address, callback){
