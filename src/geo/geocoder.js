@@ -43,8 +43,8 @@ cdb.geo.geocoder.YAHOO = {
           }
 
           for(var i in res) {
-            var r = res[i]
-              , position;
+            var r = res[i],
+            position;
 
             position = {
               lat: r.latitude,
@@ -62,8 +62,55 @@ cdb.geo.geocoder.YAHOO = {
         callback(coordinates);
       });
   }
-}
+};
 
+cdb.geo.geocoder.MAPZEN = {
+  keys:{
+    app_id:  "search-DH1Lkhw"
+  },
+
+  geocode: function(address, callback){
+    address = address.toLowerCase()
+      .replace(/é/g,'e')
+      .replace(/á/g,'a')
+      .replace(/í/g,'i')
+      .replace(/ó/g,'o')
+      .replace(/ú/g,'u');
+
+    var protocol = '';
+    if(location.protocol.indexOf('http') === -1) {
+      protocol = 'http:';
+    }
+
+    $.getJSON(protocol + '//search.mapzen.com/v1/search?text=' + encodeURIComponent(address) + '&api_key=' + this.keys.app_id, function(data) {
+  
+    var coordinates = [];
+    if (data && data.features && data.features.length > 0) {
+      var res = data.features;
+      for (var i in res){
+        var r = res[i],
+        position;
+        position = {
+          lat: r.geometry.coordinates[1],
+          lon: r.geometry.coordinates[0]
+        };
+        if(r.properties.layer){
+          position.type = r.properties.layer;
+        }  
+        
+        if(r.properties.label){
+          position.title = r.properties.label;
+        } 
+
+        coordinates.push(position);
+      }
+    }
+    if (callback) {
+      callback.call(this, coordinates);
+    }
+  });
+  }
+};
 
 
 cdb.geo.geocoder.NOKIA = {
@@ -94,8 +141,8 @@ cdb.geo.geocoder.NOKIA = {
           var res = data.results.items;
 
           for(var i in res) {
-            var r = res[i]
-              , position;
+            var r = res[i],
+            position;
 
             position = {
               lat: r.position[0],
@@ -108,7 +155,7 @@ cdb.geo.geocoder.NOKIA = {
                 south: r.bbox[1],
                 east: r.bbox[2],
                 west: r.bbox[0]
-              }
+              };
             }
             if (r.category) {
               position.type = r.category.id;
@@ -125,4 +172,4 @@ cdb.geo.geocoder.NOKIA = {
         }
       });
   }
-}
+};

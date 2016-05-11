@@ -11,6 +11,14 @@ cdb.geo.ui.Search = cdb.core.View.extend({
   _ZOOM_BY_CATEGORY: {
     'building': 18,
     'postal-area': 15,
+    'venue':18,
+    'region':8,
+    'address':18,
+    'country':5,
+    'county':8,
+    'locality':12,
+    'localadmin':11,
+    'neighbourhood':15,
     'default': 12
   },
 
@@ -82,7 +90,7 @@ cdb.geo.ui.Search = cdb.core.View.extend({
     this._showLoader();
     // Remove previous pin
     this._destroySearchPin();
-    cdb.geo.geocoder.NOKIA.geocode(address, function(places) {
+    cdb.geo.geocoder.MAPZEN.geocode(address, function(places) {
       self._onResult(places);
       // Hide loader
       self._hideLoader();
@@ -155,7 +163,7 @@ cdb.geo.ui.Search = cdb.core.View.extend({
   _destroySearchPin: function() {
     this._unbindEvents();
     this._destroyPin();
-    this._destroyInfowindow()
+    this._destroyInfowindow();
   },
 
   _createInfowindow: function(position, address) {
