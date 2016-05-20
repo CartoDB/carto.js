@@ -99,6 +99,13 @@ var CartoDBLayer = LayerModelBase.extend({
     return this.get('options') && this.get('options').layer_name || this.get('layer_name');
   },
 
+  // Torque layers have the layer_index defined in options.named_map.layer_index
+  // Layers inside a "namedmap" layer have the layer_index defined in the root of their definition
+  getLayerIndex: function() {
+    var named_map_options = this.get('options') && this.get('options').named_map;
+    return named_map_options && named_map_options.layer_index || this.get('layer_index');
+  },
+
   setDataProvider: function (dataProvider) {
     this._dataProvider = dataProvider;
   },

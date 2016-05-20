@@ -6,13 +6,15 @@ var NamedMap = MapBase.extend({
     var json = {};
     var layers = this._getLayers();
     var styles = layers.reduce(function (p, c, i) {
+      var layerIndex = c.getLayerIndex || i;
       var style = c.get('cartocss');
       if (style) {
-        p[i] = style;
+        p[layerIndex] = style;
       }
       return p;
     }, {});
-    _.each(layers, function (layerModel, layerIndex) {
+    _.each(layers, function (layerModel, index) {
+      var layerIndex = layerModel.getLayerIndex || index;
       json['layer' + layerIndex] = layerModel.isVisible() ? 1 : 0;
     });
     json.styles = styles;
