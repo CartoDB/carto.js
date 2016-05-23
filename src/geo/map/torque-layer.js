@@ -124,6 +124,12 @@ var TorqueLayer = LayerModelBase.extend({
     return this.get('layer_name') || this.get('table_name');
   },
 
+  // Torque layers have the layer_index defined in options.named_map.layer_index
+  getLayerIndex: function () {
+    var named_map_options = this.get('options') && this.get('options').named_map;
+    return named_map_options && named_map_options.layer_index;
+  },
+
   getInteractiveColumnNames: function() {
     return [];
   },
