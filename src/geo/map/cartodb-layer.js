@@ -99,6 +99,11 @@ var CartoDBLayer = LayerModelBase.extend({
     return this.get('options') && this.get('options').layer_name || this.get('layer_name');
   },
 
+  // Layers inside a "namedmap" layer have the layer_index defined in the root of their definition
+  getLayerIndex: function () {
+    return this.get('layer_index');
+  },
+
   setDataProvider: function (dataProvider) {
     this._dataProvider = dataProvider;
   },
