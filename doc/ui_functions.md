@@ -43,7 +43,7 @@ Infowindows provide additional interactivity for your published map, controlled 
 Option | Description
 --- | ---
 map | native map object or leaflet.
-layer | CARTO layer (or sublayer).
+layer | cartodb layer (or sublayer).
 fields | array of column names.<br /><br />**Note:** This tells CARTO what columns from your dataset should appear in your infowindow.
 options | 
 --- | ---

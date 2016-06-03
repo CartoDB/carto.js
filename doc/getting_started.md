@@ -64,7 +64,7 @@ Although the viz.json file stores all your map settings, all these settings can 
 ```javascript
 cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
   .done(function(vis, layers) {
-    // layer 0 is the base layer, layer 1 is CARTO layer
+    // layer 0 is the base layer, layer 1 is cartodb layer
     // when setInteraction is disabled featureOver is triggered
     layers[1].setInteraction(true);
     layers[1].on('featureOver', function(e, latlng, pos, data, layerNumber) {
