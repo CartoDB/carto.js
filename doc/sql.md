@@ -1,10 +1,10 @@
 # Getting Data with SQL
 
-CartoDB offers a powerful SQL API for you to query and retreive data from your CartoDB tables. CartoDB.js offers a simple to use wrapper for sending those requests and using the results.
+CARTO offers a powerful SQL API for you to query and retreive data from your CARTO tables. CARTO.js offers a simple to use wrapper for sending those requests and using the results.
 
 ## cartodb.SQL
 
-`cartodb.SQL` is the tool you will use to access data you store in your CartoDB tables. This is a really powerful technique for returning things like: **items closest to a point**, **items ordered by date**, or **GeoJSON vector geometries**. It’s all powered with SQL and our tutorials will show you how easy it is to begin with SQL.
+`cartodb.SQL` is the tool you will use to access data you store in your CARTO tables. This is a really powerful technique for returning things like: **items closest to a point**, **items ordered by date**, or **GeoJSON vector geometries**. It’s all powered with SQL and our tutorials will show you how easy it is to begin with SQL.
 
 #### Arguments
 
@@ -63,7 +63,7 @@ sql.execute('SELECT * FROM table_name')
 
 ## sql.getBounds(_sql [,vars][, options][, callback]_)
 
-This query gets the bounding box for any dataset or filtered query using the CartoDB.js library. The **getBounds** function is useful for guiding users to the right location on a map, or for loading the right data (at the right time), based on user actions.
+This query gets the bounding box for any dataset or filtered query using the CARTO.js library. The **getBounds** function is useful for guiding users to the right location on a map, or for loading the right data (at the right time), based on user actions.
 
 Returns the bounds `[ [sw_lat, sw_lon], [ne_lat, ne_lon ] ]` for the geometry resulting of specified query. 
 

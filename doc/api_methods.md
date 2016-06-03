@@ -1,6 +1,6 @@
 # API Methods
 
-This documentation is intended for developers and describes specific methods from the [latest version](https://github.com/CartoDB/cartodb.js/releases) of the CartoDB.js library.
+This documentation is intended for developers and describes specific methods from the [latest version](https://github.com/CartoDB/cartodb.js/releases) of the CARTO.js library.
 
 ## cartodb.createVis
 
@@ -26,9 +26,9 @@ options |
 &#124;_ center_lat | latitude where the map is initializated.
 &#124;_ center_lon | longitude where the map is initializated.
 &#124;_ zoom | initial zoom.
-&#124;_ cartodb_logo | default to true, set to false if you want to remove the cartodb logo.
+&#124;_ cartodb_logo | default to true, set to false if you want to remove the CARTO logo.
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.carto.com/carto-engine/torque/torque-time-slider/) documentation.
 &#124;_ layer_selector | show layer selector (default: false).
 &#124;_ legends | if it's true legends are shown in the map.
 &#124;_ https | if true, it makes sure that basemaps are converted to https when possible. If explicitly false, converts https maps to http when possible. If undefined, the basemap template is left as declared at `urlTemplate` in the viz.json.
@@ -79,7 +79,7 @@ Option | Description
 layer | layer from the visualization where the overlay should be applied (optional)
 type | - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but always appears in the same fixed position that you define)
 
-If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the [specific UI function](http://docs.cartodb.com/cartodb-platform/cartodb-js/ui-functions/#specific-ui-functions).
+If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the [specific UI function](http://docs.carto.com/carto-engine/carto-js/ui-functions/#specific-ui-functions).
 
 #### Returns
 
@@ -99,7 +99,7 @@ layer.leafletMap.viz.addOverlay({
 });
 {% endhighlight %}
 
-**Tip:** For a description of the infowindow specific parameters, see [`cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cartodb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
+**Tip:** For a description of the infowindow specific parameters, see [`cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cartodb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlay(_type_)
 
@@ -129,28 +129,28 @@ An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if yo
 
 ## cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
-With visualizations already created through the CartoDB console, you can simply use the `createLayer` function to add them into your web pages. Unlike `createVis`, this method requires an already activated `map` object and it does not load a basemap for you.
+With visualizations already created through the CARTO console, you can simply use the `createLayer` function to add them into your web pages. Unlike `createVis`, this method requires an already activated `map` object and it does not load a basemap for you.
 
 #### Arguments
 
 Name |Description
 --- | ---
 map | Leaflet `L.Map` object. The map should be initialized before calling this function.
-layerSource | contains information about the layer. It can be specified in multiple ways<br/><br/>**Tip:** See [Multiple types of layers Source Object](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/#multiple-types-of-layers-source-object)
+layerSource | contains information about the layer. It can be specified in multiple ways<br/><br/>**Tip:** See [Multiple types of layers Source Object](http://docs.carto.com/carto-engine/carto-js/layer-source-object/#multiple-types-of-layers-source-object)
 
 options |
 --- | ---
-&#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](http://docs.cartodb.com/cartodb-platform/cartodb-js/other-stuff/#https-support) for example code.
+&#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](http://docs.carto.com/carto-engine/carto-js/other-stuff/#https-support) for example code.
 &#124;_ refreshTime | if set, the layer is auto refreshed in milliseconds. See a refreshTime code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_refresh_time.html).<br/><br/>**Tip:** To refresh and display the latest data in seconds, include the seconds after the defined milliseconds in the code (i.e., `refreshTime: 2000 // 2 seconds`).
-&#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default). For details, see [Creating an infowindow with the `createLayer()` function](http://docs.cartodb.com/faqs/infowindows/#creating-an-infowindow-with-the-createlayer-function).
-&#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default). This option is specific for when you create a map using the CartoDB Editor, and have enabled the tooltip [(infowindow hover)](http://docs.cartodb.com/cartodb-editor/maps/#infowindows) option. This option disables the tooltip in createLayer.<br/><br/>See a tooltip code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_custom_tooltip.html).
-&#124;_ legends | set to true to show legends in the map. For an example, see this [CartoDB.js example with legends disabled](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_noLegend.html).
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See a Torque Time Slider code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/torque_time_slider.html).<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque/torque-time-slider/) documentation.
-&#124;_ loop | a boolean object that defines the animation loop with Torque layers. Default value is `true`. If `false`, the animation is paused when it reaches the last frame. For details about Torque, see the [Torque.js](http://docs.cartodb.com/cartodb-platform/torque-js/) documentation.
-&#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).<br/><br/>See [`layer.featureOver(_event, latlng, pos, data, layerIndex_`)](http://docs.cartodb.com/cartodb-platform/cartodb-js/events/#layerfeatureoverevent-latlng-pos-data-layerindex) for details about binding functions to layer events.
-&#124;_ filter | A string, or array of values, that specifies the type(s) of sublayers to be rendered if you are using multiple types of layer source objects (eg: `['http', 'mapnik')](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations). All non-torque layers (http and mapnik) will be rendered if this option is not present.<br/><br/>See a createLayer filter [example](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/#multiple-types-of-layers-source-object).
+&#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default). For details, see [Creating an infowindow with the `createLayer()` function](http://docs.carto.com/faqs/infowindows/#creating-an-infowindow-with-the-createlayer-function).
+&#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default). This option is specific for when you create a map using the CARTO Editor, and have enabled the tooltip [(infowindow hover)](http://docs.carto.com/carto-editor/maps/#infowindows) option. This option disables the tooltip in createLayer.<br/><br/>See a tooltip code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_custom_tooltip.html).
+&#124;_ legends | set to true to show legends in the map. For an example, see this [CARTO.js example with legends disabled](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_noLegend.html).
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See a Torque Time Slider code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/torque_time_slider.html).<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.carto.com/carto-engine/torque/torque-time-slider/) documentation.
+&#124;_ loop | a boolean object that defines the animation loop with Torque layers. Default value is `true`. If `false`, the animation is paused when it reaches the last frame. For details about Torque, see the [Torque.js](http://docs.carto.com/carto-engine/torque-js/) documentation.
+&#124;_ layerIndex | when the visualization contains more than one layer this index allows you to select what layer is created. Take into account that `layerIndex == 0` is the base layer and that all the tiled layers (non animated ones) are merged into a single one. The default value for this option is 1 (usually tiled layers).<br/><br/>See [`layer.featureOver(_event, latlng, pos, data, layerIndex_`)](http://docs.carto.com/carto-engine/carto-js/events/#layerfeatureoverevent-latlng-pos-data-layerindex) for details about binding functions to layer events.
+&#124;_ filter | A string, or array of values, that specifies the type(s) of sublayers to be rendered if you are using multiple types of layer source objects (eg: `['http', 'mapnik')](http://docs.carto.com/carto-engine/maps-api/mapconfig/#layergroup-configurations). All non-torque layers (http and mapnik) will be rendered if this option is not present.<br/><br/>See a createLayer filter [example](http://docs.carto.com/carto-engine/carto-js/layer-source-object/#multiple-types-of-layers-source-object).
 &#124;_ no_cdn | set to true to disable CDN when fetching tiles. For a complete example of this code, see ["odyssey_test.html"](https://github.com/CartoDB/cartodb.js/blob/2983b2fdcef914afdb1f4fdae173471143930452/examples/odyssey_test.html).
-callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.<br/><br/> See the [example of loading multiple layers from Cartodb in a Leaflet Map](https://github.com/CartoDB/cartodb.js/blob/develop/examples/callback_layer.html).
+callback(_layer_) | if a function is specified, it will be invoked after the layer has been created. The layer will be passed as an argument.<br/><br/> See the [example of loading multiple layers from CARTO in a Leaflet Map](https://github.com/CartoDB/cartodb.js/blob/develop/examples/callback_layer.html).
 
 ### Passing the url where the layer data is located
 ```javascript
@@ -200,13 +200,13 @@ cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e
   });
 ```
 
-Layer metadata must take one of the forms of the [Layer Source Object](http://docs.cartodb.com/cartodb-platform/cartodb-js/layer-source-object/).
+Layer metadata must take one of the forms of the [Layer Source Object](http://docs.carto.com/carto-engine/carto-js/layer-source-object/).
 
 ---
 
 ## cartodb.CartoDBLayer
 
-CartoDBLayer allows you to manage tiled layers from CartoDB, and manage sublayers.
+CartoDBLayer allows you to manage tiled layers from CARTO, and manage sublayers.
 
 ### layer.clear()
 
@@ -296,7 +296,7 @@ layerDefinition | an object with the sql and cartocss that defines the data, sho
 }
 ```
 
-`sql` and `cartocss` are mandatory. An exception is raised if either of them are not present. If the interactivity is not set, there is no interactivity enabled for that layer (better performance). SQL and CartoCSS syntax should be correct. View the documentation for [PostgreSQL](http://www.postgresql.org/docs/9.3/interactive/sql-syntax.html) and [CartoCSS](http://docs.cartodb.com/cartodb-platform/cartocss/) for more information. There are some restrictions in the SQL queries:
+`sql` and `cartocss` are mandatory. An exception is raised if either of them are not present. If the interactivity is not set, there is no interactivity enabled for that layer (better performance). SQL and CartoCSS syntax should be correct. View the documentation for [PostgreSQL](http://www.postgresql.org/docs/9.3/interactive/sql-syntax.html) and [CartoCSS](http://docs.carto.com/carto-engine/cartocss/) for more information. There are some restrictions in the SQL queries:
 
 - Must not write. INSERT, DELETE, UPDATE, ALTER and so on are not allowed (the query will fail)
 - Must not contain trailing semicolon
@@ -319,12 +319,12 @@ cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/european_countr
 
 ### layer.invalidate()
 
-Refreshes the data. If the data has been changed in the CartoDB server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually.
+Refreshes the data. If the data has been changed in the CARTO server those changes will be displayed. Nothing happens otherwise. Every time a parameter is changed in a sublayer, the layer is refreshed automatically, so there's no need to call this method manually.
 
 ### layer.setAuthToken(_auth_token_)
 
 Sets the auth token that will be used to create the layer. Only available for private visualizations. An exception is
-raised if the layer is not being loaded with HTTPS. See [Named Maps](http://docs.cartodb.com/cartodb-platform/maps-api.html#named-maps-1) for more information.
+raised if the layer is not being loaded with HTTPS. See [Named Maps](http://docs.carto.com/carto-engine/maps-api.html#named-maps-1) for more information.
 
 #### Arguments
 
@@ -338,7 +338,7 @@ The layer itself.
 
 ### layer.setParams(_key, value_)
 
-Sets the configuration of a layer when using [Named Maps](/cartodb-platform/maps-api/named-maps/). It can be invoked in different ways.
+Sets the configuration of a layer when using [Named Maps](/carto-engine/maps-api/named-maps/). It can be invoked in different ways.
 
 **Note:** This function is not supported when using Named Maps for Torque.
 
@@ -463,7 +463,7 @@ enable | `true` if the interaction needs to be enabled.
 
 ### sublayer.infowindow
 
-`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/cartodb-platform/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
+`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/carto-engine/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
 
 #### Attributes
 
@@ -474,7 +474,7 @@ sanitizeTemplate | By default all templates are sanitized from unsafe tags/attrs
 width | Width of the infowindow (value must be a number).
 maxHeight | Max height of the scrolled content (value must be a number).
 
-**Tip:** If you are customizing your infowindow with CartoDB.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
+**Tip:** If you are customizing your infowindow with CARTO.js, reference the [CSS library](https://github.com/CartoDB/cartodb.js/tree/develop/themes/css/infowindow) for the latest stylesheet code.
 
 #### Example
 

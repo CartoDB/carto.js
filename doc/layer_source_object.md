@@ -6,7 +6,7 @@ Used for most maps with tables that are set to public or public with link.
 
 #### Arguments
 
-Layer Source Objects are defined with the [Layergroup Configurations](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#layergroup-configurations).
+Layer Source Objects are defined with the [Layergroup Configurations](http://docs.carto.com/carto-engine/maps-api/mapconfig/#layergroup-configurations).
 
 Name |Description
 --- | ---
@@ -14,12 +14,12 @@ type | A string value that defines the layer type. Required.
 
 options | Options vary, depending on the `type` of layer source you are using:
 --- | ---
-&#124;_ `mapnik`| See [Mapnik Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#mapnik-layer-options).
+&#124;_ `mapnik`| See [Mapnik Layer Options](http://docs.carto.com/carto-engine/maps-api/mapconfig/#mapnik-layer-options).
 &#124;_ `cartodb` | An alias for Mapnik (for backward compatibility).
-&#124;_ `torque` | See [Torque Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#torque-layer-options).
-&#124;_ `http` | See [HTTP Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#http-layer-options).
-&#124;_ `plain` | See [Plain Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#plain-layer-options).
-&#124;_ `named` | See [Named Map Layer Options](http://docs.cartodb.com/cartodb-platform/maps-api/mapconfig/#named-map-layer-options).
+&#124;_ `torque` | See [Torque Layer Options](http://docs.carto.com/carto-engine/maps-api/mapconfig/#torque-layer-options).
+&#124;_ `http` | See [HTTP Layer Options](http://docs.carto.com/carto-engine/maps-api/mapconfig/#http-layer-options).
+&#124;_ `plain` | See [Plain Layer Options](http://docs.carto.com/carto-engine/maps-api/mapconfig/#plain-layer-options).
+&#124;_ `named` | See [Named Map Layer Options](http://docs.carto.com/carto-engine/maps-api/mapconfig/#named-map-layer-options).
 
 #### Example
 
@@ -45,7 +45,7 @@ For other layer source definitions, see [this example](https://github.com/CartoD
 
 ## Named Maps Layer Source Object (_type: 'namedmap'_)
 
-Used for making public maps with private data. See [Named Maps](http://docs.cartodb.com/cartodb-platform/maps-api/named-maps/) for more information.
+Used for making public maps with private data. See [Named Maps](http://docs.carto.com/carto-engine/maps-api/named-maps/) for more information.
 
 #### Example
 

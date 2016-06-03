@@ -1,6 +1,6 @@
 # Static Maps
 
-Static views of CartoDB maps can be generated using the [Static Maps API](/cartodb-platform/maps-api/static-maps-api/) within CartoDB.js. The map's style, including the zoom and bounding box, follows from what was set in the `viz.json` file, but you can change the zoom, center, and size of your image with a few lines of code. You can also change your basemap Images can be placed in specified DOM elements on your page, or you can generate a URL for the image.
+Static views of CARTO maps can be generated using the [Static Maps API](/carto-engine/maps-api/static-maps-api/) within CARTO.js. The map's style, including the zoom and bounding box, follows from what was set in the `viz.json` file, but you can change the zoom, center, and size of your image with a few lines of code. You can also change your basemap Images can be placed in specified DOM elements on your page, or you can generate a URL for the image.
 
 ## Quick Start
 
@@ -30,7 +30,7 @@ cartodb.Image(vizjson_url)
 
 Name |Description
 --- | ---
-layerSource | can be either a `viz.json` object or a [layer source object](/cartodb-platform/cartodb-js/api-methods/#standard-layer-source-object-type-cartodb)
+layerSource | can be either a `viz.json` object or a [layer source object](/carto-engine/carto-js/api-methods/#standard-layer-source-object-type-cartodb)
 
 options | 
 --- | ---
