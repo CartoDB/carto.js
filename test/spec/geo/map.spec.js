@@ -206,33 +206,30 @@ describe('core/geo/map', function() {
   });
 
   describe('reload', function () {
-    it('should be debounced', function (done) {
-      var windshaftMap = jasmine.createSpyObj('windshaftMap', ['createInstance']);
-      var map = new Map({}, {
-        windshaftMap: windshaftMap
+    beforeEach(function () {
+      this.windshaftMap = jasmine.createSpyObj('windshaftMap', ['createInstance']);
+      this.map = new Map({}, {
+        windshaftMap: this.windshaftMap
       });
+    });
 
+    it('should be debounced', function (done) {
       // Reload the map 1000 times in a row
       for (var i = 0; i < 1000; i++) {
-        map.reload();
+        this.map.reload();
       }
 
       setTimeout(function () {
-        expect(windshaftMap.createInstance).toHaveBeenCalled();
+        expect(this.windshaftMap.createInstance).toHaveBeenCalled();
 
         // windshaftMap.createInstance is debounced and has only been called once
-        expect(windshaftMap.createInstance.calls.count()).toEqual(1);
+        expect(this.windshaftMap.createInstance.calls.count()).toEqual(1);
         done();
-      }, 25);
+      }.bind(this), 25);
     });
 
     it('should forward options', function (done) {
-      var windshaftMap = jasmine.createSpyObj('windshaftMap', ['createInstance']);
-      var map = new Map({}, {
-        windshaftMap: windshaftMap
-      });
-
-      map.reload({
+      this.map.reload({
         a: 1,
         b: 2,
         sourceLayerId: 'sourceLayerId',
@@ -241,14 +238,35 @@ describe('core/geo/map', function() {
       });
 
       setTimeout(function () {
-        expect(windshaftMap.createInstance).toHaveBeenCalledWith({
+        expect(this.windshaftMap.createInstance).toHaveBeenCalledWith({
           sourceLayerId: 'sourceLayerId',
           forceFetch: 'forceFetch',
-          success: 'success'
+          success: 'success',
+          error: jasmine.any(Function)
         });
 
         done();
-      }, 25);
+      }.bind(this), 25);
+    });
+
+    it('should invoke the error callback and trigger an `error` event', function (done) {
+      var errorCallback = jasmine.createSpy('errorCallback');
+      var onErrorCallback = jasmine.createSpy('onErrorCallback');
+
+      this.map.on('error', onErrorCallback);
+      this.map.reload({
+        error: errorCallback
+      });
+
+      setTimeout(function () {
+        expect(this.windshaftMap.createInstance).toHaveBeenCalled();
+
+        this.windshaftMap.createInstance.calls.argsFor(0)[0].error('something bad happened');
+
+        expect(errorCallback).toHaveBeenCalledWith('something bad happened');
+        expect(onErrorCallback).toHaveBeenCalledWith('something bad happened')
+        done();
+      }.bind(this), 25);
     });
   });
 

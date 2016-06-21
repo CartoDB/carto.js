@@ -64,6 +64,18 @@ var Map = Model.extend({
     this.reload = _.debounce(function (options) {
       options = options || {};
       options = _.pick(options, 'sourceLayerId', 'forceFetch', 'success', 'error');
+
+      var successCallback = options.success;
+      var errorCallback = options.error;
+
+      options = _.extend(options, {
+        success: successCallback,
+        error: function (error) {
+          this.trigger('error', error);
+          errorCallback && errorCallback(error);
+        }.bind(this)
+      });
+
       this._windshaftMap.createInstance(options);
     }.bind(this), this.RELOAD_DEBOUNCE_TIME);
   },
