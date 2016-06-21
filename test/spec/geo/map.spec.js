@@ -261,10 +261,10 @@ describe('core/geo/map', function() {
       setTimeout(function () {
         expect(this.windshaftMap.createInstance).toHaveBeenCalled();
 
-        this.windshaftMap.createInstance.calls.argsFor(0)[0].error('something bad happened');
+        this.windshaftMap.createInstance.calls.argsFor(0)[0].error('something bad happened', 'errors');
 
-        expect(errorCallback).toHaveBeenCalledWith('something bad happened');
-        expect(onErrorCallback).toHaveBeenCalledWith('something bad happened')
+        expect(errorCallback).toHaveBeenCalledWith('something bad happened', 'errors');
+        expect(onErrorCallback).toHaveBeenCalledWith('something bad happened', 'errors')
         done();
       }.bind(this), 25);
     });

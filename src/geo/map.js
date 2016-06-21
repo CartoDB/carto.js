@@ -70,9 +70,9 @@ var Map = Model.extend({
 
       options = _.extend(options, {
         success: successCallback,
-        error: function (error) {
-          this.trigger('error', error);
-          errorCallback && errorCallback(error);
+        error: function (errorMessage, errors) {
+          this.trigger('error', errorMessage, errors);
+          errorCallback && errorCallback(errorMessage, errors);
         }.bind(this)
       });
 
