@@ -52,11 +52,11 @@ var Vis = View.extend({
   },
 
   done: function (fn) {
-    return this.bind('done', fn);
+    return this.on('done', fn);
   },
 
   error: function (fn) {
-    return this.bind('error', fn);
+    return this.on('error', fn);
   },
 
   load: function (vizjson, options) {
@@ -143,6 +143,10 @@ var Vis = View.extend({
       windshaftMap: this._windshaftMap,
       dataviewsCollection: this._dataviewsCollection
     });
+
+    this.map.on('error', function (errorMessage, errors) {
+      this.trigger('error', errorMessage, errors);
+    }, this);
 
     // If a CartoDB embed map is hidden by default, its
     // height is 0 and it will need to recalculate its size
@@ -576,14 +580,6 @@ var Vis = View.extend({
   createLayer: function (layerData) {
     var layerModel = Layers.create(layerData.type || layerData.kind, this, layerData);
     return this.mapView.createLayer(layerModel);
-  },
-
-  throwError: function (msg, lyr) {
-    log.error(msg);
-    var self = this;
-    _.defer(function () {
-      self.trigger('error', msg, lyr);
-    });
   },
 
   // public methods
