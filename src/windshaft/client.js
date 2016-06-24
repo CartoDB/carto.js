@@ -86,7 +86,8 @@ WindshaftClient.prototype._usePOST = function (payload, params) {
 };
 
 WindshaftClient.prototype._post = function (payload, params, options) {
-  $.ajax({
+  this._abortPreviousRequest();
+  this._previousRequest = $.ajax({
     crossOrigin: true,
     method: 'POST',
     dataType: 'json',
@@ -102,7 +103,8 @@ WindshaftClient.prototype._get = function (payload, params, options) {
   var compressFunction = this._getCompressor(payload);
   compressFunction(payload, this.constructor.DEFAULT_COMPRESSION_LEVEL, function (dataParam) {
     _.extend(params, dataParam);
-    $.ajax({
+    this._abortPreviousRequest();
+    this._previousRequest = $.ajax({
       url: this._getURL(params),
       method: 'GET',
       dataType: 'jsonp',
@@ -112,6 +114,12 @@ WindshaftClient.prototype._get = function (payload, params, options) {
       error: options.error
     });
   }.bind(this));
+};
+
+WindshaftClient.prototype._abortPreviousRequest = function () {
+  if (this._previousRequest) {
+    this._previousRequest.abort();
+  }
 };
 
 WindshaftClient.prototype._getCompressor = function (payload) {
