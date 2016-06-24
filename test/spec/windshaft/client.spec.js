@@ -89,10 +89,18 @@ describe('windshaft/client', function () {
       });
 
       this.ajaxParams.success({
-        errors: [ 'something went wrong!' ]
+        errors_with_context: [{
+          type: 'type',
+          message: 'something went wrong',
+          context: 'context'
+        }]
       });
 
-      expect(errorCallback).toHaveBeenCalledWith('something went wrong!');
+      expect(errorCallback).toHaveBeenCalled();
+      var error = errorCallback.calls.argsFor(0)[0][0];
+      expect(error.type).toEqual('type');
+      expect(error.message).toEqual('something went wrong');
+      expect(error.context).toEqual('context');
     });
 
     it('should invoke the error callback if ajax request goes wrong', function () {
@@ -104,9 +112,19 @@ describe('windshaft/client', function () {
         error: errorCallback
       });
 
-      this.ajaxParams.error({ responseText: 'something went wrong!' });
+      this.ajaxParams.error({ responseText: JSON.stringify({
+        errors_with_context: [{
+          type: 'type',
+          message: 'something went wrong',
+          context: 'context'
+        }]
+      })});
 
-      expect(errorCallback).toHaveBeenCalledWith('Unknown error');
+      expect(errorCallback).toHaveBeenCalled();
+      var error = errorCallback.calls.argsFor(0)[0][0];
+      expect(error.type).toEqual('type');
+      expect(error.message).toEqual('something went wrong');
+      expect(error.context).toEqual('context');
     });
 
     it('should use POST if forceCors is true', function () {

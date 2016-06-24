@@ -39,7 +39,6 @@ var Vis = View.extend({
   },
 
   render: function () {
-    // TODO: Get this from this.model
     var options = {};
 
     // Create the MapView

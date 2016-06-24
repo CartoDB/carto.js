@@ -2,6 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var LZMA = require('lzma');
 var util = require('../core/util');
+var WindshaftError = require('./error');
 
 var validatePresenceOfOptions = function (options, requiredOptions) {
   var missingOptions = _.filter(requiredOptions, function (option) {
@@ -42,20 +43,31 @@ WindshaftClient.prototype.instantiateMap = function (options) {
   var errorCallback = options.error;
   var payload = JSON.stringify(mapDefinition);
 
+  var getErrors = function (data) {
+    return _.map(data.errors_with_context, function (error) {
+      return new WindshaftError(error);
+    });
+  };
+
+  var hasErrors = function (data) {
+    return data.errors_with_context;
+  };
+
   var ajaxOptions = {
     success: function (data) {
-      if (data.errors) {
-        errorCallback(data.errors[0]);
+      if (hasErrors(data)) {
+        errorCallback(getErrors(data));
       } else {
         successCallback(data);
       }
     },
     error: function (xhr) {
-      var err = { errors: ['Unknown error'] };
+      var errors = [ new WindshaftError() ];
       try {
-        err = JSON.parse(xhr.responseText);
+        var parsedResponse = JSON.parse(xhr.responseText);
+        errors = getErrors(parsedResponse);
       } catch (e) {}
-      errorCallback(err.errors[0]);
+      errorCallback(errors);
     }
   };
 

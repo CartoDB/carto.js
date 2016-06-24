@@ -320,11 +320,11 @@ describe('windshaft/map-base', function () {
       });
 
       it('should log the error', function () {
-        expect(log.error).toHaveBeenCalledWith('Request to Maps API failed: something went wrong');
+        expect(log.error).toHaveBeenCalledWith('Request to Maps API failed', 'something went wrong');
       });
 
       it('should invoke a given error callback', function () {
-        expect(this.errorCallback).toHaveBeenCalledWith('Request to Maps API failed: something went wrong');
+        expect(this.errorCallback).toHaveBeenCalledWith('Request to Maps API failed', 'something went wrong');
       });
     });
   });
