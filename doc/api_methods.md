@@ -26,7 +26,7 @@ options |
 &#124;_ center_lat | latitude where the map is initializated.
 &#124;_ center_lon | longitude where the map is initializated.
 &#124;_ zoom | initial zoom.
-&#124;_ cartodb_logo | default to true, set to false if you want to remove the CARTO logo.
+&#124;_ carto_logo | default to true, set to false if you want to remove the CARTO logo.
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
 &#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.carto.com/carto-engine/torque/torque-time-slider/) documentation.
 &#124;_ layer_selector | show layer selector (default: false).
@@ -53,7 +53,7 @@ error | triggered when the layer couldn't be created. The error string is the fi
 #### Example
 
 ```javascript
-var url = 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
+var url = 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
 
 cartodb.createVis('map', url)
   .done(function(vis, layers) {
@@ -185,7 +185,7 @@ var mapOptions = {
 };
 map = new L.Map('map', mapOptions);
 
-cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+cartodb.createLayer(map, 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
   .addTo(map)
   .on('done', function(layer) {
     layer
@@ -308,7 +308,7 @@ A `SubLayer` object.
 #### Example
 
 ```javascript
-cartodb.createLayer(map, 'http://examples.cartodb.com/api/v2/viz/european_countries_e/viz.json', function(layer) {
+cartodb.createLayer(map, 'http://examples.carto.com/api/v2/viz/european_countries_e/viz.json', function(layer) {
   // add populated places points over the countries layer
   layer.createSubLayer({
     sql: 'SELECT * FROM ne_10m_populated_places_simple',
@@ -463,7 +463,7 @@ enable | `true` if the interaction needs to be enabled.
 
 ### sublayer.infowindow
 
-`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/carto-engine/cartodb-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
+`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
 
 #### Attributes
 

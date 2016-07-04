@@ -39,7 +39,7 @@ This is the spec for visjson:
     // optional
     // visualization description
     // default: ''
-    url: "http://javi.cartodb.com/tables/20343",
+    url: "http://javi.carto.com/tables/20343",
 
     // mandatory 
     map_provider: "leaflet",
@@ -56,7 +56,7 @@ This is the spec for visjson:
           name: "CartoDB Flat Blue",
           urlTemplate: "http://{s}.api.cartocdn.com/base-flatblue/{z}/{x}/{y}.png",
           maxZoom: 10,
-          attribution: "©2013 CartoDB <a href='http://cartodb.com' target='_blank'>Terms of use</a>",
+          attribution: "©2013 CARTO <a href='http://carto.com' target='_blank'>Terms of use</a>",
          },
        },
        
@@ -192,7 +192,7 @@ This is the spec for visjson:
             },
             query: null,
             table_name: "sensor_log_2013_10_27_12_01",
-            user_name: "javi", // cartodb username
+            user_name: "javi", // CARTO username
             cartocss: "valid cartocss",
             named_map: { //if this key is present named_map is used, if not it means it's an anonymous map
                 name: 'test',

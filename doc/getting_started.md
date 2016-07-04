@@ -17,7 +17,7 @@ The simplest way to use a visualization created in CARTO on an external site is 
 // - go to API tab
 
 window.onload = function() {
-  cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
+  cartodb.createVis('map', 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
 }
 </script>
 ```
@@ -50,7 +50,7 @@ This is the easiest way to quickly get a CARTO map onto your webpage. Use this m
 You can start by giving CARTO.js the DIV ID from your HTML where you want to place your map, and the viz.json URL of your visualization (which you can get from the [Publish your map](http://docs.carto.com/carto-editor/maps/#publish-and-share-your-map) options).
 
 ```javascript
-cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
+cartodb.createVis('map', 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json');
 ```
 
 That’s it! No need to create the map instance, insert controls, or load layers. CARTO.js takes care of this for you. 
@@ -62,7 +62,7 @@ The viz.json file tells CARTO.js all the information about your map, including t
 Although the viz.json file stores all your map settings, all these settings can be easily customized with CARTO.js. If you want to modify the result after instantiating your map with the viz.json, reference the CARTO.js API [available methods](#api-methods). For example, you can also use the returned layer to build more functionality (show/hide, click, hover, custom infowindows):
 
 ```javascript
-cartodb.createVis('map', 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+cartodb.createVis('map', 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
   .done(function(vis, layers) {
     // layer 0 is the base layer, layer 1 is cartodb layer
     // when setInteraction is disabled featureOver is triggered
@@ -97,7 +97,7 @@ Below, you have an example using a previously instantiated Leaflet map.
     zoom: 2
   });
 
-  cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+  cartodb.createLayer(map, 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
     .addTo(map)
     .on('done', function(layer) {
       //do stuff
@@ -170,7 +170,7 @@ You can use all the functionality of CARTO.js with HTTPs support. Be sure to use
     center: [0,0],
     zoom: 2
   })
-  cartodb.createLayer(map, 'https://examples.cartodb.com/api/v1/viz/15589/viz.json', { https: true })
+  cartodb.createLayer(map, 'https://examples.carto.com/api/v1/viz/15589/viz.json', { https: true })
     .addTo(map)
     .on('error', function(err) {
       alert("some error occurred: " + err);
@@ -180,7 +180,7 @@ You can use all the functionality of CARTO.js with HTTPs support. Be sure to use
 
 ## Using a Different Host 
 
-CARTO.js sends all requests to the cartodb.com domain by default. If you are running your own instance of CARTO, you can change the URLs to specify a different host.
+CARTO.js sends all requests to the carto.com domain by default. If you are running your own instance of CARTO, you can change the URLs to specify a different host.
 
 A different host can be configured by using ``sql_api_template`` and ``maps_api_template`` in the ``options`` parameter
 for any ``cartodb`` function call.
@@ -204,7 +204,7 @@ To async portions of the CARTO.js library, the [`createLayer`](http://docs.carto
 - **error**, tells you that something did not go as expected when trying to load the requested layer:
 
 ```javascript
-cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/0001/viz.json')
+cartodb.createLayer(map, 'http://examples.carto.com/api/v1/viz/0001/viz.json')
   .addTo(map)
   .on('done', function(layer) {
     alert(‘CartoDB layer loaded!’);
@@ -213,7 +213,7 @@ cartodb.createLayer(map, 'http://examples.cartodb.com/api/v1/viz/0001/viz.json')
   });
 ```
 
-**Note:** For information about active layer events, which are triggered by layers on your webpage that are already loaded, see [Events](http://docs.carto.com/carto-engine/cartodb-js/events/).
+**Note:** For information about active layer events, which are triggered by layers on your webpage that are already loaded, see [Events](http://docs.carto.com/carto-engine/carto-js/events/).
 
 ## CARTO.js Usage Examples
 
