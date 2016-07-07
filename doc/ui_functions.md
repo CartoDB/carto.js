@@ -1,10 +1,10 @@
 # Specific UI Functions
 
-There are a few functions in CartoDB.js for creating, enabling, and disabling pieces of the user interface.
+There are a few functions in CARTO.js for creating, enabling, and disabling pieces of the user interface.
 
 ## vis.addOverlay(tooltip)
 
-A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions). A tooltip appears where the mouse cursor is located on the map. You can customize the position of how the tooltip appears by defining the position options.
+A tooltip is an infowindow that appears when you hover your mouse over a map feature with [`vis.addOverlay(options)`](http://docs.carto.com/carto-engine/carto-js/api-methods/#visaddoverlayoptions). A tooltip appears where the mouse cursor is located on the map. You can customize the position of how the tooltip appears by defining the position options.
 
 #### Example
 
@@ -17,7 +17,7 @@ var tooltip = vis.addOverlay({
   fields: [{ name: 'name', population: 'pop2005' }]
 });
 ```
-**Note:** If you are using `createLayer` for a map object that contains an enabled tooltip, you can disable the tooltip by applying the `false` value. See the [`cartodb.createLayer(map, layerSource [, options] [, callback])](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#arguments-2) `tooltip` description for how to enable/disable an interactive tooltip.
+**Note:** If you are using `createLayer` for a map object that contains an enabled tooltip, you can disable the tooltip by applying the `false` value. See the [`cartodb.createLayer(map, layerSource [, options] [, callback])](http://docs.carto.com/carto-engine/carto-js/api-methods/#arguments-2) `tooltip` description for how to enable/disable an interactive tooltip.
 
 ## vis.addOverlay(infobox)
 
@@ -44,17 +44,17 @@ Option | Description
 --- | ---
 map | native map object or leaflet.
 layer | cartodb layer (or sublayer).
-fields | array of column names.<br /><br />**Note:** This tells CartoDB what columns from your dataset should appear in your infowindow.
+fields | array of column names.<br /><br />**Note:** This tells CARTO what columns from your dataset should appear in your infowindow.
 options | 
 --- | ---
 &#124;_ infowindowTemplate | allows you to set the HTML of the template.
 &#124;_templateType | indicates the type of template ([`Mustache` template](http://mustache.github.io/mustache.5.html) or `Underscore` template placeholders).
 
-**Tip:** See [How can I use CartoDB.js to create and style infowindows?](http://docs.cartodb.com/faqs/infowindows/#how-can-i-use-cartodbjs-to-create-and-style-infowindows) for an overview of how to create infowindows.
+**Tip:** See [How can I use CARTO.js to create and style infowindows?](http://docs.carto.com/faqs/infowindows/#how-can-i-use-cartojs-to-create-and-style-infowindows) for an overview of how to create infowindows.
 
 #### Returns
 
-An infowindow object, see [sublayer.infowindow](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#sublayerinfowindow)
+An infowindow object, see [sublayer.infowindow](http://docs.carto.com/carto-engine/carto-js/api-methods/#sublayerinfowindow)
 
 #### Example
 
@@ -69,7 +69,7 @@ The following example displays how to enable infowindow interactivity with the "
 
 #### Example (Infowindow with Tooltip)
 
-The following example displays how to enable infowindow interactivity with the mouse "hover" action. This is referred to as a tooltip, and is defined with [`vis.addOverlay`](http://docs.cartodb.com/cartodb-platform/cartodb-js/api-methods/#visaddoverlayoptions).
+The following example displays how to enable infowindow interactivity with the mouse "hover" action. This is referred to as a tooltip, and is defined with [`vis.addOverlay`](http://docs.carto.com/carto-engine/carto-js/api-methods/#visaddoverlayoptions).
 
 {% highlight html %}
 layer.leafletMap.viz.addOverlay({

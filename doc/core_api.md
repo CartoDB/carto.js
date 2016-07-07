@@ -1,6 +1,6 @@
 # Core API Functionality
 
-In case you are not using Leaflet, or you want to implement your own layer object, CartoDB provides a way to get the tiles url for a layer definition.
+In case you are not using Leaflet, or you want to implement your own layer object, CARTO provides a way to get the tiles url for a layer definition.
 
 If you want to use this functionality, you only need to load cartodb.core.js from our cdn. No CSS is needed:
 
@@ -39,12 +39,12 @@ In this example, a layer with one sublayer is created. The sublayer renders all 
 
 ```javascript
 var layerData = {
-  user_name: 'mycartodbuser',
+  user_name: 'username',
   sublayers: [{
     sql: "SELECT * FROM table_name";
     cartocss: '#layer { marker-fill: #F0F0F0; }'
   }],
-  maps_api_template: 'https://{user}.cartodb.com' // Optional
+  maps_api_template: 'https://{username}.carto.com' // Optional
 };
 cartodb.Tiles.getTiles(layerData, function(tilesUrl, error) {
   if (tilesUrl == null) {
@@ -60,16 +60,16 @@ The `tilesUrl` object contains url template for tiles and interactivity grids:
 ```javascript
 {
   tiles: [
-    "http://{s}.cartodb.com/HASH/{z}/{x}/{y}.png",
+    "http://{s}.carto.com/HASH/{z}/{x}/{y}.png",
     ...
   ],
   grids: [
     // for each sublayer there is one entry on this array
     [
-      "http://{s}.cartodb.com/HASH/0/{z}/{x}/{y}.grid.json"
+      "http://{s}.carto.com/HASH/0/{z}/{x}/{y}.grid.json"
     ],
     [
-      "http://{s}.cartodb.com/HASH/1/{z}/{x}/{y}.grid.json"
+      "http://{s}.carto.com/HASH/1/{z}/{x}/{y}.grid.json"
     ],
     ...
   ]
