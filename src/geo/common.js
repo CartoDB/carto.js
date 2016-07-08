@@ -263,7 +263,7 @@ cdb.geo.common.CartoDBLogo = {
         var protocol = location.protocol.indexOf('https') === -1 ? 'http': 'https';
         var link = cdb.config.get('cartodb_logo_link');
         cartodb_link.innerHTML = "<a href='" + link + "' target='_blank'><img width='71' height='29' src='" + protocol + "://cartodb.s3.amazonaws.com/static/new_logo" + (is_retina ? '@2x' : '') + ".png' style='position:absolute; bottom:" + 
-          ( position.bottom || 0 ) + "px; left:" + ( position.left || 0 ) + "px; display:block; width:71px!important; height:29px!important; border:none; outline:none;' alt='CartoDB' title='CartoDB' />";
+          ( position.bottom || 0 ) + "px; left:" + ( position.left || 0 ) + "px; display:block; width:71px!important; height:29px!important; border:none; outline:none;' alt='CARTO' title='CARTO' />";
         container.appendChild(cartodb_link);
       }
     },( timeout || 0 ));

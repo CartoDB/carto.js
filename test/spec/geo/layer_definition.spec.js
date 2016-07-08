@@ -102,7 +102,7 @@ describe("LayerDefinition", function() {
       ]
     };
     layerDefinition = new LayerDefinition(layer_definition, {
-      tiler_domain: "cartodb.com",
+      tiler_domain: "carto.com",
       tiler_port: "8081",
       tiler_protocol: "http",
       user_name: 'rambo',
@@ -633,7 +633,7 @@ describe("LayerDefinition", function() {
         expect(callback.calls.count()).toEqual(1);
         expect(ajaxParams.dataType).toEqual('jsonp');
         expect(ajaxParams.type).toBeUndefined(); // GET request
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map?stat_tag=vis_id&config=%22mapConfig%22');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v1/map?stat_tag=vis_id&config=%22mapConfig%22');
         expect(ajaxParams.jsonpCallback().indexOf('_cdbc_')).toEqual(0);
         expect(ajaxParams.cache).toEqual(true);
       })
@@ -643,14 +643,14 @@ describe("LayerDefinition", function() {
 
         layerDefinition.createMap(callback);
 
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v2/?stat_tag=vis_id&config=%22fakeMapConfig%22');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v2/?stat_tag=vis_id&config=%22fakeMapConfig%22');
 
         delete layerDefinition.JSONPendPoint;
         layerDefinition.endPoint = '/api/v3/'
 
         layerDefinition.createMap(callback);
 
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v3/?stat_tag=vis_id&config=%22fakeMapConfig%22');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v3/?stat_tag=vis_id&config=%22fakeMapConfig%22');
       })
 
       it('should the instanciateCallback as the jsonpCallback', function() {
@@ -666,7 +666,7 @@ describe("LayerDefinition", function() {
 
       it('should use a cdn', function() {
         layerDefinition._host = function() { return 'http://cdn.test.com'; }
-        layerDefinition._tilerHost = function() { return 'http://rambo.cartodb.com:8081'; }
+        layerDefinition._tilerHost = function() { return 'http://rambo.carto.com:8081'; }
 
         layerDefinition.options.dynamic_cdn = true;
         layerDefinition.createMap(callback);
@@ -753,7 +753,7 @@ describe("LayerDefinition", function() {
         expect(ajaxParams.method).toEqual('POST'); // POST request
         expect(ajaxParams.dataType).toEqual('json');
         expect(ajaxParams.contentType).toEqual('application/json');
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map?stat_tag=vis_id');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v1/map?stat_tag=vis_id');
         expect(ajaxParams.data).toEqual('"' + fakeMapConfig + '"');
       })
 
@@ -771,7 +771,7 @@ describe("LayerDefinition", function() {
         expect(ajaxParams.method).toEqual('POST'); // POST request
         expect(ajaxParams.dataType).toEqual('json');
         expect(ajaxParams.contentType).toEqual('application/json');
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map?stat_tag=vis_id');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v1/map?stat_tag=vis_id');
         expect(ajaxParams.data).toEqual('"' + fakeMapConfig + '"');
       })
 
@@ -782,7 +782,7 @@ describe("LayerDefinition", function() {
 
         layerDefinition.createMap(callback);
 
-        expect(ajaxParams.url).toEqual('http://rambo.cartodb.com:8081/api/v20/?stat_tag=vis_id');
+        expect(ajaxParams.url).toEqual('http://rambo.carto.com:8081/api/v20/?stat_tag=vis_id');
       })
 
       it('should handle errors returned by the tiler', function() {
@@ -831,11 +831,11 @@ describe("LayerDefinition", function() {
 
       var expectedURLs = {
         "tiles": [
-          "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png"
+          "http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png"
         ],
         "grids": [
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ]
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ]
         ]
       }
 
@@ -948,22 +948,22 @@ describe("LayerDefinition", function() {
 
       var expectedURLs = {
         tiles: [
-          'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
-          'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
-          'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
-          'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png'
+          'http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
+          'http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
+          'http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png',
+          'http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png'
         ],
         grids: [
           [
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json'
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json'
           ], [
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
-            'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json'
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json',
+            'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json'
           ]
         ]
       };
@@ -985,11 +985,11 @@ describe("LayerDefinition", function() {
 
       var expectedURLs = {
         "tiles": [
-          "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png"
+          "http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1/{z}/{x}/{y}.png"
         ],
         "grids": [
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ]
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ]
         ]
       }
 
@@ -1039,11 +1039,11 @@ describe("LayerDefinition", function() {
       // We need to fetch the grid for layers 1 and 2. Those are the indexes that the tiler understands.
       var expectedURLs = {
         "tiles": [
-          "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0,1,2/{z}/{x}/{y}.png"
+          "http://rambo.carto.com:8081/api/v1/map/layergroupid/0,1,2/{z}/{x}/{y}.png"
         ],
         "grids": [
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ],
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/2/{z}/{x}/{y}.grid.json" ]
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/1/{z}/{x}/{y}.grid.json" ],
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/2/{z}/{x}/{y}.grid.json" ]
         ]
       }
       expect(callback).toHaveBeenCalledWith(expectedURLs);
@@ -1069,11 +1069,11 @@ describe("LayerDefinition", function() {
       // Tile URL is telling the tiler to only render layers 1 and 3 (both http)
       var expectedURLs = {
         "tiles": [
-          "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1,3/{z}/{x}/{y}.png"
+          "http://rambo.carto.com:8081/api/v1/map/layergroupid/1,3/{z}/{x}/{y}.png"
         ],
         "grids": [
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
-          [ "http://rambo.cartodb.com:8081/api/v1/map/layergroupid/2/{z}/{x}/{y}.grid.json" ]
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/0/{z}/{x}/{y}.grid.json" ],
+          [ "http://rambo.carto.com:8081/api/v1/map/layergroupid/2/{z}/{x}/{y}.grid.json" ]
         ]
       }
       expect(callback).toHaveBeenCalledWith(expectedURLs);
@@ -1201,7 +1201,7 @@ describe("LayerDefinition", function() {
       var ajaxOptions = ajax.calls.mostRecent().args[0];
       expect(ajaxOptions.dataType).toEqual('jsonp');
       expect(ajaxOptions.jsonpCallback).toEqual('_cdbi_layer_attributes_' + layerDefinition._attrCallbackName);
-      expect(ajaxOptions.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/attributes/feature_id');
+      expect(ajaxOptions.url).toEqual('http://rambo.carto.com:8081/api/v1/map/layergroupid/0/attributes/feature_id');
       expect(ajaxOptions.cache).toEqual(true);
 
       // Ajax succeeds
@@ -1229,7 +1229,7 @@ describe("LayerDefinition", function() {
       // Fetch attributes for layer 0 (which is layer 1 in the tiler)
       layerDefinition.fetchAttributes(0, 'feature_id', 2, callback);
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
       var actualUrl = ajax.calls.mostRecent().args[0].url;
 
       expect(actualUrl).toEqual(expectedUrl);
@@ -1237,7 +1237,7 @@ describe("LayerDefinition", function() {
       // Fetch attributes for layer 1 (which is layer 3 in the tiler)
       layerDefinition.fetchAttributes(1, 'feature_id', 2, callback);
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/3/attributes/feature_id';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/3/attributes/feature_id';
       var actualUrl = ajax.calls.mostRecent().args[0].url;
 
       expect(actualUrl).toEqual(expectedUrl);
@@ -1303,7 +1303,7 @@ describe("LayerDefinition", function() {
       // Fetch attributes for 2nd mapnik layer (which is layer 1 in the tiler)
       layerDefinition.fetchAttributes(2, 'feature_id', 2, callback);
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
       var actualUrl = ajax.calls.mostRecent().args[0].url;
 
       expect(actualUrl).toEqual(expectedUrl);
@@ -1317,27 +1317,27 @@ describe("LayerDefinition", function() {
         http: "", https: ""
       };
 
-      expect(layerDefinition._host()).toEqual('http://rambo.cartodb.com:8081');
-      expect(layerDefinition._host('0')).toEqual('http://rambo.cartodb.com:8081');
+      expect(layerDefinition._host()).toEqual('http://rambo.carto.com:8081');
+      expect(layerDefinition._host('0')).toEqual('http://rambo.carto.com:8081');
 
       layerDefinition.options.tiler_protocol = "https";
       layerDefinition._buildMapsApiTemplate(layerDefinition.options);
 
-      expect(layerDefinition._host()).toEqual('https://rambo.cartodb.com:8081');
-      expect(layerDefinition._host('a')).toEqual('https://rambo.cartodb.com:8081');
+      expect(layerDefinition._host()).toEqual('https://rambo.carto.com:8081');
+      expect(layerDefinition._host('a')).toEqual('https://rambo.carto.com:8081');
     });
 
     it("should use the tiler url when there's explicitly no cdn", function() {
       layerDefinition.options.cdn_url = undefined;
 
-      expect(layerDefinition._host()).toEqual('http://rambo.cartodb.com:8081');
-      expect(layerDefinition._host('0')).toEqual('http://rambo.cartodb.com:8081');
+      expect(layerDefinition._host()).toEqual('http://rambo.carto.com:8081');
+      expect(layerDefinition._host('0')).toEqual('http://rambo.carto.com:8081');
 
       layerDefinition.options.tiler_protocol = "https";
       layerDefinition._buildMapsApiTemplate(layerDefinition.options);
 
-      expect(layerDefinition._host()).toEqual('https://rambo.cartodb.com:8081');
-      expect(layerDefinition._host('a')).toEqual('https://rambo.cartodb.com:8081');
+      expect(layerDefinition._host()).toEqual('https://rambo.carto.com:8081');
+      expect(layerDefinition._host('a')).toEqual('https://rambo.carto.com:8081');
     });
 
     it("should use cdn_url from tiler when present", function(done) {
@@ -1448,7 +1448,7 @@ describe("NamedMap", function() {
       }]
     };
     namedMap= new NamedMap(named_map, {
-      tiler_domain:   "cartodb.com",
+      tiler_domain:   "carto.com",
       tiler_port:     "8081",
       tiler_protocol: "http",
       user_name: 'rambo',
@@ -1548,7 +1548,7 @@ describe("NamedMap", function() {
       var ajaxOptions = ajax.calls.mostRecent().args[0];
       expect(ajaxOptions.dataType).toEqual('jsonp');
       expect(ajaxOptions.jsonpCallback).toEqual('_cdbi_layer_attributes_' + namedMap._attrCallbackName);
-      expect(ajaxOptions.url).toEqual('http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/attributes/feature_id');
+      expect(ajaxOptions.url).toEqual('http://rambo.carto.com:8081/api/v1/map/layergroupid/0/attributes/feature_id');
       expect(ajaxOptions.cache).toEqual(true);
 
       // Ajax succeeds
@@ -1586,7 +1586,7 @@ describe("NamedMap", function() {
       expect(ajax).toHaveBeenCalled();
       var ajaxOptions = ajax.calls.mostRecent().args[0];
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/attributes/feature_id?auth_token=token';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/attributes/feature_id?auth_token=token';
       expect(ajaxOptions.url).toEqual(expectedUrl);
     })
 
@@ -1619,7 +1619,7 @@ describe("NamedMap", function() {
       expect(ajax).toHaveBeenCalled();
       var ajaxOptions = ajax.calls.mostRecent().args[0];
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/0/attributes/feature_id?auth_token[]=token1&auth_token[]=token2';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/0/attributes/feature_id?auth_token[]=token1&auth_token[]=token2';
       expect(ajaxOptions.url).toEqual(expectedUrl);
     })
 
@@ -1648,7 +1648,7 @@ describe("NamedMap", function() {
       // Fetch attributes for layer 0 (which is layer 1 in the tiler)
       namedMap.fetchAttributes(0, 'feature_id', 2, callback);
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/1/attributes/feature_id';
       var actualUrl = ajax.calls.mostRecent().args[0].url;
 
       expect(actualUrl).toEqual(expectedUrl);
@@ -1656,7 +1656,7 @@ describe("NamedMap", function() {
       // Fetch attributes for layer 1 (which is layer 3 in the tiler)
       namedMap.fetchAttributes(1, 'feature_id', 2, callback);
 
-      var expectedUrl = 'http://rambo.cartodb.com:8081/api/v1/map/layergroupid/3/attributes/feature_id';
+      var expectedUrl = 'http://rambo.carto.com:8081/api/v1/map/layergroupid/3/attributes/feature_id';
       var actualUrl = ajax.calls.mostRecent().args[0].url;
 
       expect(actualUrl).toEqual(expectedUrl);
@@ -1673,7 +1673,7 @@ describe("NamedMap", function() {
         }
       };
       namedMap = new NamedMap(named_map, {
-        tiler_domain:   "cartodb.com",
+        tiler_domain:   "carto.com",
         tiler_port:     "8081",
         tiler_protocol: "https",
         user_name: 'rambo',
@@ -1789,7 +1789,7 @@ describe("NamedMap", function() {
       layers: [{}]
     };
     namedMap = new NamedMap(named_map, {
-      tiler_domain:   "cartodb.com",
+      tiler_domain:   "carto.com",
       tiler_port:     "8081",
       tiler_protocol: "https",
       user_name: 'rambo',
@@ -1856,7 +1856,7 @@ describe("NamedMap", function() {
     };
     try {
       namedMap = new NamedMap(named_map, {
-        tiler_domain:   "cartodb.com",
+        tiler_domain:   "carto.com",
         tiler_port:     "8081",
         tiler_protocol: "http",
         user_name: 'rambo',

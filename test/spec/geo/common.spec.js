@@ -5,7 +5,7 @@ describe('common', function() {
   beforeEach(function() {
     common = new CartoDBLayerCommon();
     common.options = {
-      tiler_domain:   "cartodb.com",
+      tiler_domain:   "carto.com",
       tiler_port:     "8081",
       tiler_protocol: "http",
       user_name: 'rambo',
@@ -16,7 +16,7 @@ describe('common', function() {
   it("when query_wrapper is present the query should be wrapped", function() {
     common.options = {
       table_name: 'test',
-      tiler_domain:   "cartodb.com",
+      tiler_domain:   "carto.com",
       tiler_port:     "8081",
       tiler_protocol: "http",
       tile_style:   "TEST",
@@ -32,7 +32,7 @@ describe('common', function() {
     
     common.options = {
       table_name: 'test',
-      tiler_domain:   "cartodb.com",
+      tiler_domain:   "carto.com",
       tiler_port:     "8081",
       tiler_protocol: "http",
       tile_style:   "TEST",

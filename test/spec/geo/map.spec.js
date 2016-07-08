@@ -232,9 +232,9 @@ describe("geo.map", function() {
 
       map = new cdb.geo.Map();
 
-      // Map has the default CartoDB attribution
+      // Map has the default CARTO attribution
       expect(map.get('attribution')).toEqual([
-        cdb.core.sanitize.html("CartoDB <a href='http://cartodb.com/attributions' target='_blank'>attribution</a>")
+        cdb.core.sanitize.html("CARTO <a href='http://carto.com/attributions' target='_blank'>attribution</a>")
       ]);
 
       var layer1 = new cdb.geo.CartoDBLayer({ attribution: 'attribution1' });
@@ -248,19 +248,19 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
+        "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       var layer = new cdb.geo.CartoDBLayer({ attribution: 'attribution2' });
 
       map.layers.add(layer);
 
-      // The attribution of the new layer has been appended before the default CartoDB attribution
+      // The attribution of the new layer has been appended before the default CARTO attribution
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
         "attribution2",
-        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
+        "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       layer.set('attribution', 'new attribution');
@@ -270,7 +270,7 @@ describe("geo.map", function() {
         "attribution1",
         "wadus",
         "new attribution",
-        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
+        "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       map.layers.remove(layer);
@@ -278,7 +278,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
+        "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
 
       // Addind a layer with the default attribution
@@ -286,11 +286,11 @@ describe("geo.map", function() {
 
       map.layers.add(layer, { at: 0 });
 
-      // Default CartoDB only appears once and it's the last one
+      // Default CARTO only appears once and it's the last one
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>"
+        "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>"
       ]);
     })
   });

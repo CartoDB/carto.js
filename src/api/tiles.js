@@ -6,7 +6,7 @@
   root.cartodb = root.cartodb || {};
 
   var defaults = {
-    tiler_domain:   "cartodb.com",
+    tiler_domain:   "carto.com",
     tiler_port:     "80",
     tiler_protocol: "http",
     subdomains: ['{s}'],

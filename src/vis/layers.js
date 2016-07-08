@@ -127,7 +127,7 @@ Layers.register('torque', function(vis, data) {
   normalizeOptions(vis, data);
   // default is https
   if(vis.https) {
-    if(data.sql_api_domain && data.sql_api_domain.indexOf('cartodb.com') !== -1) {
+    if(data.sql_api_domain && data.sql_api_domain.indexOf('carto.com') !== -1) {
       data.sql_api_protocol = 'https';
       data.sql_api_port = 443;
       data.tiler_protocol = 'https';

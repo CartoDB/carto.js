@@ -10,7 +10,7 @@ describe("Image", function() {
 
   it("should allow to set the size", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).size(640, 480);
 
@@ -22,7 +22,7 @@ describe("Image", function() {
   });
 
   it("should use the basemap defined in the vizjson", function(done) {
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/318ab654-c989-11e4-97c6-0e9d821ea90d/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/318ab654-c989-11e4-97c6-0e9d821ea90d/viz.json"
     var image = cartodb.Image(vizjson).size(640, 480);
     var basemapURLTemplate = 'https://{s}.maps.nlp.nokia.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
     image.getUrl(function() {
@@ -34,7 +34,7 @@ describe("Image", function() {
 
   it("should generate the URL for a torque layer", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
 
     var image = cartodb.Image(vizjson);
 
@@ -105,7 +105,7 @@ describe("Image", function() {
 
   it("should generate the right layer configuration for a torque layer and a named map", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/e7b04b62-b901-11e4-b0d7-0e018d66dc29/viz.json";
+    var vizjson = "http://documentation.carto.com/api/v2/viz/e7b04b62-b901-11e4-b0d7-0e018d66dc29/viz.json";
 
     var image = cartodb.Image(vizjson);
 
@@ -120,7 +120,7 @@ describe("Image", function() {
 
   it("should generate the right layer configuration for a torque layer with a named map inside", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/6b447f26-c80b-11e4-8164-0e018d66dc29/viz.json";
+    var vizjson = "http://documentation.carto.com/api/v2/viz/6b447f26-c80b-11e4-8164-0e018d66dc29/viz.json";
 
     var image = cartodb.Image(vizjson);
 
@@ -135,7 +135,7 @@ describe("Image", function() {
 
   it("should allow to use a step for a torque layer", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
 
     var image = cartodb.Image(vizjson, { step: 10 });
 
@@ -151,7 +151,7 @@ describe("Image", function() {
 
   it("shouldn't use hidden layers to generate the image", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/42e98b9a-bcce-11e4-9d68-0e9d821ea90d/viz.json";
+    var vizjson = "http://documentation.carto.com/api/v2/viz/42e98b9a-bcce-11e4-9d68-0e9d821ea90d/viz.json";
 
     var image = cartodb.Image(vizjson);
 
@@ -164,7 +164,7 @@ describe("Image", function() {
 
   it("should extract the cdn_url from the vizjson", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/e7b04b62-b901-11e4-b0d7-0e018d66dc29/viz.json";
+    var vizjson = "http://documentation.carto.com/api/v2/viz/e7b04b62-b901-11e4-b0d7-0e018d66dc29/viz.json";
 
     var image = cartodb.Image(vizjson);
 
@@ -178,7 +178,7 @@ describe("Image", function() {
 
   it("should allow to set the zoom", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).zoom(4);
 
@@ -191,7 +191,7 @@ describe("Image", function() {
 
   it("should allow to set the center", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).center([40, 30]);
 
@@ -204,7 +204,7 @@ describe("Image", function() {
 
   it("should allow to set the bounding box", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)/-31\.05,-155\.74,82\.58,261\.21/400/300\.png");
 
@@ -219,7 +219,7 @@ describe("Image", function() {
 
   it("should allow to override the bounding box", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
 
@@ -234,7 +234,7 @@ describe("Image", function() {
 
   it("shouldn't generate a bbox URL without a bouding box", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
 
@@ -249,7 +249,7 @@ describe("Image", function() {
 
   it("should use the zoom defined in the vizjson", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson);
 
@@ -266,7 +266,7 @@ describe("Image", function() {
 
   it("should allow to set the format", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).format("jpg");
 
@@ -279,7 +279,7 @@ describe("Image", function() {
 
   it("shouldn't allow to set an invalid format", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).format("pin");
 
@@ -292,7 +292,7 @@ describe("Image", function() {
 
   it("should generate the image URL", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)320/240\.png");
 
@@ -307,7 +307,7 @@ describe("Image", function() {
 
   it("should generate the image URL using custom params", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/7/40/10/400/300\.png");
 
@@ -322,7 +322,7 @@ describe("Image", function() {
 
   it("should generate the image inside of an image element", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var img = document.getElementById('image');
 
@@ -341,7 +341,7 @@ describe("Image", function() {
 
     var layer_definition = {
       user_name: "documentation",
-      tiler_domain: "cartodb.com",
+      tiler_domain: "carto.com",
       tiler_port: "80",
       tiler_protocol: "http",
       layers: [{
@@ -374,7 +374,7 @@ describe("Image", function() {
 
     var layer_definition = {
       user_name: "documentation",
-      tiler_domain: "cartodb.com",
+      tiler_domain: "carto.com",
       tiler_port: "80",
       tiler_protocol: "http",
       layers: [{
@@ -407,8 +407,8 @@ describe("Image", function() {
 
     var layer_definition = {
       user_name: "documentation",
-      maps_api_template: 'http://cartodb.com/user/{user}/api/v1/maps',
-      tiler_domain: "cartodb.com",
+      maps_api_template: 'http://carto.com/user/{user}/api/v1/maps',
+      tiler_domain: "carto.com",
       tiler_port: "80",
       tiler_protocol: "http",
       layers: [{
@@ -428,7 +428,7 @@ describe("Image", function() {
     };
 
     expect(cartodb.Image(layer_definition)._tilerHost()).toEqual(
-      'http://cartodb.com/user/documentation/api/v1/maps'
+      'http://carto.com/user/documentation/api/v1/maps'
     )
 
   });
@@ -437,7 +437,7 @@ describe("Image", function() {
 
     var layer_definition = {
       user_name: "documentation",
-      tiler_domain: "cartodb.com",
+      tiler_domain: "carto.com",
       tiler_port: "80",
       tiler_protocol: "http",
       layers: [{
@@ -467,7 +467,7 @@ describe("Image", function() {
 
   it("should set the protocol and port depending on the URL (https)", function(done) {
 
-    var vizjson = "https://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "https://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).size(400, 300);
 
@@ -483,7 +483,7 @@ describe("Image", function() {
 
   it("should set the protocol and port depending on the URL (http)", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).size(400, 300);
 
@@ -499,11 +499,11 @@ describe("Image", function() {
 
   it("should set the protocol and port depending on the URL (http, no_cdn)", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
+    var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson, { no_cdn: true }).size(400, 300);
 
-    var regexp = new RegExp("http://documentation.cartodb.com:80/api/v1/map/static/bbox/(.*?)400/300\.png");
+    var regexp = new RegExp("http://documentation.carto.com:80/api/v1/map/static/bbox/(.*?)400/300\.png");
 
     image.getUrl(function(err, url) {
       expect(url.match(regexp).length).toEqual(2);
@@ -515,7 +515,7 @@ describe("Image", function() {
 
   it("shouldn't send the urlTemplate if the vizjson doesn't contain it", function(done) {
 
-    var vizjson = "https://documentation.cartodb.com/api/v2/viz/75b90cd6-e9cf-11e2-8be0-5404a6a683d5/viz.json"
+    var vizjson = "https://documentation.carto.com/api/v2/viz/75b90cd6-e9cf-11e2-8be0-5404a6a683d5/viz.json"
 
     var image = cartodb.Image(vizjson).size(400, 300);
 
@@ -529,8 +529,8 @@ describe("Image", function() {
 
   it("should send the auth_tokens", function(done) {
 
-    var vizjson = "http://documentation.cartodb.com/api/v2/viz/e11db0aa-d77e-11e4-9039-0e853d047bba/viz.json"
-    var json = {"id":"e11db0aa-d77e-11e4-9039-0e853d047bba","version":"0.1.0","title":"password_protected_map","likes":0,"description":null,"scrollwheel":false,"legends":true,"url":null,"map_provider":"leaflet","bounds":[[0.0,0.0],[0.0,0.0]],"center":"[30, 0]","zoom":3,"updated_at":"2015-03-31T08:21:18+00:00","layers":[{"options":{"visible":true,"type":"Tiled","urlTemplate":"http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png","subdomains":"1234","name":"Positron","className":"positron_rainbow","attribution":"\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors \u00a9 <a href=\"http://cartodb.com/attributions\">CartoDB</a>"},"infowindow":null,"tooltip":null,"id":"c850d654-ab61-441d-9860-b3c2e42424fb","order":0,"parent_id":null,"children":[],"type":"tiled"},{"type":"namedmap","order":1,"options":{"type":"namedmap","user_name":"documentation","tiler_protocol":"https","tiler_domain":"cartodb.com","tiler_port":"443","cdn_url":{"http":"api.cartocdn.com","https":"cartocdn.global.ssl.fastly.net"},"dynamic_cdn":false,"named_map":{"name":"tpl_e11db0aa_d77e_11e4_9039_0e853d047bba","stat_tag":"e11db0aa-d77e-11e4-9039-0e853d047bba","params":{"layer0":1},"layers":[{"layer_name":"untitled_table_5","interactivity":"cartodb_id","visible":true}]}}}],"overlays":[{"type":"logo","order":9,"options":{"display":true,"x":10,"y":40},"template":""},{"type":"loader","order":8,"options":{"display":true,"x":20,"y":150},"template":"<div class=\"loader\" original-title=\"\"></div>"},{"type":"zoom","order":6,"options":{"display":true,"x":20,"y":20},"template":"<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"},{"type":"search","order":3,"options":{"display":true,"x":60,"y":20},"template":""},{"type":"share","order":2,"options":{"display":true,"x":20,"y":20},"template":""}],"prev":null,"next":null,"transition_options":{"time":0},"auth_tokens":["e900fe76cc3c1eed4fc018d027d82c8b0e59b2c484d1941954f34b4818a5d660"]}
+    var vizjson = "http://documentation.carto.com/api/v2/viz/e11db0aa-d77e-11e4-9039-0e853d047bba/viz.json"
+    var json = {"id":"e11db0aa-d77e-11e4-9039-0e853d047bba","version":"0.1.0","title":"password_protected_map","likes":0,"description":null,"scrollwheel":false,"legends":true,"url":null,"map_provider":"leaflet","bounds":[[0.0,0.0],[0.0,0.0]],"center":"[30, 0]","zoom":3,"updated_at":"2015-03-31T08:21:18+00:00","layers":[{"options":{"visible":true,"type":"Tiled","urlTemplate":"http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png","subdomains":"1234","name":"Positron","className":"positron_rainbow","attribution":"\u00a9 <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors \u00a9 <a href=\"http://carto.com/attributions\">CartoDB</a>"},"infowindow":null,"tooltip":null,"id":"c850d654-ab61-441d-9860-b3c2e42424fb","order":0,"parent_id":null,"children":[],"type":"tiled"},{"type":"namedmap","order":1,"options":{"type":"namedmap","user_name":"documentation","tiler_protocol":"https","tiler_domain":"carto.com","tiler_port":"443","cdn_url":{"http":"api.cartocdn.com","https":"cartocdn.global.ssl.fastly.net"},"dynamic_cdn":false,"named_map":{"name":"tpl_e11db0aa_d77e_11e4_9039_0e853d047bba","stat_tag":"e11db0aa-d77e-11e4-9039-0e853d047bba","params":{"layer0":1},"layers":[{"layer_name":"untitled_table_5","interactivity":"cartodb_id","visible":true}]}}}],"overlays":[{"type":"logo","order":9,"options":{"display":true,"x":10,"y":40},"template":""},{"type":"loader","order":8,"options":{"display":true,"x":20,"y":150},"template":"<div class=\"loader\" original-title=\"\"></div>"},{"type":"zoom","order":6,"options":{"display":true,"x":20,"y":20},"template":"<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"},{"type":"search","order":3,"options":{"display":true,"x":60,"y":20},"template":""},{"type":"share","order":2,"options":{"display":true,"x":20,"y":20},"template":""}],"prev":null,"next":null,"transition_options":{"time":0},"auth_tokens":["e900fe76cc3c1eed4fc018d027d82c8b0e59b2c484d1941954f34b4818a5d660"]}
 
     StaticImage.prototype.load = function(vizjson, options) {
 
