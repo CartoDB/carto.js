@@ -18,7 +18,6 @@ describe("Image", function() {
       expect(image.imageOptions["size"]).toEqual([640, 480]);
       done();
     });
-
   });
 
   it("should use the basemap defined in the vizjson", function(done) {
@@ -370,41 +369,7 @@ describe("Image", function() {
 
   });
 
-  it("should generate an image using a layer definition in a certain bbox", function(done) {
-
-    var layer_definition = {
-      user_name: "documentation",
-      tiler_domain: "carto.com",
-      tiler_port: "80",
-      tiler_protocol: "http",
-      layers: [{
-        type: "http",
-        options: {
-          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
-          subdomains: [ "a", "b", "c" ]
-        }
-      }, {
-        type: "cartodb",
-        options: {
-          sql: "SELECT * FROM nyc_wifi",
-          cartocss: "#ncy_wifi{ marker-fill-opacity: 0.8; marker-line-color: #FFFFFF; marker-line-width: 3; marker-line-opacity: .8; marker-placement: point; marker-type: ellipse; marker-width: 16; marker-fill: #6ac41c; marker-allow-overlap: true; }",
-          cartocss_version: "2.1.1"
-        }
-      }]
-    };
-
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/8c67df0046ce227a89a65d0e3f87e80e:1398886221740/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250.png");
-
-    cartodb.Image(layer_definition).size(250, 250).bbox([[-87.82814025878906,41.88719899247721], [ -27.5936508178711,41.942765696654604]]).getUrl(function(error, url) {
-      expect(url.match(regexp).length).toEqual(1);
-      expect(url).toMatch(regexp);
-      done();
-    });
-
-  });
-
   it("should use maps_api_template when provided", function() {
-
     var layer_definition = {
       user_name: "documentation",
       maps_api_template: 'http://carto.com/user/{user}/api/v1/maps',
@@ -429,8 +394,7 @@ describe("Image", function() {
 
     expect(cartodb.Image(layer_definition)._tilerHost()).toEqual(
       'http://carto.com/user/documentation/api/v1/maps'
-    )
-
+    );
   });
 
   it("should generate an image using a layer definition for a plain color", function(done) {
@@ -555,5 +519,74 @@ describe("Image", function() {
       expect(image.options.layers.layers[1].options.auth_tokens[0]).toBe("e900fe76cc3c1eed4fc018d027d82c8b0e59b2c484d1941954f34b4818a5d660");
       done();
     });
+  });
+
+  it("should generate an image using a layer definition in a certain bbox", function(done) {
+    jasmine.clock().install();
+    var ajax = $.ajax;
+    spyOn($, 'ajax');
+
+    var fakeServerResponse = {
+      'layergroupid': '5e59b997e678d51096c9037faf9a84b7:1398886221740',
+      'metadata': {
+        'layers': [
+          {
+            'type': 'plain',
+            'id': 'plain-layer0',
+            'meta': {
+              'stats': []
+            }
+          },
+          {
+            'type': 'mapnik',
+            'id': 'layer0',
+            'meta': {
+              'stats': [],
+              'cartocss': '#ncy_wifi{ marker-fill-opacity: 0.8; marker-line-color: #FFFFFF; marker-line-width: 3; marker-line-opacity: .8; marker-placement: point; marker-type: ellipse; marker-width: 16; marker-fill: #6ac41c; marker-allow-overlap: true; }'
+            }
+          }
+        ],
+        'dataviews': {},
+        'analyses': []
+      },
+      'cdn_url': {
+        'http': 'ashbu.cartocdn.com',
+        'https': 'cartocdn-ashbu.global.ssl.fastly.net'
+      },
+      'last_updated': '2014-04-30T19:30:21.740Z'
+    };
+
+    var layer_definition = {
+      user_name: "documentation",
+      tiler_domain: "carto.com",
+      tiler_port: "80",
+      tiler_protocol: "http",
+      layers: [{
+        type: "http",
+        options: {
+          urlTemplate: "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+          subdomains: [ "a", "b", "c" ]
+        }
+      }, {
+        type: "cartodb",
+        options: {
+          sql: "SELECT * FROM nyc_wifi",
+          cartocss: "#ncy_wifi{ marker-fill-opacity: 0.8; marker-line-color: #FFFFFF; marker-line-width: 3; marker-line-opacity: .8; marker-placement: point; marker-type: ellipse; marker-width: 16; marker-fill: #6ac41c; marker-allow-overlap: true; }",
+          cartocss_version: "2.1.1"
+        }
+      }]
+    };
+
+    cartodb.Image(layer_definition).size(250, 250).bbox([[-87.82814025878906,41.88719899247721], [ -27.5936508178711,41.942765696654604]]).getUrl(function (error, url) {
+      expect(url).toEqual('http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/5e59b997e678d51096c9037faf9a84b7:1398886221740/-87.82814025878906,41.88719899247721,-27.5936508178711,41.942765696654604/250/250.png');
+      done();
+    });
+
+    // Wait for a timeout
+    jasmine.clock().tick(101);
+
+    $.ajax.calls.argsFor(0)[0].success(fakeServerResponse);
+    jasmine.clock().uninstall();
+    $.ajax = ajax;
   });
 });
