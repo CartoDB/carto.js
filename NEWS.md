@@ -1,3 +1,8 @@
+3.15.10 (11/07/2016)
+-------
+* Replaced references to cartodb.com by carto.com
+* Replaced CartoDB by CARTO
+
 3.15.9 (01/02/2016)
 ------
 * When scrollwheel and zoom are disabled, map panning is disabled unless device is mobile.
