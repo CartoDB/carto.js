@@ -15,7 +15,7 @@ describe("core.core.sanitize", function() {
       });
 
       it('should allow target attributes for links', function() {
-        expect(cdb.core.sanitize.html('<a href="http://cartodb.com/" target="_blank">cartodb.com</a>')).toEqual('<a href="http://cartodb.com/" target="_blank">cartodb.com</a>');
+        expect(cdb.core.sanitize.html('<a href="http://carto.com/" target="_blank">carto.com</a>')).toEqual('<a href="http://carto.com/" target="_blank">carto.com</a>');
       });
 
       it('should remove iframe tag', function() {

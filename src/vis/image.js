@@ -70,7 +70,7 @@
       center: [0, 0],
       size:  [320, 240],
       tiler_port: 80,
-      tiler_domain: "cartodb.com"
+      tiler_domain: "carto.com"
     };
 
   };

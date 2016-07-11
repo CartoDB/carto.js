@@ -21,7 +21,7 @@
 
         /**
          * returns the base url to compose the final url
-         * http://user.cartodb.com/
+         * http://user.carto.com/
          */
         getSqlApiBaseUrl: function() {
           var url;
@@ -39,7 +39,7 @@
         /**
          * returns the full sql api url, including the api endpoint
          * allos to specify the version
-         * http://user.cartodb.com/api/v1/sql
+         * http://user.carto.com/api/v1/sql
          */
         getSqlApiUrl: function(version) {
           version = version || 'v2';
@@ -49,7 +49,7 @@
         /**
          *  returns the maps api host, removing user template
          *  and the protocol.
-         *  cartodb.com:3333
+         *  carto.com:3333
          */
         getMapsApiHost: function() {
           var url;
@@ -64,8 +64,8 @@
 
     cdb.config = new Config();
     cdb.config.set({
-      cartodb_attributions: "CartoDB <a href=\"http://cartodb.com/attributions\" target=\"_blank\">attribution</a>",
-      cartodb_logo_link: "http://www.cartodb.com"
+      cartodb_attributions: "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>",
+      cartodb_logo_link: "http://www.carto.com"
     });
 
 })();

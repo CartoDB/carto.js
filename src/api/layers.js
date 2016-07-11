@@ -22,7 +22,7 @@
    * compose cartodb url
    */
   function cartodbUrl(opts) {
-    var host = opts.host || 'cartodb.com';
+    var host = opts.host || 'carto.com';
     var protocol = opts.protocol || 'https';
     return protocol + '://' + opts.user + '.' + host + '/api/v1/viz/' + opts.table + '/viz.json';
   }

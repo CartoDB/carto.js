@@ -3131,7 +3131,7 @@ var Profiler = require('../profiler');
 
     this.options.is_time = this.options.is_time === undefined ? true: this.options.is_time;
     this.options.tiler_protocol = options.tiler_protocol || 'http';
-    this.options.tiler_domain = options.tiler_domain || 'cartodb.com';
+    this.options.tiler_domain = options.tiler_domain || 'carto.com';
     this.options.tiler_port = options.tiler_port || 80;
 
     if (this.options.data_aggregation) {
@@ -3295,7 +3295,7 @@ var Profiler = require('../profiler');
     _host: function() {
       var opts = this.options;
       var port = opts.sql_api_port;
-      var domain = ((opts.user_name || opts.user) + '.' + (opts.sql_api_domain || 'cartodb.com')) + (port ? ':' + port: '');
+      var domain = ((opts.user_name || opts.user) + '.' + (opts.sql_api_domain || 'carto.com')) + (port ? ':' + port: '');
       var protocol = opts.sql_api_protocol || 'http';
       return this.options.url || protocol + '://' + domain + '/api/v2/sql';
     },
@@ -3941,7 +3941,7 @@ var Profiler = require('../profiler');
 
     this.options.is_time = this.options.is_time === undefined ? true: this.options.is_time;
     this.options.tiler_protocol = options.tiler_protocol || 'http';
-    this.options.tiler_domain = options.tiler_domain || 'cartodb.com';
+    this.options.tiler_domain = options.tiler_domain || 'carto.com';
     this.options.tiler_port = options.tiler_port || 80;
 
     // backwards compatible

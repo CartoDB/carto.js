@@ -10,7 +10,7 @@
       subdomains: 'abcd',
       minZoom: 0,
       maxZoom: 18,
-      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://cartodb.com">CartoDB</a>'
+      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://carto.com">CARTO</a>'
     };
   };
   

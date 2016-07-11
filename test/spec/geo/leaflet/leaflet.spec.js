@@ -302,7 +302,7 @@ describe('LeafletMapView', function() {
       subdomains: ['a','b','c','d'],
       minZoom: 0,
       maxZoom: 18,
-      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://cartodb.com">CartoDB</a>'
+      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://carto.com">CARTO</a>'
     },
     dark_roadmap: {
       tiles: {
@@ -312,7 +312,7 @@ describe('LeafletMapView', function() {
       subdomains: ['a','b','c','d'],
       minZoom: 0,
       maxZoom: 18,
-      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://cartodb.com">CartoDB</a>'
+      attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="http://carto.com">CARTO</a>'
     },
     roadmap: {
       tiles: {
@@ -429,7 +429,7 @@ describe('LeafletMapView', function() {
 
     it('should render the right attributions', function() {
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('CartoDB attribution');
+      expect(attributions).toEqual('CARTO attribution');
 
       layer = new cdb.geo.CartoDBLayer({
         attribution: 'custom attribution'
@@ -437,7 +437,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('custom attribution, CartoDB attribution');
+      expect(attributions).toEqual('custom attribution, CARTO attribution');
     });
 
     it('should respect the attribution of existing Leaflet layers', function() {
@@ -464,7 +464,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('Leaflet | Stamen, custom attribution, CartoDB attribution');
+      expect(attributions).toEqual('Leaflet | Stamen, custom attribution, CARTO attribution');
     });
 
     it('should render attributions when the Leaflet map has attributionControl disabled', function() {
@@ -492,7 +492,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('Stamen, custom attribution, CartoDB attribution');
+      expect(attributions).toEqual('Stamen, custom attribution, CARTO attribution');
     });
   });
 
