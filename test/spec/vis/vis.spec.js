@@ -24,7 +24,7 @@ describe("Vis", function() {
     this.mapConfig = {
       updated_at: 'cachebuster',
       title: "irrelevant",
-      url: "http://carto.com",
+      url: "https://carto.com",
       center: [40.044, -101.95],
       bounding_box_sw: [20, -140],
       bounding_box_ne: [ 55, -50],
@@ -534,7 +534,7 @@ describe("Vis", function() {
       var r = {
         updated_at: 'cachebuster',
         title: "irrelevant",
-        url: "http://carto.com",
+        url: "https://carto.com",
         center: [40.044, -101.95],
         bounding_box_sw: [20, -140],
         bounding_box_ne: [ 55, -50],

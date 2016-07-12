@@ -64,7 +64,7 @@
 
     cdb.config = new Config();
     cdb.config.set({
-      cartodb_attributions: "CARTO <a href=\"http://carto.com/attributions\" target=\"_blank\">attribution</a>",
+      cartodb_attributions: "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>",
       cartodb_logo_link: "http://www.carto.com"
     });
 
