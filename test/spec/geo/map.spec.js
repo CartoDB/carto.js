@@ -231,10 +231,11 @@ describe("geo.map", function() {
     it('should update the attributions of the map when layers are reset/added/removed', function() {
 
       map = new cdb.geo.Map();
+      var DEFAULT_CARTO_ATTRIBUTION = '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>';
 
       // Map has the default CARTO attribution
       expect(map.get('attribution')).toEqual([
-        cdb.core.sanitize.html("CARTO <a href='https://carto.com/attributions' target='_blank'>attribution</a>")
+        cdb.core.sanitize.html("© <a href='https://carto.com/attributions' target='_blank'>CARTO</a>")
       ]);
 
       var layer1 = new cdb.geo.CartoDBLayer({ attribution: 'attribution1' });
@@ -248,7 +249,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>"
+        DEFAULT_CARTO_ATTRIBUTION
       ]);
 
       var layer = new cdb.geo.CartoDBLayer({ attribution: 'attribution2' });
@@ -260,7 +261,7 @@ describe("geo.map", function() {
         "attribution1",
         "wadus",
         "attribution2",
-        "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>"
+        DEFAULT_CARTO_ATTRIBUTION
       ]);
 
       layer.set('attribution', 'new attribution');
@@ -270,7 +271,7 @@ describe("geo.map", function() {
         "attribution1",
         "wadus",
         "new attribution",
-        "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>"
+        DEFAULT_CARTO_ATTRIBUTION
       ]);
 
       map.layers.remove(layer);
@@ -278,7 +279,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>"
+        DEFAULT_CARTO_ATTRIBUTION
       ]);
 
       // Addind a layer with the default attribution
@@ -290,7 +291,7 @@ describe("geo.map", function() {
       expect(map.get('attribution')).toEqual([
         "attribution1",
         "wadus",
-        "CARTO <a href=\"https://carto.com/attributions\" target=\"_blank\">attribution</a>"
+        DEFAULT_CARTO_ATTRIBUTION
       ]);
     })
   });

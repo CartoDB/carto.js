@@ -429,7 +429,7 @@ describe('LeafletMapView', function() {
 
     it('should render the right attributions', function() {
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('CARTO attribution');
+      expect(attributions).toEqual('© CARTO');
 
       layer = new cdb.geo.CartoDBLayer({
         attribution: 'custom attribution'
@@ -437,7 +437,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('custom attribution, CARTO attribution');
+      expect(attributions).toEqual('custom attribution, © CARTO');
     });
 
     it('should respect the attribution of existing Leaflet layers', function() {
@@ -464,7 +464,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('Leaflet | Stamen, custom attribution, CARTO attribution');
+      expect(attributions).toEqual('Leaflet | Stamen, custom attribution, © CARTO');
     });
 
     it('should render attributions when the Leaflet map has attributionControl disabled', function() {
@@ -492,7 +492,7 @@ describe('LeafletMapView', function() {
       map.addLayer(layer);
 
       var attributions = mapView.$el.find('.leaflet-control-attribution').text();
-      expect(attributions).toEqual('Stamen, custom attribution, CARTO attribution');
+      expect(attributions).toEqual('Stamen, custom attribution, © CARTO');
     });
   });
 
