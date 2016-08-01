@@ -17,7 +17,7 @@ var tooltip = vis.addOverlay({
   fields: [{ name: 'name', population: 'pop2005' }]
 });
 ```
-**Note:** If you are using `createLayer` for a map object that contains an enabled tooltip, you can disable the tooltip by applying the `false` value. See the [`cartodb.createLayer(map, layerSource [, options] [, callback])](http://docs.carto.com/carto-engine/carto-js/api-methods/#arguments-2) `tooltip` description for how to enable/disable an interactive tooltip.
+**Note:** If you are using `createLayer` for a map object that contains an enabled tooltip, you can disable the tooltip by applying the `false` value. See the [cartodb.createLayer(map, layerSource [, options] [, callback])](https://carto.com/docs/carto-engine/carto-js/api-methods/#cartodbcreatelayermap-layersource--options--callback) `tooltip` description for how to enable/disable an interactive tooltip.
 
 ## vis.addOverlay(infobox)
 

@@ -28,7 +28,7 @@ options |
 &#124;_ zoom | initial zoom.
 &#124;_ carto_logo | default to true, set to false if you want to remove the CARTO logo.
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default).
-&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](http://docs.carto.com/carto-engine/torque/torque-time-slider/) documentation.
+&#124;_ time_slider | show an animated time slider with Torque layers. This option is enabled by default, as shown with `time_slider: true` value. To disable the time slider, use `time_slider: false`. See [No Torque Time Slider - Example Code](http://bl.ocks.org/michellechandra/081ca7160a8c782266d2) for an example.<br/><br/> For details about customizing the time slider, see the [Torque.js](https://carto.com/docs/carto-engine/torque/torque-time-slider/) documentation.
 &#124;_ layer_selector | show layer selector (default: false).
 &#124;_ legends | if it's true legends are shown in the map.
 &#124;_ https | if true, it makes sure that basemaps are converted to https when possible. If explicitly false, converts https maps to http when possible. If undefined, the basemap template is left as declared at `urlTemplate` in the viz.json.
@@ -79,7 +79,7 @@ Option | Description
 layer | layer from the visualization where the overlay should be applied (optional)
 type | - tooltip (an infowindow that appears when you hover your mouse over a map feature)<br /><br /> - infobox (similar to a tooltip but always appears in the same fixed position that you define)
 
-If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the [specific UI function](http://docs.carto.com/carto-engine/carto-js/ui-functions/#specific-ui-functions).
+If no layer is provided, the overlay will be added to the first layer of the visualization. Extra options are available based on the [specific UI function](https://carto.com/docs/carto-engine/carto-js/ui-functions/).
 
 #### Returns
 
@@ -99,7 +99,7 @@ layer.leafletMap.viz.addOverlay({
 });
 {% endhighlight %}
 
-**Tip:** For a description of the infowindow specific parameters, see [`cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cartodb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
+**Tip:** For a description of the infowindow specific parameters, see [`cartodb.vis.Vis.addInfowindow(_map, layer, fields [, options]_)`](https://carto.com/docs/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options). Optionally, you can also use the `cartodb.vis.Vis.addInfowindow` function to define the click action for an infowindow.
 
 ### vis.getOverlay(_type_)
 
@@ -140,7 +140,7 @@ layerSource | contains information about the layer. It can be specified in multi
 
 options |
 --- | ---
-&#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](http://docs.carto.com/carto-engine/carto-js/other-stuff/#https-support) for example code.
+&#124;_ https | loads the layer as HTTPS. True forces the layer to load. See [HTTPS support](https://carto.com/docs/carto-engine/carto-js/getting-started/#https-support) for example code.
 &#124;_ refreshTime | if set, the layer is auto refreshed in milliseconds. See a refreshTime code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_refresh_time.html).<br/><br/>**Tip:** To refresh and display the latest data in seconds, include the seconds after the defined milliseconds in the code (i.e., `refreshTime: 2000 // 2 seconds`).
 &#124;_ infowindow | set to false if you want to disable the infowindow (enabled by default). For details, see [Creating an infowindow with the `createLayer()` function](http://docs.carto.com/faqs/infowindows/#creating-an-infowindow-with-the-createlayer-function).
 &#124;_ tooltip | set to false if you want to disable the tooltip (enabled by default). This option is specific for when you create a map using the CARTO Editor, and have enabled the tooltip [(infowindow hover)](http://docs.carto.com/carto-editor/maps/#infowindows) option. This option disables the tooltip in createLayer.<br/><br/>See a tooltip code [example](https://github.com/CartoDB/cartodb.js/blob/develop/examples/createLayer_custom_tooltip.html).
@@ -324,7 +324,7 @@ Refreshes the data. If the data has been changed in the CARTO server those chang
 ### layer.setAuthToken(_auth_token_)
 
 Sets the auth token that will be used to create the layer. Only available for private visualizations. An exception is
-raised if the layer is not being loaded with HTTPS. See [Named Maps](http://docs.carto.com/carto-engine/maps-api.html#named-maps-1) for more information.
+raised if the layer is not being loaded with HTTPS. See [Named Maps](https://carto.com/docs/carto-engine/maps-api/named-maps/) for more information.
 
 #### Arguments
 
@@ -338,7 +338,7 @@ The layer itself.
 
 ### layer.setParams(_key, value_)
 
-Sets the configuration of a layer when using [Named Maps](/carto-engine/maps-api/named-maps/). It can be invoked in different ways.
+Sets the configuration of a layer when using [Named Maps](https://carto.com/docs/carto-engine/maps-api/named-maps/). It can be invoked in different ways.
 
 **Note:** This function is not supported when using Named Maps for Torque.
 
