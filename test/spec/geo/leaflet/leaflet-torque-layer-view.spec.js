@@ -27,7 +27,7 @@ describe('geo/leaflet/leaflet-torque-layer-view', function () {
     this.model = new TorqueLayer({
       type: 'torque',
       sql: 'select * from table',
-      cartocss: '#test {}',
+      cartocss: 'Map {} #test {}',
       dynamic_cdn: 'dynamic-cdn-value'
     }, { vis: this.vis });
     this.map.addLayer(this.model);
