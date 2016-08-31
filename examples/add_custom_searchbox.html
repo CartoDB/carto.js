@@ -51,21 +51,22 @@
         // set the map options
         map = vis.getNativeMap().setView([41.390205, 2.154007],4);
        })
+        // When the search button is clicked
+        $('#searchButton').click(function () {
+          // store in the input variable the value from the input box
+          input = $('#ad').val();
+
+          // execute the CARTO SQL API
+          var sql = new cartodb.SQL({ user: 'documentation' });
+          // get the bounds of the geometry which has the same string value (in the name column) than the string value written in the input box
+          sql.getBounds("SELECT * FROM world_borders_1 where name ILIKE '" + input + "'").done(function (bounds) {
+            // sets the map view that contains the bounds defined by the getBounds method with the maximum zoom possible
+            map.fitBounds(bounds);
+          });
+        });
   }
 
-  // When the search button is clicked
-  $('#searchButton').click(function () {
-    // store in the input variable the value from the input box
-    input = $('#ad').val();
-
-    // execute the CARTO SQL API
-    var sql = new cartodb.SQL({ user: 'documentation' });
-    // get the bounds of the geometry which has the same string value (in the name column) than the string value written in the input box
-    sql.getBounds("SELECT * FROM world_borders_1 where name ILIKE '" + input + "'").done(function (bounds) {
-      // sets the map view that contains the bounds defined by the getBounds method with the maximum zoom possible
-      map.fitBounds(bounds);
-    });
-  });
+  
   window.onload = main;
 
 </script>
