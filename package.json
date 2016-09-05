@@ -57,5 +57,5 @@
       "findup-sync": "0.1.3"
     },
     "files": ["dist"],
-    "main": "cartodb.js"
+    "main": "dist/cartodb.js"
 }
