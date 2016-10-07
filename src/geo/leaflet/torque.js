@@ -1,7 +1,7 @@
 
 (function() {
 
-if(typeof(L) === "undefined") 
+if(typeof(L) === "undefined")
   return;
 
 /**
@@ -18,6 +18,7 @@ var LeafLetTorqueLayer = L.TorqueLayer.extend({
     L.TorqueLayer.prototype.initialize.call(this, {
       table: layerModel.get('table_name'),
       user: layerModel.get('user_name'),
+      visualization_user_name: layerModel.get('visualization_user_name'),
       column: layerModel.get('property'),
       blendmode: layerModel.get('torque-blend-mode'),
       resolution: 1,
@@ -97,7 +98,7 @@ var LeafLetTorqueLayer = L.TorqueLayer.extend({
       this.setSQL(this._getQuery(this.model));
     }
 
-    if ('visible' in changed) 
+    if ('visible' in changed)
       this.model.get('visible') ? this.show(): this.hide();
 
   }

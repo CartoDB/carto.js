@@ -998,7 +998,7 @@ CanvasLayer.prototype.setPaneName = function(paneName) {
 
 /**
  * Set the opacity for the canvas.
- * 
+ *
  * @param {number} opacity The opacity of the canvas
  */
 CanvasLayer.prototype.setOpacity = function (opacity) {
@@ -1007,7 +1007,7 @@ CanvasLayer.prototype.setOpacity = function (opacity) {
 
 /**
  * Get the canvases opacity.
- * 
+ *
  * @return {number} The opacity of the canvas
  */
 CanvasLayer.prototype.getOpacity = function () {
@@ -1356,7 +1356,7 @@ GMapsTileLoader.prototype = {
     this._listeners.forEach(function (listener) {
       google.maps.event.removeListener(listener);
     });
-    
+
     this._removeTiles();
   },
 
@@ -1428,7 +1428,7 @@ GMapsTileLoader.prototype = {
   },
 
   _removeTile: function (key) {
-      this.onTileRemoved && this.onTileRemoved(this._tiles[key]); 
+      this.onTileRemoved && this.onTileRemoved(this._tiles[key]);
       delete this._tiles[key];
       delete this._tilesLoading[key];
   },
@@ -1461,7 +1461,7 @@ GMapsTileLoader.prototype = {
     };
 
     tilePoint = new google.maps.Point(
-      tilePoint.x * this.tileSize, 
+      tilePoint.x * this.tileSize,
       tilePoint.y * this.tileSize
     );
 
@@ -1772,7 +1772,7 @@ GMapsTorqueLayer.prototype = torque.extend({},
   },
 
   /**
-   * helper function, does the same than ``setKey`` but only 
+   * helper function, does the same than ``setKey`` but only
    * accepts scalars.
    */
   setStep: function(time) {
@@ -1783,10 +1783,10 @@ GMapsTorqueLayer.prototype = torque.extend({},
   },
 
   /**
-   * transform from animation step to Date object 
+   * transform from animation step to Date object
    * that contains the animation time
    *
-   * ``step`` should be between 0 and ``steps - 1`` 
+   * ``step`` should be between 0 and ``steps - 1``
    */
   stepToTime: function(step) {
     if (!this.provider) return 0;
@@ -1890,7 +1890,7 @@ GMapsTorqueLayer.prototype = torque.extend({},
     }
     return sum;
   },
-  
+
   error: function (callback) {
     this.options.errorCallback = callback;
     return this;
@@ -2067,7 +2067,7 @@ L.CanvasLayer = L.Class.extend({
     this._map = map;
 
     // add container with the canvas to the tile pane
-    // the container is moved in the oposite direction of the 
+    // the container is moved in the oposite direction of the
     // map pane to keep the canvas always in (0, 0)
     var tilePane = this._map._panes.tilePane;
     var _container = L.DomUtil.create('div', 'leaflet-layer');
@@ -3046,7 +3046,7 @@ Metric.prototype = {
 
   //
   // finish a time measurement and register it
-  // ``start`` should be called first, if not this 
+  // ``start`` should be called first, if not this
   // function does not take effect
   //
   end: function() {
@@ -3057,7 +3057,7 @@ Metric.prototype = {
   },
 
   //
-  // increments the value 
+  // increments the value
   // qty: how many, default = 1
   //
   inc: function(qty) {
@@ -3066,7 +3066,7 @@ Metric.prototype = {
   },
 
   //
-  // decrements the value 
+  // decrements the value
   // qty: how many, default = 1
   //
   dec: function(qty) {
@@ -3558,7 +3558,7 @@ var Profiler = require('../profiler');
         "layers": [{
           "type": "cartodb",
           "options": {
-            "cartocss_version": "2.1.1", 
+            "cartocss_version": "2.1.1",
             "cartocss": "#layer {}",
             "sql": this.getSQL()
           }
@@ -3739,7 +3739,7 @@ var Profiler = require('../profiler');
       }
       return keys;
     },
-    
+
 
 
 
@@ -3879,7 +3879,7 @@ var Profiler = require('../profiler');
     },
 
     /**
-     * `coord` object like {x : tilex, y: tiley } 
+     * `coord` object like {x : tilex, y: tiley }
      * `zoom` quadtree zoom level
      */
     getTileData: function(coord, zoom, callback) {
@@ -3891,7 +3891,7 @@ var Profiler = require('../profiler');
       torque.net.get(template, function (data) {
         fetchTime.end();
         var processed = null;
-        
+
         var processingTime = Profiler.metric('jsonarray:processing time');
         var parsingTime = Profiler.metric('jsonarray:parsing time');
         try {
@@ -4107,7 +4107,7 @@ var Profiler = require('../profiler');
       this.options.cartocss = c;
     },*/
 
-    setSteps: function(steps, opt) { 
+    setSteps: function(steps, opt) {
       opt = opt || {};
       if (this.options.steps !== steps) {
         this.options.steps = steps;
@@ -4274,7 +4274,7 @@ var Profiler = require('../profiler');
 
     _tilerHost: function() {
       var opts = this.options;
-      var user = opts.user_name || opts.user;
+      var user = opts.visualization_user_name || opts.user_name || opts.user;
       return opts.maps_api_template.replace('{user}', user);
     },
 
@@ -4298,7 +4298,7 @@ var Profiler = require('../profiler');
         if (!this._isUserTemplateUrl(cdn_url)) {
           cdn_url = cdn_url  + "/{user}";
         }
-        var user = opts.user_name || opts.user;
+        var user = opts.visualization_user_name || opts.user_name || opts.user;
         h += cdn_url.replace('{user}', user)
         return h;
       }
@@ -4356,7 +4356,7 @@ var Profiler = require('../profiler');
           }]
         };
       }
-      
+
       if(this.options.stat_tag){
         allParams["stat_tag"] = this.options.stat_tag;
       }
@@ -4406,9 +4406,9 @@ var Profiler = require('../profiler');
 
 },{"../":10,"../profiler":17}],22:[function(require,module,exports){
   var TAU = Math.PI*2;
-  // min value to render a line. 
+  // min value to render a line.
   // it does not make sense to render a line of a width is not even visible
-  var LINEWIDTH_MIN_VALUE = 0.05; 
+  var LINEWIDTH_MIN_VALUE = 0.05;
   var MAX_SPRITE_RADIUS = 255;
 
   function renderPoint(ctx, st) {
@@ -4564,7 +4564,7 @@ var Filters = require('./torque_filters');
     this.TILE_SIZE = 256;
     this._style = null;
     this._gradients = {};
-    
+
     this._forcePoints = false;
   }
 
@@ -4672,7 +4672,7 @@ var Filters = require('./torque_filters');
         i.src = canvas.toDataURL();
         return i;
       }
-      
+
       return canvas;
     },
 
@@ -4700,7 +4700,7 @@ var Filters = require('./torque_filters');
           }
         }
       }
-      
+
       prof.end(true);
 
       return callback && callback(null);
@@ -4744,7 +4744,7 @@ var Filters = require('./torque_filters');
     },
 
     //
-    // renders a tile in the canvas for key defined in 
+    // renders a tile in the canvas for key defined in
     // the torque tile
     //
     _renderTile: function(tile, key, frame_offset, sprites, shader, shaderVars) {
@@ -4781,7 +4781,7 @@ var Filters = require('./torque_filters');
           }
         }
       }
-      
+
 
       prof.end(true);
     },
@@ -4932,7 +4932,7 @@ var Filters = require('./torque_filters');
           }
           gradient = {};
           var colorize = this._style['image-filters'].args;
-          
+
           var increment = 1/colorize.length;
           for (var i = 0; i < colorize.length; i++){
             var key = increment * i + increment;
@@ -4973,7 +4973,7 @@ var carto = global.carto || require('carto');
 
   //
   // this renderer just render points depending of the value
-  // 
+  //
   function RectanbleRenderer(canvas, options) {
     this.options = options;
     carto.tree.Reference.set(torque['torque-reference']);
@@ -5050,7 +5050,7 @@ var carto = global.carto || require('carto');
           // by-pass the style generation for improving performance
           color = this._shader['polygon-fill']({ value: value }, { zoom: 0 });
           ctx.fillStyle = color;
-          //TODO: each function should have a default value for each 
+          //TODO: each function should have a default value for each
           //property defined in the cartocss
           alpha = polygon_alpha({ value: value }, { zoom: 0 });
           if(alpha === null) {
@@ -5064,7 +5064,7 @@ var carto = global.carto || require('carto');
     },
 
     //
-    // renders a tile in the canvas for key defined in 
+    // renders a tile in the canvas for key defined in
     // the torque tile
     //
     renderTile: function(tile, key, callback) {
@@ -5120,7 +5120,7 @@ module.exports = RectanbleRenderer;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"carto":undefined}],26:[function(require,module,exports){
 /*
- Based on simpleheat, a tiny JavaScript library for drawing heatmaps with Canvas, 
+ Based on simpleheat, a tiny JavaScript library for drawing heatmaps with Canvas,
  by Vladimir Agafonkin
  https://github.com/mourner/simpleheat
 */
@@ -5241,9 +5241,9 @@ var torque = require('./core');
      };
 
      // timeout for errors
-     var timeoutTimer = setTimeout(function() { 
+     var timeoutTimer = setTimeout(function() {
        clean();
-       callback.call(window, null); 
+       callback.call(window, null);
      }, options.timeout);
 
      // setup url
