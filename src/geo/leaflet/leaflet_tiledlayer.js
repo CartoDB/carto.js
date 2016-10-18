@@ -6,7 +6,7 @@
   }
 
   if (typeof(L) == "undefined") {
-    L = window.L
+    L = window.L;
   }
 
 var LeafLetTiledLayerView = L.TileLayer.extend({
