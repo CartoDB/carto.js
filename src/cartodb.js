@@ -38,7 +38,7 @@
         "../vendor/backbone.js",
         "../vendor/mustache.js",
 
-        "../vendor/leaflet.js",
+        "../node_modules/leaflet/dist/leaflet-src.js",
         "../vendor/wax.cartodb.js",
         "../vendor/GeoJSON.js", //geojson gmaps lib
 

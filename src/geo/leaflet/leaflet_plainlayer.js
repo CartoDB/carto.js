@@ -1,8 +1,13 @@
 
 (function() {
 
-if(typeof(L) == "undefined")
-  return;
+  if(typeof(window.L) == "undefined") {
+    return;
+  }
+
+  if (typeof(L) == "undefined") {
+    L = window.L
+  }
 
 /**
  * this is a dummy layer class that modifies the leaflet DOM element background

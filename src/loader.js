@@ -8,7 +8,7 @@
     [window._, 'underscore-min.js'],
     [window.Backbone, 'backbone.js'],
     [window.Mustache, 'mustache.js'],
-    [window.L, 'leaflet.js']
+    [window.L, 'leaflet-src.js']
   ];
 
   var toLoad = [];

@@ -128,7 +128,7 @@ module.exports = {
             ['grunt/templates/wrapper_header.js']
             .concat(vendor_files)
             .concat([
-              '!./vendor/leaflet.js',
+              '!./node_modules/leaflet/dist/leaflet-src.js',
               'grunt/templates/wrapper_middle.js'
             ])
             .concat(cdb_files)
@@ -155,7 +155,7 @@ module.exports = {
             'vendor/mod/jquery-ui/jquery.ui.mouse.js',
             'vendor/mod/jquery-ui/jquery.ui.slider.js'
           ]
-        }  
+        }
       },
 
       odyssey: {
@@ -168,7 +168,7 @@ module.exports = {
           '<%= config.dist %>/cartodb.mod.odyssey.uncompressed.js': [
             'vendor/mod/odyssey.js'
           ]
-        }  
+        }
       },
 
       themes: {
@@ -185,7 +185,7 @@ module.exports = {
             'themes/css/ie/*.css',
             '!themes/css/cartodb.ie.css'
           ]
-        }  
+        }
       }
     }
   }
