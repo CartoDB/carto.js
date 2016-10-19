@@ -463,7 +463,7 @@ enable | `true` if the interaction needs to be enabled.
 
 ### sublayer.infowindow
 
-`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
+`sublayer.infowindow` is a Backbone model where we modify the parameters of the [infowindow](https://carto.com/docs/carto-engine/carto-js/ui-functions/#cartodbvisvisaddinfowindowmap-layer-fields--options).
 
 #### Attributes
 
@@ -506,7 +506,7 @@ maxHeight | Max height of the scrolled content (value must be a number).
 </script>
 ```
 
-[Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/custom_infowindow.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/custom_infowindow.html)
 
 ---
 

@@ -22,7 +22,7 @@ window.onload = function() {
 </script>
 ```
 
-[Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
 
 ## Using the CARTO.js Library
 
@@ -84,7 +84,7 @@ cartodb.createVis('map', 'http://documentation.carto.com/api/v2/viz/2b13c956-e7c
 
 ## Adding CARTO Layers to an Existing Map
 
-In case you already have a map instantiated on your page, you can simply use the [createLayer](#cartodbcreatelayermap-layersource--options--callback) method to add new CARTO layers to it. This is particullary useful when you have more things on your map apart from CARTO layers or you have an application where you want to integrate CARTO layers.
+In case you already have a map instantiated on your page, you can simply use the [createLayer](https://carto.com/docs/carto-engine/carto-js/api-methods/#cartodbcreatelayermap-layersource--options--callback) method to add new CARTO layers to it. This is particularly useful when you have more things on your map apart from CARTO layers or you have an application where you want to integrate CARTO layers.
 
 Below, you have an example using a previously instantiated Leaflet map.
 
@@ -108,7 +108,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 </script>
 ```
 
-[Grab the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
 
 ## Creating Visualizations at Runtime
 
@@ -140,7 +140,7 @@ cartodb.createLayer(map, {
 });
 ```
 
-Want further information? [Check out the complete list of API methods](#api-methods).
+Want more information? [See the complete list of API methods](https://carto.com/docs/carto-engine/carto-js/api-methods/#api-methods).
 
 ---
 
