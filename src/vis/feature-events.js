@@ -16,6 +16,7 @@ var CartoDBFeatureEvents = function (deps) {
   this._mapModel = deps.mapModel;
 
   this._mapModel.layers.on('add', this._setLayerView, this);
+  this._mapModel.layers.on('remove', this._unsetLayerView, this);
   this._mapModel.layers.on('reset', this._setLayerView, this);
   this._setLayerView();
 };
@@ -33,6 +34,13 @@ CartoDBFeatureEvents.prototype._setLayerView = function () {
   if (cartoDBLayers.length > 0) {
     this._layerView = this._mapView.getLayerViewByLayerCid(cartoDBLayers[0].cid);
     this._bindCartoDBFeatureEvents();
+  }
+};
+
+CartoDBFeatureEvents.prototype._unsetLayerView = function () {
+  if (this._layerView) {
+    this._unbindCartoDBFeatureEvents();
+    delete this._layerView;
   }
 };
 
