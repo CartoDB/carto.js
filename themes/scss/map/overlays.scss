@@ -404,8 +404,6 @@ $index-items: 7 6 5 4 3 2 1;
   }
 }
 
-
-
 .Legend-choropleth {
   position: relative;
   height: $baseSize;
@@ -492,6 +490,32 @@ $index-items: 7 6 5 4 3 2 1;
 }
 .Legend-placeholderInner {
   padding: 12px 24px 0;
+}
+
+
+/* Line legends */
+.Spyglass-item {
+  @include flex(1);
+}
+.Spyglass-lineContent {
+  @include display-flex();
+  @include align-items(center);
+  margin-bottom: $baseSize;
+}
+.Spyglass-line {
+  @include flex(1);
+  position: relative;
+  background: #F8AB17;
+  &::before {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    content: '';
+  }
 }
 
 @media (max-width: 600px) {
