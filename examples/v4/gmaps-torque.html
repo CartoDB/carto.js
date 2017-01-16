@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Easy example | CartoDB.js</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="../../dist/themes/css/cartodb.css" />
+</head>
+
+<body>
+    <div id="map"></div>
+    <!-- include google maps library -->
+    <script type="text/javascript" src="http://www.maps.google.com/maps/api/js?sensor=false&v=3.12"></script>
+    <!-- include cartodb.js library -->
+    <script src="../../dist/cartodb.uncompressed.js"></script>
+    <script>
+        function main() {
+            var viz2 = {
+                "bounds": [
+                    [-86.17445430768888, -464.4140625],
+                    [86.9510186848396, 275.2734375]
+                ],
+                "center": "[42.1049169428941,-112.27304868364575]",
+                "datasource": {
+                    "user_name": "flopez2",
+                    "maps_api_template": "https://{user}.carto.com:443",
+                    "stat_tag": "1f211e12-c2d0-11e6-87d1-0e233c30368f"
+                },
+                "description": null,
+                "options": {
+                    "dashboard_menu": true,
+                    "layer_selector": false,
+                    "legends": true,
+                    "scrollwheel": false
+                },
+                "id": "dd102c22-08d0-4e8c-9a63-a36df718bc3b",
+                "layers": [{
+                    "id": "daaf6d81-3b02-4eb7-83d4-b22859f5872b",
+                    "type": "tiled",
+                    "options": {
+                        "default": "true",
+                        "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png",
+                        "subdomains": "abcd",
+                        "minZoom": "0",
+                        "maxZoom": "18",
+                        "name": "Positron",
+                        "className": "positron_rainbow_labels",
+                        "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+                        "labels": {
+                            "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png"
+                        },
+                        "urlTemplate": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png"
+                    }
+                }, {
+                    "id": "59ecb3ea-f11e-4cfb-af44-214c6bd0374e",
+                    "legends": [],
+                    "type": "torque",
+                    "options": {
+                        "visible": true,
+                        "table_name": "state_points",
+                        "user_name": "flopez2",
+                        "attribution": ""
+                    },
+                    "cartocss": "Map {\n  -torque-frame-count: 256;\n  -torque-animation-duration: 30;\n  -torque-time-attribute: \"cartodb_id\";\n  -torque-aggregation-function: \"count(1)\";\n  -torque-resolution: 4;\n  -torque-data-aggregation: linear;\n}\n#layer {\n  marker-width: 7;\n  marker-fill: #FFB927;\n  marker-fill-opacity: 0.9;\n  marker-line-width: 1;\n  marker-line-color: #FFF;\n  marker-line-opacity: 1;\n  comp-op: lighter;\n}\n#layer[frame-offset=1] {\n  marker-width: 9;\n  marker-fill-opacity: 0.45;\n}\n#layer[frame-offset=2] {\n  marker-width: 11;\n  marker-fill-opacity: 0.225;\n}",
+                    "cartocss_version": "2.1.1",
+                    "sql": "SELECT * FROM state_points",
+                    "source": "a0"
+                }, {
+                    "id": "7a723f24-6f3e-40b6-8e5f-c844a0c5b7bc",
+                    "type": "tiled",
+                    "options": {
+                        "default": "true",
+                        "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png",
+                        "subdomains": "abcd",
+                        "minZoom": "0",
+                        "maxZoom": "18",
+                        "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+                        "urlTemplate": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png",
+                        "type": "Tiled",
+                        "name": "Positron Labels"
+                    }
+                }],
+                "likes": 0,
+                "map_provider": "leaflet",
+                "overlays": [{
+                    "type": "share",
+                    "order": 2,
+                    "options": {
+                        "display": true,
+                        "x": 20,
+                        "y": 20
+                    },
+                    "template": ""
+                }, {
+                    "type": "search",
+                    "order": 3,
+                    "options": {
+                        "display": true,
+                        "x": 60,
+                        "y": 20
+                    },
+                    "template": ""
+                }, {
+                    "type": "zoom",
+                    "order": 6,
+                    "options": {
+                        "display": true,
+                        "x": 20,
+                        "y": 20
+                    },
+                    "template": "<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"
+                }, {
+                    "type": "loader",
+                    "order": 8,
+                    "options": {
+                        "display": true,
+                        "x": 20,
+                        "y": 150
+                    },
+                    "template": "<div class=\"loader\" original-title=\"\"></div>"
+                }, {
+                    "type": "logo",
+                    "order": 9,
+                    "options": {
+                        "display": true,
+                        "x": 10,
+                        "y": 40
+                    },
+                    "template": ""
+                }, {
+                    "type": "attribution"
+                }],
+                "title": "Untitled Map 2",
+                "updated_at": "2017-01-12T15:26:54+00:00",
+                "user": {
+                    "fullname": "flopez2",
+                    "avatar_url": "//cartodb-libs.global.ssl.fastly.net/cartodbui/assets/unversioned/images/avatars/avatar_star_yellow.png",
+                    "profile_url": "https://flopez2.carto.com"
+                },
+                "version": "3.0.0",
+                "widgets": [{
+                    "id": "f341cd21-321c-4daa-b8d2-40477ded4be9",
+                    "type": "time-series",
+                    "title": "time_date__t",
+                    "order": 0,
+                    "layer_id": "59ecb3ea-f11e-4cfb-af44-214c6bd0374e",
+                    "options": {
+                        "column": "cartodb_id",
+                        "bins": 256,
+                        "animated": true,
+                        "sync_on_data_change": true,
+                        "sync_on_bbox_change": true
+                    },
+                    "style": {
+                        "widget_style": {
+                            "definition": {
+                                "color": {
+                                    "fixed": "#F2CC8F",
+                                    "opacity": 1
+                                }
+                            }
+                        },
+                        "auto_style": {
+                            "custom": false,
+                            "allowed": false
+                        }
+                    },
+                    "source": {
+                        "id": "a0"
+                    }
+                }],
+                "zoom": 2,
+                "analyses": [{
+                    "id": "a0",
+                    "type": "source",
+                    "params": {
+                        "query": "SELECT * FROM state_points"
+                    },
+                    "options": {
+                        "table_name": "state_points",
+                        "simple_geom": "point",
+                        "style_history": {}
+                    }
+                }],
+                "vector": false
+            };
+
+            cartodb.createVis('map', viz2, {
+                    gmaps_base_type: 'roadmap'
+                })
+                .done(function (vis, layers) {})
+                .error(function (err) {
+                    console.log(err);
+                });
+        }
+
+        window.onload = main;
+    </script>
+</body>
+
+</html>
