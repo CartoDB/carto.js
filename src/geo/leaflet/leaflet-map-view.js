@@ -89,7 +89,8 @@ var LeafletMapView = MapView.extend({
 
   _getLayerViewFactory: function () {
     this._layerViewFactory = this._layerViewFactory || new LeafletLayerViewFactory({
-      vector: this.map.get('vector')
+      vector: this.map.get('vector'),
+      webgl: this.map.get('webgl')
     });
 
     return this._layerViewFactory;
@@ -135,7 +136,6 @@ var LeafletMapView = MapView.extend({
       } else {
         layerView.setModel(layerModel);
         self._layerViews[layerModel.cid] = layerView;
-        self.trigger('newLayerView', layerView, layerModel, self);
       }
     });
   },
@@ -182,14 +182,9 @@ var LeafletMapView = MapView.extend({
     return this._leafletMap;
   },
 
-  _addLayerToMap: function (layerView, layerModel, opts) {
+  _addLayerToMap: function (layerView) {
     this._leafletMap.addLayer(layerView.leafletLayer);
     this._reorderLayerViews();
-
-    if (!opts.silent) {
-      this.trigger('newLayerView', layerView);
-    }
-    return layerView;
   },
 
   _reorderLayerViews: function () {
