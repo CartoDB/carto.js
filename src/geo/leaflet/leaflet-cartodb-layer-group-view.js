@@ -149,7 +149,7 @@ var LeafletCartoDBLayerGroupView = L.TileLayer.extend({
       return EMPTY_GIF;
     }
 
-    this._adjustTilePoint(tilePoint);
+    // this._adjustTilePoint(tilePoint);
     var tilesURLTemplates = this.model.getTileURLTemplates();
     var index = (tilePoint.x + tilePoint.y) % tilesURLTemplates.length;
     return L.Util.template(tilesURLTemplates[index], L.Util.extend({

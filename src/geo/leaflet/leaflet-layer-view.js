@@ -15,7 +15,13 @@ var LeafletLayerView = function (layerModel, leafletLayer, leafletMap) {
   this.type = type && type.toLowerCase();
 };
 
-_.extend(LeafletLayerView.prototype, Backbone.Events);
+LeafletLayerView.prototype = {
+  unbind: Backbone.Events.unbind.bind(LeafletLayerView),
+  bind: Backbone.Events.bind.bind(LeafletLayerView),
+  trigger: Backbone.Events.trigger.bind(LeafletLayerView)
+};
+
+// _.extend(LeafletLayerView.prototype, Backbone.Events);
 _.extend(LeafletLayerView.prototype, {
 
   setModel: function (model) {
