@@ -1,3 +1,7 @@
+3.15.11 (21/02/2017)
+-------
+* Update torque.js dependency.
+
 3.15.10 (11/07/2016)
 -------
 * Replaced references to cartodb.com by carto.com
