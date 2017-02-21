@@ -23,7 +23,7 @@ describe("Image", function() {
   it("should use the basemap defined in the vizjson", function(done) {
     var vizjson = "http://documentation.carto.com/api/v2/viz/318ab654-c989-11e4-97c6-0e9d821ea90d/viz.json"
     var image = cartodb.Image(vizjson).size(640, 480);
-    var basemapURLTemplate = 'https://{s}.maps.nlp.nokia.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
+    var basemapURLTemplate = 'https://{s}.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24';
     image.getUrl(function() {
       expect(image.imageOptions.basemap.options.urlTemplate).toEqual(basemapURLTemplate);
       done();
