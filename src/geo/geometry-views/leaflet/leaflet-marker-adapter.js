@@ -9,7 +9,7 @@ LeafletMarkerAdapter.prototype = new MarkerAdapterBase();
 LeafletMarkerAdapter.prototype.constructor = LeafletMarkerAdapter;
 
 LeafletMarkerAdapter.prototype.addToMap = function (leafletMap) {
-  leafletMap.addLayer(this._nativeMarker);
+  this._nativeMarker.addTo(leafletMap);
 };
 
 LeafletMarkerAdapter.prototype.removeFromMap = function (leafletMap) {

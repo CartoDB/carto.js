@@ -16,12 +16,14 @@ var LeafletLayerView = function (layerModel, leafletLayer, leafletMap) {
 };
 
 LeafletLayerView.prototype = {
-  unbind: Backbone.Events.unbind.bind(LeafletLayerView),
-  bind: Backbone.Events.bind.bind(LeafletLayerView),
-  trigger: Backbone.Events.trigger.bind(LeafletLayerView)
+  bind: Backbone.Events.bind,
+  listenTo: Backbone.Events.listenTo,
+  listenToOnce: Backbone.Events.listenToOnce,
+  stopListening: Backbone.Events.stopListening,
+  trigger: Backbone.Events.trigger,
+  unbind: Backbone.Events.unbind
 };
 
-// _.extend(LeafletLayerView.prototype, Backbone.Events);
 _.extend(LeafletLayerView.prototype, {
 
   setModel: function (model) {

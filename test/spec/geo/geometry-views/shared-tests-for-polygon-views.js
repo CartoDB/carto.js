@@ -3,8 +3,8 @@ var SharedTestsForPathViews = require('./shared-tests-for-path-views');
 var createMapView = require('./create-map-view');
 var CoordinatesComparator = require('./coordinates-comparator');
 
-module.exports = function (MapView, PathView) {
-  SharedTestsForPathViews.call(this, Polygon, MapView, PathView);
+module.exports = function (MapView, PathView, latLng) {
+  SharedTestsForPathViews.call(this, Polygon, MapView, PathView, latLng);
 
   describe('expandable paths', function () {
     beforeEach(function () {
@@ -73,9 +73,11 @@ module.exports = function (MapView, PathView) {
       ).toBeTruthy();
       expect(markers[7].isDraggable()).toBe(true);
 
-      expect(paths[0].getCoordinates()).toEqual([
-        { lat: 0, lng: 0 }, { lat: 10, lng: 0 }, { lat: 10, lng: 10 }, { lat: 0, lng: 10 }
-      ]);
+      expect(paths[0].getCoordinates()).toEqual(
+        latLng([
+          [0, 0], [10, 0], [10, 10], [0, 10]
+        ])
+      );
     });
 
     it('should re-render middle points when map is zoomed', function () {

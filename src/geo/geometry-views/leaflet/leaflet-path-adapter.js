@@ -1,6 +1,7 @@
 var PathAdapterBase = require('../base/path-adapter-base');
 
 var LeafletPathAdapter = function (nativePath) {
+  nativePath._latlngs = nativePath._latlngs[0].length > 0 ? nativePath._latlngs[0] : nativePath._latlngs;
   this._nativePath = nativePath;
 };
 
@@ -25,6 +26,7 @@ LeafletPathAdapter.prototype.getCoordinates = function () {
 
 LeafletPathAdapter.prototype.setCoordinates = function (coordinates) {
   this._nativePath.setLatLngs(coordinates);
+  this._nativePath._latlngs = this._nativePath._latlngs[0].length > 0 ? this._nativePath._latlngs[0] : this._nativePath._latlngs;
 };
 
 module.exports = LeafletPathAdapter;

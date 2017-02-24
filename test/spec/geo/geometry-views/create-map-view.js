@@ -52,6 +52,11 @@ module.exports = function (MapViewBase) {
 
     findMarkerByLatLng: function (latlng) {
       var markers = this.getMarkers();
+      // var mar = markers.map(function (m) {
+      //   return m.getCoordinates();
+      // });
+
+      // throw JSON.stringify(mar) + JSON.stringify(latlng);
       return _.find(markers, function (marker) {
         return CoordinatesComparator.areCoordinatesSimilar([marker.getCoordinates()], [latlng]);
       }, this);

@@ -3,7 +3,7 @@ var Point = require('../../../../src/geo/geometry-models/point.js');
 var createMapView = require('./create-map-view');
 var CoordinatesComparator = require('./coordinates-comparator');
 
-module.exports = function (Path, MapView, PathView) {
+module.exports = function (Path, MapView, PathView, latLng) {
   beforeEach(function () {
     spyOn(_, 'debounce').and.callFake(function (func) { return function () { func.apply(this, arguments); }; });
 
@@ -39,9 +39,9 @@ module.exports = function (Path, MapView, PathView) {
     expect(markers[2].getCoordinates()).toEqual({ lat: 3, lng: 4 });
     expect(markers[2].isDraggable()).toBe(false);
 
-    expect(paths[0].getCoordinates()).toEqual([
-      { lat: -1, lng: 1 }, { lat: 1, lng: 2 }, { lat: 3, lng: 4 }
-    ]);
+    expect(paths[0].getCoordinates()).toEqual(
+      latLng([[-1, 1], [1, 2], [3, 4]])
+    );
   });
 
   it('should not render duplicated markers', function () {
@@ -197,9 +197,12 @@ module.exports = function (Path, MapView, PathView) {
         expect(paths.length).toEqual(1);
 
         // Coordinates have different precissions and we just check they are similar
-        expect(CoordinatesComparator.areCoordinatesSimilar(paths[0].getCoordinates(), [
-          { lat: 0, lng: 0 }, { lat: 5, lng: 0 }, { lat: 10, lng: 0 }, { lat: 10, lng: 10 }, { lat: 0, lng: 10 }
-        ])).toBeTruthy();
+        // throw JSON.stringify(paths[0].getCoordinates());
+        expect(CoordinatesComparator.areCoordinatesSimilar(paths[0].getCoordinates(),
+          latLng([
+            [0, 0], [5, 0], [10, 0], [10, 10], [0, 10]
+          ])
+        )).toBeTruthy();
       });
 
       it('should change the icon of the middle point', function () {
@@ -240,9 +243,11 @@ module.exports = function (Path, MapView, PathView) {
         it('should update the coordinates of the new vertex to [5, -5]', function () {
           var paths = this.mapView.getPaths();
           expect(paths.length).toEqual(1);
-          expect(paths[0].getCoordinates()).toEqual([
-            { lat: 0, lng: 0 }, { lat: 5, lng: -5 }, { lat: 10, lng: 0 }, { lat: 10, lng: 10 }, { lat: 0, lng: 10 }
-          ]);
+          expect(paths[0].getCoordinates()).toEqual(
+            latLng([
+              [0, 0], [5, -5], [10, 0], [10, 10], [0, 10]
+            ])
+          );
         });
 
         it('should add two middle points at [2.5] and [7.5, 0]', function () {

@@ -11,7 +11,15 @@ var PlainLayer = LayerModelBase.extend({
     className: 'plain',
     color: '#FFFFFF',
     image: ''
+  },
+
+  _layerAdd: function () {
+
   }
 });
+
+PlainLayer._layerAdd = function () {
+
+  };
 
 module.exports = PlainLayer;
