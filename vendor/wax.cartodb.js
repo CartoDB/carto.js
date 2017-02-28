@@ -3023,6 +3023,142 @@ wax.u = {
     }
 };
 wax = wax || {};
+
+wax.ol = wax.ol || {};
+
+wax.ol.hash = function(map) {
+    return wax.hash({
+        getCenterZoom: function () {
+            var view = map.getView();
+            var center = view.getCenter(),
+                zoom = view.getZoom(),
+                precision = Math.max(
+                    0,
+                    Math.ceil(Math.log(zoom) / Math.LN2));
+
+             return [
+                 zoom,
+                 center[1].toFixed(precision),
+                 center[0].toFixed(precision)
+             ].join('/');
+         },
+ 
+         setCenterZoom: function (args) {
+           var view = map.getView();
+           view.setCenter(ol.proj.toLonLat([args[2],args[1]]));
+           view.setZoom(args[0]);
+         },
+ 
+         bindChange: function (fn) {
+             map.on('moveend', fn);
+         },
+ 
+         unbindChange: function (fn) {
+             map.un('moveend', fn);
+         }
+     });
+ };
+ 
+ wax.ol.interaction = function() {
+     var dirty = false, _grid, map;
+ 
+     function setdirty() { dirty = true; }
+ 
+     function grid() {
+         if (!dirty && _grid) {
+             return _grid;
+         } else {
+             return (_grid = (function(map) {
+                 var o = [];
+                 var layers = map.getLayers();
+                 var extent = map.getView().calculateExtent(map.getSize());
+                 var resolution = map.getView().getResolution();
+                 var tiles = [];
+ 
+                 layers.forEach(function(layer){
+                   var layerView = layer.get("layerview");
+                   if(layerView.tiles){
+                     var tileGrid = layer.getSource().getTileGrid();
+                     var zoom = tileGrid.getZForResolution(resolution);
+ 
+                     tileGrid.forEachTileCoord(extent, zoom, function(tileCoord){
+                       var tile = layerView.tiles[tileCoord];
+                       if(tile){
+                         var tileExtent = tileGrid.getTileCoordExtent(tileCoord);
+                         var pixel = map.getPixelFromCoordinate([tileExtent[0], tileExtent[3]]);
+ 
+                         var view = map.getView();
+                         var width = ol.extent.getWidth(view.getProjection().getExtent()) / view.getResolution();
+ 
+                         var pixelX = Math.floor(pixel[0]);
+                         var pixelY = Math.floor(pixel[1]);
+ 
+                         tiles.push({ 
+                           left: pixelX,
+                           top: pixelY,
+                           tile: tile
+                         });
+                       }
+                     }); 
+                   }
+                 });
+ 
+                 var mapParentOffset = wax.u.offset(map.getTarget());
+ 
+                 tiles.forEach(function(tileWrapper)
+                 {
+                   
+                   var image = tileWrapper.tile.getImage();
+                   if(image.src){
+                     var coord =  tileWrapper.tile.getTileCoord();
+ 
+                     image.getBoundingClientRect = function(){
+                       return {
+                         top: tileWrapper.top + mapParentOffset.top,
+                         left: tileWrapper.left,
+                         width: 256,
+                         height: 256
+                       };
+                     }
+   
+                     o.push([tileWrapper.top + mapParentOffset.top, tileWrapper.left, image]);
+                   }
+                 });
+ 
+                 return o;
+             })(map));
+         }
+     }
+ 
+     function attach(x) {
+         if (!arguments.length) return map;
+         map = x;
+         var l = ['moveend'];
+         for (var i = 0; i < l.length; i++) {
+             map.on(l[i], setdirty);
+         }
+     }
+ 
+     function detach(x) {
+         if (!arguments.length) return map;
+         map = x;
+         var l = ['moveend'];
+         for (var i = 0; i < l.length; i++) {
+             map.un(l[i], setdirty);
+         }
+     }
+ 
+     return wax.interaction()
+         .attach(attach)
+         .detach(detach)
+         .parent(function() {
+           return map.getTarget();
+         })
+         .grid(grid);
+ };
+ 
+//  wax = wax || {};
+ 
 wax.leaf = wax.leaf || {};
 
 wax.leaf.hash = function(map) {
