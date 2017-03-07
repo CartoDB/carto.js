@@ -113,6 +113,10 @@ var TorqueLayer = LayerModelBase.extend({
     this.set('renderRange', {});
   },
 
+  // _layerAdd: function () {
+
+  // },
+
   isEqual: function (other) {
     var properties = ['query', 'query_wrapper', 'cartocss'];
     var self = this;

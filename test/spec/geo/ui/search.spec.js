@@ -79,13 +79,15 @@ describe('geo/ui/search', function () {
       this.view.$('.js-form').submit();
       var center = this.map.get('center');
       expect(center[0]).toBe(43.0);
-      expect(center[1]).toBe(-3.0);
+      expect(parseInt(center[1].toFixed(0))).toBe(-3.0);
     });
 
     it('should center map whith bbox when it is defined', function () {
       this.view.$('form').submit();
       var ne = this.map.get('view_bounds_ne');
       var sw = this.map.get('view_bounds_sw');
+      // Note: it seem that after the flyTo this changes
+      // to a real one, making it wrong because the map is not complete
       expect(ne[0].toFixed(0)).toBe('6');
       expect(ne[1].toFixed(0)).toBe('6');
       expect(sw[0].toFixed(0)).toBe('4');

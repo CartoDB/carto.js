@@ -2,7 +2,7 @@ var TC = require('tangram.cartodb');
 var LeafletLayerView = require('./leaflet-layer-view');
 var L = require('leaflet');
 
-var LeafletCartoDBWebglLayerGroupView = L.Class.extend({
+var LeafletCartoDBWebglLayerGroupView = L.Layer.extend({
   includes: [
     LeafletLayerView.prototype
   ],

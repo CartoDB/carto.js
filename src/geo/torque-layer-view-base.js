@@ -1,4 +1,6 @@
 var _ = require('underscore');
+var Backbone = require('backbone');
+// require('leaflet');
 
 /**
  * Implementation of all common logic of a torque-layer view.
@@ -6,7 +8,7 @@ var _ = require('underscore');
  *
  * Methods are prefixed with _ to indicate that they are not intended to be used outside the implementing models.
  */
-module.exports = {
+var TorqueLayerViewBase = {
 
   _initialAttrs: function (layerModel) {
     return {
@@ -151,3 +153,11 @@ module.exports = {
     return query;
   }
 };
+
+// _.extend(TorqueLayerViewBase.prototype, {
+//   on: L.Evented.prototype.on
+// });
+
+// _.extend(TorqueLayerViewBase, L.Layer.extend(TorqueLayerViewBase).prototype);
+
+module.exports = TorqueLayerViewBase;

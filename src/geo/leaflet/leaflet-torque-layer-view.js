@@ -4,6 +4,7 @@ var _ = require('underscore');
 var util = require('cdb.core.util');
 var LeafletLayerView = require('./leaflet-layer-view');
 var TorqueLayerViewBase = require('../torque-layer-view-base');
+var Backbone = require('backbone');
 
 /**
  * leaflet torque layer
@@ -63,7 +64,14 @@ var LeafletTorqueLayer = L.TorqueLayer.extend({
   }
 });
 
+_.extend(LeafletTorqueLayer.prototype, TorqueLayerViewBase, L.Layer.extend(TorqueLayerViewBase).prototype);
 _.extend(LeafletTorqueLayer.prototype, LeafletLayerView.prototype);
-_.extend(LeafletTorqueLayer.prototype, TorqueLayerViewBase);
+
+_.extend(LeafletTorqueLayer.prototype, {
+  on: Backbone.Events.on,
+});
+
+// _.extend(LeafletLayerView.prototype, Backbone.Events);
+
 
 module.exports = LeafletTorqueLayer;

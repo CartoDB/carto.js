@@ -3,8 +3,8 @@ var SharedTestsForPathViews = require('./shared-tests-for-path-views');
 var createMapView = require('./create-map-view');
 var CoordinatesComparator = require('./coordinates-comparator');
 
-module.exports = function (MapView, PathView) {
-  SharedTestsForPathViews.call(this, Polyline, MapView, PathView);
+module.exports = function (MapView, PathView, latLang) {
+  SharedTestsForPathViews.call(this, Polyline, MapView, PathView, latLang);
 
   describe('expandable paths', function () {
     beforeEach(function () {

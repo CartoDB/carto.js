@@ -6,7 +6,7 @@ var LeafletLayerView = require('./leaflet-layer-view');
  * this is a dummy layer class that modifies the leaflet DOM element background
  * instead of creating a layer with div
  */
-var LeafletPlainLayerView = L.Class.extend({
+var LeafletPlainLayerView = L.Layer.extend({
   includes: L.Mixin.Events,
 
   initialize: function(layerModel, leafletMap) {
@@ -34,6 +34,10 @@ var LeafletPlainLayerView = L.Class.extend({
       var st = 'transparent url(' + this.model.get('image') + ') repeat center center';
       div.style.background = st
     }
+  },
+
+  _layerAdd: function () {
+
   },
 
   // this method

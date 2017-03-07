@@ -281,6 +281,10 @@ var Map = Model.extend({
     return this.get('zoom');
   },
 
+  getCenter: function () {
+    return this.get('center');
+  },
+
   setCenter: function (latlng) {
     this.set({
       center: latlng

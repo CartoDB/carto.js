@@ -162,7 +162,10 @@ var LeafletMapView = MapView.extend({
   },
 
   _setZoom: function (model, z) {
-    this._setView();
+    var center = this.map.get('center'),
+        zoom = this.map.get('zoom');
+
+    this._leafletMap.flyTo(center, zoom);
   },
 
   _setCenter: function (model, center) {

@@ -10,6 +10,8 @@ var Model = require('../../core/model');
 var MapLayer = Model.extend({
 
   initialize: function () {
+    this._layerAdd = function () {};
+
     this.bind('change:type', function () {
       log.error('changing layer type is not allowed, remove it and add a new one instead');
     });
@@ -52,7 +54,6 @@ var MapLayer = Model.extend({
   setError: function (error) {
     this.set('error', error);
   },
-
   /*
    * Compare the layer with the received one
    * @method isEqual
