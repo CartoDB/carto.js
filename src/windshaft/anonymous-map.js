@@ -100,8 +100,6 @@ var AnonymousMap = MapBase.extend({
             // layerModel has a source, so the analysis will be included
             // in the payload when we get to that sourceId in this loop
           }
-        } else {
-          throw new Error("sourceId '" + sourceId + "' doesn't exist");
         }
       }
     }, this);

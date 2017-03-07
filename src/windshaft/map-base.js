@@ -46,7 +46,6 @@ var WindshaftMap = Backbone.Model.extend({
     throw new Error('Subclasses of windshaft/map-base must implement .toJSON');
   },
 
-  // TODO: Move this somewhere else and keep this class as a wrapper for windshaft responses
   createInstance: function (options) {
     var filters;
     options = options || {};
@@ -97,7 +96,11 @@ var WindshaftMap = Backbone.Model.extend({
         this._trackRequest(request, response);
         var windshaftErrors = this._getErrorsFromResponse(response);
         this._modelUpdater.setErrors(windshaftErrors);
-        options.error && options.error(windshaftErrors[0].toString());
+        var errorMessage = 'Maps API Error -> Unknown error';
+        if (windshaftErrors[0]) {
+          errorMessage = windshaftErrors[0].toString();
+        }
+        options.error && options.error(errorMessage);
       }.bind(this)
     });
   },
