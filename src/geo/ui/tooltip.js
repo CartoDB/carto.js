@@ -76,7 +76,12 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
             if (names) {
               for(var i = 0; i < data.fields.length; ++i) {
                 var f = data.fields[i];
-                f.title = names[f.title] || f.title;
+                if (f.title) {
+                  f.title = names[f.alias] || names[f.title] || f.title;
+                  if(f.title === names[f.alias]){
+                    f.alias = null
+                  }
+                }
               }
             }
             this.show(pos, data);

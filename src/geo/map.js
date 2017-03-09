@@ -283,7 +283,8 @@ cdb.geo.Map = cdb.core.Model.extend({
     scrollwheel: true,
     drag: true,
     keyboard: true,
-    provider: 'leaflet'
+    // provider: 'leaflet'
+    provider: 'openlayers'
   },
 
   initialize: function() {
@@ -776,7 +777,12 @@ cdb.geo.MapView = cdb.core.View.extend({
 
 }, {
   _getClass: function(provider) {
-    var mapViewClass = cdb.geo.LeafletMapView;
+     // var mapViewClass = cdb.geo.LeafletMapView;
+    var mapViewClass = cdb.geo.OpenLayersMapView;
+    
+    if(provider === 'leaflet'){
+      mapViewClass = cdb.geo.LeafletMapView;
+    }
     if(provider === 'googlemaps') {
       if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
         mapViewClass = cdb.geo.GoogleMapsMapView;
@@ -788,7 +794,9 @@ cdb.geo.MapView = cdb.core.View.extend({
   },
 
   create: function(el, mapModel) {
-    var _mapViewClass = cdb.geo.MapView._getClass(mapModel.get('provider'));
+    mapModel.set('provider', 'openlayers');
+    // var _mapViewClass = cdb.geo.MapView._getClass(mapModel.get('provider'));
+    var _mapViewClass = cdb.geo.OpenLayersMapView;
     return new _mapViewClass({
       el: el,
       map: mapModel

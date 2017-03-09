@@ -149,11 +149,14 @@ module.exports = {
             'vendor/mod/torque.uncompressed.js',
             'src/geo/gmaps/torque.js',
             'src/geo/leaflet/torque.js',
+            'src/geo/ol/torque.js',
             'src/geo/ui/time_slider.js',
             'vendor/mod/jquery-ui/jquery.ui.core.js',
             'vendor/mod/jquery-ui/jquery.ui.widget.js',
             'vendor/mod/jquery-ui/jquery.ui.mouse.js',
-            'vendor/mod/jquery-ui/jquery.ui.slider.js'
+            'vendor/mod/jquery-ui/jquery.ui.draggable.js',
+            'vendor/mod/jquery-ui/jquery.ui.slider.js',
+            'vendor/mod/jquery-ui/jquery.ui.touch-punch.js'
           ]
         }  
       },

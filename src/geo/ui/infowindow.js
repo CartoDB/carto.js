@@ -79,25 +79,25 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
     this.get('fields').sort(function(a, b) { return a.position - b.position; });
   },
 
-  _addField: function(fieldName, at) {
+  _addField: function(fieldName, at, alias) {
     var dfd = $.Deferred();
     if(!this.containsField(fieldName)) {
       var fields = this.get('fields');
       if(fields) {
         at = at === undefined ? fields.length: at;
-        fields.push({ name: fieldName, title: true, position: at });
+        fields.push({ name: fieldName, title: true, position: at, alias: alias });
       } else {
         at = at === undefined ? 0 : at;
-        this.set('fields', [{ name: fieldName, title: true, position: at }], { silent: true});
+        this.set('fields', [{ name: fieldName, title: true, position: at, alias: alias }], { silent: true});
       }
     }
     dfd.resolve();
     return dfd.promise();
   },
 
-  addField: function(fieldName, at) {
+  addField: function(fieldName, at, alias) {
     var self = this;
-    $.when(this._addField(fieldName, at)).then(function() {
+    $.when(this._addField(fieldName, at, alias)).then(function() {
       self.sortFields();
       self.trigger('change:fields');
       self.trigger('add:fields');
@@ -154,8 +154,13 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
     return _.contains(_(fields).pluck('name'), fieldName);
   },
 
+  containsAlias: function(aliasName) {
+    var fields = this.get('fields') || [];
+    return _.contains(_(fields).pluck('alias'), aliasName);
+  },
+
   removeField: function(fieldName) {
-    if(this.containsField(fieldName)) {
+    if(this.containsField(fieldName) || this.containsAlias(fieldName)) {
       var fields = this._cloneFields() || [];
       var idx = _.indexOf(_(fields).pluck('name'), fieldName);
       if(idx >= 0) {
@@ -191,6 +196,7 @@ cdb.geo.ui.InfowindowModel = Backbone.Model.extend({
         render_fields.push({
           title: field.title ? field.name : null,
           value: attributes[field.name],
+          alias: field.alias ? field.alias : null,
           index: j
         });
       }
@@ -446,10 +452,12 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
     //Get the alternative title
     var alternative_name = this.model.getAlternativeName(attr.title);
+    var title = (attr.alias) ? attr.alias : attr.title;
 
     if (attr.title && alternative_name) {
       // Alternative title
       attr.title = alternative_name;
+      attr.alias = null;
     } else if (attr.title) {
       // Remove '_' character from titles
       attr.title = attr.title.replace(/_/g,' ');

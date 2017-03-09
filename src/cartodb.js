@@ -40,6 +40,7 @@
 
         "../vendor/leaflet.js",
         "../vendor/wax.cartodb.js",
+        "../vendor/ol.js",
         "../vendor/GeoJSON.js", //geojson gmaps lib
 
         "../vendor/jscrollpane.js",
@@ -81,6 +82,7 @@
         'geo/ui/infobox.js',
         'geo/ui/tooltip.js',
         'geo/ui/fullscreen.js',
+        'geo/ui/inset_map.js',
 
         'geo/sublayer.js',
         'geo/layer_definition.js',
@@ -104,6 +106,12 @@
         'geo/gmaps/gmaps_cartodb_layer.js',
         'geo/gmaps/gmaps.geometry.js',
         'geo/gmaps/gmaps.js',
+
+        'geo/ol/ol_base_layer.js',
+        'geo/ol/ol_tiled_layer.js',
+        'geo/ol/ol_cartodb_layergroup.js',
+        'geo/ol/ol_plain_layer.js',
+        'geo/ol/ol.js',
 
         'ui/common/dialog.js',
         'ui/common/share.js',

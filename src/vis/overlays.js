@@ -373,6 +373,38 @@ cdb.vis.Overlay.register('fullscreen', function(data, vis) {
 
 });
 
+cdb.vis.Overlay.register('inset_map', function(data, vis) {
+  var options = cleanupPositioning(vis, data.options);
+
+  var widget = new cdb.geo.ui.InsetMap({
+      vis: vis,
+      map: vis.map,
+      mapView: vis.mapView,
+      model: new cdb.core.Model(options)
+  });
+  return widget.render();
+
+  function cleanupPositioning(vis, options) {
+    var overrides = _.extend({}, options);
+    if (options.xPosition === 'right' && options.yPosition === 'bottom') {
+      // Shift up to match legend placement on public map
+      overrides.y = options.y + 14;
+    } else if (options.xPosition === 'left' && options.yPosition === 'bottom') {
+      // Shift into corner, there are no map controls in this corner on public maps
+      overrides.x = 10;
+      overrides.y = 10;
+    } else if (options.yPosition === 'top') {
+      // Shift down if header, positioning of description appears to be accounted for
+      var header = vis.overlayModels.find(function (model) { return model.get('type') === 'header'; });
+      if (header) {
+        overrides.y = options.y + 10;
+      }
+    }
+    return overrides;
+  }
+});
+
+
 // share content
 cdb.vis.Overlay.register('share', function(data, vis) {
 
