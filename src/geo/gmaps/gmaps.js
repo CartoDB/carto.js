@@ -116,7 +116,7 @@ if(typeof(google) != "undefined" && typeof(google.maps) != "undefined") {
       this.map.layers.bind('add', this._addLayer, this);
       this.map.layers.bind('remove', this._removeLayer, this);
       this.map.layers.bind('reset', this._addLayers, this);
-      this.map.layers.bind('change:type', this._swicthLayerView, this);
+      this.map.layers.bind('change:type', this._switchLayerView, this);
 
       this.projector = new cdb.geo.CartoDBLayerGroupGMaps.Projector(this.map_googlemaps);
 

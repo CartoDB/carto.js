@@ -714,7 +714,7 @@ cdb.geo.MapView = cdb.core.View.extend({
     }
   },
 
-  _swicthLayerView: function(layer, attr, opts) {
+  _switchLayerView: function(layer, attr, opts) {
     this._removeLayer(layer);
     this._addLayer(layer, this.map.layers, opts);
   },

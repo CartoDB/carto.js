@@ -1,8 +1,13 @@
 
 (function() {
 
-if(typeof(L) == "undefined")
-  return;
+  if(typeof(window.L) == "undefined") {
+    return;
+  }
+
+  if (typeof(L) == "undefined") {
+    L = window.L;
+  }
 
 L.CartoDBLayer = L.CartoDBGroupLayer.extend({
 

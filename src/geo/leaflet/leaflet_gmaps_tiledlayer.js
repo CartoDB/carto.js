@@ -1,8 +1,13 @@
 
 (function() {
 
-  if(typeof(L) == "undefined")
+  if(typeof(window.L) == "undefined") {
     return;
+  }
+
+  if (typeof(L) == "undefined") {
+    L = window.L;
+  }
 
   var stamenSubstitute = function stamenSubstitute(type) {
     return {
@@ -13,7 +18,7 @@
       attribution: 'Map designs by <a href="http://stamen.com/">Stamen</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, Provided by <a href="https://carto.com">CARTO</a>'
     };
   };
-  
+
   var nokiaSubstitute = function nokiaSubstitute(type) {
     return {
       url: 'https://{s}.maps.nlp.nokia.com/maptile/2.1/maptile/newest/'+ type +'.day/{z}/{x}/{y}/256/png8?lg=eng&token=A7tBPacePg9Mj_zghvKt9Q&app_id=KuYppsdXZznpffJsKT24',

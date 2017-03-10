@@ -3,8 +3,13 @@
 */
 (function() {
 
-  if(typeof(L) == "undefined")
+  if(typeof(window.L) == "undefined") {
     return;
+  }
+
+  if (typeof(L) == "undefined") {
+    L = window.L
+  }
 
   /**
    * leatlef impl
@@ -71,7 +76,7 @@
       this.map.layers.bind('add', this._addLayer, this);
       this.map.layers.bind('remove', this._removeLayer, this);
       this.map.layers.bind('reset', this._addLayers, this);
-      this.map.layers.bind('change:type', this._swicthLayerView, this);
+      this.map.layers.bind('change:type', this._switchLayerView, this);
 
       this.map.geometries.bind('add', this._addGeometry, this);
       this.map.geometries.bind('remove', this._removeGeometry, this);
@@ -122,11 +127,11 @@
       }, this);
 
       this.map.bind('change:maxZoom', function() {
-        L.Util.setOptions(self.map_leaflet, { maxZoom: self.map.get('maxZoom') });
+        self.map_leaflet.setMaxZoom(self.map.get('maxZoom'));
       }, this);
 
       this.map.bind('change:minZoom', function() {
-        L.Util.setOptions(self.map_leaflet, { minZoom: self.map.get('minZoom') });
+        self.map_leaflet.setMinZoom(self.map.get('minZoom'));
       }, this);
 
       this.trigger('ready');
@@ -183,7 +188,7 @@
     },
 
     clean: function() {
-      //see https://github.com/CloudMade/Leaflet/issues/1101
+      //see https://github.com/Leaflet/Leaflet/issues/1101
       L.DomEvent.off(window, 'resize', this.map_leaflet._onResize, this.map_leaflet);
 
       // remove layer views

@@ -1,8 +1,13 @@
 
 (function() {
 
-if(typeof(L) == "undefined")
-  return;
+  if(typeof(window.L) == "undefined") {
+    return;
+  }
+
+  if (typeof(L) == "undefined") {
+    L = window.L;
+  }
 
 
 L.CartoDBGroupLayerBase = L.TileLayer.extend({
@@ -79,10 +84,8 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
   // overwrite getTileUrl in order to
   // support different tiles subdomains in tilejson way
   getTileUrl: function (tilePoint) {
-    var EMPTY_GIF = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
-    this._adjustTilePoint(tilePoint);
 
-    var tiles = [EMPTY_GIF];
+    var tiles = [L.Util.emptyImageUrl];
     if(this.tilejson) {
       tiles = this.tilejson.tiles;
     }

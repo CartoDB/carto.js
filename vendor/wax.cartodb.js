@@ -959,7 +959,7 @@ var html = (function (html4) {
     quot : '"',
     apos : '\''
   };
-  
+
   // Schemes on which to defer to uripolicy. Urls with other schemes are denied
   var WHITELISTED_SCHEMES = /^(?:https?|mailto|data)$/i;
 
@@ -2422,8 +2422,8 @@ wax.interaction = function() {
         parent,
         map,
         tileGrid,
-        // google maps sends touchmove and click at the same time 
-        // most of the time when an user taps the screen, see onUp 
+        // google maps sends touchmove and click at the same time
+        // most of the time when an user taps the screen, see onUp
         // for more information
         _discardTouchMove = false;
 
@@ -2513,7 +2513,7 @@ wax.interaction = function() {
         // Store this event so that we can compare it to the
         // up event
         _downLock = true;
-        var _e = (e.type !== "MSPointerDown" && e.type !== "pointerdown" ? e : e.originalEvent); 
+        var _e = (e.type !== "MSPointerDown" && e.type !== "pointerdown" ? e : e.originalEvent);
         _d = wax.u.eventoffset(_e);
         if (e.type === 'mousedown') {
             bean.add(document.body, 'click', onUp);
@@ -2526,7 +2526,7 @@ wax.interaction = function() {
             //GMaps fix: Because it's triggering always mousedown and click, we've to remove it
             bean.remove(document.body, 'click', onUp); //GMaps fix
 
-            //When we finish dragging, then the click will be 
+            //When we finish dragging, then the click will be
             bean.add(document.body, 'click', onUp);
             bean.add(document.body, 'touchEnd', dragEnd);
         } else if (e.originalEvent.type === "MSPointerDown" && e.originalEvent.touches && e.originalEvent.touches.length === 1) {
@@ -3120,14 +3120,17 @@ wax.leaf.interaction = function() {
 wax = wax || {};
 wax.leaf = wax.leaf || {};
 
-wax.leaf.connector = L.TileLayer.extend({
-    initialize: function(options) {
-        options = options || {};
-        options.minZoom = options.minzoom || 0;
-        options.maxZoom = options.maxzoom || 22;
-        L.TileLayer.prototype.initialize.call(this, options.tiles[0], options);
-    }
-});
+setTimeout(function(){
+	wax.leaf.connector = L.TileLayer.extend({
+		initialize: function(options) {
+			options = options || {};
+			options.minZoom = options.minzoom || 0;
+			options.maxZoom = options.maxzoom || 22;
+			L.TileLayer.prototype.initialize.call(this, options.tiles[0], options);
+		}
+	});
+}, 10);
+
 wax = wax || {};
 wax.g = wax.g || {};
 
