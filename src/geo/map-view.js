@@ -241,7 +241,7 @@ var MapView = View.extend({
   },
 
   _createLayerView: function (layerModel) {
-    return this._getLayerViewFactory().createLayerView(layerModel, this.getNativeMap());
+    return this._getLayerViewFactory().createLayerView(layerModel, this.getNativeMap(), this._visModel._windshaftMap);
   },
 
   _removeLayers: function () {

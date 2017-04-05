@@ -5,15 +5,17 @@ var LeafletLayerView = require('./leaflet-layer-view');
 
 var LeafletCartoDBWebglLayerGroupView = function (layerGroupModel, leafletMap) {
   LeafletLayerView.apply(this, arguments);
+  var self = this;
 
-  layerGroupModel.bind('change:urls',
-    this._onURLsChanged(layerGroupModel)
-  );
+  this.tangram = new TC(leafletMap, function () {
+    layerGroupModel.bind('change:urls',
+      self._onURLsChanged(layerGroupModel)
+    );
 
-  this.tangram = new TC(leafletMap);
+    layerGroupModel.forEachGroupedLayer(self._onLayerAdded, self);
+    layerGroupModel.onLayerAdded(self._onLayerAdded.bind(self));
+  });
 
-  layerGroupModel.forEachGroupedLayer(this._onLayerAdded, this);
-  layerGroupModel.onLayerAdded(this._onLayerAdded.bind(this));
 };
 
 LeafletCartoDBWebglLayerGroupView.prototype = _.extend(
@@ -30,13 +32,19 @@ LeafletCartoDBWebglLayerGroupView.prototype = _.extend(
 
     _onLayerAdded: function (layer, i) {
       var self = this;
+
       layer.bind('change:meta change:visible', function (e) {
         self.tangram.addLayer(e.attributes, (i + 1));
       });
+
+      self.tangram.addLayer(layer.attributes, (i + 1));
     },
 
     _onURLsChanged: function (layerGroupModel) {
       var self = this;
+
+      self.tangram.addDataSource(layerGroupModel.getTileURLTemplate('mvt'), layerGroupModel.getSubdomains());
+
       return function () {
         self.tangram.addDataSource(layerGroupModel.getTileURLTemplate('mvt'), layerGroupModel.getSubdomains());
       };
