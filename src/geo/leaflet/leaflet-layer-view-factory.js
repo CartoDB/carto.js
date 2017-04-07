@@ -5,13 +5,10 @@ var LeafletPlainLayerView = require('./leaflet-plain-layer-view');
 var LeafletCartoDBLayerGroupView = require('./leaflet-cartodb-layer-group-view');
 var LeafletTorqueLayerView = require('./leaflet-torque-layer-view');
 var LeafletCartoDBWebglLayerGroupView = require('./leaflet-cartodb-webgl-layer-group-view');
-// Should we expose a Tangram.cartodb method for doing this?
 var CCSS = require('tangram-cartocss');
 
-// Make this configurable and crate a pipe of decision based on the configuration.
 var shouldLoadWithVector = function (metadata, cb) {
-  // NOTE: the limit should be setted by the server?
-  if (metadata.stats && metadata.stats.size && metadata.stats.size > 10e6) {
+  if (metadata.stats && metadata.stats.size && metadata.stats.size > 10e5) {
     return false;
   }
   else {
@@ -23,7 +20,7 @@ var shouldLoadWithVector = function (metadata, cb) {
       });
     }
     catch (e) {
-      // TODO: show why it is not working and give feedback to the user
+      // TODO: show why it is not working and give feedback to the user and send statistics
       return false;
     }
     return true;
