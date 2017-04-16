@@ -2,11 +2,34 @@ cdb.geo.ui.Text = cdb.core.View.extend({
 
   className: "cartodb-overlay overlay-text",
 
+  template: cdb.core.Template.compile(
+    '<div class="content">\
+    <div class="text widget_text">{{{ text }}}</div>\
+    </div>',
+    'mustache'
+  ),
+
   events: {
     "click": "stopPropagation"
   },
 
-  default_options: { },
+  defaults: {
+    x: 0,
+    y: 0,
+    style: {
+      textAlign: "left",
+      zIndex: 5,
+      color: "#ffffff",
+      fontSize: "13",
+      fontFamilyName: "Helvetica",
+      boxColor: "#333333",
+      boxOpacity: 0.7,
+      boxPadding: 10,
+      lineWidth: 50,
+      lineColor: "#333333"
+    }
+  },
+
 
   stopPropagation: function(e) {
 
@@ -16,9 +39,11 @@ cdb.geo.ui.Text = cdb.core.View.extend({
 
   initialize: function() {
 
-    _.defaults(this.options, this.default_options);
+    this.template = this.options.template || this.template;
 
-    this.template = this.options.template;
+    this._cleanStyleProperties(this.options.style);
+
+    _.defaults(this.options.style, this.defaults.style);
 
     var self = this;
 
@@ -30,23 +55,93 @@ cdb.geo.ui.Text = cdb.core.View.extend({
       self._place();
     });
 
+    this._setupModels();
+
   },
+
+  _getStandardPropertyName: function(name) {
+
+    if (!name) return;
+    var parts = name.split("-");
+
+    if (parts.length === 1) return name;
+    else if (parts.length === 2) {
+      return parts[0] + parts[1].slice(0, 1).toUpperCase() + parts[1].slice(1);
+    }
+
+  },
+
+  _cleanStyleProperties: function(hash) {
+
+    var standardProperties = {};
+
+    _.each(hash, function(value, key) {
+      standardProperties[this._getStandardPropertyName(key)] = value;
+    }, this);
+
+    this.options.style = standardProperties;
+
+  },
+
+  _setupModels: function() {
+
+    this.model = new cdb.core.Model({ 
+      display: true,
+      hidden: false,
+      text: this.options.text,
+      x:    this.options.x,
+      y:    this.options.y
+    });
+
+    this.model.on("change:text",    this._onChangeText, this);
+    this.model.on("change:display", this._onChangeDisplay, this);
+
+    this.extra = new cdb.core.Model(this.options.extra);
+    this.add_related_model(this.extra);
+
+    this.style = new cdb.core.Model(this.options.style);
+    this.style.on("change", this._applyStyle, this);
+    this.add_related_model(this.style);
+
+  },
+
+  _onChangeText: function() {
+    this.$el.find(".text").html(this._sanitizedText());
+  },
+
+  _onChangeDisplay: function() {
+    if (this.model.get("display")) this.show();
+    else this.hide();
+  },
+
+  setText: function(text) {
+    this.model.set("text", text);
+  },
+
+  setStyle: function(property, value) {
+
+    var standardProperty = this._getStandardPropertyName(property);
+
+    if (standardProperty) {
+      this.style.set(standardProperty, value);
+    }
+
+  },
+
 
   _applyStyle: function() {
 
-    var style      = this.model.get("style");
-
-    var boxColor   = style["box-color"];
-    var boxOpacity = style["box-opacity"];
-    var boxWidth   = style["box-width"];
-    var fontFamily = style["font-family-name"];
+    var textColor  = this.style.get("color");
+    var boxColor   = this.style.get("boxColor");
+    var boxOpacity = this.style.get("boxOpacity");
+    var boxWidth   = this.style.get("boxWidth");
+    var fontFamily = this.style.get("fontFamilyName");
 
     this.$text = this.$el.find(".text");
 
-    this.$text.css(style);
-    this.$text.css("font-size", style["font-size"] + "px");
-
-    this.$el.css("z-index", style["z-index"]);
+    this.$text.css({ color: textColor });
+    this.$text.css("font-size", this.style.get("fontSize") + "px");
+    this.$el.css("z-index", this.style.get("zIndex"));
 
     var fontFamilyClass = "";
 
@@ -84,7 +179,7 @@ cdb.geo.ui.Text = cdb.core.View.extend({
 
   _place: function(position) {
 
-    var extra = position || this.model.get("extra");
+    var extra = position || this.extra.attributes;
 
     var top   = this.model.get("y");
     var left  = this.model.get("x");
@@ -163,10 +258,14 @@ cdb.geo.ui.Text = cdb.core.View.extend({
 
   },
 
+  _sanitizedText: function() {
+    return cdb.core.sanitize.html(this.model.get("text"), this.model.get('sanitizeText'));
+  },
+
   render: function() {
-    var text = cdb.core.sanitize.html(this.model.get("extra").rendered_text, this.model.get('sanitizeText'));
-    var data = _.chain(this.model.attributes).clone().extend({ text: text }).value();
-    this.$el.html(this.template(data));
+    var d = _.clone(this.model.attributes);
+    d.text = this._sanitizedText();
+    this.$el.html(this.template(d));
 
     this._fixLinks();
 

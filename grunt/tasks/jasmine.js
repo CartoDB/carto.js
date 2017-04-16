@@ -39,6 +39,7 @@ module.exports = {
           "src/geo/ui/search.js",
           "src/geo/ui/mobile.js",
           "src/geo/ui/annotation.js",
+          "src/geo/ui/text.js",
           "src/geo/ui/layer_selector.js",
           'src/geo/ui/slides_controller.js',
           "src/geo/ui/share.js",
