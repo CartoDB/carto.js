@@ -15,6 +15,15 @@
 
     cdb.CARTOCSS_DEFAULT_VERSION = '2.1.1';
 
+    /**
+     * Determines if device supports high resolution.
+     *
+     * @returns {Boolean} True if device is high resolution, false otherwise. 
+     */
+    cdb.isRetinaBrowser = function() {
+      return 	window.devicePixelRatio > 1 || (window.matchMedia && window.matchMedia("(-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)").matches);
+    }
+
     root.cdb.config = {};
     root.cdb.core = {};
     root.cdb.image = {};

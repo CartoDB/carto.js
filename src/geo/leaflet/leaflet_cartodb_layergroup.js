@@ -89,10 +89,15 @@ L.CartoDBGroupLayerBase = L.TileLayer.extend({
 
     var index = (tilePoint.x + tilePoint.y) % tiles.length;
 
-    return L.Util.template(tiles[index], L.Util.extend({
+    // Add the high resolution images suffix
+    // FIXME - I think it would be better to change the layer tiles configuration !!!
+    var tile = tiles[index].replace(".png", "{r}.png");
+
+    return L.Util.template(tile, L.Util.extend({
       z: this._getZoomForUrl(),
       x: tilePoint.x,
-      y: tilePoint.y
+      y: tilePoint.y,
+      r: cdb.isRetinaBrowser() ? "@2x" : ""
     }, this.options));
   },
 
