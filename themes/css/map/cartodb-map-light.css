@@ -40,6 +40,7 @@ div.cartodb-share a {
   display: block;
   color: #397DB8;
   font-size:10px;
+  outline: medium none;
   font-weight:bold;
   text-transform: uppercase;
   text-shadow: none;
@@ -1369,6 +1370,7 @@ div.cartodb-zoom a {
   text-decoration: none;
   text-indent: -9999px;
   line-height: 0;
+  outline: medium none;
   font-size: 0;
   background:url('../img/other.png') no-repeat 0 0;
 }
