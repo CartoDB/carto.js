@@ -92,11 +92,23 @@ var CartoDBLayerGroup = function(opts) {
   if (this.options.cartodb_logo != false)
     cdb.geo.common.CartoDBLogo.addWadus({ left: 74, bottom:8 }, 2000, this.options.map.getDiv());
 
-  wax.g.connector.call(this, opts);
+  // configure options
+  this.options.tiles = opts.tiles;
+  this.options.scheme = opts.scheme || 'xyz';
+  this.options.blankImage = opts.blankImage || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  this.opacity = opts.opacity || 0;
+  this.minZoom = opts.minzoom || 0;
+  this.maxZoom = opts.maxzoom || 22;
+  this.name = opts.name || '';
+  this.description = opts.description || '';
 
-  // lovely wax connector overwrites options so set them again
-  // TODO: remove wax.connector here
-   _.extend(this.options, opts);
+  // non-configurable options
+  this.interactive = true;
+  this.tileSize = new google.maps.Size(256, 256);
+
+  // DOM element cache
+  this.cache = {};
+
   this.projector = new Projector(opts.map);
   LayerDefinition.call(this, opts.layer_definition, this.options);
   CartoDBLayerCommon.call(this);
