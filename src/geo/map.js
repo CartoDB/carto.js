@@ -12,6 +12,20 @@ cdb.geo.MapLayer = cdb.core.Model.extend({
     type: 'Tiled'
   },
 
+  /**
+   * Override set method to always sanitize attribution.
+   */
+  set: function(key, value, options) {
+    if(key == "attribution") {
+      value = cdb.core.sanitize.html(value);
+    }
+    if(key && key.attribution) {
+      key.attribution = cdb.core.sanitize.html(key.attribution);
+    }
+
+    cdb.core.Model.prototype.set.apply(this, arguments);
+  },
+
   /***
   * Compare the layer with the received one
   * @method isEqual
