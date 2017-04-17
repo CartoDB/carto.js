@@ -554,7 +554,7 @@
       callback = fn;
     }
     var s = "select * from (" + sql + ") __wrap limit 0";
-    var exclude = ['cartodb_id','latitude','longitude','created_at','updated_at','lat','lon','the_geom_webmercator'];
+    var exclude = ['cartodb_id','created_at','updated_at','latitude','longitude','lat','lon','the_geom_webmercator'];
     this.execute(s, function(data) {
       var t = {}
       for (var i in data.fields) {
@@ -568,42 +568,40 @@
 
   SQL.prototype.describeFloat = function(sql, column, callback) {
       var s = [
-        'with stats as (',
-            'select min({{column}}) as min,',
-                   'max({{column}}) as max,',
-                   'avg({{column}}) as avg,',
-                   'count(DISTINCT {{column}}) as cnt,',
-                   'count(distinct({{column}})) as uniq,',
-                   'count(*) as cnt,',
-                   'sum(case when {{column}} is null then 1 else 0 end)::numeric / count(*)::numeric as null_ratio,',
-                   'stddev_pop({{column}}) / count({{column}}) as stddev,',
-                   'CASE WHEN abs(avg({{column}})) > 1e-7 THEN stddev({{column}}) / abs(avg({{column}})) ELSE 1e12 END as stddevmean,',
-                    'CDB_DistType(array_agg("{{column}}"::numeric)) as dist_type ',
-              'from ({{sql}}) _wrap ',
+        'With stats As (',
+            'SELECT min({{column}}) As min,',
+                   'max({{column}}) As max,',
+                   'avg({{column}}) As avg,',
+                   'count(distinct({{column}})) As uniq,',
+                   'count(*) As cnt,',
+                   'sum(case when {{column}} is null then 1 else 0 end)::numeric / count(*)::numeric As null_ratio,',
+                   'stddev_pop({{column}}) As stddev,',
+                   'CDB_DistType(array_agg({{column}}::numeric)) As dist_type, ',
+                   'CDB_Kurtosis(array_agg({{column}}::numeric)) As kurtosis, ',
+                   'CDB_Skewness(array_agg({{column}}::numeric)) As skenwess ',
+              'FROM ({{sql}}) _wrap ',
         '),',
-        'params as (select min(a) as min, (max(a) - min(a)) / 7 as diff from ( select {{column}} as a from ({{sql}}) _table_sql where {{column}} is not null ) as foo ),',
-        'histogram as (',
-           'select array_agg(row(bucket, range, freq)) as hist from (',
-           'select CASE WHEN uniq > 1 then width_bucket({{column}}, min-0.01*abs(min), max+0.01*abs(max), 100) ELSE 1 END as bucket,',
-                  'numrange(min({{column}})::numeric, max({{column}})::numeric) as range,',
-                  'count(*) as freq',
-             'from ({{sql}}) _w, stats',
+        'histogram As (',
+           'SELECT array_agg(row(bucket, range, freq)) As hist FROM (',
+           'SELECT CASE WHEN uniq > 1 then width_bucket({{column}}, min-0.01*abs(min), max+0.01*abs(max), 100) ELSE 1 END As bucket,',
+                  'numrange(min({{column}})::numeric, max({{column}})::numeric) As range,',
+                  'count(*) As freq',
+             'FROM ({{sql}}) _w, stats',
              'group by 1',
              'order by 1',
           ') __wrap',
          '),',
-        'hist as (', 
-           'select array_agg(row(d, c)) cat_hist from (select distinct({{column}}) d, count(*) as c from ({{sql}}) __wrap, stats group by 1 limit 100) _a',
+        'hist As (', 
+           'SELECT array_agg(row(d, c)) cat_hist FROM (SELECT distinct({{column}}) d, count(*) As c FROM ({{sql}}) __wrap, stats GROUP BY 1 LIMIT 100) _a',
         '),',
-         'buckets as (',
-            'select CDB_QuantileBins(array_agg(distinct({{column}}::numeric)), 7) as quantiles, ',
-            '       (select array_agg(x::numeric) FROM (SELECT (min + n * diff)::numeric as x FROM generate_series(1,7) n, params) p) as equalint,',
-            // '       CDB_EqualIntervalBins(array_agg({{column}}::numeric), 7) as equalint, ',
-            '       CDB_JenksBins(array_agg(distinct({{column}}::numeric)), 7) as jenks, ',
-            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) as headtails ',
-            'from ({{sql}}) _table_sql where {{column}} is not null',
+         'buckets As (',
+            'SELECT CDB_QuantileBins(array_agg(distinct({{column}}::numeric)), 7) As quantiles, ',
+            '       CDB_EqualIntervalBins(array_agg({{column}}::numeric), 7) As equalint, ',
+            '       CDB_JenksBins(array_agg(distinct({{column}}::numeric)), 7) As jenks, ',
+            '       CDB_HeadsTailsBins(array_agg(distinct({{column}}::numeric)), 7) As headtails ',
+            'FROM ({{sql}}) _table_sql where {{column}} is not null',
          ')',
-         'select * from histogram, stats, buckets, hist'
+         'SELECT * FROM histogram, stats, buckets, hist'
       ];
 
       var query = Mustache.render(s.join('\n'), {
@@ -629,21 +627,23 @@
                      range: els[1].split(",").map(function(d){return d.replace(/\D/g,'')}), 
                      freq: els[2].replace(/\D/g,'') };
           }),
-          stddev: row.stddev,
-          null_ratio: row.null_ratio,
+          avg: row.avg,
           count: row.cnt,
           distinct: row.uniq,
-          //lstddev: row.lstddev,
-          avg: row.avg,
+          dist_type: row.dist_type,
+          equalint: row.equalint,
+          headtails: row.headtails,
+          jenks: row.jenks,
+          kurtosis: row.kurtosis,
           max: row.max,
           min: row.min,
-          stddevmean: row.stddevmean,
-          weight: (row.uniq > 1 ? 1 : 0) * (1 - row.null_ratio) * (row.stddev < -1 ? 1 : (row.stddev < 1 ? 0.5 : (row.stddev < 3 ? 0.25 : 0.1))),
+          null_ratio: row.null_ratio,
           quantiles: row.quantiles,
-          equalint: row.equalint,
-          jenks: row.jenks,
-          headtails: row.headtails,
-          dist_type: row.dist_type
+          skewness: row.skewness,
+          stddev: row.stddev,
+          weight: (row.uniq > 1 ? 1 : 0) *
+                  (1 - row.null_ratio) *
+                  (row.stddev < -1 ? 1 : (row.stddev < 1 ? 0.5 : (row.stddev < 3 ? 0.25 : 0.1)))
         });
       });
   }
