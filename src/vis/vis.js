@@ -475,7 +475,7 @@ var Vis = cdb.core.View.extend({
     }, this);
 
     this.mapView.bind('newLayerView', this._addLoading, this);
-
+    this.mapView.bind('newLayerView', this._setCursor, this);
     if (options.time_slider) {
       this.mapView.bind('newLayerView', this._addTimeSlider, this);
     }
@@ -525,6 +525,23 @@ var Vis = cdb.core.View.extend({
     return this;
 
   },
+
+  _setCursor: function(layerView) {
+  var self = this;
+  layerView.bind('mouseover', function() {
+    if (layerView.infowindow){
+      self.mapView.setCursor('pointer'); 
+    } else if (layerView.tooltip){
+      self.mapView.setCursor('nw-resize');
+    }
+    else{
+      self.mapView.setCursor('default'); 
+    }
+  });
+  layerView.bind('mouseout',function(){
+    self.mapView.setCursor('default');
+  })
+},
 
   _addTimeSlider: function() {
     var self = this;
