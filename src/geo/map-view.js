@@ -154,20 +154,18 @@ var MapView = View.extend({
     this._unbindModel();
     this.map.bind('change:view_bounds_sw', this._changeBounds, this);
     this.map.bind('change:view_bounds_ne', this._changeBounds, this);
-    this.map.bind('change:zoom', this._setZoom, this);
+    this.map.bind('change:zoom change:center', this._setView, this);
     this.map.bind('change:scrollwheel', this._setScrollWheel, this);
     this.map.bind('change:keyboard', this._setKeyboard, this);
-    this.map.bind('change:center', this._setCenter, this);
   },
 
   /** unbind model properties */
   _unbindModel: function () {
     this.map.unbind('change:view_bounds_sw', this._changeBounds, this);
     this.map.unbind('change:view_bounds_ne', this._changeBounds, this);
-    this.map.unbind('change:zoom', this._setZoom, this);
+    this.map.unbind('change:zoom change:center', this._setView, this);
     this.map.unbind('change:scrollwheel', this._setScrollWheel, this);
     this.map.unbind('change:keyboard', this._setKeyboard, this);
-    this.map.unbind('change:center', this._setCenter, this);
     this.map.unbind('change:attribution', null, this);
   },
 
@@ -337,6 +335,9 @@ var MapView = View.extend({
     throw new Error('Subclasses of src/geo/map-view.js must implement _setZoom');
   },
 
+  _setView: function (model, z) {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _setView');
+  },
   _setCenter: function (model, center) {
     throw new Error('Subclasses of src/geo/map-view.js must implement _setCenter');
   },

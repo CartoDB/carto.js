@@ -75,7 +75,7 @@ describe('geo/leaflet/leaflet-map-view', function () {
     var spy = jasmine.createSpy('change:center');
     mapView.getSize = function () { return {x: 200, y: 200}; };
     map.bind('change:center', spy);
-    spyOn(mapView, '_setCenter');
+    spyOn(mapView, '_setView');
     mapView._bindModel();
 
     map.set({
@@ -84,7 +84,7 @@ describe('geo/leaflet/leaflet-map-view', function () {
     });
 
     setTimeout(function () {
-      expect(mapView._setCenter).toHaveBeenCalled();
+      expect(mapView._setView).toHaveBeenCalled();
       done();
     }, 1000);
   });

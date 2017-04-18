@@ -103,13 +103,22 @@ var GoogleMapsMapView = MapView.extend({
   _setScrollWheel: function (model, z) {
     this._gmapsMap.setOptions({ scrollwheel: z });
   },
-
-  _setZoom: function (model, z) {
+  _setView: function (model) {
+    if (model.changed) {
+      if (model.changed.zoom) {
+        this._setZoom(model.changed.zoom);
+      }
+      if (model.changed.center) {
+        this._setCenter(model.changed.center);
+      }
+    }
+  },
+  _setZoom: function (z) {
     z = z || 0;
     this._gmapsMap.setZoom(z);
   },
 
-  _setCenter: function (model, center) {
+  _setCenter: function (center) {
     var c = new google.maps.LatLng(center[0], center[1]);
     this._gmapsMap.setCenter(c);
   },
