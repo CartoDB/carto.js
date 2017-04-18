@@ -172,8 +172,8 @@ var LeafletMapView = MapView.extend({
     this._setView();
   },
 
-  _setView: function (model) {
-    if (model.hasChanged('zoom') || model.hasChanged('center')) {
+  _setView: function () {
+    if (this.map.hasChanged('zoom') || this.map.hasChanged('center')) {
       this._leafletMap.flyTo(this.map.get('center'), this.map.get('zoom') || 0);
     }
   },
