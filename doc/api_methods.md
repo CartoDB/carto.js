@@ -127,6 +127,36 @@ Overlay objects are always created using the `addOverlay` method of a `cartodb.V
 
 An overlay is internally a [Backbone.View](http://backbonejs.org/#View) so if you know how Backbone works you can use it. If you want to use plain DOM objects you can access `overlay.el` (`overlay.$el` for jQuery object).
 
+### vis.addCursorInteraction
+
+Changes the cursor to a finger point when hovering over a map feature.
+
+#### Example
+
+{% highlight html %}
+addCursorInteraction: function(map, layer) {
+    var mapView = map.viz.mapView;
+    layer.bind('mouseover', function() {
+      mapView.setCursor('pointer');
+    });
+{% endhighlight %}
+
+For more examples, see [cursor_interaction.html](https://github.com/CartoDB/cartodb.js/blob/develop/examples/cursor_interaction.html) and the [Google Map Driving Directions](http://docs.cartodb.com/tutorials/google_driving_directions/#google-map-driving-directions) lesson.
+
+### vis.removeCursorInteraction
+
+Removes the cursor interaction if it was previously enabled with `addCursorInteraction`.
+
+#### Example
+
+{% highlight html %}
+removeCursorInteraction: function(map, layer) {
+    var mapView = map.viz.mapView;
+    layer.unbind(null, null, mapView);
+  }
+{% endhighlight %}
+
+
 ## cartodb.createLayer(_map, layerSource [, options] [, callback]_)
 
 With visualizations already created through the CARTO console, you can simply use the `createLayer` function to add them into your web pages. Unlike `createVis`, this method requires an already activated `map` object and it does not load a basemap for you.
