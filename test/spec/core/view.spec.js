@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var templates = require('cdb.templates');
 var View = require('../../../src/core/view');
+var Model = require('../../../src/core/model');
 
 describe('core/view', function() {
   var TestView;
@@ -163,5 +164,76 @@ describe('core/view', function() {
     expect(ev.preventDefault).toHaveBeenCalled()
   })
 
+  describe('when required options are defined', function () {
+    beforeEach(function () {
+      this.TestView = View.extend({
+        options: {
+          aModel: View.requires(cdb.core.Model),
+          aFunction: View.requires(Function),
+          aObject: View.requires(Object),
+          aBoolean: View.requires(Boolean),
+          aString: View.requires(String),
+          aNumber: View.requires(Number),
 
+          // Optional works like before
+          myThing: 'foobar'
+        }
+      });
+
+      this.validRequiredOptions = {
+        aModel: new cdb.core.Model(),
+        aFunction: jasmine.createSpy('aFunction'),
+        aObject: {foo: 'bar'},
+        aBoolean: false,
+        aString: 'bampadam',
+        aNumber: 42
+      };
+    });
+
+    describe('when required options are not fulfilled', function () {
+      beforeEach(function () {
+        delete this.validRequiredOptions.aModel;
+      });
+
+      it('should throw an error with missing option', function () {
+        expect(function () {
+          var opts = _.omit(this.validRequiredOptions, 'aModel');
+          new this.TestView(opts); // eslint-disable-line
+        }).toThrowError(/aModel is required/);
+
+        // Check all before throw
+        expect(function () {
+          var opts = _.omit(this.validRequiredOptions, 'aObject', 'aBoolean');
+          new this.TestView(opts); // eslint-disable-line
+        }).toThrowError(/aBoolean/);
+      });
+
+      it('should throw error if not matching type', function () {
+        expect(function () {
+          this.validRequiredOptions.aString = false;
+          new this.TestView(opts); // eslint-disable-line
+        }).toThrowError(/aString/);
+      });
+    });
+
+    describe('when required options are provided', function () {
+      beforeEach(function () {
+        this.view = new this.TestView(this.validRequiredOptions);
+      });
+
+      it('should be able to access options through options object', function () {
+        expect(this.view.options).toEqual(jasmine.any(Object));
+        expect(this.view.options.aModel).toEqual(this.validRequiredOptions.aModel);
+        expect(this.view.options.aFunction).toEqual(this.validRequiredOptions.aFunction);
+        expect(this.view.options.aObject).toEqual(this.validRequiredOptions.aObject);
+        expect(this.view.options.aBoolean).toEqual(this.validRequiredOptions.aFunction);
+        expect(this.view.options.aString).toEqual(this.validRequiredOptions.aString);
+        expect(this.view.options.aNumber).toEqual(this.validRequiredOptions.aNumber);
+      });
+
+      it('should have default options set like always', function () {
+        expect(view.options.myThing).toBe('foobar');
+      });
+    });
+  });
 });
