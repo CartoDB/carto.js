@@ -104,13 +104,11 @@ var GoogleMapsMapView = MapView.extend({
     this._gmapsMap.setOptions({ scrollwheel: z });
   },
   _setView: function (model) {
-    if (model.changed) {
-      if (model.changed.zoom) {
-        this._setZoom(model.changed.zoom);
-      }
-      if (model.changed.center) {
-        this._setCenter(model.changed.center);
-      }
+    if (model.hasChanged('zoom')) {
+      this._setZoom(model.changed.zoom);
+    }
+    if (model.hasChanged('center')) {
+      this._setCenter(model.changed.center);
     }
   },
   _setZoom: function (z) {
