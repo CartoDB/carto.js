@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: geo/map-view.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: geo/map-view.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var _ = require('underscore');
+var log = require('cdb.log');
+var View = require('../core/view');
+var GeometryViewFactory = require('./geometry-views/geometry-view-factory');
+
+var InfowindowModel = require('./ui/infowindow-model');
+var InfowindowView = require('./ui/infowindow-view');
+var InfowindowManager = require('../vis/infowindow-manager');
+
+var TooltipModel = require('./ui/tooltip-model');
+var TooltipView = require('./ui/tooltip-view');
+var TooltipManager = require('../vis/tooltip-manager');
+
+var MapCursorManager = require('../vis/map-cursor-manager');
+var MapEventsManager = require('../vis/map-events-manager');
+var GeometryManagementController = require('../vis/geometry-management-controller');
+
+var MapView = View.extend({
+
+  className: 'CDB-Map-wrapper',
+
+  initialize: function (deps) {
+    View.prototype.initialize.apply(this, arguments);
+
+    // For debugging purposes
+    window.mapView = this;
+
+    if (!deps.mapModel) throw new Error('mapModel is required');
+    if (!deps.visModel) throw new Error('visModel is required');
+    if (!deps.layerGroupModel) throw new Error('layerGroupModel is required');
+
+    this._mapModel = this.map = deps.mapModel;
+    this._visModel = deps.visModel;
+    this._cartoDBLayerGroup = deps.layerGroupModel;
+
+    this.add_related_model(this.map);
+
+    this._cartoDBLayerGroupView = null;
+
+    // A map of the LayerViews that is linked to each of the Layer models.
+    // The cid of the layer model is used as the key for this mapping.
+    this._layerViews = {};
+
+    this._bindModel();
+
+    this.map.layers.bind('reset', this._addLayers, this);
+    this.map.layers.bind('add', this._addLayer, this);
+    this.map.layers.bind('remove', this._removeLayer, this);
+    this.add_related_model(this.map.layers);
+
+    this.map.geometries.on('add', this._onGeometryAdded, this);
+    this.add_related_model(this.map.geometries);
+
+    // Infowindows &amp;&amp; Tooltips
+    var infowindowModel = new InfowindowModel();
+    var tooltipModel = new TooltipModel({
+      offset: [4, 10]
+    });
+    this._infowindowView = new InfowindowView({
+      model: infowindowModel,
+      mapView: this
+    });
+    this._tooltipView = new TooltipView({
+      model: tooltipModel,
+      mapView: this
+    });
+
+    // Initialise managers
+    this._infowindowManager = new InfowindowManager({
+      visModel: this._visModel,
+      mapModel: this._mapModel,
+      tooltipModel: tooltipModel,
+      infowindowModel: infowindowModel
+    }, {
+      showEmptyFields: this._visModel.get('showEmptyInfowindowFields')
+    });
+    this._tooltipManager = new TooltipManager({
+      mapModel: this._mapModel,
+      tooltipModel: tooltipModel,
+      infowindowModel: infowindowModel
+    });
+    this._geometryManagementController = new GeometryManagementController(this, this._mapModel);
+    this._mapCursorManager = new MapCursorManager({
+      mapView: this,
+      mapModel: this._mapModel
+    });
+
+    this._mapEventsManager = new MapEventsManager({
+      mapModel: this._mapModel
+    });
+
+    this._linkMapHelpers();
+  },
+
+  clean: function () {
+    this._removeLayers();
+
+    delete this._cartoDBLayerGroupView;
+
+    // Clean Infowindow and Tooltip views
+    this._infowindowView.clean();
+    this._tooltipView.clean();
+
+    // Stop managers
+    this._geometryManagementController.stop();
+    this._infowindowManager.stop();
+    this._tooltipManager.stop();
+    this._mapCursorManager.stop();
+    this._mapEventsManager.stop();
+
+    this._unbindModel();
+
+    View.prototype.clean.call(this);
+  },
+
+  render: function () {
+    this._createNativeMap();
+    this._addLayers();
+
+    // Enable geometry management
+    this._geometryManagementController.start();
+    this.map.setMapViewSize(this.getSize());
+    return this;
+  },
+
+  _linkMapHelpers: function () {
+    this.map.setPixelToLatLngConverter(this.containerPointToLatLng.bind(this));
+    this.map.setLatLngToPixelConverter(this.latLngToContainerPoint.bind(this));
+  },
+
+  _onGeometryAdded: function (geometry) {
+    var geometryView = GeometryViewFactory.createGeometryView(this.map.get('provider'), geometry, this);
+    geometryView.render();
+  },
+
+  /**
+  * set model property but unbind changes first in order to not create an infinite loop
+  */
+  _setModelProperty: function (prop) {
+    this._unbindModel();
+    this.map.set(prop);
+    if (prop.center !== undefined || prop.zoom !== undefined) {
+      var b = this.getBounds();
+      this.map.set({
+        view_bounds_sw: b[0],
+        view_bounds_ne: b[1]
+      });
+    }
+    this._bindModel();
+  },
+
+  /** bind model properties */
+  _bindModel: function () {
+    this._unbindModel();
+    this.map.bind('change:view_bounds_sw', this._changeBounds, this);
+    this.map.bind('change:view_bounds_ne', this._changeBounds, this);
+    this.map.bind('change:zoom', this._setZoom, this);
+    this.map.bind('change:scrollwheel', this._setScrollWheel, this);
+    this.map.bind('change:keyboard', this._setKeyboard, this);
+    this.map.bind('change:center', this._setCenter, this);
+  },
+
+  /** unbind model properties */
+  _unbindModel: function () {
+    this.map.unbind('change:view_bounds_sw', this._changeBounds, this);
+    this.map.unbind('change:view_bounds_ne', this._changeBounds, this);
+    this.map.unbind('change:zoom', this._setZoom, this);
+    this.map.unbind('change:scrollwheel', this._setScrollWheel, this);
+    this.map.unbind('change:keyboard', this._setKeyboard, this);
+    this.map.unbind('change:center', this._setCenter, this);
+    this.map.unbind('change:attribution', null, this);
+  },
+
+  _changeBounds: function () {
+    var bounds = this.map.getViewBounds();
+    if (bounds) {
+      this._fitBounds(bounds);
+    }
+  },
+
+  _fitBounds: function (bounds) {
+    this.map.fitBounds(bounds, this.getSize());
+  },
+
+  _addLayers: function (layerCollection, options) {
+    var self = this;
+    this._removeLayers();
+    this.map.layers.each(function (layerModel, index) {
+      self._addLayer(layerModel, layerCollection, {
+        silent: (options &amp;&amp; options.silent) || false,
+        index: index
+      });
+    });
+  },
+
+  _addLayer: function (layerModel, layerCollection, options) {
+    options = options || {};
+
+    var layerView;
+    if (layerModel.get('type') === 'CartoDB') {
+      layerView = this._addGroupedLayer(layerModel);
+    } else {
+      layerView = this._addIndividualLayer(layerModel);
+    }
+
+    if (!layerView) {
+      return;
+    }
+    this._addLayerToMap(layerView);
+
+    if (!options.silent) {
+      this.trigger('newLayerView', layerView);
+    }
+  },
+
+  _addGroupedLayer: function (layerModel) {
+    // Layer group view already exists
+    if (this._cartoDBLayerGroupView) {
+      this._layerViews[layerModel.cid] = this._cartoDBLayerGroupView;
+      return;
+    }
+
+    // Create the view that groups CartoDB layers
+    this._cartoDBLayerGroupView = this._createLayerView(this._cartoDBLayerGroup);
+    this._layerViews[layerModel.cid] = this._cartoDBLayerGroupView;
+
+    // Render the infowindow and tooltip "overlays"
+    this._infowindowView.render();
+    this.$el.append(this._infowindowView.el);
+    this._tooltipView.render();
+    this.$el.append(this._tooltipView.el);
+
+    // Start managers that should be bound to the CartoDB layer group view
+    this._infowindowManager.start(this._cartoDBLayerGroupView);
+    this._tooltipManager.start(this._cartoDBLayerGroupView);
+    this._mapCursorManager.start(this._cartoDBLayerGroupView);
+    this._mapEventsManager.start(this._cartoDBLayerGroupView);
+
+    return this._cartoDBLayerGroupView;
+  },
+
+  _addIndividualLayer: function (layerModel) {
+    var layerView = this._createLayerView(layerModel);
+    if (layerView) {
+      this._layerViews[layerModel.cid] = layerView;
+    }
+    return layerView;
+  },
+
+  _createLayerView: function (layerModel) {
+    return this._getLayerViewFactory().createLayerView(layerModel, this.getNativeMap());
+  },
+
+  _removeLayers: function () {
+    var layerViews = _.uniq(_.values(this._layerViews));
+    for (var i in layerViews) {
+      var layerView = layerViews[i];
+      layerView.remove();
+    }
+    this._layerViews = {};
+  },
+
+  _removeLayer: function (layerModel) {
+    var layerView = this._layerViews[layerModel.cid];
+    if (layerView) {
+      if (layerModel.get('type') === 'CartoDB') {
+        if (this.map.layers.getCartoDBLayers().length === 0) {
+          layerView.remove();
+          this._cartoDBLayerGroupView = null;
+        }
+      } else {
+        layerView.remove();
+      }
+      delete this._layerViews[layerModel.cid];
+    }
+  },
+
+  getLayerViewByLayerCid: function (cid) {
+    var l = this._layerViews[cid];
+    if (!l) {
+      log.debug('layer with cid ' + cid + " can't be get");
+    }
+    return l;
+  },
+
+  setCursor: function () {
+    throw new Error('subclasses of MapView must implement setCursor');
+  },
+
+  getSize: function () {
+    throw new Error('subclasses of MapView must implement getSize');
+  },
+
+  addMarker: function (marker) {
+    throw new Error('subclasses of MapView must implement addMarker');
+  },
+
+  removeMarker: function (marker) {
+    throw new Error('subclasses of MapView must implement removeMarker');
+  },
+
+  hasMarker: function (marker) {
+    throw new Error('subclasses of MapView must implement hasMarker');
+  },
+
+  addPath: function (path) {
+    throw new Error('subclasses of MapView must implement addPath');
+  },
+
+  removePath: function (path) {
+    throw new Error('subclasses of MapView must implement removePath');
+  },
+
+  // returns { x: 100, y: 200 }
+  latLngToContainerPoint: function (latlng) {
+    throw new Error('subclasses of MapView must implement latLngToContainerPoint');
+  },
+
+  // returns { lat: 0, lng: 0}
+  containerPointToLatLng: function (point) {
+    throw new Error('subclasses of MapView must implement containerPointToLatLng');
+  },
+
+  getNativeMap: function () {
+    throw new Error('Subclasses of src/geo/map-view.js must implement getNativeMap');
+  },
+
+  _getLayerViewFactory: function () {
+    throw new Error('subclasses of MapView must implement _getLayerViewFactory');
+  },
+
+  _addLayerToMap: function () {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _addLayerToMap');
+  },
+
+  _setZoom: function (model, z) {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _setZoom');
+  },
+
+  _setCenter: function (model, center) {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _setCenter');
+  },
+
+  _addGeomToMap: function (geom) {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _addGeomToMap');
+  },
+
+  _removeGeomFromMap: function (geo) {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _removeGeomFromMap');
+  },
+
+  _createNativeMap: function () {
+    throw new Error('Subclasses of src/geo/map-view.js must implement _createNativeMap');
+  }
+});
+
+module.exports = MapView;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Map.html">Map</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkOrigin">_checkOrigin</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_reloadVis">_reloadVis</a></li><li><a href="global.html#_renderRows">_renderRows</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_stopBubbling">_stopBubbling</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#addEmptyTableInfo">addEmptyTableInfo</a></li><li><a href="global.html#addRow">addRow</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#appendToBody">appendToBody</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#clear_rows">clear_rows</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#Dropdown">Dropdown</a></li><li><a href="global.html#emptyTable">emptyTable</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayerIndexesByType">getLayerIndexesByType</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isBaseLayerAdded">isBaseLayerAdded</a></li><li><a href="global.html#isEmptyTable">isEmptyTable</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#LayerView">LayerView</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#Notification">Notification</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#Row">Row</a></li><li><a href="global.html#rowChanged">rowChanged</a></li><li><a href="global.html#rowDestroyed">rowDestroyed</a></li><li><a href="global.html#rowFailed">rowFailed</a></li><li><a href="global.html#rowSaving">rowSaving</a></li><li><a href="global.html#rowSynched">rowSynched</a></li><li><a href="global.html#RowView">RowView</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Table">Table</a></li><li><a href="global.html#TableProperties">TableProperties</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 03 2017 13:03:17 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

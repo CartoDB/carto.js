@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: windshaft-integration/model-updater.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: windshaft-integration/model-updater.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var _ = require('underscore');
+var log = require('../cdb.log');
+var util = require('../core/util.js');
+var RuleToLegendModelAdapters = require('./legends/rule-to-legend-model-adapters');
+
+function getSubdomain (subdomains, resource) {
+  var index = util.crc32(resource) % subdomains.length;
+  return subdomains[index];
+}
+
+/**
+ * This class exposes a method that knows how to set/update the metadata on internal
+ * CartoDB.js models that are linked to a "resource" in the Maps API.
+ */
+var ModelUpdater = function (deps) {
+  if (!deps.visModel) {
+    throw new Error('visModel is required');
+  }
+  if (!deps.layerGroupModel) {
+    throw new Error('layerGroupModel is required');
+  }
+  if (!deps.layersCollection) {
+    throw new Error('layersCollection is required');
+  }
+  if (!deps.dataviewsCollection) {
+    throw new Error('dataviewsCollection is required');
+  }
+  if (!deps.analysisCollection) {
+    throw new Error('analysisCollection is required');
+  }
+
+  this._visModel = deps.visModel;
+  this._layerGroupModel = deps.layerGroupModel;
+  this._layersCollection = deps.layersCollection;
+  this._dataviewsCollection = deps.dataviewsCollection;
+  this._analysisCollection = deps.analysisCollection;
+};
+
+ModelUpdater.prototype.updateModels = function (windshaftMap, sourceId, forceFetch) {
+  this._updateLayerGroupModel(windshaftMap);
+  this._updateLayerModels(windshaftMap);
+  this._updateDataviewModels(windshaftMap, sourceId, forceFetch);
+  this._updateAnalysisModels(windshaftMap);
+
+  this._visModel.setOk();
+};
+
+ModelUpdater.prototype._updateLayerGroupModel = function (windshaftMap) {
+  var urls = {
+    tiles: this._generateTileURLTemplate(windshaftMap),
+    subdomains: windshaftMap.getSupportedSubdomains(),
+    grids: this._calculateGridURLTemplatesForCartoDBLayers(windshaftMap),
+    attributes: this._calculateAttributesBaseURLsForCartoDBLayers(windshaftMap),
+    image: this._calculateStaticMapURL(windshaftMap)
+  };
+
+  this._layerGroupModel.set({
+    indexOfLayersInWindshaft: windshaftMap.getLayerIndexesByType('mapnik'),
+    urls: urls
+  });
+};
+
+ModelUpdater.prototype._calculateStaticMapURL = function (windshaftMap) {
+  return [
+    windshaftMap.getStaticBaseURL(),
+    '{z}/{lat}/{lng}/{width}/{height}.{format}'
+  ].join('/');
+};
+
+ModelUpdater.prototype._generateTileURLTemplate = function (windshaftMap) {
+  return windshaftMap.getBaseURL() + '/{layerIndexes}/{z}/{x}/{y}.{format}';
+};
+
+ModelUpdater.prototype._calculateGridURLTemplatesForCartoDBLayers = function (windshaftMap) {
+  var urlTemplates = [];
+  var indexesOfMapnikLayers = windshaftMap.getLayerIndexesByType('mapnik');
+  if (indexesOfMapnikLayers.length > 0) {
+    _.each(indexesOfMapnikLayers, function (index) {
+      var layerUrlTemplates = [];
+      var gridURLTemplate = this._generateGridURLTemplate(windshaftMap, index);
+      var subdomains = windshaftMap.getSupportedSubdomains();
+      if (subdomains.length) {
+        _.each(subdomains, function (subdomain) {
+          layerUrlTemplates.push(gridURLTemplate.replace('{s}', subdomain));
+        });
+      } else {
+        layerUrlTemplates.push(gridURLTemplate);
+      }
+
+      urlTemplates.push(layerUrlTemplates);
+    }, this);
+  }
+  return urlTemplates;
+};
+
+ModelUpdater.prototype._generateGridURLTemplate = function (windshaftMap, index) {
+  return windshaftMap.getBaseURL() + '/' + index + '/{z}/{x}/{y}.grid.json';
+};
+
+ModelUpdater.prototype._calculateAttributesBaseURLsForCartoDBLayers = function (windshaftMap) {
+  var urls = [];
+  var indexesOfMapnikLayers = windshaftMap.getLayerIndexesByType('mapnik');
+  if (indexesOfMapnikLayers.length > 0) {
+    _.each(indexesOfMapnikLayers, function (index) {
+      urls.push(this._generateAttributesBaseURL(windshaftMap, index));
+    }, this);
+  }
+  return urls;
+};
+
+ModelUpdater.prototype._generateAttributesBaseURL = function (windshaftMap, index) {
+  var baseURL = windshaftMap.getBaseURL() + '/' + index + '/attributes';
+  if (baseURL.indexOf('{s}') >= 0) {
+    var subdomain = getSubdomain(windshaftMap.getSupportedSubdomains(), baseURL);
+    baseURL = baseURL.replace('{s}', subdomain);
+  }
+  return baseURL;
+};
+
+ModelUpdater.prototype._updateLayerModels = function (windshaftMap) {
+  // CartoDB / mapnik layers
+  var indexesOfMapnikLayers = windshaftMap.getLayerIndexesByType('mapnik');
+  _.each(this._layersCollection.getCartoDBLayers(), function (layerModel, localLayerIndex) {
+    var windshaftMapLayerIndex = indexesOfMapnikLayers[localLayerIndex];
+    layerModel.set('meta', windshaftMap.getLayerMetadata(windshaftMapLayerIndex));
+    this._updateLegendModels(layerModel, windshaftMapLayerIndex, windshaftMap);
+
+    layerModel.setOk();
+  }, this);
+
+  // Torque / torque layers
+  var indexesOfTorqueLayers = windshaftMap.getLayerIndexesByType('torque');
+  _.each(this._layersCollection.getTorqueLayers(), function (layerModel, localLayerIndex) {
+    var windshaftMapLayerIndex = indexesOfTorqueLayers[localLayerIndex];
+    layerModel.set('meta', windshaftMap.getLayerMetadata(windshaftMapLayerIndex));
+    layerModel.set('subdomains', windshaftMap.getSupportedSubdomains());
+    layerModel.set('tileURLTemplates', this._calculateTileURLTemplatesForTorqueLayers(windshaftMap));
+    this._updateLegendModels(layerModel, windshaftMapLayerIndex, windshaftMap);
+
+    layerModel.setOk();
+  }, this);
+};
+
+ModelUpdater.prototype._calculateTileURLTemplatesForTorqueLayers = function (windshaftMap) {
+  var urlTemplates = [];
+  var indexesOfTorqueLayers = windshaftMap.getLayerIndexesByType('torque');
+  if (indexesOfTorqueLayers.length > 0) {
+    urlTemplates.push(this._generateTorqueTileURLTemplate(windshaftMap, indexesOfTorqueLayers));
+  }
+  return urlTemplates;
+};
+
+ModelUpdater.prototype._generateTorqueTileURLTemplate = function (windshaftMap, layerIndexes) {
+  return windshaftMap.getBaseURL() + '/' + layerIndexes.join(',') + '/{z}/{x}/{y}.json.torque';
+};
+
+ModelUpdater.prototype._updateLegendModels = function (layerModel, remoteLayerIndex, windshaftMap) {
+  var layerMetadata = windshaftMap.getLayerMetadata(remoteLayerIndex);
+  _.each(this._getLayerLegends(layerModel), function (legendModel) {
+    this._updateLegendModel(legendModel, layerMetadata);
+  }, this);
+};
+
+ModelUpdater.prototype._updateLegendModel = function (legendModel, layerMetadata) {
+  var cartoCSSRules = layerMetadata &amp;&amp; layerMetadata.cartocss_meta &amp;&amp; layerMetadata.cartocss_meta.rules;
+  try {
+    var newLegendAttrs = {
+      state: 'success'
+    };
+    if (cartoCSSRules) {
+      var adapter = RuleToLegendModelAdapters.getAdapterForLegend(legendModel);
+      var ruleForLegend = _.find(cartoCSSRules, adapter.canAdapt);
+      if (ruleForLegend) {
+        newLegendAttrs = _.extend(newLegendAttrs, adapter.adapt(ruleForLegend));
+      }
+    }
+    legendModel.set(newLegendAttrs);
+  } catch (error) {
+    legendModel.set({ state: 'error' });
+    log.error("legend of type '" + legendModel.get('type') + "' couldn't be updated: " + error.message);
+  }
+};
+
+ModelUpdater.prototype._updateDataviewModels = function (windshaftMap, sourceId, forceFetch) {
+  this._dataviewsCollection.each(function (dataviewModel) {
+    var dataviewMetadata = windshaftMap.getDataviewMetadata(dataviewModel.get('id'));
+    if (dataviewMetadata) {
+      dataviewModel.set({
+        url: dataviewMetadata.url[this._getProtocol()]
+      }, {
+        sourceId: sourceId,
+        forceFetch: forceFetch
+      });
+    }
+  }, this);
+};
+
+ModelUpdater.prototype._updateAnalysisModels = function (windshaftMap) {
+  this._analysisCollection.each(function (analysisNode) {
+    var analysisMetadata = windshaftMap.getAnalysisNodeMetadata(analysisNode.get('id'));
+    var attrs;
+    if (analysisMetadata) {
+      attrs = {
+        status: analysisMetadata.status,
+        url: analysisMetadata.url[this._getProtocol()],
+        query: analysisMetadata.query
+      };
+
+      attrs = _.omit(attrs, analysisNode.getParamNames());
+
+      if (analysisMetadata.error_message) {
+        attrs = _.extend(attrs, {
+          error: {
+            message: analysisMetadata.error_message
+          }
+        });
+        analysisNode.set(attrs);
+      } else {
+        analysisNode.set(attrs);
+        analysisNode.setOk();
+      }
+    }
+  }, this);
+};
+
+ModelUpdater.prototype._getProtocol = function () {
+  // When running tests window.locationn.protocol using the jasmine test runner,
+  // window.location.protocol returns 'file:'. This is a little hack to make tests happy.
+  if (window.location.protocol === 'file:') {
+    return 'http';
+  }
+  return window.location.protocol.replace(':', '');
+};
+
+ModelUpdater.prototype.setErrors = function (errors) {
+  _.each(errors, this._setError, this);
+  this._setLegendErrors();
+};
+
+ModelUpdater.prototype._setError = function (error) {
+  if (error.isLayerError()) {
+    var layerModel = this._layersCollection.get(error.layerId);
+    layerModel &amp;&amp; layerModel.setError(error);
+  } else if (error.isAnalysisError()) {
+    var analysisModel = this._analysisCollection.get(error.analysisId);
+    analysisModel &amp;&amp; analysisModel.setError(error);
+  } else {
+    this._visModel.setError(error);
+  }
+};
+
+ModelUpdater.prototype._setLegendErrors = function () {
+  var legendModels = this._layersCollection.chain()
+    .map(this._getLayerLegends)
+    .compact()
+    .flatten()
+    .value();
+
+  _.each(legendModels, function (legendModel) {
+    legendModel.set('state', 'error');
+  });
+};
+
+ModelUpdater.prototype._getLayerLegends = function (layerModel) {
+  return layerModel.legends &amp;&amp; [
+    layerModel.legends.bubble,
+    layerModel.legends.category,
+    layerModel.legends.choropleth
+  ];
+};
+module.exports = ModelUpdater;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Map.html">Map</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkOrigin">_checkOrigin</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_reloadVis">_reloadVis</a></li><li><a href="global.html#_renderRows">_renderRows</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_stopBubbling">_stopBubbling</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#addEmptyTableInfo">addEmptyTableInfo</a></li><li><a href="global.html#addRow">addRow</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#appendToBody">appendToBody</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#clear_rows">clear_rows</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#Dropdown">Dropdown</a></li><li><a href="global.html#emptyTable">emptyTable</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayerIndexesByType">getLayerIndexesByType</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isBaseLayerAdded">isBaseLayerAdded</a></li><li><a href="global.html#isEmptyTable">isEmptyTable</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#LayerView">LayerView</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#Notification">Notification</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#Row">Row</a></li><li><a href="global.html#rowChanged">rowChanged</a></li><li><a href="global.html#rowDestroyed">rowDestroyed</a></li><li><a href="global.html#rowFailed">rowFailed</a></li><li><a href="global.html#rowSaving">rowSaving</a></li><li><a href="global.html#rowSynched">rowSynched</a></li><li><a href="global.html#RowView">RowView</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Table">Table</a></li><li><a href="global.html#TableProperties">TableProperties</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 03 2017 13:03:17 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

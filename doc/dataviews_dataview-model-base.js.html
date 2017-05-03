@@ -1,4 +1,32 @@
-var _ = require('underscore');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dataviews/dataview-model-base.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dataviews/dataview-model-base.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var _ = require('underscore');
 var Model = require('../core/model');
 var BackboneCancelSync = require('../util/backbone-abort-sync');
 var WindshaftFiltersBoundingBoxFilter = require('../windshaft/filters/bounding-box');
@@ -40,7 +68,7 @@ module.exports = Model.extend({
         params.push('auth_token=' + authToken);
       }
     }
-    return this.get('url') + '?' + params.join('&');
+    return this.get('url') + '?' + params.join('&amp;');
   },
 
   _getBoundingBoxFilterParam: function () {
@@ -155,7 +183,7 @@ module.exports = Model.extend({
    */
   _onFilterChanged: function (filter) {
     var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canApplyFilterTo(this)) {
+    if (layerDataProvider &amp;&amp; layerDataProvider.canApplyFilterTo(this)) {
       layerDataProvider.applyFilter(this, filter);
     } else {
       this._reloadVis();
@@ -204,13 +232,13 @@ module.exports = Model.extend({
       if (this.get('sync_on_data_change')) {
         this._newDataAvailable = true;
       }
-      if (this._shouldFetchOnURLChange(opts && _.pick(opts, ['forceFetch', 'sourceId']))) {
+      if (this._shouldFetchOnURLChange(opts &amp;&amp; _.pick(opts, ['forceFetch', 'sourceId']))) {
         this.fetch();
       }
     }, this);
 
     this.on('change:enabled', function (mdl, isEnabled) {
-      if (isEnabled && this._newDataAvailable) {
+      if (isEnabled &amp;&amp; this._newDataAvailable) {
         this.fetch();
         this._newDataAvailable = false;
       }
@@ -236,18 +264,18 @@ module.exports = Model.extend({
       return true;
     }
 
-    return this.get('sync_on_data_change') &&
-      this.get('enabled') &&
-        (!sourceId || sourceId && this._sourceAffectsMyOwnSource(sourceId));
+    return this.get('sync_on_data_change') &amp;&amp;
+      this.get('enabled') &amp;&amp;
+        (!sourceId || sourceId &amp;&amp; this._sourceAffectsMyOwnSource(sourceId));
   },
 
   _sourceAffectsMyOwnSource: function (sourceId) {
     var sourceAnalysis = this._analysisCollection.get(this.getSourceId());
-    return sourceAnalysis && sourceAnalysis.findAnalysisById(sourceId);
+    return sourceAnalysis &amp;&amp; sourceAnalysis.findAnalysisById(sourceId);
   },
 
   _shouldFetchOnBoundingBoxChange: function () {
-    return this.get('enabled') && this.get('sync_on_bbox_change');
+    return this.get('enabled') &amp;&amp; this.get('sync_on_bbox_change');
   },
 
   refresh: function () {
@@ -271,24 +299,24 @@ module.exports = Model.extend({
     opts = opts || {};
     this.set('status', FETCHING_STATUS);
     var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canProvideDataFor(this)) {
+    if (layerDataProvider &amp;&amp; layerDataProvider.canProvideDataFor(this)) {
       this.set(this.parse(layerDataProvider.getDataFor(this)));
     } else {
       this._triggerLoading();
 
       if (opts.success) {
-        var successCallback = opts && opts.success;
+        var successCallback = opts &amp;&amp; opts.success;
       }
 
       return Model.prototype.fetch.call(this, _.extend(opts, {
         success: function () {
           this.set('status', FETCHED_STATUS);
-          successCallback && successCallback(arguments);
+          successCallback &amp;&amp; successCallback(arguments);
           this.trigger('loaded', this);
         }.bind(this),
         error: function (mdl, err) {
           this.set('status', FETCH_ERROR_STATUS);
-          if (!err || (err && err.statusText !== 'abort')) {
+          if (!err || (err &amp;&amp; err.statusText !== 'abort')) {
             this._triggerError(err);
           }
         }.bind(this)
@@ -307,7 +335,7 @@ module.exports = Model.extend({
   getSourceId: function () {
     // Dataview is pointing to a layer that has a source, so its
     // source is actually the the layers's source
-    if (this.hasLayerAsSource() && this.layer.has('source')) {
+    if (this.hasLayerAsSource() &amp;&amp; this.layer.has('source')) {
       return this.layer.get('source');
     }
 
@@ -318,7 +346,7 @@ module.exports = Model.extend({
   },
 
   _ownSourceId: function () {
-    return this.has('source') && this.get('source').id;
+    return this.has('source') &amp;&amp; this.get('source').id;
   },
 
   hasLayerAsSource: function () {
@@ -359,3 +387,26 @@ module.exports = Model.extend({
     ]
   }
 );
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Map.html">Map</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkOrigin">_checkOrigin</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_reloadVis">_reloadVis</a></li><li><a href="global.html#_renderRows">_renderRows</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_stopBubbling">_stopBubbling</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#addEmptyTableInfo">addEmptyTableInfo</a></li><li><a href="global.html#addRow">addRow</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#appendToBody">appendToBody</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#clear_rows">clear_rows</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#Dropdown">Dropdown</a></li><li><a href="global.html#emptyTable">emptyTable</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayerIndexesByType">getLayerIndexesByType</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isBaseLayerAdded">isBaseLayerAdded</a></li><li><a href="global.html#isEmptyTable">isEmptyTable</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#LayerView">LayerView</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#Notification">Notification</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#Row">Row</a></li><li><a href="global.html#rowChanged">rowChanged</a></li><li><a href="global.html#rowDestroyed">rowDestroyed</a></li><li><a href="global.html#rowFailed">rowFailed</a></li><li><a href="global.html#rowSaving">rowSaving</a></li><li><a href="global.html#rowSynched">rowSynched</a></li><li><a href="global.html#RowView">RowView</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Table">Table</a></li><li><a href="global.html#TableProperties">TableProperties</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 03 2017 13:03:17 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

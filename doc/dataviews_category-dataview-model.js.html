@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: dataviews/category-dataview-model.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: dataviews/category-dataview-model.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var _ = require('underscore');
+var DataviewModelBase = require('./dataview-model-base');
+var SearchModel = require('./category-dataview/search-model');
+var CategoryModelRange = require('./category-dataview/category-model-range');
+var CategoriesCollection = require('./category-dataview/categories-collection');
+
+/**
+ * Category dataview model
+ *
+ * - It has several internal models/collections
+ *   - search model: it manages category search results.
+ *   - filter model: it knows which items are accepted or rejected.
+ */
+module.exports = DataviewModelBase.extend({
+
+  defaults: _.extend(
+    {
+      type: 'category',
+      filterEnabled: false,
+      allCategoryNames: [] // all (new + previously accepted), updated on data fetch (see parse)
+    },
+    DataviewModelBase.prototype.defaults
+  ),
+
+  _getDataviewSpecificURLParams: function () {
+    var params = [
+      'own_filter=' + (this.get('filterEnabled') ? 1 : 0)
+    ];
+    return params;
+  },
+
+  initialize: function (attrs, opts) {
+    DataviewModelBase.prototype.initialize.call(this, attrs, opts);
+
+    // Internal model for calculating total amount of values in the category
+    this._rangeModel = new CategoryModelRange({
+      apiKey: this.get('apiKey'),
+      authToken: this.get('authToken')
+    });
+
+    this._data = new CategoriesCollection(null, {
+      aggregationModel: this
+    });
+
+    this._searchModel = new SearchModel({
+      apiKey: this.get('apiKey'),
+      authToken: this.get('authToken')
+    }, {
+      aggregationModel: this
+    });
+
+    this.on('change:column change:aggregation change:aggregation_column', this._reloadVisAndForceFetch, this);
+
+    this.bind('change:url', function () {
+      this._searchModel.set({
+        url: this.get('url')
+      });
+    }, this);
+
+    this.once('change:url', function () {
+      this._rangeModel.setUrl(this.get('url'));
+    }, this);
+
+    this._rangeModel.bind('change:totalCount change:categoriesCount', function () {
+      this.set({
+        totalCount: this._rangeModel.get('totalCount'),
+        categoriesCount: this._rangeModel.get('categoriesCount')
+      });
+    }, this);
+
+    this._bindSearchModelEvents();
+    if (attrs &amp;&amp; attrs.acceptedCategories) {
+      this.filter.accept(attrs.acceptedCategories);
+    }
+  },
+
+  _onMapBoundsChanged: function () {
+    DataviewModelBase.prototype._onMapBoundsChanged.apply(this, arguments);
+    this._searchModel.fetchIfSearchIsApplied();
+  },
+
+  _bindSearchModelEvents: function () {
+    this._searchModel.bind('loading', function () {
+      this.trigger('loading', this);
+    }, this);
+    this._searchModel.bind('loaded', function () {
+      this.trigger('loaded', this);
+    }, this);
+    this._searchModel.bind('error', function (e) {
+      if (!e || (e &amp;&amp; e.statusText !== 'abort')) {
+        this.trigger('error', this);
+      }
+    }, this);
+    this._searchModel.bind('change:data', this._onSearchDataChange, this);
+  },
+
+  _onSearchDataChange: function () {
+    this.getSearchResult().each(function (m) {
+      var selected = this.filter.isAccepted(m.get('name'));
+      m.set('selected', selected);
+    }, this);
+    this.trigger('change:searchData', this);
+  },
+
+  _shouldFetchOnBoundingBoxChange: function () {
+    return DataviewModelBase.prototype._shouldFetchOnBoundingBoxChange.call(this) &amp;&amp; !this.isSearchApplied();
+  },
+
+  enableFilter: function () {
+    this.set('filterEnabled', true);
+  },
+
+  disableFilter: function () {
+    this.set('filterEnabled', false);
+  },
+
+  // Search model helper methods //
+
+  getSearchQuery: function () {
+    return this._searchModel.getSearchQuery();
+  },
+
+  setSearchQuery: function (q) {
+    this._searchModel.set('q', q);
+  },
+
+  isSearchValid: function () {
+    return this._searchModel.isValid();
+  },
+
+  getSearchResult: function () {
+    return this._searchModel.getData();
+  },
+
+  getSearchCount: function () {
+    return this._searchModel.getCount();
+  },
+
+  applySearch: function () {
+    this._searchModel.fetch();
+  },
+
+  isSearchApplied: function () {
+    return this._searchModel.isSearchApplied();
+  },
+
+  cleanSearch: function () {
+    this._searchModel.resetData();
+  },
+
+  setupSearch: function () {
+    if (!this.isSearchApplied()) {
+      this._searchModel.setData(
+        this._data.toJSON()
+      );
+    }
+  },
+
+  getData: function () {
+    return this._data;
+  },
+
+  getSize: function () {
+    return this._data.size();
+  },
+
+  getCount: function () {
+    return this.get('categoriesCount');
+  },
+
+  isOtherAvailable: function () {
+    return this._data.isOtherAvailable();
+  },
+
+  numberOfAcceptedCategories: function () {
+    var acceptedCategories = this.filter.acceptedCategories;
+    var numberOfRejectedCategories = this.numberOfRejectedCategories();
+    var data = this.getData();
+    var totalCategories = data.size();
+    var numberOfAcceptedCategories = data.reduce(
+      function (memo, cat) {
+        var isCategoryInData = acceptedCategories.where({ name: cat.get('name') }).length > 0;
+        return memo + (isCategoryInData ? 1 : 0);
+      },
+      0
+    );
+    if (!numberOfRejectedCategories) {
+      return numberOfAcceptedCategories;
+    } else {
+      return totalCategories - numberOfRejectedCategories;
+    }
+  },
+
+  numberOfRejectedCategories: function () {
+    var rejectedCategories = this.filter.rejectedCategories;
+    var data = this.getData();
+    return data.reduce(
+      function (memo, cat) {
+        var isCategoryInData = rejectedCategories.where({ name: cat.get('name') }).length > 0;
+        return memo + (isCategoryInData ? 1 : 0);
+      },
+      0
+    );
+  },
+
+  refresh: function () {
+    if (this.isSearchApplied()) {
+      this._searchModel.fetch();
+    } else {
+      this.fetch();
+    }
+  },
+
+  parse: function (d) {
+    var newData = [];
+    var _tmpArray = {};
+    var allNewCategories = d.categories;
+    var allNewCategoryNames = [];
+    var acceptedCategoryNames = [];
+
+    _.each(allNewCategories, function (datum) {
+      // Category might be a non-string type (e.g. number), make sure it's always a string for concistency
+      var category = String(datum.category);
+
+      allNewCategoryNames.push(category);
+      var isRejected = this.filter.isRejected(category);
+      _tmpArray[category] = true;
+
+      newData.push({
+        selected: !isRejected,
+        name: category,
+        agg: datum.agg,
+        value: datum.value
+      });
+    }, this);
+
+    // Only accepted categories should appear when filterEnabled is true
+    if (this.get('filterEnabled')) {
+      // Add accepted items that are not present in the categories data
+      this.filter.acceptedCategories.each(function (mdl) {
+        var category = mdl.get('name');
+        acceptedCategoryNames.push(category);
+        if (!_tmpArray[category]) {
+          newData.push({
+            selected: true,
+            name: category,
+            agg: false,
+            value: 0
+          });
+        }
+      }, this);
+    }
+
+    this._data.reset(newData);
+
+    return {
+      allCategoryNames: _
+        .chain(allNewCategoryNames)
+        .union(acceptedCategoryNames)
+        .unique()
+        .value(),
+      data: newData,
+      nulls: d.nulls,
+      min: d.min,
+      max: d.max,
+      count: d.count
+    };
+  },
+
+  // Backbone toJson function override
+  toJSON: function () {
+    return {
+      type: 'aggregation',
+      source: { id: this.getSourceId() },
+      options: {
+        column: this.get('column'),
+        aggregation: this.get('aggregation'),
+
+        // TODO server-side is using camelCased attr name, update once fixed
+        aggregationColumn: this.get('aggregation_column')
+      }
+    };
+  }
+},
+
+  // Class props
+  {
+    ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
+      'column',
+      'aggregation',
+      'aggregation_column',
+      'acceptedCategories'
+    ])
+  }
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Map.html">Map</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkOrigin">_checkOrigin</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_reloadVis">_reloadVis</a></li><li><a href="global.html#_renderRows">_renderRows</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_stopBubbling">_stopBubbling</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#addEmptyTableInfo">addEmptyTableInfo</a></li><li><a href="global.html#addRow">addRow</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#appendToBody">appendToBody</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#clear_rows">clear_rows</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#Dropdown">Dropdown</a></li><li><a href="global.html#emptyTable">emptyTable</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getCell">getCell</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayerIndexesByType">getLayerIndexesByType</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isBaseLayerAdded">isBaseLayerAdded</a></li><li><a href="global.html#isEmptyTable">isEmptyTable</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#LayerView">LayerView</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#Notification">Notification</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#Row">Row</a></li><li><a href="global.html#rowChanged">rowChanged</a></li><li><a href="global.html#rowDestroyed">rowDestroyed</a></li><li><a href="global.html#rowFailed">rowFailed</a></li><li><a href="global.html#rowSaving">rowSaving</a></li><li><a href="global.html#rowSynched">rowSynched</a></li><li><a href="global.html#RowView">RowView</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Table">Table</a></li><li><a href="global.html#TableProperties">TableProperties</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed May 03 2017 13:03:17 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
