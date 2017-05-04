@@ -1,9 +1,6 @@
 var _ = require('underscore');
 var View = require('../../../core/view');
 
-/**
- * renders a table row
- */
 var RowView = View.extend({
   tagName: 'tr',
 

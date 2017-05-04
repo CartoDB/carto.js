@@ -2,23 +2,6 @@ var _ = require('underscore');
 var templates = require('cdb.templates');
 var View = require('../../core/view');
 
-/**
- * generic embed notification, like twitter "new notifications"
- *
- * it shows slowly the notification with a message and a close button.
- * Optionally you can set a timeout to close
- *
- * usage example:
- *
-      var notification = new Notification({
-          el: "#notification_element",
-          msg: "error!",
-          timeout: 1000
-      });
-      notification.show();
-      // close it
-      notification.close();
- */
 var Notification = View.extend({
 
   tagName: 'div',

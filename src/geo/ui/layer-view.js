@@ -2,15 +2,6 @@ var _ = require('underscore');
 var templates = require('cdb.templates');
 var View = require('../../core/view');
 
-/**
- *  View for each CartoDB layer
- *  - It needs a model to make it work.
- *
- *  var layerView = new LayerView({
- *    model: layer_model,
- *    layer_definition: layer_definition
- *  });
- */
 var LayerView = View.extend({
 
   tagName: "li",

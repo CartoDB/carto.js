@@ -1,8 +1,10 @@
 var _ = require('underscore');
 
 /**
- * Keeps track of subsequent equal requests to the Maps API
- * @param {number} maxNumberOfRequests Maximum number of subsequent requests allowed
+ * @class
+ * @classdesc Keeps track of subsequent equal requests to the Maps API
+ * @param {Integer} maxNumberOfRequests Maximum number of subsequent requests allowed
+ * @private
  */
 var RequestTracker = function (maxNumberOfRequests) {
   this._maxNumberOfRequests = maxNumberOfRequests || 3;

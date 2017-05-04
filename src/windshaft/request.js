@@ -1,5 +1,7 @@
 /**
- * Simple value object that holds everything need to instantiate a map using the Maps API
+ * @class
+ * @classdesc Simple value object that holds everything need to instantiate a map using the Maps API
+ * @private
  */
 var Request = function (payload, params, options) {
   this.payload = payload;

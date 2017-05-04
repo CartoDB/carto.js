@@ -4,15 +4,6 @@ var log = require('cdb.log');
 var View = require('../../../core/view');
 var template = require('./fullscreen-template.tpl');
 
-/**
- *  FullScreen widget:
- *
- *  var widget = new FullScreen({
- *    doc: ".container", // optional; if not specified, we do the fullscreen of the whole window
- *    template: this.getTemplate("table/views/fullscreen")
- *  });
- *
- */
 var FullScreen = View.extend({
   tagName: 'div',
   className: 'CDB-Fullscreen',

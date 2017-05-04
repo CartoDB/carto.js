@@ -1,6 +1,9 @@
 /**
+ * @class
+ * @classdesc
  * Manages the infowindows for a map. It listens to events triggered by a
  * CartoDBLayerGroupView and updates models accordingly
+ * @private
  */
 var InfowindowManager = function (deps, options) {
   deps = deps || {};

@@ -12,9 +12,6 @@ var TORQUE_LAYER_CARTOCSS_PROPS = [
 ];
 var LAYER_NAME_IN_CARTO_CSS = 'Map';
 
-/**
- * Model for a Torque Layer
- */
 var TorqueLayer = LayerModelBase.extend({
   defaults: {
     type: 'torque',

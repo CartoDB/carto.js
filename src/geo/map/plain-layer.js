@@ -3,9 +3,6 @@ var LayerModelBase = require('./layer-model-base');
 
 var ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD = ['color', 'image'];
 
-/**
- * this layer allows to put a plain color or image as layer (instead of tiles)
- */
 var PlainLayer = LayerModelBase.extend({
   defaults: {
     type: 'Plain',

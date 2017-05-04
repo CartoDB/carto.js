@@ -1,13 +1,5 @@
 var View = require('../../core/view');
 
-/**
- * Show or hide tiles loader
- *
- * Usage:
- *
- * var tiles_loader = new TilesLoader();
- * mapWrapper.$el.append(tiles_loader.render().$el);
- */
 var TilesLoader = View.extend({
   className: 'CDB-Loader',
 

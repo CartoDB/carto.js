@@ -1,9 +1,6 @@
 var _ = require('underscore');
 var Model = require('../../../core/model');
 
-/**
- * contains information about the table, mainly the schema
- */
 var TableProperties = Model.extend({
 
   columnNames: function() {

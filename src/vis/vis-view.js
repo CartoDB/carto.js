@@ -5,9 +5,6 @@ var MapViewFactory = require('../geo/map-view-factory');
 var LegendsView = require('../geo/ui/legends/legends-view');
 var OverlaysView = require('../geo/ui/overlays-view');
 
-/**
- * Visualization creation
- */
 var Vis = View.extend({
   initialize: function (options) {
     this.model.once('load', this.render, this);

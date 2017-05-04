@@ -134,8 +134,10 @@ var MapView = View.extend({
   },
 
   /**
-  * set model property but unbind changes first in order to not create an infinite loop
-  */
+   * set model property but unbind changes first in order to not create an infinite loop
+   * @param {Object} prop (eg: { zoom: 10 })
+   * @private
+   */
   _setModelProperty: function (prop) {
     this._unbindModel();
     this.map.set(prop);
@@ -149,7 +151,6 @@ var MapView = View.extend({
     this._bindModel();
   },
 
-  /** bind model properties */
   _bindModel: function () {
     this._unbindModel();
     this.map.bind('change:view_bounds_sw', this._changeBounds, this);
@@ -160,7 +161,6 @@ var MapView = View.extend({
     this.map.bind('change:center', this._setCenter, this);
   },
 
-  /** unbind model properties */
   _unbindModel: function () {
     this.map.unbind('change:view_bounds_sw', this._changeBounds, this);
     this.map.unbind('change:view_bounds_ne', this._changeBounds, this);

@@ -7,10 +7,6 @@ var Point = require('../../../geo/geometry-models/point.js');
 var template = require('./search_template.tpl');
 var infowindowTemplate = require('./search_infowindow_template.tpl');
 
-/**
- *  UI component to place the map in the
- *  location found by the geocoder.
- */
 var Search = View.extend({
   className: 'CDB-Search CDB-Overlay',
 

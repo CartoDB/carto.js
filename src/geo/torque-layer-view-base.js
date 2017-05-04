@@ -5,6 +5,7 @@ var _ = require('underscore');
  * All the methods and attributes here need to be consistent across all implementing models.
  *
  * Methods are prefixed with _ to indicate that they are not intended to be used outside the implementing models.
+ * @ignore
  */
 var TorqueLayerViewBase = {
   setNativeTorqueLayer: function (nativeTorqueLayer) {

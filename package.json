@@ -165,6 +165,6 @@
     "test": "jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json",
     "test-debug": "node-debug --no-preload ./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json --",
     "test-watch": "watch 'npm test' $npm_package_config_root",
-    "docs": "jsdoc src/ -r -d doc/ -c ./jsdoc.conf"
+    "docs": "rm -rf doc; jsdoc --configure jsdoc.conf --readme README.md"
   }
 }

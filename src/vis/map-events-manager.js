@@ -1,7 +1,10 @@
 /**
+ * @class
+ * @classdesc
  * Listens to feature events and "forwards" them to the map model
  * when map's feature interactivity is enabled.
  * @param {Object} deps Dependencies
+ * @private
  */
 var MapModelEventsManager = function (deps) {
   if (!deps.mapModel) throw new Error('mapModel is required');

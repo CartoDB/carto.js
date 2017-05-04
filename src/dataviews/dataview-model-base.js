@@ -59,6 +59,7 @@ module.exports = Model.extend({
    * Subclasses might override this method to define extra params that will be appended
    * to the dataview's URL.
    * @return {Array} An array of strings in the form of "key=value".
+   * @private
    */
   _getDataviewSpecificURLParams: function () {
     return [];
@@ -150,9 +151,6 @@ module.exports = Model.extend({
     this.trigger('error', this, error);
   },
 
-  /**
-   * @private
-   */
   _onFilterChanged: function (filter) {
     var layerDataProvider = this._getLayerDataProvider();
     if (layerDataProvider && layerDataProvider.canApplyFilterTo(this)) {
@@ -162,9 +160,6 @@ module.exports = Model.extend({
     }
   },
 
-  /**
-   * @protected
-   */
   _reloadVis: function (opts) {
     opts = opts || {};
     this._vis.reload(

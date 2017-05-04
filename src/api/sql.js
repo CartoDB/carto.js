@@ -5,6 +5,11 @@ var Promise = require('./promise');
 
 var NO_BOUNDS_ERROR_MESSAGE = 'No bounds';
 
+/**
+ * @constructor
+ * @param {Object} options
+ * @private
+ */
 function SQL(options) {
   if(window.cdb === this || window === this) {
     return new SQL(options);
@@ -44,6 +49,7 @@ SQL.prototype._host = function() {
 },
 
 /**
+ * @example
  * var sql = new SQL('cartodb_username');
  * sql.execute("select * from {{ table }} where id = {{ id }}", {
  *    table: 'test',
@@ -218,6 +224,7 @@ SQL.prototype.getBounds = function(sql, vars, options, callback) {
 }
 
 /**
+ * @example
  * var people_under_10 = sql
  *    .table('test')
  *    .columns(['age', 'column2'])
@@ -225,10 +232,8 @@ SQL.prototype.getBounds = function(sql, vars, options, callback) {
  *    .limit(15)
  *    .order_by('age')
  *
- *  people_under_10(function(results) {
- *  })
+ * people_under_10(function(results) { ... })
  */
-
 SQL.prototype.table = function(name) {
 
   var _name = name;

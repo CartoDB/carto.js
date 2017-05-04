@@ -1,8 +1,5 @@
 var LayerModelBase = require('./layer-model-base');
 
-/**
- * WMS layer support
- */
 var WMSLayer = LayerModelBase.extend({
   defaults: {
     type: 'WMS',

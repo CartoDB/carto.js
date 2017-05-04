@@ -6,6 +6,7 @@ var $ = require('jquery');
  * should implement a function called geocode the gets
  * the address and call callback with a list of placemarks with lat, lon
  * (at least)
+ * @private
  */
 var MAPZEN = {
   keys: {

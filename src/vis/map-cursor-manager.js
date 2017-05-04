@@ -1,9 +1,12 @@
 var _ = require('underscore');
 
 /**
+ * @class
+ * @classdesc
  * Changes the mouse pointer based on feature events and status
  * of map's interactivity.
  * @param {Object} deps Dependencies
+ * @private
  */
 var MapCursorManager = function (deps) {
   if (!deps.mapView) throw new Error('mapView is required');
