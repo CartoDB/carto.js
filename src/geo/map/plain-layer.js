@@ -28,7 +28,7 @@ var PlainLayer = LayerModelBase.extend({
 
   isEqual: function (otherLayerModel) {
     return this.get('type') === otherLayerModel.get('type') &&
-      (this.get('color') === otherLayerModel.get('color') || 
+      (this.get('color') === otherLayerModel.get('color') ||
       this.get('image') === otherLayerModel.get('image'));
   },
 
