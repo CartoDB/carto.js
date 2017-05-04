@@ -9,6 +9,8 @@ var TileLayer = LayerModelBase.extend({
     visible: true
   },
 
+  EQUALITY_ATTRIBUTES: ['urlTemplate', 'name'],
+
   initialize: function (attrs, options) {
     attrs = attrs || {};
     options = options || {};

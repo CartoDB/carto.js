@@ -30,6 +30,8 @@ var TorqueLayer = LayerModelBase.extend({
     time: undefined // should be a Date instance
   },
 
+  EQUALITY_ATTRIBUTES: ['query', 'query_wrapper', 'cartocss'],
+
   initialize: function (attrs, options) {
     options = options || {};
     if (!options.vis) throw new Error('vis is required');
@@ -112,14 +114,6 @@ var TorqueLayer = LayerModelBase.extend({
 
   resetRenderRange: function () {
     this.set('renderRange', {});
-  },
-
-  isEqual: function (other) {
-    var properties = ['query', 'query_wrapper', 'cartocss'];
-    var self = this;
-    return this.get('type') === other.get('type') && _.every(properties, function (p) {
-      return other.get(p) === self.get(p);
-    });
   },
 
   getName: function () {

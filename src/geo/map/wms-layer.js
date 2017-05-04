@@ -14,7 +14,9 @@ var WMSLayer = LayerModelBase.extend({
     styles: '',
     format: 'image/jpeg',
     transparent: false
-  }
+  },
+
+  EQUALITY_ATTRIBUTES: ['urlTemplate', 'layers']
 });
 
 module.exports = WMSLayer;

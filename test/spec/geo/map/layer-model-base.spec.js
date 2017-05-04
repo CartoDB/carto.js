@@ -1,6 +1,8 @@
 var LayerModelBase = require('../../../../src/geo/map/layer-model-base');
 
-var MyLayer = LayerModelBase.extend({});
+var MyLayer = LayerModelBase.extend({
+  EQUALITY_ATTRIBUTES: [ 'attr1', 'attr2' ]
+});
 
 describe('geo/map/layer-model-base.js', function () {
   beforeEach(function () {
@@ -80,6 +82,29 @@ describe('geo/map/layer-model-base.js', function () {
       this.layer.setError('wadus');
 
       expect(this.layer.get('error')).toEqual('wadus');
+    });
+  });
+
+  describe('.isEqual', function () {
+    it("should return false if type doesn't match", function () {
+      var layer1 = new MyLayer({ type: 'type1', attr1: '1', attr2: '2' });
+      var layer2 = new MyLayer({ type: 'type2', attr3: '1', attr4: '2' });
+
+      expect(layer1.isEqual(layer2)).toBe(false);
+    });
+
+    it("should return false if type matches but some attrs don't match", function () {
+      var layer1 = new MyLayer({ type: 'type1', attr1: '1', attr2: '2' });
+      var layer2 = new MyLayer({ type: 'type1', attr1: '1', attr2: '3' });
+
+      expect(layer1.isEqual(layer2)).toBe(false);
+    });
+
+    it('should return true if type and all attrs match', function () {
+      var layer1 = new MyLayer({ type: 'type1', attr1: '1', attr2: '2' });
+      var layer2 = new MyLayer({ type: 'type1', attr1: '1', attr2: '2' });
+
+      expect(layer1.isEqual(layer2)).toBe(true);
     });
   });
 });
