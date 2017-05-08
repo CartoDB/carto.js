@@ -60,12 +60,8 @@ var LayerModelBase = Model.extend({
   },
 
   isEqual: function (otherLayerModel) {
-    if (this.EQUALITY_ATTRIBUTES && this.EQUALITY_ATTRIBUTES.length) {
-      var equalityAttributes = _.union(['type'], this.EQUALITY_ATTRIBUTES);
-      return this._areAllAttrsEqual(otherLayerModel, equalityAttributes);
-    }
-
-    return false;
+    var equalityAttributes = _.union(['type'], this.EQUALITY_ATTRIBUTES);
+    return this._areAllAttrsEqual(otherLayerModel, equalityAttributes);
   },
 
   _areAllAttrsEqual: function (otherLayerModel, attributes) {
