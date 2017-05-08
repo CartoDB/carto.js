@@ -9,7 +9,7 @@ var GMapsBaseLayer = LayerModelBase.extend({
   },
 
   OPTIONS: ['roadmap', 'satellite', 'terrain', 'custom'],
-  EQUALITY_ATTRIBUTES: ['baseType', 'style']
+  EQUALITY_ATTRIBUTES: ['baseType']
 });
 
 module.exports = GMapsBaseLayer;
