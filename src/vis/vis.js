@@ -20,7 +20,7 @@ var STATE_INIT = 'init'; // vis hasn't been sent to Windshaft
 var STATE_OK = 'ok'; // vis has been sent to Windshaft and everything is ok
 var STATE_ERROR = 'error'; // vis has been sent to Windshaft and there were some issues
 
-var VisModel = Backbone.Model.extend( /** @lends Vis.prototype */ {
+var VisModel = Backbone.Model.extend(/** @lends Vis.prototype */{
   defaults: {
     loading: false,
     showEmptyInfowindowFields: false,

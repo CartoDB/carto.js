@@ -9,7 +9,7 @@ var WindshaftError = require('./error');
 // The max number of times the same map can be instantiated
 var MAP_INSTANTIATION_LIMIT = 3;
 
-var WindshaftMap = Backbone.Model.extend( /** @lends WindshaftMap */ {
+var WindshaftMap = Backbone.Model.extend(/** @lends WindshaftMap */{
 
   /**
    * @class

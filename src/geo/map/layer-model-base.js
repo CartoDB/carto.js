@@ -6,7 +6,7 @@ var log = require('../../cdb.log');
 var cdb = require('../../cdb'); // cdb.geo.TorqueLayer, cdb.geo.CartoDBNamedMapLayer
 var Model = require('../../core/model');
 
-var LayerModelBase = Model.extend( /** @lends LayerModel.prototype */ {
+var LayerModelBase = Model.extend(/** @lends LayerModel.prototype */{
 
   /**
    * @constructs

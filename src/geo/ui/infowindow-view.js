@@ -7,7 +7,7 @@ var Template = require('../../core/template');
 var View = require('../../core/view');
 var util = require('../../core/util');
 
-var Infowindow = View.extend( /** @lends Infowindow.prototype */{
+var Infowindow = View.extend(/** @lends Infowindow.prototype */{
   options: {
     imageTransitionSpeed: 300,
     hookMargin: 24,
