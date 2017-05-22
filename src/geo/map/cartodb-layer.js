@@ -106,14 +106,6 @@ var CartoDBLayer = LayerModelBase.extend({
 
   getName: function () {
     return this.get('layer_name');
-  },
-
-  setDataProvider: function (dataProvider) {
-    this._dataProvider = dataProvider;
-  },
-
-  getDataProvider: function () {
-    return this._dataProvider;
   }
 });
 

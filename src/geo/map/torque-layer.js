@@ -128,10 +128,6 @@ var TorqueLayer = LayerModelBase.extend({
 
   fetchAttributes: function (layer, featureID, callback) {},
 
-  setDataProvider: function (dataProvider) {
-    this._dataProvider = dataProvider;
-  },
-
   getDataProvider: function () {
     return this._dataProvider;
   },

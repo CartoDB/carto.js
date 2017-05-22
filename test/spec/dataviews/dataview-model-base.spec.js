@@ -46,7 +46,6 @@ describe('dataviews/dataview-model-base', function () {
     this.analysisCollection = new Backbone.Collection();
     this.a0 = this.analysisCollection.add({id: 'a0'});
     this.layer = new Backbone.Model();
-    this.layer.getDataProvider = jasmine.createSpy('getDataProvider');
 
     this.model = new DataviewModelBase({
       source: {id: 'a0'}
@@ -364,7 +363,6 @@ describe('dataviews/dataview-model-base', function () {
       this.layer = new Backbone.Model({
         id: 'layerId'
       });
-      this.layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(undefined);
     });
 
     it('should reload the map by default when the filter changes', function () {
@@ -437,127 +435,12 @@ describe('dataviews/dataview-model-base', function () {
     });
   });
 
-  describe('when the layer has a data provider', function () {
-    beforeEach(function () {
-      this.geoJSONDataProvider = jasmine.createSpyObj('dataProvider', ['getDataFor', 'canProvideDataFor', 'applyFilter', 'canApplyFilterTo']);
-      _.extend(this.geoJSONDataProvider, Backbone.Events);
-
-      this.layer = new Backbone.Model({
-        id: 'layerId'
-      });
-      this.layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(this.geoJSONDataProvider);
-    });
-
-    it('should get data from a data provider if data provider can provide data for the dataview', function () {
-      var dataview = new DataviewModelBase({ // eslint-disable-line
-        column: 'columnName',
-        source: { id: 'a0' }
-      }, {
-        layer: this.layer,
-        map: this.map,
-        vis: this.vis,
-        analysisCollection: this.analysisCollection
-      });
-
-      this.geoJSONDataProvider.canProvideDataFor.and.returnValue(true);
-
-      dataview.fetch();
-
-      expect(this.geoJSONDataProvider.getDataFor).toHaveBeenCalledWith(dataview);
-    });
-
-    it("should NOT get data from a data provider if data provider CAN'T provide data for the dataview", function () {
-      var dataview = new DataviewModelBase({ // eslint-disable-line
-        column: 'columnName',
-        source: { id: 'a0' }
-      }, {
-        layer: this.layer,
-        map: this.map,
-        vis: this.vis,
-        analysisCollection: this.analysisCollection
-      });
-
-      this.geoJSONDataProvider.canProvideDataFor.and.returnValue(false);
-
-      dataview.fetch();
-
-      expect(this.geoJSONDataProvider.getDataFor).not.toHaveBeenCalledWith(dataview);
-    });
-
-    it('should be bound to changes on the map bounds', function () {
-      var dataview = new DataviewModelBase({
-        source: { id: 'a0' }
-      }, {
-        layer: this.layer,
-        map: this.map,
-        vis: this.vis,
-        analysisCollection: this.analysisCollection
-      });
-
-      // Bindings are done
-      this.geoJSONDataProvider.trigger('dataChanged');
-
-      spyOn(dataview, 'fetch');
-
-      // Map bounds change
-      this.map.getViewBounds.and.returnValue([100, 200], [300, 400]);
-      this.map.trigger('change:center');
-
-      expect(dataview.fetch).toHaveBeenCalled();
-    });
-
-    it('should apply the filter to the data provider when the filter changes and data provider can apply filters to the dataview', function () {
-      var filter = new Backbone.Model();
-      var dataview = new DataviewModelBase({ // eslint-disable-line
-        column: 'columnName',
-        source: { id: 'a0' }
-      }, {
-        layer: this.layer,
-        map: this.map,
-        vis: this.vis,
-        filter: filter,
-        analysisCollection: this.analysisCollection
-      });
-
-      this.geoJSONDataProvider.canApplyFilterTo.and.returnValue(true);
-
-      // Filter changes
-      filter.trigger('change', filter);
-
-      expect(this.vis.reload).not.toHaveBeenCalled();
-      expect(this.geoJSONDataProvider.applyFilter).toHaveBeenCalledWith(dataview, filter);
-    });
-
-    it("should NOT apply the filter to the data provider when the filter changes and data provider CAN'T apply filters to the dataview", function () {
-      var filter = new Backbone.Model();
-      var dataview = new DataviewModelBase({ // eslint-disable-line
-        column: 'columnName',
-        source: { id: 'a0' }
-      }, {
-        layer: this.layer,
-        map: this.map,
-        vis: this.vis,
-        filter: filter,
-        analysisCollection: this.analysisCollection
-      });
-
-      this.geoJSONDataProvider.canApplyFilterTo.and.returnValue(false);
-
-      // Filter changes
-      filter.trigger('change', filter);
-
-      expect(this.vis.reload).toHaveBeenCalled();
-      expect(this.geoJSONDataProvider.applyFilter).not.toHaveBeenCalled();
-    });
-  });
-
   describe('getSourceId', function () {
     it('should return the id of the source', function () {
       var layer = new Backbone.Model({
         id: 'layerId',
         source: 'a1'
       });
-      layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(undefined);
 
       var dataview = new DataviewModelBase({
         source: {
@@ -578,7 +461,6 @@ describe('dataviews/dataview-model-base', function () {
         id: 'layerId',
         source: 'a1'
       });
-      layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(undefined);
 
       var dataview = new DataviewModelBase({
         source: {
@@ -601,7 +483,6 @@ describe('dataviews/dataview-model-base', function () {
         id: 'layerId',
         source: 'SOURCE_ID'
       });
-      layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(undefined);
 
       var dataview = new DataviewModelBase({
         source: {
@@ -622,7 +503,6 @@ describe('dataviews/dataview-model-base', function () {
         id: 'layerId',
         source: 'SOURCE_ID'
       });
-      layer.getDataProvider = jasmine.createSpy('getDataProvider').and.returnValue(undefined);
 
       var dataview = new DataviewModelBase({
         source: {

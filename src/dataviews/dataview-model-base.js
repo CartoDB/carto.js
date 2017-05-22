@@ -94,26 +94,16 @@ module.exports = Model.extend({
     this._setupAnalysisStatusEvents();
   },
 
-  _getLayerDataProvider: function () {
-    return this.layer.getDataProvider();
-  },
-
   _initBinds: function () {
     this.listenTo(this.layer, 'change:visible', this._onLayerVisibilityChanged);
     this.listenTo(this.layer, 'change:source', this._setupAnalysisStatusEvents);
     this.on('change:source', this._setupAnalysisStatusEvents, this);
 
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider) {
-      this.listenToOnce(layerDataProvider, 'dataChanged', this._onChangeBinds, this);
-      this.listenTo(layerDataProvider, 'dataChanged', this.fetch);
-    } else {
-      this.listenToOnce(this, 'change:url', function () {
-        this.fetch({
-          success: this._onChangeBinds.bind(this)
-        });
+    this.listenToOnce(this, 'change:url', function () {
+      this.fetch({
+        success: this._onChangeBinds.bind(this)
       });
-    }
+    });
 
     if (this.filter) {
       this.listenTo(this.filter, 'change', this._onFilterChanged);
@@ -154,12 +144,7 @@ module.exports = Model.extend({
    * @private
    */
   _onFilterChanged: function (filter) {
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canApplyFilterTo(this)) {
-      layerDataProvider.applyFilter(this, filter);
-    } else {
-      this._reloadVis();
-    }
+    this._reloadVis();
   },
 
   /**
@@ -270,30 +255,25 @@ module.exports = Model.extend({
   fetch: function (opts) {
     opts = opts || {};
     this.set('status', FETCHING_STATUS);
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canProvideDataFor(this)) {
-      this.set(this.parse(layerDataProvider.getDataFor(this)));
-    } else {
-      this._triggerLoading();
+    this._triggerLoading();
 
-      if (opts.success) {
-        var successCallback = opts && opts.success;
-      }
-
-      return Model.prototype.fetch.call(this, _.extend(opts, {
-        success: function () {
-          this.set('status', FETCHED_STATUS);
-          successCallback && successCallback(arguments);
-          this.trigger('loaded', this);
-        }.bind(this),
-        error: function (mdl, err) {
-          this.set('status', FETCH_ERROR_STATUS);
-          if (!err || (err && err.statusText !== 'abort')) {
-            this._triggerError(err);
-          }
-        }.bind(this)
-      }));
+    if (opts.success) {
+      var successCallback = opts && opts.success;
     }
+
+    return Model.prototype.fetch.call(this, _.extend(opts, {
+      success: function () {
+        this.set('status', FETCHED_STATUS);
+        successCallback && successCallback(arguments);
+        this.trigger('loaded', this);
+      }.bind(this),
+      error: function (mdl, err) {
+        this.set('status', FETCH_ERROR_STATUS);
+        if (!err || (err && err.statusText !== 'abort')) {
+          this._triggerError(err);
+        }
+      }.bind(this)
+    }));
   },
 
   toJSON: function () {
