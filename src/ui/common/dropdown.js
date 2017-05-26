@@ -4,23 +4,6 @@ var _ = require('underscore');
 var templates = require('cdb.templates');
 var View = require('../../core/view');
 
-/**
- * Show a dropdown from the target
- *
- * It shows the several options of the user settings
- *
- * usage example:
- *
- *    var settings = new Dropdown({
- *        el: "#settings_element",
- *        speedIn: 300,
- *        speedOut: 200
- *    });
- *    // show it
- *    settings.show();
- *    // close it
- *    settings.close();
- */
 var Dropdown = View.extend({
 
   tagName: 'div',

@@ -7,18 +7,7 @@ var Template = require('../../core/template');
 var View = require('../../core/view');
 var util = require('../../core/util');
 
-/**
- * Usage:
- * var infowindow = new Infowindow({
- *   model: infowindowModel,
- *   mapView: mapView
- * });
- *
- * // Show the infowindow:
- * infowindow.showInfowindow();
- */
-
-var Infowindow = View.extend({
+var Infowindow = View.extend(/** @lends Infowindow.prototype */{
   options: {
     imageTransitionSpeed: 300,
     hookMargin: 24,
@@ -47,6 +36,11 @@ var Infowindow = View.extend({
     'click': '_stopPropagation'
   },
 
+  /**
+   * @class
+   * @constructs
+   * @private
+   */
   initialize: function () {
     this.mapView = this.options.mapView;
 
@@ -226,9 +220,6 @@ var Infowindow = View.extend({
     });
   },
 
-  /**
-   *  Compile template of the infowindow
-   */
   _compileTemplate: function () {
     var template = this.model.get('template');
 
@@ -244,9 +235,6 @@ var Infowindow = View.extend({
     this.render();
   },
 
-  /**
-   *  Check event origin
-   */
   _checkOrigin: function (ev) {
     // If the mouse down come from jspVerticalBar
     // dont stop the propagation, but if the event
@@ -282,9 +270,6 @@ var Infowindow = View.extend({
     return attr;
   },
 
-  /**
-   *  Does header contain cover?
-   */
   _containsCover: function () {
     return !!this.$('.js-infowindow').attr('data-cover');
   },
@@ -436,9 +421,6 @@ var Infowindow = View.extend({
     this.$('.js-loader').removeClass('is-visible');
   },
 
-  /**
-   *  Return true if the provided URL is valid
-   */
   _isValidURL: function (url) {
     if (url) {
       var urlPattern = /^(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-|]*[\w@?^=%&amp;\/~+#-])?$/;
@@ -448,9 +430,6 @@ var Infowindow = View.extend({
     return false;
   },
 
-  /**
-   *  Toggle infowindow visibility
-   */
   toggle: function () {
     if (this.model.get('visibility')) {
       this.show(true);
@@ -459,9 +438,6 @@ var Infowindow = View.extend({
     }
   },
 
-  /**
-   *  Stop event bubbling
-   */
   _stopBubbling: function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -471,9 +447,6 @@ var Infowindow = View.extend({
     ev.stopPropagation();
   },
 
-  /**
-   *  Close infowindow
-   */
   _closeInfowindow: function (ev) {
     if (ev) {
       ev.preventDefault();
@@ -484,9 +457,6 @@ var Infowindow = View.extend({
     }
   },
 
-  /**
-   *  Show infowindow (update, pan, etc)
-   */
   show: function (adjustPan) {
     $(document)
       .off('keyup', this._onKeyUp)
@@ -505,9 +475,6 @@ var Infowindow = View.extend({
     return !this.model.get('visibility');
   },
 
-  /**
-   *  Set infowindow to hidden
-   */
   hide: function (force) {
     $(document).off('keyup', this._onKeyUp);
     if (force || !this.model.get('visibility')) this._animateOut();
@@ -517,9 +484,6 @@ var Infowindow = View.extend({
     this._update(true);
   },
 
-  /**
-   *  Update infowindow
-   */
   _update: function (adjustPan) {
     if (!this.isHidden()) {
       var delay = 0;
@@ -533,9 +497,6 @@ var Infowindow = View.extend({
     }
   },
 
-  /**
-   *  Animate infowindow to show up
-   */
   _animateIn: function (delay) {
     if (!util.ie || (util.browser.ie && util.browser.ie.version > 8)) {
       this.$el.css({
@@ -556,9 +517,6 @@ var Infowindow = View.extend({
     }
   },
 
-  /**
-   *  Animate infowindow to disappear
-   */
   _animateOut: function () {
     if (!util.ie || (util.browser.ie && util.browser.ie.version > 8)) {
       var self = this;
@@ -574,9 +532,6 @@ var Infowindow = View.extend({
     }
   },
 
-  /**
-   *  Update the position (private)
-   */
   _updatePosition: function () {
     if (this.isHidden()) {
       return;
@@ -591,9 +546,6 @@ var Infowindow = View.extend({
     this.$el.css({ bottom: bottom, left: left });
   },
 
-  /**
-   *  Set visibility infowindow
-   */
   showInfowindow: function () {
     this.model.set('visibility', true);
   }

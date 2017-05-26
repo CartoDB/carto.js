@@ -20,13 +20,20 @@ var STATE_INIT = 'init'; // vis hasn't been sent to Windshaft
 var STATE_OK = 'ok'; // vis has been sent to Windshaft and everything is ok
 var STATE_ERROR = 'error'; // vis has been sent to Windshaft and there were some issues
 
-var VisModel = Backbone.Model.extend({
+var VisModel = Backbone.Model.extend(/** @lends Vis.prototype */{
   defaults: {
     loading: false,
     showEmptyInfowindowFields: false,
     state: STATE_INIT
   },
 
+  /**
+   * @class Vis
+   * @classdesc Top level object for managing CARTO maps
+   * @constructs
+   * @extends Backbone.Model
+   * @param {Object} attrs
+   */
   initialize: function () {
     this._loadingObjects = [];
     this._analysisPoller = new AnalysisPoller();
@@ -47,6 +54,11 @@ var VisModel = Backbone.Model.extend({
     this._instantiateMapWasCalled = false;
   },
 
+  /**
+   * Returns a URL for a static image of the vis
+   * @param  {Object} options
+   * @return {String} url of the image
+   */
   getStaticImageURL: function (options) {
     options = _.defaults({}, options, {
       zoom: 4,
@@ -106,14 +118,14 @@ var VisModel = Backbone.Model.extend({
   },
 
   /**
-   * @return Array of {LayerModel}
+   * @return Array.<LayerModel>
    */
   getLayers: function () {
     return _.clone(this.map.layers.models);
   },
 
   /**
-   * @param {Integer} index Layer index (including base layer if present)
+   * @param {Integer} index Index of the layer
    * @return {LayerModel}
    */
   getLayer: function (index) {

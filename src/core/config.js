@@ -1,8 +1,5 @@
 var Backbone = require('backbone');
 
-/**
- * global configuration
- */
 var Config = Backbone.Model.extend({
   VERSION: 4,
 

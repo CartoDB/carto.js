@@ -9,8 +9,10 @@ function getSubdomain (subdomains, resource) {
 }
 
 /**
- * This class exposes a method that knows how to set/update the metadata on internal
+ * @class
+ * @classdescThis class exposes a method that knows how to set/update the metadata on internal
  * CartoDB.js models that are linked to a "resource" in the Maps API.
+ * @private
  */
 var ModelUpdater = function (deps) {
   if (!deps.visModel) {

@@ -2,22 +2,28 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
-/**
- * Base Model for all CartoDB model.
- * DO NOT USE Backbone.Model directly
- */
-var Model = Backbone.Model.extend({
+var Model = Backbone.Model.extend( /** @lends Model.prototype */ {
 
+  /**
+   * @class
+   * @classdesc
+   *
+   * Base Model for all CartoDB models.
+   * DO NOT USE Backbone.Model directly
+   *
+   * @constructs
+   * @private
+   */
   initialize: function(options) {
     _.bindAll(this, 'fetch',  'save', 'retrigger');
     return Backbone.Model.prototype.initialize.call(this, options);
   },
+
   /**
-  * We are redefining fetch to be able to trigger an event when the ajax call ends, no matter if there's
-  * a change in the data or not. Why don't backbone does this by default? ahh, my friend, who knows.
-  * @method fetch
-  * @param args {Object}
-  */
+   * We are redefining fetch to be able to trigger an event when the ajax call ends, no matter if there's
+   * a change in the data or not. Why don't backbone does this by default? ahh, my friend, who knows.
+   * @param args {Object}
+   */
   fetch: function(args) {
     var self = this;
     // var date = new Date();
@@ -30,22 +36,22 @@ var Model = Backbone.Model.extend({
       self.trigger('loadModelFailed', ev);
     })
   },
+
   /**
-  * Changes the attribute used as Id
-  * @method setIdAttribute
-  * @param attr {String}
-  */
+   * Changes the attribute used as Id
+   * @param attr {String}
+   */
   setIdAttribute: function(attr) {
     this.idAttribute = attr;
   },
+
   /**
-  * Listen for an event on another object and triggers on itself, with the same name or a new one
-  * @method retrigger
-  * @param ev {String} event who triggers the action
-  * @param obj {Object} object where the event happens
-  * @param obj {Object} [optional] name of the retriggered event;
-  * @todo [xabel]: This method is repeated here and in the base view definition. There's should be a way to make it unique
-  */
+   * Listen for an event on another object and triggers on itself, with the same name or a new one
+   * @param ev {String} event who triggers the action
+   * @param obj {Object} object where the event happens
+   * @param obj {Object} [optional] name of the retriggered event;
+   * @todo [xabel]: This method is repeated here and in the base view definition. There's should be a way to make it unique
+   */
   retrigger: function(ev, obj, retrigEvent) {
     if(!retrigEvent) {
       retrigEvent = ev;

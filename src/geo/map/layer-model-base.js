@@ -6,9 +6,13 @@ var log = require('../../cdb.log');
 var cdb = require('../../cdb'); // cdb.geo.TorqueLayer, cdb.geo.CartoDBNamedMapLayer
 var Model = require('../../core/model');
 
-// Map layer, could be tiled or whatever
-var MapLayer = Model.extend({
+var LayerModelBase = Model.extend(/** @lends LayerModel.prototype */{
 
+  /**
+   * @constructs
+   * @classdesc Base class for all layer models
+   * @class  LayerModel
+   */
   initialize: function () {
     this.bind('change:type', function () {
       log.error('changing layer type is not allowed, remove it and add a new one instead');
@@ -32,18 +36,31 @@ var MapLayer = Model.extend({
     });
   },
 
+  /**
+   * Show the layer
+   */
   show: function () {
     this.set('visible', true);
   },
 
+  /**
+   * Hide the layer
+   */
   hide: function () {
     this.set('visible', false);
   },
 
+  /**
+   * Returns `true` if layer is visible
+   * @return {Boolean}
+   */
   isVisible: function () {
     return !!this.get('visible');
   },
 
+  /**
+   * Toggles visibility of the layer
+   */
   toggle: function () {
     this.set('visible', !this.get('visible'));
   },
@@ -116,4 +133,4 @@ var MapLayer = Model.extend({
   }
 });
 
-module.exports = MapLayer;
+module.exports = LayerModelBase;

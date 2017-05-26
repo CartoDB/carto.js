@@ -296,9 +296,6 @@ _.extend(
       return point;
     },
 
-    /**
-     * Creates an instance of a googleMaps Point
-     */
     _newPoint: function (x, y) {
       return new google.maps.Point(x, y);
     },

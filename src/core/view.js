@@ -3,12 +3,20 @@ var Backbone = require('backbone');
 var Profiler = require('cdb.core.Profiler');
 var templates = require('cdb.templates');
 
-/**
- * Base View for all CartoDB views.
- * DO NOT USE Backbone.View directly
- */
-var View = Backbone.View.extend({
+var View = Backbone.View.extend( /** @lends View.prototype */ {
   classLabel: 'cdb.core.View',
+
+  /**
+   * @class
+   * @classdesc
+   *
+   * Base View for all views.
+   *
+   * DO NOT USE Backbone.View directly
+   *
+   * @constructs
+   * @private
+   */
   constructor: function(options) {
     this.options = _.defaults(options, this.options);
     this._models = [];
@@ -90,7 +98,6 @@ var View = Backbone.View.extend({
 
   /**
   * Listen for an event on another object and triggers on itself, with the same name or a new one
-  * @method retrigger
   * @param ev {String} event who triggers the action
   * @param obj {Object} object where the event happens
   * @param obj {Object} [optional] name of the retriggered event;
@@ -106,9 +113,9 @@ var View = Backbone.View.extend({
     // add it as related model//object
     this.add_related_model(obj);
   },
+
   /**
   * Captures an event and prevents the default behaviour and stops it from bubbling
-  * @method killEvent
   * @param event {Event}
   */
   killEvent: function(ev) {
@@ -122,13 +129,12 @@ var View = Backbone.View.extend({
 
   /**
   * Remove all the tipsy tooltips from the document
-  * @method cleanTooltips
   */
   cleanTooltips: function() {
     this.$('.tipsy').remove();
   }
 
-}, {
+}, /** @lends View */ {
   viewCount: 0,
   views: {},
 

@@ -18,6 +18,7 @@ var Layers = Backbone.Collection.extend({
   /**
    * each time a layer is added or removed
    * the index should be recalculated
+   * @private
    */
   _assignIndexes: function (model, col, options) {
     if (this.size() > 0) {

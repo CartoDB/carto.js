@@ -3,36 +3,7 @@ var $ = require('jquery');
 var templates = require('cdb.templates');
 var View = require('../../core/view');
 
-/**
- * generic dialog
- *
- * this opens a dialog in the middle of the screen rendering
- * a dialog using templates 'common/dialog' or template_base option.
- *
- * inherit class should implement render_content (it could return another widget)
- *
- * usage example:
- *
- *    var MyDialog = Dialog.extend({
- *      render_content: function() {
- *        return "my content";
- *      },
- *    })
- *    var dialog = new MyDialog({
- *        title: 'test',
- *        description: 'long description here',
- *        template_base: $('#base_template').html(),
- *        width: 500
- *    });
- *
- *    $('body').append(dialog.render().el);
- *    dialog.open();
- *
- * TODO: implement draggable
- * TODO: modal
- * TODO: document modal_type
- */
-module.exports = View.extend({
+module.exports = View.extend( /** @lends View */ {
 
   tagName: 'div',
   className: 'dialog',
@@ -61,6 +32,11 @@ module.exports = View.extend({
     additionalButtons: []
   },
 
+  /**
+   * @class
+   * @constructs
+   * @private
+   */
   initialize: function() {
     _.defaults(this.options, this.default_options);
 

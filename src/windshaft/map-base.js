@@ -6,10 +6,16 @@ var Request = require('./request');
 var RequestTracker = require('./request-tracker');
 var WindshaftError = require('./error');
 
-/* The max number of times the same map can be instantiated */
+// The max number of times the same map can be instantiated
 var MAP_INSTANTIATION_LIMIT = 3;
 
-var WindshaftMap = Backbone.Model.extend({
+var WindshaftMap = Backbone.Model.extend(/** @lends WindshaftMap */{
+
+  /**
+   * @class
+   * @constructs
+   * @private
+   */
   initialize: function (attrs, options) {
     if (!options.client) {
       throw new Error('client option is required');

@@ -3,25 +3,26 @@ var Backbone = require('backbone');
 var Mustache = require('mustache');
 var log = require('cdb.log');
 
-/**
- * template system
- * usage:
-   var tmpl = new Template({
-     template: "hi, my name is {{ name }}",
-     type: 'mustache' // undescore by default
-   });
-   console.log(tmpl.render({name: 'rambo'})));
-   // prints "hi, my name is rambo"
+var Template = Backbone.Model.extend( /** @lends Template.prototype */ {
 
-
-   you could pass the compiled tempalte directly:
-
-   var tmpl = new Template({
-     compiled: function() { return 'my compiled template'; }
-   });
- */
-var Template = Backbone.Model.extend({
-
+  /**
+   * Template system
+   * @class
+   * @constructs
+   * @example
+   * var tmpl = new Template({
+   *   template: "hi, my name is {{ name }}",
+   *   type: 'mustache' // undescore by default
+   * });
+   * console.log(tmpl.render({name: 'rambo'})));
+   *
+   * // you could pass the compiled tempalte directly:
+   *
+   * var tmpl = new Template({
+   *   compiled: function() { return 'my compiled template'; }
+   * });
+   * @private
+   */
   initialize: function() {
     this.bind('change', this._invalidate);
     this._invalidate();
@@ -55,9 +56,6 @@ var Template = Backbone.Model.extend({
     return null;
   },
 
-  /**
-   * renders the template with specified vars
-   */
   render: function(vars) {
     var c = this.compiled = this.compiled || this.get('compiled') || this.compile();
     var rendered = c(vars);

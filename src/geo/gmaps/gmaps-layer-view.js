@@ -1,9 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 
-/**
- * base layer for all google maps layers
- */
 var GMapsLayerView = function (layerModel, gmapsMap) {
   this.map = this.gmapsMap = gmapsMap;
   this.model = layerModel;

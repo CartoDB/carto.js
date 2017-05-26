@@ -3,26 +3,7 @@ var $ = require('jquery');
 var View = require('../../core/view');
 var RowView = require('./table/row-view');
 
-/**
- * generic table
- *
- * this class creates a HTML table based on Table model (see below) and modify it based on model changes
- *
- * usage example:
- *
-      var table = new Table({
-          model: table
-      });
-
-      $('body').append(table.render().el);
-
-  * model should be a collection of Rows
- * render a table
- * this widget needs two data sources
- * - the table model which contains information about the table (columns and so on). See TableProperties
- * - the model with the data itself (TableData)
- */
-var Table = View.extend({
+var Table = View.extend( /** @lends Table.prototype */ {
 
   tagName: 'table',
   rowView: RowView,
@@ -35,6 +16,11 @@ var Table = View.extend({
   default_options: {
   },
 
+  /**
+   * @class
+   * @constructs
+   * @private
+   */
   initialize: function() {
     var self = this;
     _.defaults(this.options, this.default_options);
@@ -104,9 +90,6 @@ var Table = View.extend({
     return thead;
   },
 
-  /**
-   * remove all rows
-   */
   clear_rows: function() {
     this.$('tfoot').remove();
     this.$('tr.noRows').remove();
@@ -123,9 +106,6 @@ var Table = View.extend({
     this.rowViews = [];
   },
 
-  /**
-   * add rows
-   */
   addRow: function(row, collection, options) {
     var self = this;
     var tr = new self.rowView({
@@ -171,21 +151,18 @@ var Table = View.extend({
 
   /**
   * Callback executed when a row change
-  * @method rowChanged
   * @abstract
   */
   rowChanged: function() {},
 
   /**
   * Callback executed when a row is sync
-  * @method rowSynched
   * @abstract
   */
   rowSynched: function() {},
 
   /**
   * Callback executed when a row fails to reach the server
-  * @method rowFailed
   * @abstract
   */
   rowFailed: function() {},
@@ -198,37 +175,26 @@ var Table = View.extend({
 
   /**
   * Callback executed when a row is being destroyed
-  * @method rowDestroyed
   * @abstract
   */
   rowDestroying: function() {},
 
   /**
   * Callback executed when a row gets destroyed
-  * @method rowDestroyed
   * @abstract
   */
   rowDestroyed: function() {},
 
   /**
   * Callback executed when a row gets destroyed and the table data is empty
-  * @method emptyTable
   * @abstract
   */
   emptyTable: function() {},
 
-  /**
-  * Checks if the table is empty
-  * @method isEmptyTable
-  * @returns boolean
-  */
   isEmptyTable: function() {
     return (this.dataModel.length === 0 && this.dataModel.fetched)
   },
 
-  /**
-   * render only data rows
-   */
   _renderRows: function() {
     this.clear_rows();
     if(! this.isEmptyTable()) {
@@ -255,7 +221,6 @@ var Table = View.extend({
 
   /**
   * Method for the children to redefine with the table behaviour when it has no rows.
-  * @method addEmptyTableInfo
   * @abstract
   */
   addEmptyTableInfo: function() {
