@@ -5,12 +5,34 @@ var LeafletPlainLayerView = require('./leaflet-plain-layer-view');
 var LeafletCartoDBLayerGroupView = require('./leaflet-cartodb-layer-group-view');
 var LeafletTorqueLayerView = require('./leaflet-torque-layer-view');
 var LeafletCartoDBWebglLayerGroupView = require('./leaflet-cartodb-webgl-layer-group-view');
+var CCSS = require('tangram-cartocss');
 
-var LayerGroupViewConstructor = function (layerGroupModel, mapModel, options) {
-  if (options.vector) {
-    return new LeafletCartoDBWebglLayerGroupView(layerGroupModel, mapModel);
+var shouldLoadWithVector = function (metadata, cb) {
+  if (metadata.stats && metadata.stats.size && metadata.stats.size > 10e5) {
+    return false;
   }
-  return new LeafletCartoDBLayerGroupView(layerGroupModel, mapModel);
+  else {
+    try {
+      metadata.layers.forEach(function (layer, i) {
+        if (layer.type === 'mapnik') {
+          CCSS.carto2Draw(layer.meta.cartocss, i);
+        }
+      });
+    }
+    catch (e) {
+      // TODO: show why it is not working and give feedback to the user and send statistics
+      return false;
+    }
+    return true;
+  }
+};
+
+var LayerGroupViewConstructor = function (layerGroupModel, mapInstance, mapModel, options) {
+
+  if (shouldLoadWithVector(mapModel.get('metadata'))) {
+    return new LeafletCartoDBWebglLayerGroupView(layerGroupModel, mapInstance);
+  }
+  return new LeafletCartoDBLayerGroupView(layerGroupModel, mapInstance);
 };
 
 var LeafletLayerViewFactory = function (options) {
@@ -27,13 +49,13 @@ LeafletLayerViewFactory.prototype._constructors = {
   'torque': LeafletTorqueLayerView
 };
 
-LeafletLayerViewFactory.prototype.createLayerView = function (layerModel, mapModel) {
+LeafletLayerViewFactory.prototype.createLayerView = function (layerModel, mapInstance, mapModel) {
   var layerType = layerModel.get('type').toLowerCase();
   var LayerViewClass = this._constructors[layerType];
 
   if (LayerViewClass) {
     try {
-      return new LayerViewClass(layerModel, mapModel, {
+      return new LayerViewClass(layerModel, mapInstance, mapModel, {
         vector: this._vector
       });
     } catch (e) {
