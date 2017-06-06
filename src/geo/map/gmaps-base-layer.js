@@ -1,13 +1,15 @@
 var LayerModelBase = require('./layer-model-base');
 
 var GMapsBaseLayer = LayerModelBase.extend({
-  OPTIONS: ['roadmap', 'satellite', 'terrain', 'custom'],
   defaults: {
     type: 'GMapsBase',
     visible: true,
     baseType: 'gray_roadmap',
     style: null
-  }
+  },
+
+  OPTIONS: ['roadmap', 'satellite', 'terrain', 'custom'],
+  EQUALITY_ATTRIBUTES: ['baseType']
 });
 
 module.exports = GMapsBaseLayer;

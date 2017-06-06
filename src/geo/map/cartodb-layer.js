@@ -14,6 +14,8 @@ var CartoDBLayer = LayerModelBase.extend({
     visible: true
   },
 
+  EQUALITY_ATTRIBUTES: ['sql', 'cartocss'],
+
   initialize: function (attrs, options) {
     attrs = attrs || {};
     options = options || {};
