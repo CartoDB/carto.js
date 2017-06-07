@@ -112,7 +112,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 
 ## Creating Visualizations at Runtime
 
-All CARTO services are available through the API, which basically means that you can create a new visualization without doing it before through the CARTO Editor. This is particularly useful when you are modifying the visualization depending on user interactions that change the SQL to get the data or CartoCSS to style it. Although this method requires more programming skills, it provides all the flexibility you might need to create more dynamic visualizations.
+All CARTO services are available through the API, which basically means that you can create a new visualization without doing it before through CARTO Editor. This is particularly useful when you are modifying the visualization depending on user interactions that change the SQL to get the data or CartoCSS to style it. Although this method requires more programming skills, it provides all the flexibility you might need to create more dynamic visualizations.
 
 When you create a visualization using the CARTO website, you automatically get a viz.json URL that defines it. When you want to create the visualization via JavaScript, you don't always have a viz.json. You will need to pass all the required parameters to the library so that it can create the visualization at runtime and display it on your map. It is pretty simple.
 
