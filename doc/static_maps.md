@@ -30,7 +30,7 @@ cartodb.Image(vizjson_url)
 
 Name |Description
 --- | ---
-layerSource | can be either a `viz.json` object or a [layer source object](/carto-engine/carto-js/api-methods/#standard-layer-source-object-type-cartodb)
+layerSource | can be either a `viz.json` object or a [MapConfig object](https://carto.com/docs/carto-engine/maps-api/mapconfig#mapnik-layer-options).<br/><br/>**Note:** If defining an image through the MapConfig layer definition, you must set the `tiler_domain`, `tiler_port`, and `tiler_protocol`, as displayed in this [example](https://github.com/CartoDB/cartodb.js/blob/4ba5148638091fd2c194f48b2fa3ed6ac4ecdb23/examples/layer_definition.html). Otherwise the Static Image API tries to use your localhost to source the tiles and an error appears.
 
 options | 
 --- | ---
