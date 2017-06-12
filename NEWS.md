@@ -1,3 +1,7 @@
+3.15.12 (12/06/2017)
+-------
+* New Mapzen API key.
+
 3.15.11 (21/02/2017)
 -------
 * Update torque.js dependency.
