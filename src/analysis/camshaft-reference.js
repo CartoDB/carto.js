@@ -1,4 +1,4 @@
-var camshaftReference = require('camshaft-reference').getVersion('latest');
+var camshaftReference = require('../camshaft/reference/versions/0.55.2/reference.json');
 var PARAM_TYPES = {
   NODE: 'node',
   NUMBER: 'number',
