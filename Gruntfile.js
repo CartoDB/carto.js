@@ -34,6 +34,9 @@ module.exports = function(grunt) {
     pkg: pkg
   };
 
+  grunt.loadNpmTasks('grunt-webpack');
+  var webpackConfig = require("./webpack.config.js");
+
   grunt.initConfig({
     secrets: {},
     config: config,
@@ -69,9 +72,11 @@ module.exports = function(grunt) {
     jshint: require('./grunt/tasks/jshint').task(),
     csslint: require('./grunt/tasks/csslint').task(),
     concurrent: require('./grunt/tasks/concurrent').task(),
-    jasmine: require('./grunt/tasks/jasmine').task()
+    jasmine: require('./grunt/tasks/jasmine').task(),
+    webpack: {
+      webpackConfig
+    }
   });
-
 
   /* TASKS */
 
@@ -200,6 +205,7 @@ module.exports = function(grunt) {
     'gitinfo',
     'clean:dist',
     'concurrent:dist',
+    'webpack',
     'concat',
     'autoprefixer:dist'
   ]);

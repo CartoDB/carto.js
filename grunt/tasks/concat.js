@@ -25,6 +25,8 @@ module.exports = {
       }
     }
 
+    // Append code to track stats via Google Analytics
+    cdb_files.push('./.tmp/cartodb-usage-stats.js');
 
     return {
 
