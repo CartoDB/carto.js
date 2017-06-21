@@ -12,6 +12,11 @@ var pageServedLocally = function () {
     window.location.hostname.indexOf('localhost') >= 0
 };
 
+var pageServedFromCartoServers = function () {
+  return window.location.host.indexOf('carto.com') >= 0 ||
+    window.location.host.indexOf('carto-staging.com') >= 0
+};
+
 var LogEventTracker = function () {};
 LogEventTracker.prototype.trackEvent = function (eventName) {
   var event = [ 'cartodb.js', eventName, { eventLabel: window.location.href } ];
@@ -28,7 +33,7 @@ GoogleAnalyticsEventTracker.prototype.trackEvent = function (eventName) {
 }
 
 var eventTracker;
-if (pageServedLocally()) {
+if (pageServedLocally() || pageServedFromCartoServers()) {
   eventTracker = new LogEventTracker();
 } else {
   var TRACKING_ID = 'UA-20934186-27';
