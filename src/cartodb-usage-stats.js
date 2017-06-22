@@ -1,4 +1,4 @@
-var cartodb = window.cartodb;
+var cartodb = window.cartodb || window.cdb;
 
 /**
  * Checks if page is being served from a local file.
