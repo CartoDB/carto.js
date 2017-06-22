@@ -9,18 +9,18 @@ var cartodb = window.cartodb || window.cdb;
  */
 var pageServedLocally = function () {
   return window.location.protocol.indexOf('http') !== 0 ||
-    window.location.hostname.indexOf('localhost') >= 0
+    window.location.hostname.indexOf('localhost') >= 0;
 };
 
 var pageServedFromCartoServers = function () {
   return window.location.host.indexOf('carto.com') >= 0 ||
-    window.location.host.indexOf('carto-staging.com') >= 0
+    window.location.host.indexOf('carto-staging.com') >= 0;
 };
 
 var LogEventTracker = function () {};
 LogEventTracker.prototype.trackEvent = function (eventName) {
   var event = [ 'cartodb.js', eventName, { eventLabel: window.location.href } ];
-  console.log.apply(console, event);  
+  console.log.apply(console, event);
 }
 
 var GoogleAnalyticsEventTracker = function (trackingId) {
@@ -50,16 +50,16 @@ if (cartodb.hasOwnProperty('createVis')) {
     
     try {
       if (typeof vizjson === "string") {
-        eventName += ' - viz.json (string)'
+        eventName += ' - viz.json (string)';
       } else {
         if (typeof vizjson === 'object') {
           if (vizjson.hasOwnProperty('id') || vizjson.hasOwnProperty('version')) {
-            eventName += ' - viz.json (object)'
+            eventName += ' - viz.json (object)';
           }
         }
       }
     } catch (error) {
-      eventName += ' - error: ' + error.message
+      eventName += ' - error: ' + error.message;
     }
 
     eventTracker.trackEvent(eventName);
@@ -69,24 +69,24 @@ if (cartodb.hasOwnProperty('createVis')) {
 
 // cartodb.createLayer
 if (cartodb.hasOwnProperty('createLayer')) {
-  var originalCreateLayer = cartodb.createLayer
+  var originalCreateLayer = cartodb.createLayer;
   cartodb.createLayer = function (map, layerSource, options, callback) {
     var eventName = 'cartodb.createLayer';
 
     try {
       if (typeof layerSource === "string") {
-        eventName += ' - viz.json (string)'
+        eventName += ' - viz.json (string)';
       } else {
         if (typeof layerSource === 'object') {
           if (layerSource.hasOwnProperty('id') || layerSource.hasOwnProperty('version')) {
-            eventName += ' - viz.json (object)'
-          } else if (layerSource.hasOwnProperty('sublayers')) {
-            eventName += ' - viz.json (sublayers)'
+            eventName += ' - viz.json (object)';
+          } else if (layerSource.hasOwnProperty('type')) {
+            eventName += ' - layerSource (' + layerSource.type + ')';
           }
         }
       }
     } catch (error) {
-      eventName += ' - error: ' + error.message
+      eventName += ' - error: ' + error.message;
     }
 
     eventTracker.trackEvent(eventName);
@@ -98,7 +98,7 @@ if (cartodb.hasOwnProperty('createLayer')) {
 if (cartodb.hasOwnProperty('SQL')) {
   var originalSQLExecute = cartodb.SQL.prototype.execute;
   cartodb.SQL.prototype.execute = function(sql, vars, options, callback) {
-    var eventName = 'cartodb.SQL#execute'
+    var eventName = 'cartodb.SQL#execute';
     
     eventTracker.trackEvent(eventName);
     return originalSQLExecute.apply(this, arguments);
@@ -109,7 +109,7 @@ if (cartodb.hasOwnProperty('SQL')) {
 if (cartodb.hasOwnProperty('Tiles')) {
   var originalTilesGetTiles = cartodb.Tiles.getTiles;
   cartodb.Tiles.getTiles = function(options, callback) {
-    var eventName = 'cartodb.Tiles.getTiles'
+    var eventName = 'cartodb.Tiles.getTiles';
     
     eventTracker.trackEvent(eventName);
     return originalTilesGetTiles.apply(cartodb, arguments);
@@ -120,7 +120,7 @@ if (cartodb.hasOwnProperty('Tiles')) {
 if (cartodb.hasOwnProperty('Image')) {
   var originalImage = cartodb.Image;
   cartodb.Image = function(data, options) {
-    var eventName = 'cartodb.Image'
+    var eventName = 'cartodb.Image';
     
     eventTracker.trackEvent(eventName);
     return originalImage.apply(this, arguments);
