@@ -115,3 +115,14 @@ if (cartodb.hasOwnProperty('Tiles')) {
     return originalTilesGetTiles.apply(cartodb, arguments);
   };
 }
+
+// cartodb.Image;
+if (cartodb.hasOwnProperty('Image')) {
+  var originalImage = cartodb.Image;
+  cartodb.Image = function(data, options) {
+    var eventName = 'cartodb.Image'
+    
+    eventTracker.trackEvent(eventName);
+    return originalImage.apply(this, arguments);
+  };
+}
