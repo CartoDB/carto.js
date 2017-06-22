@@ -26,7 +26,7 @@ module.exports = {
     }
 
     // Append code to track stats via Google Analytics
-    cdb_files.push('./.tmp/cartodb-usage-stats.js');
+    cdb_files.push('.tmp/cartodb-usage-stats.js');
 
     return {
 
@@ -76,7 +76,8 @@ module.exports = {
             'src/geo/sublayer.js',
             'src/core/loader.js',
             'src/vis/image.js',
-            'src/api/tiles.js'
+            'src/api/tiles.js',
+            '.tmp/cartodb-usage-stats.js'
           ]
         }
       },
