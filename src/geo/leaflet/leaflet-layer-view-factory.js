@@ -26,36 +26,44 @@ var LayerGroupViewConstructor = function (layerGroupModel, nativeMap, mapModel) 
 function getRenderModeResult (mapModel) {
   var mapRenderMode = mapModel.get('renderMode');
 
-  if (mapRenderMode === RenderModes.RASTER) {
-    return { mode: RenderModes.RASTER, reason: 'forced=raster' };
-  }
+  try {
+    if (mapRenderMode === RenderModes.RASTER) {
+      return { mode: RenderModes.RASTER, reason: 'forced=raster' };
+    }
 
-  if (!util.isWebGLSupported()) {
-    return { mode: RenderModes.RASTER, reason: 'webgl=no' };
-  }
+    if (!util.isWebGLSupported()) {
+      return { mode: RenderModes.RASTER, reason: 'webgl=no' };
+    }
 
-  if (mapRenderMode === RenderModes.VECTOR) {
-    return { mode: RenderModes.VECTOR, reason: 'webgl=yes,forced=vector' };
-  }
+    if (mapRenderMode === RenderModes.VECTOR) {
+      return { mode: RenderModes.VECTOR, reason: 'webgl=yes,forced=vector' };
+    }
 
-  // RenderModes.AUTO
-  var estimatedFeatureCount = mapModel.getEstimatedFeatureCount();
-  if (!estimatedFeatureCount) {
-    return { mode: RenderModes.RASTER, reason: 'estimatedfeaturecount=not-available' };
-  }
+    // RenderModes.AUTO
+    var estimatedFeatureCount = mapModel.getEstimatedFeatureCount();
+    if (!estimatedFeatureCount) {
+      return { mode: RenderModes.RASTER, reason: 'estimatedfeaturecount=not-available' };
+    }
 
-  if (estimatedFeatureCount > MAX_NUMBER_OF_FEATURES_FOR_WEBGL) {
-    return { mode: RenderModes.RASTER, reason: 'too-many-estimated-features=' + estimatedFeatureCount };
-  }
+    if (estimatedFeatureCount > MAX_NUMBER_OF_FEATURES_FOR_WEBGL) {
+      return { mode: RenderModes.RASTER, reason: 'too-many-estimated-features=' + estimatedFeatureCount };
+    }
 
-  if (!_.all(mapModel.layers.getCartoDBLayers(), canLayerBeRenderedClientSide)) {
-    return { mode: RenderModes.RASTER, reason: 'cartocss=not-supported' };
-  }
+    if (!_.all(mapModel.layers.getCartoDBLayers(), canLayerBeRenderedClientSide)) {
+      return { mode: RenderModes.RASTER, reason: 'cartocss=not-supported' };
+    }
 
-  return {
-    mode: RenderModes.VECTOR,
-    reason: 'webgl=yes,cartocss=supported,valid-estimated-features=' + estimatedFeatureCount
-  };
+    return {
+      mode: RenderModes.VECTOR,
+      reason: 'webgl=yes,cartocss=supported,valid-estimated-features=' + estimatedFeatureCount
+    };
+  } catch (e) { // Use RASTER in case of an error
+    log.error(e);
+    return {
+      mode: RenderModes.RASTER,
+      reason: e.message
+    };
+  }
 }
 
 var canLayerBeRenderedClientSide = function (layerModel) {
