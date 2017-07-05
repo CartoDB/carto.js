@@ -1,3 +1,7 @@
+3.15.12 (05/07/2017)
+-------
+* Same version number, no code changes. Doc enhancement only.
+
 3.15.12 (12/06/2017)
 -------
 * New Mapzen API key.
