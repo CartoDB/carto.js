@@ -157,7 +157,7 @@ If you want to use [Leaflet](http://leafletjs.com), it gets even easier. CARTO.j
 
 ## HTTPS Support
 
-You can use all the functionality of CARTO.js with HTTPs support. Be sure to use https when importing both the JS library and the CSS file. You will also need to use HTTPs in the viz.json URL you pass to **createVis**.
+You can use all the functionality of CARTO.js with HTTPs support. Be sure to use https when importing both the JS library and the CSS file. You will also need to use HTTPs in the viz.json URL you pass to `createVis` or `createLayer`.
 
 ```html
 <div id="map"></div>
