@@ -1,6 +1,9 @@
 var _ = require('underscore');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
 var Model = require('../../core/model');
+var helper = require('../helpers/histogram-helper');
+
+var DEFAULT_MAX_BUCKETS = 366;
 
 /**
  *  This model is used for getting the total amount of data
@@ -14,9 +17,21 @@ module.exports = Model.extend({
   },
 
   url: function () {
-    var params = [
-      'bins=' + this.get('bins')
-    ];
+    var params = [];
+    var aggregation = this.get('aggregation');
+    var offset = this.get('offset');
+
+    if (this.get('column_type') === 'date' && (aggregation || offset)) {
+      if (aggregation) {
+        params.push('aggregation=' + aggregation);
+      }
+
+      if (offset) {
+        params.push('offset=' + offset);
+      }
+    } else if (this.get('bins')) {
+      params.push('bins=' + this.get('bins'));
+    }
     if (this.get('apiKey')) {
       params.push('api_key=' + this.get('apiKey'));
     } else if (this.get('authToken')) {
@@ -34,7 +49,12 @@ module.exports = Model.extend({
 
   initialize: function () {
     this.sync = BackboneAbortSync.bind(this);
-    this.bind('change:url change:bins', function () {
+    this.on('change:url', function () {
+      this.fetch();
+    }, this);
+
+    this.bind('change:offset change:aggregation change:bins', function () {
+      if (this.hasChanged('bins') && this.get('aggregation')) return;
       this.fetch();
     }, this);
   },
@@ -46,42 +66,51 @@ module.exports = Model.extend({
     this.set('url', url);
   },
 
-  setBins: function (num) {
-    if (!num) {
-      throw new Error('bins not specified');
-    }
-    this.set('bins', num);
+  setBins: function (bins) {
+    this.set('bins', bins, { silent: bins === void 0 });
   },
 
   getData: function () {
     return this.get('data');
   },
 
-  parse: function (d) {
-    var numberOfBins = d.bins_count;
-    var width = d.bin_width;
-    var start = d.bins_start;
+  parse: function (data) {
+    var aggregation = data.aggregation;
+    var numberOfBins = data.bins_count;
+    var width = data.bin_width;
+    var start = this.get('column_type') === 'date' ? helper.calculateStart(data.bins, data.bins_start, aggregation) : data.bins_start;
+    var offset = data.offset;
 
-    var buckets = new Array(numberOfBins);
+    var parsedData = {
+      offset: offset,
+      aggregation: aggregation,
+      bins: numberOfBins,
+      data: new Array(numberOfBins)
+    };
 
-    _.each(d.bins, function (b) {
-      buckets[b.bin] = b;
+    _.each(data.bins, function (bin) {
+      parsedData.data[bin.bin] = bin;
     });
 
-    for (var i = 0; i < numberOfBins; i++) {
-      buckets[i] = _.extend({
-        bin: i,
-        start: start + (i * width),
-        end: start + ((i + 1) * width),
-        freq: 0
-      }, buckets[i]);
+    this.set('aggregation', aggregation, { silent: true });
+
+    if (numberOfBins > DEFAULT_MAX_BUCKETS) {
+      parsedData.error = 'Max bins limit reached';
+      return parsedData;
     }
 
-    return {
-      data: buckets,
-      start: buckets[0].start,
-      end: buckets[buckets.length - 1].end,
-      bins: numberOfBins
-    };
+    parsedData.error = undefined;
+    if (this.get('column_type') === 'date') {
+      helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, offset);
+    } else {
+      helper.fillNumericBuckets(parsedData.data, start, width, numberOfBins);
+    }
+
+    if (parsedData.data.length > 0) {
+      parsedData.start = parsedData.data[0].start;
+      parsedData.end = parsedData.data[parsedData.data.length - 1].end;
+    }
+
+    return parsedData;
   }
 });
