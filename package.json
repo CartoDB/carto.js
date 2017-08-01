@@ -30,6 +30,7 @@
     "browserify-shim": "3.8.12",
     "camshaft-reference": "<2.0",
     "carto": "cartodb/carto#fallback-reference",
+    "clip-path-polygon": "0.1.12",
     "d3": "3.5.17",
     "tangram.cartodb": "cartodb/tangram.cartodb#1000x",
     "jquery": "2.1.4",
