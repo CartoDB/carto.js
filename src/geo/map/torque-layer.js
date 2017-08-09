@@ -3,6 +3,8 @@ var LayerModelBase = require('./layer-model-base');
 var carto = require('carto');
 var Legends = require('./legends/legends');
 var postcss = require('postcss');
+var stripInlineComments = require('postcss-strip-inline-comments');
+var SCSSsyntax = require('postcss-scss');
 var ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD = ['sql', 'sql_wrap', 'source', 'cartocss'];
 var TORQUE_LAYER_CARTOCSS_PROPS = [
   '-torque-frame-count',
@@ -36,13 +38,17 @@ var TorqueLayer = LayerModelBase.extend({
   // Helper method to be used from a few places, it parses torque cartocss to get
   // the animation duration or a default duration
   getAnimationDuration: function (cartocss) {
-    var cssTree = postcss().process(cartocss);
+    var cssTree = postcss()
+      .use(stripInlineComments)
+      .process(cartocss, { syntax: SCSSsyntax });
     var root = cssTree.result.root;
     var torqueDuration = DEFAULT_ANIMATION_DURATION;
 
-    root.walkDecls(TORQUE_DURATION_ATTRIBUTE, function (decl) {
-      torqueDuration = parseInt(decl.value, 10);
-    });
+    if (root) {
+      root.walkDecls(TORQUE_DURATION_ATTRIBUTE, function (decl) {
+        torqueDuration = parseInt(decl.value, 10);
+      });
+    }
 
     return torqueDuration;
   },
