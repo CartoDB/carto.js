@@ -96,5 +96,15 @@ describe('geo/map/torque-layer', function () {
       cartocss = 'Map { something: "a"; -torque-time-attribute: "column"; }';
       expect(layer.getAnimationDuration(cartocss)).toBe(30);
     });
+
+    it('should take the animation despite of there is any comment in the cartocss', function () {
+      var cartocss = '// hello \r Map { -torque-animation-duration: 3; }';
+      expect(layer.getAnimationDuration(cartocss)).toBe(3);
+    });
+
+    it('should take the animation despite of there is any variable defined in the cartocss', function () {
+      var cartocss = '@duration: 21; @color: red; Map { -torque-animation-duration: @duration; marker-fill: @color; }';
+      expect(layer.getAnimationDuration(cartocss)).toBe(21);
+    });
   });
 });
