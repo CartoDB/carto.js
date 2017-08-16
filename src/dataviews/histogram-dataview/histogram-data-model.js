@@ -15,7 +15,8 @@ module.exports = Model.extend({
     url: '',
     data: [],
     localTimezone: false,
-    localOffset: 0
+    localOffset: 0,
+    offset: 0
   },
 
   url: function () {
