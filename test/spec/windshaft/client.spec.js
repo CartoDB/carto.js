@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var util = require('cdb.core.util');
+var urlParser = require('url');
 var WindshaftClient = require('../../../src/windshaft/client');
 var LZMA = require('lzma');
 
@@ -26,13 +27,28 @@ describe('windshaft/client', function () {
         mapDefinition: { some: 'json that must be encoded' }
       });
 
-      var url = this.ajaxParams.url.split('?')[0];
+      var parsedUrl = urlParser.parse(this.ajaxParams.url);
 
-      expect(url).toEqual('https://rambo.example.com:443/api/v1/map');
+      expect(parsedUrl.protocol).toEqual('https:');
+      expect(parsedUrl.host).toEqual('rambo.example.com:443');
+      expect(parsedUrl.pathname).toEqual('/api/v1/map');
+      expect(parsedUrl.query).not.toContain('nocache=');
       expect(this.ajaxParams.method).toEqual('GET');
       expect(this.ajaxParams.dataType).toEqual('jsonp');
       expect(this.ajaxParams.jsonpCallback).toMatch('_cdbc_callbackName');
       expect(this.ajaxParams.cache).toEqual(true);
+    });
+
+    it('should trigger a GET request to instantiate a map with nocache param in IE', function () {
+      util.browser.ie = 'ie';
+      this.client.instantiateMap({
+        mapDefinition: { some: 'json that must be encoded' }
+      });
+
+      var parsedUrl = urlParser.parse(this.ajaxParams.url);
+
+      expect(parsedUrl.query).toContain('nocache=');
+      util.browser.ie = null;
     });
 
     it('should use the endpoint for named maps', function () {
