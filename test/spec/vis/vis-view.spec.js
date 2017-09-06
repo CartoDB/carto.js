@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-
 var VisView = require('../../../src/vis/vis-view');
 var VisModel = require('../../../src/vis/vis');
 var VizJSON = require('../../../src/api/vizjson');
@@ -30,27 +29,6 @@ var createVisView = function (container, visModel, settingsModel) {
 describe('vis/vis-view', function () {
   beforeEach(function () {
     this.container = $('<div>').css('height', '200px');
-    this.mapConfig = {
-      updated_at: 'cachebuster',
-      title: 'irrelevant',
-      description: 'not so irrelevant',
-      url: 'https://carto.com',
-      center: [40.044, -101.95],
-      zoom: 4,
-      bounds: [
-        [1, 2],
-        [3, 4]
-      ],
-      user: {
-        fullname: 'Chuck Norris',
-        avatar_url: 'http://example.com/avatar.jpg'
-      },
-      datasource: {
-        user_name: 'wadus',
-        maps_api_template: 'https://{user}.example.com:443',
-        stat_tag: 'ece6faac-7271-11e5-a85f-04013fc66a01'
-      }
-    };
 
     this.visModel = new VisModel();
     this.settingsModel = new Backbone.Model({
@@ -60,7 +38,6 @@ describe('vis/vis-view', function () {
 
     this.visView = createVisView(this.container, this.visModel, this.settingsModel);
 
-    this.visModel.load(new VizJSON(this.mapConfig));
     this.visView.render();
   });
 

@@ -45,6 +45,17 @@ var VisModel = Backbone.Model.extend({
       layersCollection: this._layersCollection
     });
 
+    this._layersFactory = new LayersFactory({
+      visModel: this,
+    });
+
+    this.map = new Map({
+      isFeatureInteractivityEnabled: this.get('interactiveFeatures')
+    }, {
+      layersCollection: this._layersCollection,
+      layersFactory: this._layersFactory
+    });
+
     this._instantiateMapWasCalled = false;
   },
 
@@ -122,8 +133,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-    // Create the WindhaftClient
-
     var datasource = vizjson.datasource;
 
     var windshaftSettings = {
@@ -142,12 +151,6 @@ var VisModel = Backbone.Model.extend({
 
     var windshaftClient = new WindshaftClient(windshaftSettings);
 
-    var layersFactory = new LayersFactory({
-      visModel: this,
-      windshaftSettings: windshaftSettings
-    });
-
-    var allowScrollInOptions = (vizjson.options && vizjson.options.scrollwheel) || vizjson.scrollwheel;
     // Create the Map
     var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || allowScrollInOptions;
 
@@ -158,21 +161,36 @@ var VisModel = Backbone.Model.extend({
       renderMode = RenderModes.RASTER;
     }
 
-    this.map = new Map({
+    var center = vizjson.center;
+    if (typeof center === 'string') {
+      center = JSON.parse(center);
+    }
+
+    var mapAttributes = {
       title: vizjson.title,
       description: vizjson.description,
-      bounds: vizjson.bounds,
-      center: vizjson.center,
+      center: center,
       zoom: vizjson.zoom,
       scrollwheel: !!allowScrollInOptions,
       drag: allowDragging,
-      provider: vizjson.map_provider,
       isFeatureInteractivityEnabled: this.get('interactiveFeatures'),
       renderMode: renderMode
-    }, {
-      layersCollection: this._layersCollection,
-      layersFactory: layersFactory
-    });
+    }
+
+    if (vizjson.map_provider) {
+      _.extend(mapAttributes, {
+        provider: vizjson.map_provider
+      })
+    }
+
+    if (Array.isArray(vizjson.bounds)) {
+      _.extend(mapAttributes, {
+        view_bounds_sw: vizjson.bounds[0],
+        view_bounds_ne: vizjson.bounds[1]
+      })
+    }
+
+    this.map.set(mapAttributes); // TODO: Defaults?
 
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
 
@@ -228,10 +246,12 @@ var VisModel = Backbone.Model.extend({
     // and to make sure everything still works fine during the release and next
     // few moments (e.g: some viz.json files might be cached, etc.).
     var layersData = this._flattenLayers(vizjson.layers);
+
+    this._layersFactory.setWindshaftSettings(windshaftSettings);
     var layerModels = _.map(layersData, function (layerData, layerIndex) {
       _.extend(layerData, { order: layerIndex });
-      return layersFactory.createLayer(layerData.type, layerData);
-    });
+      return this._layersFactory.createLayer(layerData.type, layerData);
+    }, this);
 
     this.map.layers.reset(layerModels);
 

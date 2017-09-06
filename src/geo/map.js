@@ -35,27 +35,6 @@ var Map = Model.extend({
     this.layers = options.layersCollection || new Layers();
     this.geometries = new Backbone.Collection();
 
-    var center = attrs.center || this.defaults.center;
-    if (typeof center === 'string') {
-      center = JSON.parse(center);
-    }
-    this.set({
-      center: center,
-      original_center: center
-    });
-
-    if (attrs.bounds) {
-      this.set({
-        view_bounds_sw: attrs.bounds[0],
-        view_bounds_ne: attrs.bounds[1]
-      });
-      this.unset('bounds');
-    } else {
-      this.set({
-        zoom: attrs.zoom || this.defaults.zoom
-      });
-    }
-
     this.layers.bind('reset', this._updateAttributions, this);
     this.layers.bind('add', this._updateAttributions, this);
     this.layers.bind('remove', this._updateAttributions, this);
