@@ -107,13 +107,16 @@ var LAYER_CONSTRUCTORS = {
 
 var LayersFactory = function (deps) {
   if (!deps.visModel) throw new Error('visModel is required');
-  if (!deps.windshaftSettings) throw new Error('windshaftSettings is required');
-
   this._visModel = deps.visModel;
-  this._windshaftSettings = deps.windshaftSettings;
+};
+
+LayersFactory.prototype.setWindshaftSettings = function (windshaftSettings) {
+  this._windshaftSettings = windshaftSettings;
 };
 
 LayersFactory.prototype.createLayer = function (type, attrs) {
+  if (!this._windshaftSettings) throw new Error('windshaftSettings is required');
+
   var LayerConstructor = LAYER_CONSTRUCTORS[type.toLowerCase()];
   if (!LayerConstructor) {
     log.error("error creating layer of type '" + type + "'");

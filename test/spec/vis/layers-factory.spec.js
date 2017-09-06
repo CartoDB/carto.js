@@ -17,9 +17,10 @@ describe('vis/layers-factory', function () {
     };
 
     this.layersFactory = new LayersFactory({
-      visModel: this.vis,
-      windshaftSettings: this.windshaftSettings
+      visModel: this.vis
     });
+
+    this.layersFactory.setWindshaftSettings(this.windshaftSettings);
   });
 
   describe('tiled', function () {
