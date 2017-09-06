@@ -296,21 +296,21 @@ describe('vis/vis', function () {
     beforeEach(function () {
       this.vis.load(new VizJSON(fakeVizJSON()), {});
 
-      spyOn(this.vis._windshaftMap, 'createInstance');
+      spyOn(this.vis._getWindshaftMap(), 'createInstance');
     });
 
     describe("when vis hasn't been instantiated yet", function () {
       it('should NOT instantiate map', function () {
         this.vis.reload({});
 
-        expect(this.vis._windshaftMap.createInstance).not.toHaveBeenCalled();
+        expect(this.vis._getWindshaftMap().createInstance).not.toHaveBeenCalled();
       });
     });
 
     describe('when vis has been instantiated once', function () {
       beforeEach(function () {
         this.vis.instantiateMap();
-        this.vis._windshaftMap.createInstance.calls.reset();
+        this.vis._getWindshaftMap().createInstance.calls.reset();
       });
 
       it('should instantiate map and forward options', function () {
@@ -322,7 +322,7 @@ describe('vis/vis', function () {
           success: 'success'
         });
 
-        expect(this.vis._windshaftMap.createInstance).toHaveBeenCalledWith({
+        expect(this.vis._getWindshaftMap().createInstance).toHaveBeenCalledWith({
           sourceId: 'sourceId',
           forceFetch: 'forceFetch',
           success: jasmine.any(Function),
@@ -345,7 +345,7 @@ describe('vis/vis', function () {
         this.vis.on('reloaded', reloadedCallback);
 
         this.vis.reload();
-        this.vis._windshaftMap.createInstance.calls.mostRecent().args[0].success();
+        this.vis._getWindshaftMap().createInstance.calls.mostRecent().args[0].success();
 
         expect(reloadedCallback).toHaveBeenCalled();
       });

@@ -28,7 +28,9 @@ var VisModel = Backbone.Model.extend({
     state: STATE_INIT
   },
 
-  initialize: function () {
+  initialize: function (attrs, deps) {
+    deps = deps || {};
+
     this._loadingObjects = [];
     this._analysisPoller = new AnalysisPoller();
     this._layersCollection = new LayersCollection();
@@ -56,7 +58,16 @@ var VisModel = Backbone.Model.extend({
       layersFactory: this._layersFactory
     });
 
+
+    if (deps.windshaftSettings) {
+     this.setWindshaftSettings(deps.windshaftSettings);
+    }
     this._instantiateMapWasCalled = false;
+  },
+
+  setWindshaftSettings: function (windshaftSettings) {
+    this._windshaftSettings = windshaftSettings;
+    this._layersFactory.setWindshaftSettings(windshaftSettings);
   },
 
   getStaticImageURL: function (options) {
@@ -143,13 +154,11 @@ var VisModel = Backbone.Model.extend({
       authToken: this.get('authToken')
     };
 
-    var WindshaftMapClass = WindshaftAnonymousMap;
     if (vizjson.isNamedMap()) {
       windshaftSettings.templateName = vizjson.datasource.template_name;
-      WindshaftMapClass = WindshaftNamedMap;
     }
 
-    var windshaftClient = new WindshaftClient(windshaftSettings);
+    this.setWindshaftSettings(windshaftSettings);
 
     // Create the Map
     var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || allowScrollInOptions;
@@ -191,31 +200,7 @@ var VisModel = Backbone.Model.extend({
     }
 
     this.map.set(mapAttributes); // TODO: Defaults?
-
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
-
-    var modelUpdater = new ModelUpdater({
-      visModel: this,
-      mapModel: this.map,
-      layerGroupModel: this.layerGroupModel,
-      dataviewsCollection: this._dataviewsCollection,
-      layersCollection: this._layersCollection,
-      analysisCollection: this._analysisCollection
-    });
-
-    // Create the WindshaftMap
-    this._windshaftMap = new WindshaftMapClass({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken'),
-      statTag: datasource.stat_tag
-    }, {
-      client: windshaftClient,
-      modelUpdater: modelUpdater,
-      windshaftSettings: windshaftSettings,
-      dataviewsCollection: this._dataviewsCollection,
-      layersCollection: this._layersCollection,
-      analysisCollection: this._analysisCollection
-    });
 
     // Reset the collection of overlays
     this.overlaysCollection.reset(vizjson.overlays);
@@ -239,15 +224,12 @@ var VisModel = Backbone.Model.extend({
       vis: this
     });
 
-    this._windshaftMap.bind('instanceCreated', this._onMapInstanceCreated, this);
-
     // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
     // will be merged and released. Leaving this here for backwards compatibility
     // and to make sure everything still works fine during the release and next
     // few moments (e.g: some viz.json files might be cached, etc.).
     var layersData = this._flattenLayers(vizjson.layers);
 
-    this._layersFactory.setWindshaftSettings(windshaftSettings);
     var layerModels = _.map(layersData, function (layerData, layerIndex) {
       _.extend(layerData, { order: layerIndex });
       return this._layersFactory.createLayer(layerData.type, layerData);
@@ -379,8 +361,45 @@ var VisModel = Backbone.Model.extend({
 
     if (this._instantiateMapWasCalled) {
       this.trigger('reload');
-      this._windshaftMap.createInstance(options); // this reload method is call from other places
+      this._getWindshaftMap().createInstance(options); // this reload method is call from other places
     }
+  },
+
+  _getWindshaftMap: function () {
+    if (this._windshaftMap) return this._windshaftMap;
+    if (!this._windshaftSettings) return; // Trigger error instead?
+
+    var modelUpdater = new ModelUpdater({
+      visModel: this,
+      mapModel: this.map,
+      layerGroupModel: this.layerGroupModel,
+      layersCollection: this._layersCollection,
+      dataviewsCollection: this._dataviewsCollection,
+      analysisCollection: this._analysisCollection
+    });
+
+    var windshaftClient = new WindshaftClient(this._windshaftSettings);
+
+    // Create the WindshaftMap
+    var WindshaftMapClass = WindshaftAnonymousMap;
+    if (this._windshaftSettings.templateName) {
+      WindshaftMapClass = WindshaftNamedMap;
+    };
+
+    this._windshaftMap = new WindshaftMapClass({
+      apiKey: this.get('apiKey'),
+      authToken: this.get('authToken')
+    }, {
+      client: windshaftClient,
+      modelUpdater: modelUpdater,
+      windshaftSettings: this._windshaftSettings,
+      dataviewsCollection: this._dataviewsCollection,
+      layersCollection: this._layersCollection,
+      analysisCollection: this._analysisCollection
+    });
+    this._windshaftMap.bind('instanceCreated', this._onMapInstanceCreated, this);
+
+    return this._windshaftMap;
   },
 
   _initBindsAfterFirstMapInstantiation: function () {
