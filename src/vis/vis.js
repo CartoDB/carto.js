@@ -58,6 +58,24 @@ var VisModel = Backbone.Model.extend({
       layersFactory: this._layersFactory
     });
 
+    // Create the public Dataview Factory
+    this.dataviews = new DataviewsFactory({
+      apiKey: this.get('apiKey'),
+      authToken: this.get('authToken')
+    }, {
+      map: this.map,
+      vis: this,
+      dataviewsCollection: this._dataviewsCollection,
+      analysisCollection: this._analysisCollection
+    });
+
+    // Create the public Analysis Factory
+    this.analysis = new AnalysisFactory({
+      apiKey: this.get('apiKey'),
+      authToken: this.get('authToken'),
+      analysisCollection: this._analysisCollection,
+      vis: this
+    });
 
     if (deps.windshaftSettings) {
      this.setWindshaftSettings(deps.windshaftSettings);
@@ -182,7 +200,6 @@ var VisModel = Backbone.Model.extend({
       zoom: vizjson.zoom,
       scrollwheel: !!allowScrollInOptions,
       drag: allowDragging,
-      isFeatureInteractivityEnabled: this.get('interactiveFeatures'),
       renderMode: renderMode
     }
 
@@ -205,24 +222,7 @@ var VisModel = Backbone.Model.extend({
     // Reset the collection of overlays
     this.overlaysCollection.reset(vizjson.overlays);
 
-    // Create the public Dataview Factory
-    this.dataviews = new DataviewsFactory({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
-    }, {
-      map: this.map,
-      vis: this,
-      dataviewsCollection: this._dataviewsCollection,
-      analysisCollection: this._analysisCollection
-    });
 
-    // Create the public Analysis Factory
-    this.analysis = new AnalysisFactory({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken'),
-      analysisCollection: this._analysisCollection,
-      vis: this
-    });
 
     // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
     // will be merged and released. Leaving this here for backwards compatibility
