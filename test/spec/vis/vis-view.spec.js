@@ -2,7 +2,6 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var VisView = require('../../../src/vis/vis-view');
 var VisModel = require('../../../src/vis/vis');
-var VizJSON = require('../../../src/api/vizjson');
 
 // extend VisView in our tests
 VisView = VisView.extend({

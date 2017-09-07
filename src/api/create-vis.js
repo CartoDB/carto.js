@@ -4,6 +4,8 @@ var VisModel = require('../vis/vis');
 var Loader = require('../core/loader');
 var VizJSON = require('./vizjson');
 var config = require('../cdb.config');
+var util = require('../core/util');
+var RenderModes = require('../geo/render-modes');
 
 var DEFAULT_OPTIONS = {
   tiles_loader: true,
@@ -98,6 +100,9 @@ var loadVizJSON = function (el, visModel, vizjsonData, options) {
     settingsModel: visModel.settings
   });
 
+  visModel.setWindshaftSettings(getWindshaftSettings(vizjson, options));
+  visModel.map.set(getMapAttributes(vizjson, options));
+
   visModel.load(vizjson);
 
   if (!options.skipMapInstantiation) {
@@ -169,6 +174,63 @@ var applyOptionsToVizJSON = function (vizjson, options) {
   if (options.gmaps_base_type) {
     vizjson.enforceGMapsBaseLayer(options.gmaps_base_type, options.gmaps_style);
   }
+};
+
+var getWindshaftSettings = function (vizjson, options) {
+  var windshaftSettings = {
+    urlTemplate: vizjson.datasource.maps_api_template,
+    userName: vizjson.datasource.user_name,
+    statTag: vizjson.datasource.stat_tag,
+    apiKey: options.apiKey,
+    authToken: options.authToken,
+  };
+
+  if (vizjson.isNamedMap()) {
+    windshaftSettings.templateName = vizjson.datasource.template_name;
+  }
+
+  return windshaftSettings;
+};
+
+var getMapAttributes = function (vizjson, options) {
+  var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || vizjson.options.scrollwheel;
+
+  var renderMode = RenderModes.AUTO;
+  if (vizjson.vector === true) {
+    renderMode = RenderModes.VECTOR;
+  } else if (vizjson.vector === false) {
+    renderMode = RenderModes.RASTER;
+  }
+
+  var center = vizjson.center;
+  if (typeof center === 'string') {
+    center = JSON.parse(center);
+  }
+
+  var mapAttributes = {
+    title: vizjson.title,
+    description: vizjson.description,
+    center: center,
+    zoom: vizjson.zoom,
+    scrollwheel: !!vizjson.options.scrollwheel,
+    drag: allowDragging,
+    renderMode: renderMode
+  }
+
+  if (vizjson.map_provider) {
+    _.extend(mapAttributes, {
+      provider: vizjson.map_provider
+    })
+  }
+
+  if (Array.isArray(vizjson.bounds)) {
+    _.extend(mapAttributes, {
+      view_bounds_sw: vizjson.bounds[0],
+      view_bounds_ne: vizjson.bounds[1]
+    })
+  }
+
+  return mapAttributes;
 };
 
 module.exports = createVis;
