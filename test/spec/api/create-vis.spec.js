@@ -4,6 +4,11 @@ var Loader = require('../../../src/core/loader');
 var createVis = require('../../../src/api/create-vis');
 var VizJSON = require('../../../src/api/vizjson');
 var fakeVizJSON = require('./fake-vizjson');
+var util = require('../../../src/core/util');
+
+var createFakeVizJSON = function () {
+  return Object.assign({}, fakeVizJSON);
+}
 
 describe('src/api/create-vis', function () {
   beforeEach(function () {
@@ -288,34 +293,241 @@ describe('src/api/create-vis', function () {
     });
   });
 
-  it('should parse bounds and set attributes', function () {
+  it('should correctly set some public properties', function () {
     this.vis = createVis(this.containerId, fakeVizJSON, {
       skipMapInstantiation: true
     });
 
-    expect(this.vis.map.get('view_bounds_sw')).toEqual([ 41.340989240001214, 2.0194244384765625 ]);
-    expect(this.vis.map.get('view_bounds_ne')).toEqual([ 41.47051539294297, 2.426605224609375 ]);
-    expect(this.vis.map.get('bounds')).toBeUndefined();
+    expect(this.vis.map).toBeDefined();
+    expect(this.vis.analysis).toBeDefined();
+    expect(this.vis.dataviews).toBeDefined();
+    expect(this.vis.layerGroupModel).toBeDefined();
+    expect(this.vis.overlaysCollection).toBeDefined();
   });
 
-
-  it('should set the center on the map', function () {
-    fakeVizJSON.center = [41.40578459184651, 2.2230148315429688];
-
-    this.vis = createVis(this.containerId, fakeVizJSON, {
-      skipMapInstantiation: true
+  describe('https attribute', function () {
+    beforeEach(function () {
+      this.vizJSON = createFakeVizJSON();
     });
 
-    expect(this.vis.map.get('center')).toEqual([41.40578459184651, 2.2230148315429688]);
+    describe('when https is false in viz.json', function () {
+      beforeEach(function () {
+        this.vizJSON.https = false;
+      });
+  
+      it('should be true when https option is true', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          https: true
+        });
+
+        expect(this.vis.get('https')).toBe(true);
+      });
+
+      it('should be false when https option is false', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          https: false
+        });
+
+        expect(this.vis.get('https')).toBe(false);
+      });
+    });
+
+    describe('when https is true in viz.json', function () {
+      beforeEach(function () {
+        this.vizJSON.https = true;
+      });
+  
+      it('should be true when https option is true', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          https: true
+        });
+
+        expect(this.vis.get('https')).toBe(true);
+      });
+
+      it('should be true when https option is false', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          https: false
+        });
+
+        expect(this.vis.get('https')).toBe(true);
+      });
+    });
+
+    // We should test that https is enforced when protocol is 'https:;
+    // but there's no easy to way to mock window.location.protocol
+    xit('should be true/false depending on the URL', function () {
+      var isProtocolHTTPs = window && window.location.protocol && window.location.protocol === 'https:';
+
+      this.vis = createVis(this.containerId, this.vizJSON, {
+        skipMapInstantiation: true
+      });
+
+      expect(this.vis.get('https')).toBe(isProtocolHTTPs);
+    });
   });
 
-  it('should set the center on the map when given a string', function () {
-    fakeVizJSON.center = '[41.40578459184651, 2.2230148315429688]';
-
-    this.vis = createVis(this.containerId, fakeVizJSON, {
-      skipMapInstantiation: true
+  describe('map attributes', function () {
+    beforeEach(function () {
+      this.vizJSON = createFakeVizJSON();
     });
 
-    expect(this.vis.map.get('center')).toEqual([41.40578459184651, 2.2230148315429688]);
+    describe('bounds', function () {
+      it('should parse bounds and set attributes', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('view_bounds_sw')).toEqual([ 41.340989240001214, 2.0194244384765625 ]);
+        expect(this.vis.map.get('view_bounds_ne')).toEqual([ 41.47051539294297, 2.426605224609375 ]);
+        expect(this.vis.map.get('bounds')).toBeUndefined();
+      });
+    });
+
+    describe('center', function () {
+      it('should set the center on the map', function () {
+        this.vizJSON.center = [41.40578459184651, 2.2230148315429688];
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('center')).toEqual([41.40578459184651, 2.2230148315429688]);
+      });
+
+      it('should set the center on the map when given a string', function () {
+        this.vizJSON.center = '[41.40578459184651, 2.2230148315429688]';
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('center')).toEqual([41.40578459184651, 2.2230148315429688]);
+      });
+    });
+
+    describe('provider', function () {
+      it('should use leaflet provider', function () {
+        this.vizJSON.map_provider = 'leaflet';
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('provider')).toEqual('leaflet');
+      });
+
+      it('should use googlemaps provider', function () {
+        this.vizJSON.map_provider = 'googlemaps';
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('provider')).toEqual('googlemaps');
+      });
+    });
+  
+    describe('drag', function () {
+      beforeEach(function () {
+        this.vizJSON = Object.assign({}, this.vizJSON);
+
+        // Drag is disabled when the following things happen:
+        this.vizJSON.options.scrollwheel = false;
+        this.vizJSON.overlays = [];
+        spyOn(util, 'isMobileDevice').and.returnValue(false);
+      });
+
+      it('should be disabled', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('drag')).toBe(false);
+      });
+
+      it("should be enabled when there's a zoom overlay", function () {
+        this.vizJSON.overlays = [
+          {
+            type: 'zoom',
+            order: 6,
+            options: {
+              x: 20,
+              y: 20,
+              display: true
+            },
+            template: ''
+          }
+        ];
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('drag')).toBe(true);
+      });
+
+      it('should be enabled when scrollwheel option is enabled', function () {
+        this.vizJSON.options.scrollwheel = true;
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('drag')).toBe(true);
+      });
+
+      it('should be enabled when using a mobile device', function () {
+        util.isMobileDevice.and.returnValue(true);
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('drag')).toBe(true);
+      });
+    });
+
+    describe('scrollwhel', function () {
+      beforeEach(function () {
+        this.vizJSON.options.scrollwheel = false;
+      });
+
+      it('should be false when scrollwheel options are false', function () {
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          scrollwheel: false
+        });
+
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('scrollwheel')).toBe(false);
+      });
+
+      it('should be true when scrollwheel option is true in vizjson', function () {
+        this.vizJSON.options.scrollwheel = true;
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true
+        });
+
+        expect(this.vis.map.get('scrollwheel')).toBe(true);
+      });
+
+      it('should be true when scrollwheel option is false in the viz.json but given option is set to true', function () {
+        this.vizJSON.options.scrollwheel = false;
+        this.vis = createVis(this.containerId, this.vizJSON, {
+          skipMapInstantiation: true,
+          scrollwheel: true
+        });
+
+        expect(this.vis.map.get('scrollwheel')).toBe(true);
+      });
+    });
   });
 });

@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var util = require('../core/util');
 var Map = require('../geo/map');
 var DataviewsFactory = require('../dataviews/dataviews-factory');
 var DataviewsCollection = require('../dataviews/dataviews-collection');
@@ -15,7 +14,6 @@ var AnalysisPoller = require('../analysis/analysis-poller');
 var LayersFactory = require('./layers-factory');
 var SettingsModel = require('./settings');
 var whenAllDataviewsFetched = require('./dataviews-tracker');
-var RenderModes = require('../geo/render-modes');
 
 var STATE_INIT = 'init'; // vis hasn't been sent to Windshaft
 var STATE_OK = 'ok'; // vis has been sent to Windshaft and everything is ok
@@ -48,7 +46,7 @@ var VisModel = Backbone.Model.extend({
     });
 
     this._layersFactory = new LayersFactory({
-      visModel: this,
+      visModel: this
     });
 
     this.map = new Map({
@@ -57,6 +55,7 @@ var VisModel = Backbone.Model.extend({
       layersCollection: this._layersCollection,
       layersFactory: this._layersFactory
     });
+    this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
 
     // Create the public Dataview Factory
     this.dataviews = new DataviewsFactory({
@@ -78,7 +77,7 @@ var VisModel = Backbone.Model.extend({
     });
 
     if (deps.windshaftSettings) {
-     this.setWindshaftSettings(deps.windshaftSettings);
+      this.setWindshaftSettings(deps.windshaftSettings);
     }
     this._instantiateMapWasCalled = false;
   },
@@ -162,67 +161,8 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-    var datasource = vizjson.datasource;
-
-    var windshaftSettings = {
-      urlTemplate: vizjson.datasource.maps_api_template,
-      userName: vizjson.datasource.user_name,
-      statTag: vizjson.datasource.stat_tag,
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
-    };
-
-    if (vizjson.isNamedMap()) {
-      windshaftSettings.templateName = vizjson.datasource.template_name;
-    }
-
-    this.setWindshaftSettings(windshaftSettings);
-
-    // Create the Map
-    var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || allowScrollInOptions;
-
-    var renderMode = RenderModes.AUTO;
-    if (vizjson.vector === true) {
-      renderMode = RenderModes.VECTOR;
-    } else if (vizjson.vector === false) {
-      renderMode = RenderModes.RASTER;
-    }
-
-    var center = vizjson.center;
-    if (typeof center === 'string') {
-      center = JSON.parse(center);
-    }
-
-    var mapAttributes = {
-      title: vizjson.title,
-      description: vizjson.description,
-      center: center,
-      zoom: vizjson.zoom,
-      scrollwheel: !!allowScrollInOptions,
-      drag: allowDragging,
-      renderMode: renderMode
-    }
-
-    if (vizjson.map_provider) {
-      _.extend(mapAttributes, {
-        provider: vizjson.map_provider
-      })
-    }
-
-    if (Array.isArray(vizjson.bounds)) {
-      _.extend(mapAttributes, {
-        view_bounds_sw: vizjson.bounds[0],
-        view_bounds_ne: vizjson.bounds[1]
-      })
-    }
-
-    this.map.set(mapAttributes); // TODO: Defaults?
-    this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
-
     // Reset the collection of overlays
     this.overlaysCollection.reset(vizjson.overlays);
-
-
 
     // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
     // will be merged and released. Leaving this here for backwards compatibility
@@ -384,7 +324,7 @@ var VisModel = Backbone.Model.extend({
     var WindshaftMapClass = WindshaftAnonymousMap;
     if (this._windshaftSettings.templateName) {
       WindshaftMapClass = WindshaftNamedMap;
-    };
+    }
 
     this._windshaftMap = new WindshaftMapClass({
       apiKey: this.get('apiKey'),

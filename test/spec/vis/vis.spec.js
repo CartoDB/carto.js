@@ -201,6 +201,10 @@ describe('vis/vis', function () {
   beforeEach(function () {
     spyOn(Vis.prototype, 'reload').and.callThrough();
     this.vis = new Vis();
+    this.vis.setWindshaftSettings({
+      urlTemplate: 'http://carto.com',
+      userName: 'carto'
+    });
   });
 
   it('.trackLoadingObject .untrackLoadingObject and .clearLoadingObjects should change the loading attribute', function () {
@@ -388,136 +392,8 @@ describe('vis/vis', function () {
       this.vis.load(new VizJSON(fakeVizJSON()), {});
     });
 
-    it('should correctly set some public properties', function () {
-      expect(this.vis.map).toBeDefined();
-      expect(this.vis.analysis).toBeDefined();
-      expect(this.vis.dataviews).toBeDefined();
-      expect(this.vis.layerGroupModel).toBeDefined();
-      expect(this.vis.overlaysCollection).toBeDefined();
-    });
-
     it('should load the layers', function () {
       expect(this.vis.map.layers.size()).toEqual(3);
-    });
-
-    it('should use the given provider', function () {
-      var vizjson = fakeVizJSON();
-      vizjson.map_provider = 'googlemaps';
-
-      this.vis.load(new VizJSON(vizjson));
-
-      expect(this.vis.map.get('provider')).toEqual('googlemaps');
-    });
-
-    describe('dragging option', function () {
-      beforeEach(function () {
-        this.vizjson = {
-          updated_at: 'cachebuster',
-          title: 'irrelevant',
-          description: 'not so irrelevant',
-          url: 'https://carto.com',
-          center: [40.044, -101.95],
-          zoom: 4,
-          bounds: [[1, 2], [3, 4]],
-          scrollwheel: true,
-          overlays: [],
-          user: {
-            fullname: 'Chuck Norris',
-            avatar_url: 'http://example.com/avatar.jpg'
-          },
-          datasource: {
-            user_name: 'wadus',
-            maps_api_template: 'https://{user}.example.com:443',
-            stat_tag: 'ece6faac-7271-11e5-a85f-04013fc66a01'
-          }
-        };
-      });
-
-      it('should be enabled with zoom overlay and scrollwheel enabled', function () {
-        this.vizjson.overlays = [
-          {
-            type: 'zoom',
-            order: 6,
-            options: {
-              x: 20,
-              y: 20,
-              display: true
-            },
-            template: ''
-          }
-        ];
-
-        this.vis.load(new VizJSON(this.vizjson));
-        expect(this.vis.map.get('drag')).toBeTruthy();
-      });
-
-      it('should be enabled with zoom overlay and scrollwheel disabled', function () {
-        this.vizjson.overlays = [
-          {
-            type: 'zoom',
-            order: 6,
-            options: {
-              x: 20,
-              y: 20,
-              display: true
-            },
-            template: ''
-          }
-        ];
-
-        this.vis.load(new VizJSON(this.vizjson));
-        expect(this.vis.map.get('drag')).toBeTruthy();
-      });
-
-      it('should be enabled without zoom overlay and scrollwheel enabled', function () {
-        this.vizjson.scrollwheel = true;
-
-        this.vis.load(new VizJSON(this.vizjson));
-        expect(this.vis.map.get('drag')).toBeTruthy();
-      });
-
-      it('should be disabled without zoom overlay and scrollwheel disabled', function () {
-        this.vizjson.scrollwheel = false;
-
-        this.vis.load(new VizJSON(this.vizjson));
-        expect(this.vis.map.get('drag')).toBeFalsy();
-      });
-    });
-
-    it('when https is false all the urls should be transformed to http', function () {
-      var vizjson = fakeVizJSON();
-
-      vizjson.layers = [{
-        type: 'tiled',
-        options: {
-          urlTemplate: 'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
-        }
-      }];
-
-      this.vis.set('https', false);
-      this.vis.load(new VizJSON(vizjson));
-
-      expect(this.vis.map.layers.at(0).get('urlTemplate')).toEqual(
-        'http://a.tiles.mapbox.com/v3/{z}/{x}/{y}.png'
-      );
-    });
-
-    it('when https is true all urls should NOT be transformed to http', function () {
-      var vizjson = fakeVizJSON();
-
-      vizjson.layers = [{
-        type: 'tiled',
-        options: {
-          urlTemplate: 'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
-        }
-      }];
-
-      this.vis.set('https', true);
-      this.vis.load(new VizJSON(vizjson));
-
-      expect(this.vis.map.layers.at(0).get('urlTemplate')).toEqual(
-        'https://dnv9my2eseobd.cloudfront.net/v3/{z}/{x}/{y}.png'
-      );
     });
 
     it('should initialize existing analyses', function () {
@@ -1002,6 +878,10 @@ describe('vis/vis', function () {
       spyOn(_, 'debounce').and.callFake(function (func) { return function () { func.apply(this, arguments); }; });
 
       this.vis = new Vis();
+      this.vis.setWindshaftSettings({
+        urlTemplate: 'http://carto.com',
+        userName: 'carto'
+      });
       this.vis.load(new VizJSON(fakeVizJSON()));
       this.vis.instantiateMap();
       Vis.prototype.reload.calls.mostRecent().args[0].success();
