@@ -39,6 +39,15 @@ var createVis = function (el, vizjson, options) {
     interactiveFeatures: options.interactiveFeatures
   });
 
+  // Global variable for easier console debugging / testing
+  window.vis = visModel;
+
+  new VisView({ // eslint-disable-line
+    el: el,
+    model: visModel,
+    settingsModel: visModel.settings
+  });
+
   if (typeof vizjson === 'string') {
     var url = vizjson;
     Loader.get(url, function (vizjson) {
@@ -92,12 +101,6 @@ var loadVizJSON = function (el, visModel, vizjsonData, options) {
     showLegends: showLegends,
     showLayerSelector: showLayerSelector,
     layerSelectorEnabled: layerSelectorEnabled
-  });
-
-  new VisView({ // eslint-disable-line
-    el: el,
-    model: visModel,
-    settingsModel: visModel.settings
   });
 
   visModel.setWindshaftSettings(getWindshaftSettings(vizjson, options));
