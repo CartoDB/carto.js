@@ -161,8 +161,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-    // Reset the collection of overlays
-    this.overlaysCollection.reset(vizjson.overlays);
 
     // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
     // will be merged and released. Leaving this here for backwards compatibility

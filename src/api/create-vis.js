@@ -105,6 +105,8 @@ var loadVizJSON = function (el, visModel, vizjsonData, options) {
 
   visModel.setWindshaftSettings(getWindshaftSettings(vizjson, options));
   visModel.map.set(getMapAttributes(vizjson, options));
+  // Reset the collection of overlays
+  visModel.overlaysCollection.reset(vizjson.overlays);
 
   visModel.load(vizjson);
 
