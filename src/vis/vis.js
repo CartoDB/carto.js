@@ -42,8 +42,8 @@ var VisModel = Backbone.Model.extend({
       apiKey: this.get('apiKey'),
       authToken: this.get('authToken')
     }, {
-      layersCollection: this._layersCollection
-    });
+        layersCollection: this._layersCollection
+      });
 
     this._layersFactory = new LayersFactory({
       visModel: this
@@ -52,9 +52,9 @@ var VisModel = Backbone.Model.extend({
     this.map = new Map({
       isFeatureInteractivityEnabled: this.get('interactiveFeatures')
     }, {
-      layersCollection: this._layersCollection,
-      layersFactory: this._layersFactory
-    });
+        layersCollection: this._layersCollection,
+        layersFactory: this._layersFactory
+      });
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
 
     // Create the public Dataview Factory
@@ -62,11 +62,11 @@ var VisModel = Backbone.Model.extend({
       apiKey: this.get('apiKey'),
       authToken: this.get('authToken')
     }, {
-      map: this.map,
-      vis: this,
-      dataviewsCollection: this._dataviewsCollection,
-      analysisCollection: this._analysisCollection
-    });
+        map: this.map,
+        vis: this,
+        dataviewsCollection: this._dataviewsCollection,
+        analysisCollection: this._analysisCollection
+      });
 
     // Create the public Analysis Factory
     this.analysis = new AnalysisFactory({
@@ -161,36 +161,12 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-    // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
-    // will be merged and released. Leaving this here for backwards compatibility
-    // and to make sure everything still works fine during the release and next
-    // few moments (e.g: some viz.json files might be cached, etc.).
-    var layersData = this._flattenLayers(vizjson.layers);
-
-    var layerModels = _.map(layersData, function (layerData, layerIndex) {
-      _.extend(layerData, { order: layerIndex });
-      return this._layersFactory.createLayer(layerData.type, layerData);
-    }, this);
-
-    this.map.layers.reset(layerModels);
-
-    // "Load" existing analyses from the viz.json. This will generate
-    // the analyses graphs and index analysis nodes in the
-    // collection of analysis
-    if (vizjson.analyses) {
-      _.each(vizjson.analyses, function (analysis) {
-        this.analysis.analyse(analysis);
-      }, this);
-    }
-
     // TODO: We're removing this method but clients of this class
     // are relying on the 'load' event to know when this class is
     // "ready" and instantiateMap can be invoked. For example:
     // https://github.com/CartoDB/deep-insights.js/blob/8d0601c6554b813503349b2aa593242a834cc2f0/src/api/create-dashboard.js#L71
     // We need to find an alternative way of doing this.
-    _.defer(function () {
-      this.trigger('load', this);
-    }.bind(this));
+    _.defer(function () { this.trigger('load', this); }.bind(this));
   },
 
   // we provide a method to set some new settings
@@ -330,13 +306,13 @@ var VisModel = Backbone.Model.extend({
       apiKey: this.get('apiKey'),
       authToken: this.get('authToken')
     }, {
-      client: windshaftClient,
-      modelUpdater: modelUpdater,
-      windshaftSettings: this._windshaftSettings,
-      dataviewsCollection: this._dataviewsCollection,
-      layersCollection: this._layersCollection,
-      analysisCollection: this._analysisCollection
-    });
+        client: windshaftClient,
+        modelUpdater: modelUpdater,
+        windshaftSettings: this._windshaftSettings,
+        dataviewsCollection: this._dataviewsCollection,
+        layersCollection: this._layersCollection,
+        analysisCollection: this._analysisCollection
+      });
     this._windshaftMap.bind('instanceCreated', this._onMapInstanceCreated, this);
 
     return this._windshaftMap;
@@ -419,6 +395,41 @@ var VisModel = Backbone.Model.extend({
     overlayView.type = 'custom';
     this.overlaysCollection.add(overlayView);
     return overlayView;
+  },
+
+  setLayers: function (vizjsonLayers) {
+    // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
+    // will be merged and released. Leaving this here for backwards compatibility
+    // and to make sure everything still works fine during the release and next
+    // few moments (e.g: some viz.json files might be cached, etc.).
+    var layersData = this._flattenLayers(vizjsonLayers);
+
+    var layerModels = _.map(layersData, function (layerData, layerIndex) {
+      _.extend(layerData, { order: layerIndex });
+      return this._layersFactory.createLayer(layerData.type, layerData);
+    }, this);
+
+    this.map.layers.reset(layerModels);
+  },
+  /**
+   * "Load" existing analyses from the viz.json. This will generate
+   * the analyses graphs and index analysis nodes in the
+   * collection of analysis
+   */
+  setAnalyses: function (vizjsonAnalyses) {
+    if (vizjsonAnalyses) {
+      _.each(vizjsonAnalyses, function (analysis) {
+        this.analysis.analyse(analysis);
+      }, this);
+    }
+  },
+
+  setOverlays: function (vizjsonOverlays) {
+    this.overlaysCollection.reset(vizjsonOverlays);
+  },
+
+  setMapAttributes: function (mapAttributes) {
+    this.map.set(mapAttributes);
   }
 });
 
