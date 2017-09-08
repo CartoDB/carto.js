@@ -187,7 +187,7 @@ var getWindshaftSettings = function (vizjson, options) {
     userName: vizjson.datasource.user_name,
     statTag: vizjson.datasource.stat_tag,
     apiKey: options.apiKey,
-    authToken: options.authToken,
+    authToken: options.authToken
   };
 
   if (vizjson.isNamedMap()) {
@@ -220,19 +220,19 @@ var getMapAttributes = function (vizjson, options) {
     scrollwheel: !!vizjson.options.scrollwheel,
     drag: allowDragging,
     renderMode: renderMode
-  }
+  };
 
   if (vizjson.map_provider) {
     _.extend(mapAttributes, {
       provider: vizjson.map_provider
-    })
+    });
   }
 
   if (Array.isArray(vizjson.bounds)) {
     _.extend(mapAttributes, {
       view_bounds_sw: vizjson.bounds[0],
       view_bounds_ne: vizjson.bounds[1]
-    })
+    });
   }
 
   return mapAttributes;
