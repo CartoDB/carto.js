@@ -1,5 +1,6 @@
 CartoDB.js (v3.15)
 ===========
+** **This version is no longer being actively developed.  Major bugs will be addressed as needed.** **
 
 This library allows to embed visualizations created with CartoDB in your map or website in a simple way.
 
