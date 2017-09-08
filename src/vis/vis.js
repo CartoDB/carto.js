@@ -161,7 +161,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-
     // TODO: This can be removed once https://github.com/CartoDB/cartodb/pull/9118
     // will be merged and released. Leaving this here for backwards compatibility
     // and to make sure everything still works fine during the release and next
