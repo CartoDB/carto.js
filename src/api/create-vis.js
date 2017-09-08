@@ -17,17 +17,37 @@ var DEFAULT_OPTIONS = {
   interactiveFeatures: false
 };
 
+/**
+ * Return a promise with a visModel when the vizjson is a url
+ * or a visModel when the vizjson is already a parsed object.
+ */
 var createVis = function (el, vizjson, options) {
-  if (typeof el === 'string') {
-    el = document.getElementById(el);
-  }
   if (!el) {
     throw new TypeError('a valid DOM element or selector must be provided');
+  }
+  if (typeof el === 'string') {
+    el = document.getElementById(el);
   }
   if (!vizjson) {
     throw new TypeError('a vizjson URL or object must be provided');
   }
+  //TODO: ¿should we make createVis sync only? 
+  if (typeof vizjson === 'object') {
+    return _createVisSync(el, vizjson, options);
+  }
+  return fetch(vizjson)
+    .then(function (data) {
+      return data.json();
+    })
+    .then(function (visJson) {
+      return _createVisSync(el, visJson, options);
+    });
+};
 
+/**
+ * Return a visModel given an element a visjson object and the visualization options.
+ */
+function _createVisSync(el, visjson, options) {
   var isProtocolHTTPs = window && window.location.protocol && window.location.protocol === 'https:';
   options = _.defaults(options || {}, DEFAULT_OPTIONS);
 
@@ -39,57 +59,24 @@ var createVis = function (el, vizjson, options) {
     interactiveFeatures: options.interactiveFeatures
   });
 
-  // Global variable for easier console debugging / testing
-  window.vis = visModel;
-
-  new VisView({ // eslint-disable-line
+  new VisView({
     el: el,
     model: visModel,
     settingsModel: visModel.settings
   });
 
-  if (typeof vizjson === 'string') {
-    var url = vizjson;
-    Loader.get(url, function (vizjson) {
-      if (vizjson) {
-        loadVizJSON(el, visModel, vizjson, options);
-      } else {
-        throw new Error('error fetching viz.json file');
-      }
-    });
-  } else {
-    loadVizJSON(el, visModel, vizjson, options);
-  }
+  loadVizJSON(el, visModel, visjson, options);
 
   if (options.mapzenApiKey) {
     config.set('mapzenApiKey', options.mapzenApiKey);
   }
 
   return visModel;
-};
+}
 
 var loadVizJSON = function (el, visModel, vizjsonData, options) {
   var vizjson = new VizJSON(vizjsonData);
   applyOptionsToVizJSON(vizjson, options);
-
-  var showLegends = true;
-  if (_.isBoolean(options.legends)) {
-    showLegends = options.legends;
-  } else if (vizjson.options && _.isBoolean(vizjson.options.legends)) {
-    showLegends = vizjson.options.legends;
-  }
-
-  var showLayerSelector = true;
-  if (_.isBoolean(options.layer_selector)) {
-    showLayerSelector = options.layer_selector;
-  } else if (vizjson.options && _.isBoolean(vizjson.options.layer_selector)) {
-    showLayerSelector = vizjson.options.layer_selector;
-  }
-
-  var layerSelectorEnabled = true;
-  if (_.isBoolean(options.layerSelectorEnabled)) {
-    layerSelectorEnabled = options.layerSelectorEnabled;
-  }
 
   visModel.set({
     title: vizjson.title,
@@ -97,18 +84,13 @@ var loadVizJSON = function (el, visModel, vizjsonData, options) {
     https: visModel.get('https') || vizjson.https === true
   });
 
-  visModel.setSettings({
-    showLegends: showLegends,
-    showLayerSelector: showLayerSelector,
-    layerSelectorEnabled: layerSelectorEnabled
-  });
-
+  visModel.setSettings(_loadSettings(vizjson, options));
   visModel.setWindshaftSettings(getWindshaftSettings(vizjson, options));
-  visModel.map.set(getMapAttributes(vizjson, options));
-  // Reset the collection of overlays
-  visModel.overlaysCollection.reset(vizjson.overlays);
-
-  visModel.load(vizjson);
+  visModel.setMapAttributes(getMapAttributes(vizjson, options));
+  visModel.setOverlays(vizjson.overlays);
+  visModel.setLayers(vizjson.layers);
+  visModel.setAnalyses(vizjson.analyses);
+  visModel.load(vizjson); //TODO: remove the load method
 
   if (!options.skipMapInstantiation) {
     visModel.instantiateMap();
@@ -171,8 +153,8 @@ var applyOptionsToVizJSON = function (vizjson, options) {
 
   if (!isNaN(sw_lat) && !isNaN(sw_lon) && !isNaN(ne_lat) && !isNaN(ne_lon)) {
     vizjson.setBounds([
-      [ sw_lat, sw_lon ],
-      [ ne_lat, ne_lon ]
+      [sw_lat, sw_lon],
+      [ne_lat, ne_lon]
     ]);
   }
 
@@ -180,6 +162,32 @@ var applyOptionsToVizJSON = function (vizjson, options) {
     vizjson.enforceGMapsBaseLayer(options.gmaps_base_type, options.gmaps_style);
   }
 };
+
+function _loadSettings(vizjson, options) {
+  var settings = {
+    showLegends: true,
+    showLayerSelector: true,
+    layerSelectorEnabled: true,
+  };
+
+  if (_.isBoolean(options.legends)) {
+    settings.showLegends = options.legends;
+  } else if (vizjson.options && _.isBoolean(vizjson.options.legends)) {
+    settings.showLegends = vizjson.options.legends;
+  }
+
+  if (_.isBoolean(options.layer_selector)) {
+    settings.showLayerSelector = options.layer_selector;
+  } else if (vizjson.options && _.isBoolean(vizjson.options.layer_selector)) {
+    settings.showLayerSelector = vizjson.options.layer_selector;
+  }
+
+  if (_.isBoolean(options.layerSelectorEnabled)) {
+    settings.layerSelectorEnabled = options.layerSelectorEnabled;
+  }
+
+  return settings;
+}
 
 var getWindshaftSettings = function (vizjson, options) {
   var windshaftSettings = {
