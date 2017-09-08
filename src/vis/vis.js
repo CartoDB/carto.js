@@ -184,6 +184,11 @@ var VisModel = Backbone.Model.extend({
       }, this);
     }
 
+    // TODO: We're removing this method but clients of this class
+    // are relying on the 'load' event to know when this class is
+    // "ready" and instantiateMap can be invoked. For example:
+    // https://github.com/CartoDB/deep-insights.js/blob/8d0601c6554b813503349b2aa593242a834cc2f0/src/api/create-dashboard.js#L71
+    // We need to find an alternative way of doing this.
     _.defer(function () {
       this.trigger('load', this);
     }.bind(this));
