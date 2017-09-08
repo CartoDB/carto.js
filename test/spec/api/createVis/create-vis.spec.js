@@ -2,6 +2,7 @@ var $ = require('jquery');
 var createVis = require('../../../../src/api/create-vis');
 var scenarios = require('./scenarios');
 var Loader = require('../../../../src/core/loader');
+var util = require('../../../../src/core/util');
 
 describe('create-vis:', function () {
   beforeEach(function () {
@@ -50,12 +51,6 @@ describe('create-vis:', function () {
   });
 
   describe('Default (no Options)', function () {
-    it('should get the map center from the visJson', function () {
-      var visJson = scenarios.load('basic');
-      var visModel = createVis(this.containerId, visJson);
-      expect(visModel.map.get('center')).toEqual(visJson.center);
-    });
-
     it('should get the title from the visJson', function () {
       var visJson = scenarios.load('basic');
       var visModel = createVis(this.containerId, visJson);
@@ -112,12 +107,6 @@ describe('create-vis:', function () {
       expect(visModel.settings.get('layerSelectorEnabled')).toEqual(true);
     });
 
-    it('should allow scrollwheel by default', function () {
-      var visJson = scenarios.load('basic');
-      var visModel = createVis(this.containerId, visJson);
-      expect(visModel.map.get('scrollwheel')).toEqual(true);
-    });
-
     it('should have "infowindow" enabled by default', function () {
       pending('It seems that this option is no longer being used');
     });
@@ -150,6 +139,12 @@ describe('create-vis:', function () {
   });
 
   describe('VisModel.map', function () {
+    it('should have the right map center from the visJson', function () {
+      var visJson = scenarios.load('basic');
+      var visModel = createVis(this.containerId, visJson);
+      expect(visModel.map.get('center')).toEqual(visJson.center);
+    });
+
     it('should have the right title', function () {
       var visJson = scenarios.load('basic');
       var visModel = createVis(this.containerId, visJson);
@@ -167,6 +162,7 @@ describe('create-vis:', function () {
       var visModel = createVis(this.containerId, visJson);
       expect(visModel.map.get('view_bounds_sw')).toEqual(visJson.bounds[0]);
       expect(visModel.map.get('view_bounds_ne')).toEqual(visJson.bounds[1]);
+      expect(visModel.map.get('bounds')).toBeUndefined();
     });
 
     it('should have the right zoom', function () {
@@ -187,10 +183,17 @@ describe('create-vis:', function () {
       expect(visModel.map.get('drag')).toEqual(true);
     });
 
-    it('should have the right provider', function () {
+    it('should have the right provider [leaflet]', function () {
       var visJson = scenarios.load('basic');
       var visModel = createVis(this.containerId, visJson);
       expect(visModel.map.get('provider')).toEqual('leaflet');
+    });
+
+    it('should have the right provider [googleMaps]', function () {
+      var visJson = scenarios.load('basic');
+      visJson.map_provider = 'googlemaps';
+      var visModel = createVis(this.containerId, visJson);
+      expect(visModel.map.get('provider')).toEqual('googlemaps');
     });
 
     it('should have the right feature interactivity', function () {
@@ -203,6 +206,81 @@ describe('create-vis:', function () {
       var visJson = scenarios.load('basic');
       var visModel = createVis(this.containerId, visJson);
       expect(visModel.map.get('renderMode')).toEqual(visJson.vector ? 'vector' : 'raster');
+    });
+
+    describe('drag', function () {
+      beforeEach(function () {
+        spyOn(util, 'isMobileDevice').and.returnValue(false);
+      });
+
+      it('should be disabled when there is no overlays and options.scrollwheel is falsy', function () {
+        var visJson = scenarios.load('basic');
+        visJson.options.scrollwheel = false;
+        visJson.overlays = [];
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true });
+        expect(visModel.map.get('drag')).toBe(false);
+      });
+
+      it("should be enabled when there's a zoom overlay", function () {
+        var visJson = scenarios.load('basic');
+        visJson.overlays = [
+          {
+            type: 'zoom',
+            order: 6,
+            options: {
+              x: 20,
+              y: 20,
+              display: true
+            },
+            template: ''
+          }
+        ];
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true });
+        expect(visModel.map.get('drag')).toBe(true);
+      });
+
+      it('should be enabled when there is no overlays but options.scrollwheel is enabled', function () {
+        var visJson = scenarios.load('basic');
+        visJson.overlays = [];
+        visJson.options.scrollwheel = true;
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true });
+        expect(visModel.map.get('drag')).toBe(true);
+      });
+
+      it('should be enabled when using a mobile device', function () {
+        util.isMobileDevice.and.returnValue(true);
+        var visJson = scenarios.load('basic');
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true });
+        expect(visModel.map.get('drag')).toBe(true);
+      });
+    });
+
+    describe('scrollwheel', function () {
+      it('should be true when scrollwheel is true in vizjson and no options are given', function () {
+        var visJson = scenarios.load('basic');
+        var visModel = createVis(this.containerId, visJson);
+        expect(visModel.map.get('scrollwheel')).toEqual(true);
+      });
+
+      it('should be false when scrollwheel option is false in vizjson and no options are given', function () {
+        var visJson = scenarios.load('basic');
+        visJson.options.scrollwheel = false;
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true });
+        expect(visModel.map.get('scrollwheel')).toEqual(false);
+      });
+
+      it('should be true when scrollwheel option is false in the viz.json but given option is set to true', function () {
+        var visJson = scenarios.load('basic');
+        visJson.options.scrollwheel = false;
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true, scrollwheel: true });
+        expect(visModel.map.get('scrollwheel')).toEqual(true);
+      });
+
+      it('should be false when scrollwheel option is true in the viz.json but given option is set to false', function () {
+        var visJson = scenarios.load('basic');
+        var visModel = createVis(this.containerId, visJson, { skipMapInstantiation: true, scrollwheel: false });
+        expect(visModel.map.get('scrollwheel')).toEqual(false);
+      });
     });
   });
 
