@@ -9,33 +9,33 @@ This library allows to embed visualizations created with CartoDB in your map or 
 
   1. Add cartodb.js and css to your site:
 
-    ```html
+  ```html
 
-        <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-        <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+      <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+      <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
-        <!-- use these cartodb.css links if you are using https -->
-        <!--link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" /-->
+      <!-- use these cartodb.css links if you are using https -->
+      <!--link rel="stylesheet" href="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/themes/css/cartodb.css" /-->
 
-        <!-- use this cartodb.js link if you are using https -->
-        <!-- script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script -->
-    ```
+      <!-- use this cartodb.js link if you are using https -->
+      <!-- script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script -->
+  ```
 
 
   2. Create the map and add the layer
 
-    ```javascript
-      var map = L.map('map').setView([0, 0], 3);
+  ```javascript
+    var map = L.map('map').setView([0, 0], 3);
 
-      // set a base layer
-      L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-        attribution: 'stamen http://maps.stamen.com/'
-      }).addTo(map);
+    // set a base layer
+    L.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+      attribution: 'stamen http://maps.stamen.com/'
+    }).addTo(map);
 
-      // add the cartodb layer
-      var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
-      cartodb.createLayer(map, layerUrl).addTo(map);
-    ```
+    // add the cartodb layer
+    var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json';
+    cartodb.createLayer(map, layerUrl).addTo(map);
+  ```
 
 ### Usage with Bower
 
@@ -47,6 +47,7 @@ bower install cartodb.js
 
 
 ## Documentation
+
 You can find the documentation online [here](http://docs.cartodb.com/cartodb-platform/cartodb-js.html) and the [source](https://github.com/CartoDB/cartodb.js/blob/develop/doc/API.md) inside this repository.
 
 ## Examples
@@ -70,7 +71,6 @@ Build CartoDB.js library:
   - Install ruby dependencies: `bundle install` (necessary for compass gem)
   - Start the server: `grunt build`
   - Happy mapping!
-  - 
   
 ## Submitting Contributions
 
