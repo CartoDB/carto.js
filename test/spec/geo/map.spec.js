@@ -14,9 +14,10 @@ var Polyline = require('../../../src/geo/geometry-models/polyline');
 var Polygon = require('../../../src/geo/geometry-models/polygon');
 
 var fakeLayersFactory = new LayersFactory({
-  visModel: new Backbone.Model(),
-  windshaftSettings: {}
+  visModel: new Backbone.Model()
 });
+
+fakeLayersFactory.setWindshaftSettings({});
 
 var Map = require('../../../src/geo/map');
 
@@ -27,48 +28,6 @@ describe('core/geo/map', function () {
     this.vis = new VisModel();
 
     this.map = map = new Map(null, { layersFactory: fakeLayersFactory });
-  });
-
-  describe('.initialize', function () {
-    it('should parse bounds and set attributes', function () {
-      var map = new Map({ bounds: [[0, 1], [2, 3]] }, { layersFactory: fakeLayersFactory });
-
-      expect(map.get('view_bounds_sw')).toEqual([0, 1]);
-      expect(map.get('view_bounds_ne')).toEqual([2, 3]);
-      expect(map.get('bounds')).toBeUndefined();
-    });
-
-    it('should set the center and zoom if no bounds are given', function () {
-      var map = new Map({
-        center: [41.40282319070747, 2.3435211181640625],
-        zoom: 10
-      },
-        {
-          layersFactory: fakeLayersFactory
-        });
-
-      expect(map.get('center')).toEqual([41.40282319070747, 2.3435211181640625]);
-      expect(map.get('original_center')).toEqual([41.40282319070747, 2.3435211181640625]);
-      expect(map.get('zoom')).toEqual(10);
-    });
-
-    it('should set the default center and zoom if no center and bounds are given', function () {
-      var map = new Map(null, {
-        layersFactory: fakeLayersFactory
-      });
-
-      expect(map.get('center')).toEqual(map.defaults.center);
-      expect(map.get('original_center')).toEqual(map.defaults.center);
-      expect(map.get('zoom')).toEqual(map.defaults.zoom);
-    });
-
-    it('should parse the center when given a string', function () {
-      var map = new Map({
-        center: '[41.40282319070747, 2.3435211181640625]'
-      }, { layersFactory: fakeLayersFactory });
-
-      expect(map.get('center')).toEqual([41.40282319070747, 2.3435211181640625]);
-    });
   });
 
   describe('.addLayer', function () {

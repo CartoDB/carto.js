@@ -1,9 +1,10 @@
 var _ = require('underscore');
 var VisView = require('../vis/vis-view');
 var VisModel = require('../vis/vis');
-var Loader = require('../core/loader');
 var VizJSON = require('./vizjson');
 var config = require('../cdb.config');
+var util = require('../core/util');
+var RenderModes = require('../geo/render-modes');
 
 var DEFAULT_OPTIONS = {
   tiles_loader: true,
@@ -15,17 +16,30 @@ var DEFAULT_OPTIONS = {
   interactiveFeatures: false
 };
 
-var createVis = function (el, vizjson, options) {
-  if (typeof el === 'string') {
-    el = document.getElementById(el);
-  }
+/**
+ * Return a promise with a visModel when the vizjson is a url
+ * or a visModel when the vizjson is already a parsed object.
+ */
+function createVis (el, vizjson, options) {
   if (!el) {
     throw new TypeError('a valid DOM element or selector must be provided');
   }
-  if (!vizjson) {
-    throw new TypeError('a vizjson URL or object must be provided');
+  if (typeof el === 'string') {
+    el = document.getElementById(el);
   }
+  if (!vizjson) {
+    throw new TypeError('a vizjson must be provided');
+  }
+  if (typeof vizjson === 'string') {
+    throw new TypeError('a vizjson must be a valid json Object');
+  }
+  return _createVisSync(el, vizjson, options);
+}
 
+/**
+ * Return a visModel given an element a visjson object and the visualization options.
+ */
+function _createVisSync (el, visjson, options) {
   var isProtocolHTTPs = window && window.location.protocol && window.location.protocol === 'https:';
   options = _.defaults(options || {}, DEFAULT_OPTIONS);
 
@@ -37,48 +51,24 @@ var createVis = function (el, vizjson, options) {
     interactiveFeatures: options.interactiveFeatures
   });
 
-  if (typeof vizjson === 'string') {
-    var url = vizjson;
-    Loader.get(url, function (vizjson) {
-      if (vizjson) {
-        loadVizJSON(el, visModel, vizjson, options);
-      } else {
-        throw new Error('error fetching viz.json file');
-      }
-    });
-  } else {
-    loadVizJSON(el, visModel, vizjson, options);
-  }
+  new VisView({ // eslint-disable-line
+    el: el,
+    model: visModel,
+    settingsModel: visModel.settings
+  });
+
+  _loadVizJSON(el, visModel, visjson, options);
 
   if (options.mapzenApiKey) {
     config.set('mapzenApiKey', options.mapzenApiKey);
   }
 
   return visModel;
-};
+}
 
-var loadVizJSON = function (el, visModel, vizjsonData, options) {
+function _loadVizJSON (el, visModel, vizjsonData, options) {
   var vizjson = new VizJSON(vizjsonData);
-  applyOptionsToVizJSON(vizjson, options);
-
-  var showLegends = true;
-  if (_.isBoolean(options.legends)) {
-    showLegends = options.legends;
-  } else if (vizjson.options && _.isBoolean(vizjson.options.legends)) {
-    showLegends = vizjson.options.legends;
-  }
-
-  var showLayerSelector = true;
-  if (_.isBoolean(options.layer_selector)) {
-    showLayerSelector = options.layer_selector;
-  } else if (vizjson.options && _.isBoolean(vizjson.options.layer_selector)) {
-    showLayerSelector = vizjson.options.layer_selector;
-  }
-
-  var layerSelectorEnabled = true;
-  if (_.isBoolean(options.layerSelectorEnabled)) {
-    layerSelectorEnabled = options.layerSelectorEnabled;
-  }
+  _applyOptionsToVizJSON(vizjson, options);
 
   visModel.set({
     title: vizjson.title,
@@ -86,26 +76,20 @@ var loadVizJSON = function (el, visModel, vizjsonData, options) {
     https: visModel.get('https') || vizjson.https === true
   });
 
-  visModel.setSettings({
-    showLegends: showLegends,
-    showLayerSelector: showLayerSelector,
-    layerSelectorEnabled: layerSelectorEnabled
-  });
-
-  new VisView({ // eslint-disable-line
-    el: el,
-    model: visModel,
-    settingsModel: visModel.settings
-  });
-
-  visModel.load(vizjson);
+  visModel.setSettings(_loadSettings(vizjson, options));
+  visModel.setWindshaftSettings(_getWindshaftSettings(vizjson, options));
+  visModel.setMapAttributes(_getMapAttributes(vizjson, options));
+  visModel.setOverlays(vizjson.overlays);
+  visModel.setLayers(vizjson.layers);
+  visModel.setAnalyses(vizjson.analyses);
+  visModel.load(vizjson); // TODO: remove the load method
 
   if (!options.skipMapInstantiation) {
     visModel.instantiateMap();
   }
-};
+}
 
-var applyOptionsToVizJSON = function (vizjson, options) {
+function _applyOptionsToVizJSON (vizjson, options) {
   vizjson.options = vizjson.options || {};
   vizjson.options.scrollwheel = options.scrollwheel || vizjson.options.scrollwheel;
 
@@ -161,14 +145,97 @@ var applyOptionsToVizJSON = function (vizjson, options) {
 
   if (!isNaN(sw_lat) && !isNaN(sw_lon) && !isNaN(ne_lat) && !isNaN(ne_lon)) {
     vizjson.setBounds([
-      [ sw_lat, sw_lon ],
-      [ ne_lat, ne_lon ]
+      [sw_lat, sw_lon],
+      [ne_lat, ne_lon]
     ]);
   }
 
   if (options.gmaps_base_type) {
     vizjson.enforceGMapsBaseLayer(options.gmaps_base_type, options.gmaps_style);
   }
-};
+}
+
+function _loadSettings (vizjson, options) {
+  var settings = {
+    showLegends: true,
+    showLayerSelector: true,
+    layerSelectorEnabled: true
+  };
+
+  if (_.isBoolean(options.legends)) {
+    settings.showLegends = options.legends;
+  } else if (vizjson.options && _.isBoolean(vizjson.options.legends)) {
+    settings.showLegends = vizjson.options.legends;
+  }
+
+  if (_.isBoolean(options.layer_selector)) {
+    settings.showLayerSelector = options.layer_selector;
+  } else if (vizjson.options && _.isBoolean(vizjson.options.layer_selector)) {
+    settings.showLayerSelector = vizjson.options.layer_selector;
+  }
+
+  if (_.isBoolean(options.layerSelectorEnabled)) {
+    settings.layerSelectorEnabled = options.layerSelectorEnabled;
+  }
+
+  return settings;
+}
+
+function _getWindshaftSettings (vizjson, options) {
+  var windshaftSettings = {
+    urlTemplate: vizjson.datasource.maps_api_template,
+    userName: vizjson.datasource.user_name,
+    statTag: vizjson.datasource.stat_tag,
+    apiKey: options.apiKey,
+    authToken: options.authToken
+  };
+
+  if (vizjson.isNamedMap()) {
+    windshaftSettings.templateName = vizjson.datasource.template_name;
+  }
+
+  return windshaftSettings;
+}
+
+function _getMapAttributes (vizjson, options) {
+  var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || vizjson.options.scrollwheel;
+
+  var renderMode = RenderModes.AUTO;
+  if (vizjson.vector === true) {
+    renderMode = RenderModes.VECTOR;
+  } else if (vizjson.vector === false) {
+    renderMode = RenderModes.RASTER;
+  }
+
+  var center = vizjson.center;
+  if (typeof center === 'string') {
+    center = JSON.parse(center);
+  }
+
+  var mapAttributes = {
+    title: vizjson.title,
+    description: vizjson.description,
+    center: center,
+    zoom: vizjson.zoom,
+    scrollwheel: !!vizjson.options.scrollwheel,
+    drag: allowDragging,
+    renderMode: renderMode
+  };
+
+  if (vizjson.map_provider) {
+    _.extend(mapAttributes, {
+      provider: vizjson.map_provider
+    });
+  }
+
+  if (Array.isArray(vizjson.bounds)) {
+    _.extend(mapAttributes, {
+      view_bounds_sw: vizjson.bounds[0],
+      view_bounds_ne: vizjson.bounds[1]
+    });
+  }
+
+  return mapAttributes;
+}
 
 module.exports = createVis;
