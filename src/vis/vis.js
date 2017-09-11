@@ -38,10 +38,12 @@ var VisModel = Backbone.Model.extend({
     this.overlaysCollection = new Backbone.Collection();
     this.settings = new SettingsModel();
 
-    this.layerGroupModel = new CartoDBLayerGroup({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
-    }, {
+    this.layerGroupModel = new CartoDBLayerGroup(
+      {
+        apiKey: this.get('apiKey'),
+        authToken: this.get('authToken')
+      },
+      {
         layersCollection: this._layersCollection
       });
 
@@ -49,19 +51,23 @@ var VisModel = Backbone.Model.extend({
       visModel: this
     });
 
-    this.map = new Map({
-      isFeatureInteractivityEnabled: this.get('interactiveFeatures')
-    }, {
+    this.map = new Map(
+      {
+        isFeatureInteractivityEnabled: this.get('interactiveFeatures')
+      },
+      {
         layersCollection: this._layersCollection,
         layersFactory: this._layersFactory
       });
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
 
     // Create the public Dataview Factory
-    this.dataviews = new DataviewsFactory({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
-    }, {
+    this.dataviews = new DataviewsFactory(
+      {
+        apiKey: this.get('apiKey'),
+        authToken: this.get('authToken')
+      },
+      {
         map: this.map,
         vis: this,
         dataviewsCollection: this._dataviewsCollection,
@@ -161,11 +167,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   load: function (vizjson) {
-    // TODO: We're removing this method but clients of this class
-    // are relying on the 'load' event to know when this class is
-    // "ready" and instantiateMap can be invoked. For example:
-    // https://github.com/CartoDB/deep-insights.js/blob/8d0601c6554b813503349b2aa593242a834cc2f0/src/api/create-dashboard.js#L71
-    // We need to find an alternative way of doing this.
     _.defer(function () { this.trigger('load', this); }.bind(this));
   },
 
@@ -302,10 +303,12 @@ var VisModel = Backbone.Model.extend({
       WindshaftMapClass = WindshaftNamedMap;
     }
 
-    this._windshaftMap = new WindshaftMapClass({
-      apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
-    }, {
+    this._windshaftMap = new WindshaftMapClass(
+      {
+        apiKey: this.get('apiKey'),
+        authToken: this.get('authToken')
+      },
+      {
         client: windshaftClient,
         modelUpdater: modelUpdater,
         windshaftSettings: this._windshaftSettings,
