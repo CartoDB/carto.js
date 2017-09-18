@@ -13,6 +13,15 @@ var validatePresenceOfOptions = function (options, requiredOptions) {
   }
 };
 
+var getInstantiationParams = function (params) {
+  var source = params || {};
+  var destination = util.browser.ie
+    ? { nocache: Date.now() }
+    : {};
+
+  return _.extend(destination, source);
+};
+
 var MAX_URL_LENGTH = 2033;
 var COMPRESSION_LEVEL = 3;
 
@@ -44,7 +53,7 @@ WindshaftClient.prototype.instantiateMap = function (options) {
   }
 
   var mapDefinition = options.mapDefinition;
-  var params = options.params || {};
+  var params = getInstantiationParams(options.params);
   var successCallback = options.success;
   var errorCallback = options.error;
 
