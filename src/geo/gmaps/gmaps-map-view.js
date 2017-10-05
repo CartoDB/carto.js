@@ -71,8 +71,6 @@ var GoogleMapsMapView = MapView.extend({
     google.maps.event.addListenerOnce(this._gmapsMap, 'idle', function (e) {
       this._isReady = true;
     });
-
-    this.projector = new Projector(this._gmapsMap);
   },
 
   clean: function () {
@@ -155,7 +153,7 @@ var GoogleMapsMapView = MapView.extend({
         [ne.lat(), ne.lng()]
       ];
     }
-    return [ [0, 0], [0, 0] ];
+    return [[0, 0], [0, 0]];
   },
 
   setCursor: function (cursor) {
@@ -194,7 +192,7 @@ var GoogleMapsMapView = MapView.extend({
   },
 
   latLngToContainerPoint: function (latlng) {
-    var point = this.projector.latLngToPixel(new google.maps.LatLng(latlng[0], latlng[1]));
+    var point = Projector.latLngToPixel(this._gmapsMap.getProjection(), new google.maps.LatLng(latlng[0], latlng[1]));
     return {
       x: point.x,
       y: point.y
@@ -202,7 +200,7 @@ var GoogleMapsMapView = MapView.extend({
   },
 
   containerPointToLatLng: function (point) {
-    var latlng = this.projector.pixelToLatLng(new google.maps.Point(point.x, point.y));
+    var latlng = Projector.pixelToLatLng(this._gmapsMap.getProjection(), new google.maps.Point(point.x, point.y));
     return {
       lat: latlng.lat(),
       lng: latlng.lng()

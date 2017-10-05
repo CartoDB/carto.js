@@ -3,6 +3,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var Map = require('../../../../src/geo/map');
 var GoogleMapsMapView = require('../../../../src/geo/gmaps/gmaps-map-view');
+var Projector = require('../../../../src/geo/gmaps/projector');
 
 describe('geo/gmaps/gmaps-map-view', function () {
   var mapView;
@@ -64,7 +65,7 @@ describe('geo/gmaps/gmaps-map-view', function () {
 
   it('should change center and zoom when bounds are changed', function (done) {
     var spy = jasmine.createSpy('change:center');
-    mapView.getSize = function () { return {x: 200, y: 200}; };
+    mapView.getSize = function () { return { x: 200, y: 200 }; };
     map.bind('change:center', spy);
     spyOn(mapView, '_setCenter');
     mapView._bindModel();
@@ -129,17 +130,24 @@ describe('geo/gmaps/gmaps-map-view', function () {
       expect(map._latLngToPixelConverter).toBeDefined();
     });
 
-    it('should call native methods', function () {
-      spyOn(mapView.projector, 'latLngToPixel').and.callThrough();
-      spyOn(mapView.projector, 'pixelToLatLng').and.callThrough();
+    beforeEach(function () {
+      // TODO: This mocks are due a concurrency error in the tests, the map is not loaded so the Projector receives a undefined projection
+      spyOn(Projector, 'latLngToPixel').and.returnValue(new google.maps.Point(0, 0));
+      spyOn(Projector, 'pixelToLatLng').and.returnValue(new google.maps.LatLng(0, 0));
+    });
 
+    it('should delegate the pixelToLatLng to the native methods', function () {
+      expect(Projector.pixelToLatLng).not.toHaveBeenCalled();
       var pixelToLatLng = map.pixelToLatLng();
-      pixelToLatLng({x: 0, y: 0});
-      expect(mapView.projector.pixelToLatLng).toHaveBeenCalled();
+      pixelToLatLng({ x: 0, y: 0 });
+      expect(Projector.pixelToLatLng).toHaveBeenCalled();
+    });
 
+    it('should delegate the latLngToPixel to the native methods', function () {
+      expect(Projector.latLngToPixel).not.toHaveBeenCalled();
       var latLngToPixel = map.latLngToPixel();
       latLngToPixel([0, 0]);
-      expect(mapView.projector.latLngToPixel).toHaveBeenCalled();
+      expect(Projector.latLngToPixel).toHaveBeenCalled();
     });
   });
 });

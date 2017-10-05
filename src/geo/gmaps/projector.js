@@ -1,27 +1,20 @@
-/* global google */
-// helper to get pixel position from latlon
-
-function Projector (map) {
-  this.setMap(map);
+/**
+ * Transform a geographic point (lat,lon) into a pixel coordinates (x,y)
+ * using the given [projection](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Projection)
+ */
+function latLngToPixel (projection, latlng) {
+  return projection.fromLatLngToPoint(latlng);
 }
-Projector.prototype = new google.maps.OverlayView();
-Projector.prototype.draw = function () {};
-Projector.prototype.latLngToPixel = function (latlng) {
-  var projection = this.getProjection();
-  if (projection) {
-    return projection.fromLatLngToContainerPixel(latlng);
-  }
-  console.warn('Projector has no projection');
-  return new google.maps.Point(0, 0);
-};
 
-Projector.prototype.pixelToLatLng = function (point) {
-  var projection = this.getProjection();
-  if (projection) {
-    return projection.fromContainerPixelToLatLng(point);
-  }
-  console.warn('Projector has no projection');
-  return new google.maps.LatLng(0, 0);
-};
+/**
+ * Transform pixel coordinates (x,y) into geographic point (lat,lon)
+ * using the given [projection](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Projection)
+ */
+function pixelToLatLng (projection, point) {
+  return projection.fromPointToLatLng(point);
+}
 
-module.exports = Projector;
+module.exports = {
+  latLngToPixel: latLngToPixel,
+  pixelToLatLng: pixelToLatLng
+};

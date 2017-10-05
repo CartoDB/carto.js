@@ -29,7 +29,7 @@ var GMapsCartoDBLayerGroupView = function (layerModel, gmapsMap) {
   _.bindAll(this, 'featureOut', 'featureOver', 'featureClick');
 
   var opts = _.clone(layerModel.attributes);
-
+  this._gmap = gmapsMap;
   opts.map = gmapsMap;
 
   var _featureOver = opts.featureOver;
@@ -85,7 +85,6 @@ var GMapsCartoDBLayerGroupView = function (layerModel, gmapsMap) {
   // TODO: remove wax.connector here
   _.extend(this.options, opts);
   GMapsLayerView.call(this, layerModel, gmapsMap);
-  this.projector = new Projector(opts.map);
   CartoDBLayerGroupViewBase.call(this, layerModel, gmapsMap);
 };
 
@@ -313,7 +312,8 @@ _.extend(
 
     _manageOnEvents: function (map, o) {
       var point = this._findPos(map, o);
-      var latlng = this.projector.pixelToLatLng(point);
+      console.log(this._gmap.getProjection());
+      var latlng = Projector.pixelToLatLng(this._gmap.getProjection(), point);
       var eventType = o.e.type.toLowerCase();
 
       switch (eventType) {
