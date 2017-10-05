@@ -312,7 +312,6 @@ _.extend(
 
     _manageOnEvents: function (map, o) {
       var point = this._findPos(map, o);
-      console.log(this._gmap.getProjection());
       var latlng = Projector.pixelToLatLng(this._gmap.getProjection(), point);
       var eventType = o.e.type.toLowerCase();
 

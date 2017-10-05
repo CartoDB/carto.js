@@ -80,10 +80,15 @@ var GoogleMapsMapView = MapView.extend({
     MapView.prototype.clean.call(this);
   },
 
-  listenOnce: function (name, callback) {
-    google.maps.event.addListenerOnce(this._gmapsMap, name, function (event) {
-      callback(event);
-    });
+  /**
+   * Pass a function to be executed once the map is ready.
+   */
+  onReady: function (callback) {
+    if (this._isReady) {
+      callback();
+    } else {
+      google.maps.event.addListenerOnce(this._gmapsMap, 'idle', callback);
+    }
   },
 
   _getLayerViewFactory: function () {
