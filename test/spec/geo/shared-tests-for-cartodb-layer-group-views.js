@@ -1,9 +1,12 @@
+/* global google */
+
 var _ = require('underscore');
 var $ = require('jquery');
 var CartoDBLayer = require('../../../src/geo/map/cartodb-layer.js');
 var LayersCollection = require('../../../src/geo/map/layers.js');
 var CartoDBLayerGroup = require('../../../src/geo/cartodb-layer-group.js');
 var EMPTY_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+var Projector = require('../../../src/geo/gmaps/projector');
 
 var FakeWax = require('./fake-wax');
 var fakeWax = FakeWax();
@@ -140,8 +143,10 @@ module.exports = function (createLayerGroupView, expectTileURLTemplateToMatch, f
     describe('event firing', function () {
       beforeEach(function () {
         this.nativeMap = fakeWax.map.calls.argsFor(0)[0];
-
         this.layersCollection.reset([this.cartoDBLayer1]);
+        // TODO: This mocks are due a concurrency error in the tests, the map is not loaded so the Projector receives a undefined projection
+        spyOn(Projector, 'latLngToPixel').and.returnValue(new google.maps.Point(0, 0));
+        spyOn(Projector, 'pixelToLatLng').and.returnValue(new google.maps.LatLng(0, 0));
       });
 
       it('should trigger a "featureOver" event', function () {

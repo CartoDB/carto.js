@@ -5,6 +5,11 @@ var MapView = require('../map-view');
 var LeafletLayerViewFactory = require('./leaflet-layer-view-factory');
 
 var LeafletMapView = MapView.extend({
+  initialize: function () {
+    this._isReady = false;
+    MapView.prototype.initialize.apply(this, arguments);
+  },
+
   _createNativeMap: function () {
     var self = this;
     var center = this.map.get('center');
@@ -72,6 +77,10 @@ var LeafletMapView = MapView.extend({
 
     this._leafletMap.on('resize', function () {
       this.map.setMapViewSize(this.getSize());
+    }, this);
+
+    this._leafletMap.on('load', function () {
+      this._isReady = true;
     }, this);
 
     this.map.bind('change:maxZoom', function () {
@@ -194,7 +203,11 @@ var LeafletMapView = MapView.extend({
     }, this);
   },
 
-  listenOnce: function (name, callback) {
+  /**
+   * Pass a function to be executed once the map is ready.
+   */
+  onReady: function (callback) {
+    console.warn('This function should only be used for testing and will be removed');
     callback();
   },
 
