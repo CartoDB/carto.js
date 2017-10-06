@@ -45,6 +45,7 @@ var VisModel = Backbone.Model.extend({
     });
 
     this._instantiateMapWasCalled = false;
+    this._canIncludeFilters = false;
   },
 
   getStaticImageURL: function (options) {
@@ -153,12 +154,15 @@ var VisModel = Backbone.Model.extend({
     // Create the Map
     var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || allowScrollInOptions;
 
-    var renderMode = RenderModes.AUTO;
-    if (vizjson.vector === true) {
-      renderMode = RenderModes.VECTOR;
-    } else if (vizjson.vector === false) {
-      renderMode = RenderModes.RASTER;
-    }
+    // TODO: leave it as it was
+    // var renderMode = RenderModes.AUTO;
+    // if (vizjson.vector === true) {
+    //   renderMode = RenderModes.VECTOR;
+    // } else if (vizjson.vector === false) {
+    //   renderMode = RenderModes.RASTER;
+    // }
+
+    var renderMode = RenderModes.RASTER;
 
     this.map = new Map({
       title: vizjson.title,
@@ -342,36 +346,46 @@ var VisModel = Backbone.Model.extend({
   },
 
   _onMapInstantiatedForTheFirstTime: function () {
-    var anyDataviewFiltered = this._isAnyDataviewFiltered();
-    whenAllDataviewsFetched(this._dataviewsCollection, this._onDataviewFetched.bind(this));
+    whenAllDataviewsFetched(this._dataviewsCollection, this._onAllDataviewsFetched.bind(this));
     this._initBindsAfterFirstMapInstantiation();
-
-    anyDataviewFiltered && this.reload({ includeFilters: anyDataviewFiltered });
   },
 
-  _isAnyDataviewFiltered: function () {
-    return this._dataviewsCollection.isAnyDataviewFiltered();
-  },
+  _onAllDataviewsFetched: function () {
+    if (this._dataviewsCollection.length > 0) {
+      this.trigger('dataviewsFetched');
+    }
 
-  _onDataviewFetched: function () {
-    this.trigger('dataviewsFetched');
+    this._canIncludeFilters = true;
+    this._applyFilters();
   },
 
   reload: function (options) {
+    console.log('> reload');
     options = options || {};
     var successCallback = options.success;
     var errorCallback = options.error;
 
+    // Every reload caused by a change in filters before we can include filters
+    // in the instantiation 
+    if (options.reason === 'filtersChanged' && !this._canIncludeFilters) {
+      console.log(' returning because this was because of changes on filter.');
+      return;
+    }
+
     options = _.extend({
       includeFilters: true,
       success: function () {
+        debugger;
         this.trigger('reloaded');
         successCallback && successCallback();
       }.bind(this),
       error: function () {
         errorCallback && errorCallback();
       }
-    }, _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'));
+    },
+    _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'), {
+      includeFilters: this._canIncludeFilters
+    });
 
     if (this._instantiateMapWasCalled) {
       this.trigger('reload');
@@ -380,6 +394,8 @@ var VisModel = Backbone.Model.extend({
   },
 
   _initBindsAfterFirstMapInstantiation: function () {
+    debugger;
+    console.log('> _initBindsAfterFirstMapInstantiation');
     this._layersCollection.bind('reset', this._onLayersResetted, this);
     this._layersCollection.bind('add', this._onLayerAdded, this);
     this._layersCollection.bind('remove', this._onLayerRemoved, this);
@@ -423,6 +439,7 @@ var VisModel = Backbone.Model.extend({
   },
 
   _onDataviewAdded: function () {
+    console.log('> vis::_onDataviewAdded');
     this.reload();
   },
 
@@ -434,6 +451,10 @@ var VisModel = Backbone.Model.extend({
     overlayView.type = 'custom';
     this.overlaysCollection.add(overlayView);
     return overlayView;
+  },
+
+  _applyFilters: function () {
+    this.reload();
   }
 });
 

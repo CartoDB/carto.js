@@ -16,6 +16,10 @@ cdb.core.sanitize = require('./core/sanitize');
 cdb.core.Template = require('./core/template');
 cdb.core.Model = require('./core/model');
 cdb.core.View = require('./core/view');
+cdb.core.filters = {
+  CategoryFilter: require('./windshaft/filters/category'),
+  RangeFilter: require('./windshaft/filters/range')
+};
 
 cdb.SQL = require('./api/sql');
 

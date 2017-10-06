@@ -38,14 +38,38 @@ var WindshaftMap = Backbone.Model.extend({
     this._windshaftSettings = options.windshaftSettings;
   },
 
+  // TODO: adapt this when `analysisCollection` is deleted
+  _getFilters: function (analyses) {
+    return analyses.reduce(function (filters, analysisModel) {
+      var serializedFilters = analysisModel.getFilters().map(function (filter) {
+        return filter.isEmpty()
+          ? null
+          : filter.toJSON();
+      });
+
+      var compactFilters = _.compact(serializedFilters);
+
+      if (compactFilters.length > 0) {
+        filters.analyses = filters.analyses || {};
+        filters.analyses[analysisModel.id] = compactFilters;
+      }
+
+      return filters;
+    }, {});
+  },
+
   createInstance: function (options) {
+    console.log('> createInstance');
+
     options = options || {};
     try {
       var payload = this.toJSON();
       var params = this._getParams();
+      // Adapt next line once `analysisCollection` is deleted
+      var filters = this._getFilters(this._analysisCollection);
 
-      if (options.includeFilters && !_.isEmpty(this._dataviewsCollection.getFilters())) {
-        params.filters = this._dataviewsCollection.getFilters();
+      if (options.includeFilters && !_.isEmpty(filters)) {
+        params.filters = filters;
       }
 
       var oldSuccess = options.success;
@@ -63,6 +87,7 @@ var WindshaftMap = Backbone.Model.extend({
         this._modelUpdater.setErrors(windshaftErrors);
         oldError && oldError();
       }.bind(this);
+
       var request = new Request(payload, params, options);
       this.client.instantiateMap(request);
     } catch (e) {
@@ -233,12 +258,12 @@ var WindshaftMap = Backbone.Model.extend({
   },
 
   _getErrorsFromResponse: function (response) {
-    if (response.errors_with_context) {
+    if (response && response.errors_with_context) {
       return _.map(response.errors_with_context, function (error) {
         return new WindshaftError(error);
       });
     }
-    if (response.errors) {
+    if (response && response.errors) {
       return [
         new WindshaftError({ message: response.errors[0] })
       ];

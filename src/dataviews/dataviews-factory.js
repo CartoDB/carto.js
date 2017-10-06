@@ -1,8 +1,6 @@
 var _ = require('underscore');
 var Model = require('../core/model');
 var util = require('../core/util');
-var CategoryFilter = require('../windshaft/filters/category');
-var RangeFilter = require('../windshaft/filters/range');
 var CategoryDataviewModel = require('./category-dataview-model');
 var FormulaDataviewModel = require('./formula-dataview-model');
 var HistogramDataviewModel = require('./histogram-dataview-model');
@@ -28,18 +26,17 @@ module.exports = Model.extend({
   },
 
   createCategoryModel: function (attrs) {
+    console.log('> createCategoryModel at dataviews-factory');
+
     _checkProperties(attrs, ['source', 'column']);
     attrs = this._generateAttrsForDataview(attrs, CategoryDataviewModel.ATTRS_NAMES);
     attrs.aggregation = attrs.aggregation || 'count';
     attrs.aggregation_column = attrs.aggregation_column || attrs.column;
 
-    var categoryFilter = new CategoryFilter();
-
     return this._newModel(
       new CategoryDataviewModel(attrs, {
         map: this._map,
-        vis: this._vis,
-        filter: categoryFilter
+        vis: this._vis
       })
     );
   },
@@ -59,13 +56,10 @@ module.exports = Model.extend({
     _checkProperties(attrs, ['source', 'column']);
     attrs = this._generateAttrsForDataview(attrs, HistogramDataviewModel.ATTRS_NAMES);
 
-    var rangeFilter = new RangeFilter();
-
     return this._newModel(
       new HistogramDataviewModel(attrs, {
         map: this._map,
-        vis: this._vis,
-        filter: rangeFilter
+        vis: this._vis
       })
     );
   },

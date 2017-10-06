@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var Backbone = require('backbone');
 var Model = require('../core/model');
 var util = require('../core/util');
 
@@ -23,6 +24,7 @@ var AnalysisModel = Model.extend({
 
     this._camshaftReference = opts.camshaftReference;
     this._vis = opts.vis;
+    this._filters = new Backbone.Collection();
 
     this._initBinds();
   },
@@ -68,6 +70,9 @@ var AnalysisModel = Model.extend({
     _.each(this.getParamNames(), function (paramName) {
       this.bind('change:' + paramName, this._reloadVis, this);
     }, this);
+
+    this.listenTo(this._filters, 'change', this._onFiltersChanged);
+    this.listenTo(this._filters, 'destroy', this._onFilterDestroyed);
   },
 
   _reloadVis: function (opts) {
@@ -141,6 +146,26 @@ var AnalysisModel = Model.extend({
 
   getParamNames: function () {
     return this._camshaftReference.getParamNamesForAnalysisType(this.get('type'));
+  },
+
+  // Filters
+  addFilter: function (filter) {
+    this._filters.add(filter);
+  },
+
+  getFilters: function () {
+    return this._filters;
+  },
+
+  _onFiltersChanged: function () {
+    this._reloadVis({
+      reason: 'filtersChanged'
+    });
+  },
+
+  _onFilterDestroyed: function (filter) {
+    this._filters.remove(filter);
+    this._onFiltersChanged();
   },
 
   /**
