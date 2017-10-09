@@ -1,5 +1,5 @@
 var Backbone = require('backbone');
-var AnalysisFactory = require('../../../../../src/analysis/analysis-factory.js');
+var AnalysisService = require('../../../../../src/analysis/analysis-service.js');
 var CartoDBLayer = require('../../../../../src/geo/map/cartodb-layer');
 var VisModel = require('../../../../../src/vis/vis');
 var DataviewModel = require('../../../../../src/dataviews/dataview-model-base');
@@ -10,9 +10,9 @@ describe('analysis-serializer', function () {
   var mapModel;
   var layersCollection;
   var dataviewsCollection;
-  var analysisCollection;
-  var analysisFactory;
+  var analysisService;
   var analysisDefinition;
+  var analysisCollection;
   var analysisModel;
 
   beforeEach(function () {
@@ -21,7 +21,7 @@ describe('analysis-serializer', function () {
     layersCollection = new Backbone.Collection();
     dataviewsCollection = new Backbone.Collection();
     analysisCollection = new Backbone.Collection();
-    analysisFactory = new AnalysisFactory({
+    analysisService = new AnalysisService({
       analysisCollection: analysisCollection,
       camshaftReference: fakeCamshaftReference,
       vis: visModel
@@ -33,7 +33,7 @@ describe('analysis-serializer', function () {
         query: 'select * from subway_stops'
       }
     };
-    analysisModel = analysisFactory.analyse(analysisDefinition);
+    analysisModel = analysisService.createAnalysis(analysisDefinition);
   });
 
   describe('.serialize', function () {
@@ -55,7 +55,7 @@ describe('analysis-serializer', function () {
       });
 
       it("should NOT include an analysis if it's part of the analysis of another layer", function () {
-        var analysis1 = analysisFactory.analyse({
+        var analysis1 = analysisService.createAnalysis({
           id: 'b1',
           type: 'union',
           params: {
@@ -84,7 +84,7 @@ describe('analysis-serializer', function () {
             }
           }
         });
-        var analysis2 = analysisFactory.analyse({
+        var analysis2 = analysisService.createAnalysis({
           id: 'a2',
           type: 'estimated-population',
           params: {
@@ -170,8 +170,7 @@ describe('analysis-serializer', function () {
           source: analysisModel
         }, {
           map: mapModel,
-          vis: visModel,
-          analysisCollection: analysisCollection
+          vis: visModel
         });
 
         dataviewsCollection.reset([ dataview ]);
@@ -182,7 +181,7 @@ describe('analysis-serializer', function () {
       });
 
       it("should NOT include an analysis if it's part of the analysis of another dataview", function () {
-        var analysis1 = analysisFactory.analyse({
+        var analysis1 = analysisService.createAnalysis({
           id: 'b1',
           type: 'union',
           params: {
@@ -211,7 +210,7 @@ describe('analysis-serializer', function () {
             }
           }
         });
-        var analysis2 = analysisFactory.analyse({
+        var analysis2 = analysisService.createAnalysis({
           id: 'a2',
           type: 'estimated-population',
           params: {
@@ -238,16 +237,14 @@ describe('analysis-serializer', function () {
           source: analysis1
         }, {
           map: mapModel,
-          vis: visModel,
-          analysisCollection: analysisCollection
+          vis: visModel
         });
 
         var dataview2 = new DataviewModel({
           source: analysis2
         }, {
           map: mapModel,
-          vis: visModel,
-          analysisCollection: analysisCollection
+          vis: visModel
         });
 
         dataviewsCollection.reset([
@@ -312,8 +309,7 @@ describe('analysis-serializer', function () {
         source: analysisModel
       }, {
         map: mapModel,
-        vis: visModel,
-        analysisCollection: analysisCollection
+        vis: visModel
       });
 
       layersCollection.reset([

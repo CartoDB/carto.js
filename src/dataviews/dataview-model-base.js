@@ -16,6 +16,12 @@ var REQUIRED_OPTS = [
   'vis'
 ];
 
+var track = function (error) {
+  if (window.trackJs) {
+    window.trackJs.track(error);
+  }
+};
+
 /**
  * Default dataview model
  */
@@ -84,7 +90,8 @@ module.exports = Model.extend({
     this._vis = opts.vis;
 
     if (!attrs.source) throw new Error('source is a required attr');
-    this._checkSourceAttribute(attrs.source);
+    this._checkSourceAttribute(this.getSource());
+    this.getSource().markAsSourceOf(this);
 
     if (!attrs.id) {
       this.set('id', this.defaults.type + '-' + this.cid);
@@ -98,6 +105,10 @@ module.exports = Model.extend({
 
   _initBinds: function () {
     this.on('change:source', this._setupAnalysisStatusEvents, this);
+
+    // Temporary code to log changes to dataview's sources
+    // TODO: to be removed when enough data is checked / 1761 gets merged
+    this.on('change:source', this._onSourceChanged, this);
 
     this.listenToOnce(this, 'change:url', function () {
       if (this.syncsOnBoundingBoxChanges() && !this._getMapViewBounds()) {
@@ -149,6 +160,13 @@ module.exports = Model.extend({
     this.fetch({
       success: this._onChangeBinds.bind(this)
     });
+  },
+
+  _onSourceChanged: function (model) {
+    var changedKeys = model && model.changed
+      ? _.keys(model.changed)
+      : '';
+    track(new Error('[SOURCE] _onSourceChanged [' + changedKeys + ']'));
   },
 
   _setupAnalysisStatusEvents: function () {
@@ -232,6 +250,10 @@ module.exports = Model.extend({
   },
 
   update: function (attrs) {
+    if (_.has(attrs, 'source')) {
+      var message = '[SOURCE] Source present in UPDATE attrs. ' + JSON.stringify(attrs.source);
+      track(new Error(message));
+    }
     attrs = _.pick(attrs, this.constructor.ATTRS_NAMES);
 
     if (attrs.source) {
@@ -297,6 +319,7 @@ module.exports = Model.extend({
 
   remove: function () {
     this._removeExistingAnalysisBindings();
+    this.getSource().unmarkAsSourceOf(this);
     this.trigger('destroy', this);
     this.stopListening();
   },
