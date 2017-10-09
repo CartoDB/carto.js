@@ -12,9 +12,9 @@ module.exports = DataviewModelBase.extend({
     {
       type: 'histogram',
       totalAmount: 0,
-      filteredAmount: 0,
       hasNulls: false,
-      localTimezone: false
+      localTimezone: false,
+      applyOwnFilter: false
     },
     DataviewModelBase.prototype.defaults
   ),
@@ -22,8 +22,8 @@ module.exports = DataviewModelBase.extend({
   _getDataviewSpecificURLParams: function () {
     var params = [];
 
-    if (_.isNumber(this.get('own_filter'))) {
-      params.push('own_filter=' + this.get('own_filter'));
+    if (this.get('applyOwnFilter')) {
+      params.push('own_filter=' + (this.get('applyOwnFilter') ? 1 : 0));
     } else {
       var offset = this._getCurrentOffset();
 
@@ -53,7 +53,7 @@ module.exports = DataviewModelBase.extend({
   initialize: function (attrs, opts) {
     this._localOffset = dateUtils.getLocalOffset();
 
-    // Internal model for calculating all the data in the histogram (without filters)
+    // Internal model for calculating all the data in the histogram
     this._totals = new HistogramDataModel({
       bins: this.get('bins'),
       aggregation: this.get('aggregation'),
@@ -67,10 +67,6 @@ module.exports = DataviewModelBase.extend({
 
     DataviewModelBase.prototype.initialize.apply(this, arguments);
     this._data = new Backbone.Collection(this.get('data'));
-
-    if (attrs && (attrs.min || attrs.max)) {
-      this.filter.setRange(this.get('min'), this.get('max'));
-    }
   },
 
   _initBinds: function () {
@@ -102,23 +98,23 @@ module.exports = DataviewModelBase.extend({
     this._updateURLBinding();
   },
 
-  enableFilter: function () {
-    this.set('own_filter', 1);
+  enableOwnFilter: function () {
+    this.set('applyOwnFilter', true);
   },
 
-  disableFilter: function () {
-    this.unset('own_filter');
+  disableOwnFilter: function () {
+    this.set('applyOwnFilter', false);
   },
 
   getData: function () {
     return this._data.toJSON();
   },
 
-  getUnfilteredData: function () {
+  getTotalsData: function () {
     return this._totals.get('data');
   },
 
-  getUnfilteredDataModel: function () {
+  getTotalsDataModel: function () {
     return this._totals;
   },
 
@@ -142,7 +138,6 @@ module.exports = DataviewModelBase.extend({
 
     var parsedData = {
       data: [],
-      filteredAmount: 0,
       nulls: 0,
       totalAmount: 0
     };
@@ -162,7 +157,7 @@ module.exports = DataviewModelBase.extend({
     }, { silent: true });
 
     if (this.get('column_type') === 'date') {
-      parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, this._getCurrentOffset(), 'filtered', this._totals.get('data').length);
+      parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, this._getCurrentOffset(), false, this._totals.get('data').length);
       numberOfBins = parsedData.data.length;
     } else {
       helper.fillNumericBuckets(parsedData.data, start, width, numberOfBins);
@@ -179,7 +174,6 @@ module.exports = DataviewModelBase.extend({
 
     // Calculate totals
     parsedData.totalAmount = this._calculateTotalAmount(parsedData.data);
-    parsedData.filteredAmount = this._calculateFilteredAmount(this.filter, this._data);
     parsedData.nulls = data.nulls;
     parsedData.bins = numberOfBins;
 
@@ -191,12 +185,6 @@ module.exports = DataviewModelBase.extend({
     }
 
     return parsedData;
-  },
-
-  _onFilterChanged: function (filter) {
-    this.set('filteredAmount', this._calculateFilteredAmount(filter, this._data));
-
-    DataviewModelBase.prototype._onFilterChanged.apply(this, arguments);
   },
 
   _onColumnChanged: function () {
@@ -216,16 +204,6 @@ module.exports = DataviewModelBase.extend({
         : 0;
       return memo + add;
     }, 0);
-  },
-
-  _calculateFilteredAmount: function (filter, data) {
-    var filteredAmount = 0;
-    if (filter && filter.get('min') !== void 0 && filter.get('max') !== void 0) {
-      var indexes = this._findBinsIndexes(data, filter.get('min'), filter.get('max'));
-      filteredAmount = this._sumBinsFreq(data, indexes.start, indexes.end);
-    }
-
-    return filteredAmount;
   },
 
   _findBinsIndexes: function (data, start, end) {
@@ -314,10 +292,6 @@ module.exports = DataviewModelBase.extend({
     };
   },
 
-  _onColumnTypeChanged: function () {
-    this.filter.set('column_type', this.get('column_type'));
-  },
-
   _onChangeBinds: function () {
     DataviewModelBase.prototype._onChangeBinds.call(this);
   },
@@ -347,17 +321,7 @@ module.exports = DataviewModelBase.extend({
       error: model.get('error')
     }, { silent: true });
 
-    var resetFilter = false;
-
-    if (this.get('column_type') === 'date' && (_.has(this.changed, 'aggregation') || _.has(this.changed, 'offset'))) {
-      resetFilter = true;
-    } else if (this.get('column_type') === 'number' && _.has(this.changed, 'bins')) {
-      resetFilter = true;
-    }
-
-    resetFilter
-      ? this._resetFilterAndFetch()
-      : this.fetch();
+    this.fetch();
   },
 
   _onFieldsChanged: function () {
@@ -374,24 +338,11 @@ module.exports = DataviewModelBase.extend({
       this._totals.set('bins', this.get('bins'));
     }
     if (this.get('column_type') === 'date') {
-      if (this.hasChanged('aggregation')) {
-        this._resetFilter();
-      }
       this._totals.set({
         offset: this.get('offset'),
         aggregation: this.get('aggregation')
       });
     }
-  },
-
-  _resetFilterAndFetch: function () {
-    this._resetFilter();
-    this.fetch();
-  },
-
-  _resetFilter: function () {
-    this.disableFilter();
-    this.filter.unsetRange();
   },
 
   _getCurrentOffset: function () {

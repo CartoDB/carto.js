@@ -9,25 +9,17 @@ var CategoriesCollection = require('./category-dataview/categories-collection');
  *
  * - It has several internal models/collections
  *   - search model: it manages category search results.
- *   - filter model: it knows which items are accepted or rejected.
  */
 module.exports = DataviewModelBase.extend({
 
   defaults: _.extend(
     {
       type: 'category',
-      filterEnabled: false,
+      applyOwnFilter: false,
       allCategoryNames: [] // all (new + previously accepted), updated on data fetch (see parse)
     },
     DataviewModelBase.prototype.defaults
   ),
-
-  _getDataviewSpecificURLParams: function () {
-    var params = [
-      'own_filter=' + (this.get('filterEnabled') ? 1 : 0)
-    ];
-    return params;
-  },
 
   initialize: function (attrs, opts) {
     DataviewModelBase.prototype.initialize.call(this, attrs, opts);
@@ -69,9 +61,13 @@ module.exports = DataviewModelBase.extend({
     }, this);
 
     this._bindSearchModelEvents();
-    if (attrs && attrs.acceptedCategories) {
-      this.filter.accept(attrs.acceptedCategories);
-    }
+  },
+
+  _getDataviewSpecificURLParams: function () {
+    var params = [
+      'own_filter=' + (this.get('applyOwnFilter') ? 1 : 0)
+    ];
+    return params;
   },
 
   _onMapBoundsChanged: function () {
@@ -95,10 +91,6 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onSearchDataChange: function () {
-    this.getSearchResult().each(function (m) {
-      var selected = this.filter.isAccepted(m.get('name'));
-      m.set('selected', selected);
-    }, this);
     this.trigger('change:searchData', this);
   },
 
@@ -106,12 +98,12 @@ module.exports = DataviewModelBase.extend({
     return DataviewModelBase.prototype._shouldFetchOnBoundingBoxChange.call(this) && !this.isSearchApplied();
   },
 
-  enableFilter: function () {
-    this.set('filterEnabled', true);
+  enableOwnFilter: function () {
+    this.set('applyOwnFilter', true);
   },
 
-  disableFilter: function () {
-    this.set('filterEnabled', false);
+  disableOwnFilter: function () {
+    this.set('applyOwnFilter', false);
   },
 
   // Search model helper methods //
@@ -172,37 +164,6 @@ module.exports = DataviewModelBase.extend({
     return this._data.isOtherAvailable();
   },
 
-  numberOfAcceptedCategories: function () {
-    var acceptedCategories = this.filter.acceptedCategories;
-    var numberOfRejectedCategories = this.numberOfRejectedCategories();
-    var data = this.getData();
-    var totalCategories = data.size();
-    var numberOfAcceptedCategories = data.reduce(
-      function (memo, cat) {
-        var isCategoryInData = acceptedCategories.where({ name: cat.get('name') }).length > 0;
-        return memo + (isCategoryInData ? 1 : 0);
-      },
-      0
-    );
-    if (!numberOfRejectedCategories) {
-      return numberOfAcceptedCategories;
-    } else {
-      return totalCategories - numberOfRejectedCategories;
-    }
-  },
-
-  numberOfRejectedCategories: function () {
-    var rejectedCategories = this.filter.rejectedCategories;
-    var data = this.getData();
-    return data.reduce(
-      function (memo, cat) {
-        var isCategoryInData = rejectedCategories.where({ name: cat.get('name') }).length > 0;
-        return memo + (isCategoryInData ? 1 : 0);
-      },
-      0
-    );
-  },
-
   refresh: function () {
     if (this.isSearchApplied()) {
       this._searchModel.fetch();
@@ -213,50 +174,27 @@ module.exports = DataviewModelBase.extend({
 
   parse: function (d) {
     var newData = [];
-    var _tmpArray = {};
-    var allNewCategories = d.categories;
-    var allNewCategoryNames = [];
-    var acceptedCategoryNames = [];
+    var allCategories = d.categories;
+    var allCategoryNames = [];
 
-    _.each(allNewCategories, function (datum) {
+    _.each(allCategories, function (datum) {
       // Category might be a non-string type (e.g. number), make sure it's always a string for concistency
       var category = String(datum.category);
 
-      allNewCategoryNames.push(category);
-      var isRejected = this.filter.isRejected(category);
-      _tmpArray[category] = true;
+      allCategoryNames.push(category);
 
       newData.push({
-        selected: !isRejected,
         name: category,
         agg: datum.agg,
         value: datum.value
       });
     }, this);
 
-    // Only accepted categories should appear when filterEnabled is true
-    if (this.get('filterEnabled')) {
-      // Add accepted items that are not present in the categories data
-      this.filter.acceptedCategories.each(function (mdl) {
-        var category = mdl.get('name');
-        acceptedCategoryNames.push(category);
-        if (!_tmpArray[category]) {
-          newData.push({
-            selected: true,
-            name: category,
-            agg: false,
-            value: 0
-          });
-        }
-      }, this);
-    }
-
     this._data.reset(newData);
 
     return {
       allCategoryNames: _
-        .chain(allNewCategoryNames)
-        .union(acceptedCategoryNames)
+        .chain(allCategoryNames)
         .unique()
         .value(),
       data: newData,
