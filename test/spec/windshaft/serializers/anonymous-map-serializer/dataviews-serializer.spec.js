@@ -3,7 +3,7 @@ var CategoryDataviewModel = require('../../../../../src/dataviews/category-datav
 var HistogramDataviewModel = require('../../../../../src/dataviews/histogram-dataview-model');
 var FormulaDataviewModel = require('../../../../../src/dataviews/formula-dataview-model');
 var fakeFactory = require('../../../../helpers/fakeFactory');
-var DataviewsSerializer = require('../../../../../src/windshaft/map-serializer/anonymous-map-serializer/dataviews-serializer');
+var DataviewsSerializer = require('../../../../../src/serializers/anonymous-map-serializer/dataviews-serializer');
 
 describe('dataviews-serializer', function () {
   describe('.serialize', function () {

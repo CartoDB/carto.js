@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var AnalysisService = require('../../../../../src/analysis/analysis-service.js');
 var CartoDBLayer = require('../../../../../src/geo/map/cartodb-layer');
 var DataviewModelBase = require('../../../../../src/dataviews/dataview-model-base');
-var AnonymousMapSerializer = require('../../../../../src/windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer');
+var AnonymousMapSerializer = require('../../../../../src/windshaft/serializers/anonymous-map-serializer/anonymous-map-serializer');
 
 var MyDataviewModel = DataviewModelBase.extend({
   toJSON: function () {

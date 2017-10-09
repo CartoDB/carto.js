@@ -3,7 +3,7 @@ var TileLayer = require('../../../../../src/geo/map/tile-layer');
 var CartoDBLayer = require('../../../../../src/geo/map/cartodb-layer');
 var TorqueLayer = require('../../../../../src/geo/map/torque-layer');
 var GMapsBaseLayer = require('../../../../../src/geo/map/gmaps-base-layer');
-var NamedMapSerializer = require('../../../../../src/windshaft/map-serializer/named-map-serializer/named-map-serializer');
+var NamedMapSerializer = require('../../../../../src/windshaft/serializers/named-map-serializer/named-map-serializer');
 
 describe('named-map-serializer', function () {
   describe('.serialize', function () {
