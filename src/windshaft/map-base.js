@@ -6,7 +6,7 @@ var WindshaftError = require('./error');
 var Request = require('./request');
 var AnonymousMapSerializer = require('./serializers/anonymous-map-serializer/anonymous-map-serializer');
 var NamedMapSerializer = require('./serializers/named-map-serializer/named-map-serializer');
-var AnalysisService = require('../analysis/analysis-service');
+var FiltersSerializer = require('./serializers/filters-serializer/filters-serializer');
 
 var WindshaftMap = Backbone.Model.extend({
   initialize: function (attrs, options) {
@@ -35,37 +35,15 @@ var WindshaftMap = Backbone.Model.extend({
     this._windshaftSettings = options.windshaftSettings;
   },
 
-  // TODO: adapt this when `analysisCollection` is deleted
-  _getFilters: function (analyses) {
-    return analyses.reduce(function (filters, analysisModel) {
-      var serializedFilters = analysisModel.getFilters().map(function (filter) {
-        return filter.isEmpty()
-          ? null
-          : filter.toJSON();
-      });
-
-      var compactFilters = _.compact(serializedFilters);
-
-      if (compactFilters.length > 0) {
-        filters.analyses = filters.analyses || {};
-        filters.analyses[analysisModel.id] = compactFilters;
-      }
-
-      return filters;
-    }, {});
-  },
-
   createInstance: function (options) {
-    console.log('> createInstance');
-
     options = options || {};
     try {
       var payload = this.toJSON();
       var params = this._getParams();
-      var filters = this._getFilters(AnalysisService.getUniqueAnalysesNodes(this._layersCollection, this._dataviewsCollection));
+      var filtersPayload = FiltersSerializer.serialize(this._layersCollection, this._dataviewsCollection);
 
-      if (options.includeFilters && !_.isEmpty(filters)) {
-        params.filters = filters;
+      if (options.includeFilters && !_.isEmpty(filtersPayload)) {
+        params.filters = filtersPayload;
       }
 
       var oldSuccess = options.success;
