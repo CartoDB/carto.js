@@ -26,8 +26,6 @@ module.exports = Model.extend({
   },
 
   createCategoryModel: function (attrs) {
-    console.log('> createCategoryModel at dataviews-factory');
-
     _checkProperties(attrs, ['source', 'column']);
     attrs = this._generateAttrsForDataview(attrs, CategoryDataviewModel.ATTRS_NAMES);
     attrs.aggregation = attrs.aggregation || 'count';

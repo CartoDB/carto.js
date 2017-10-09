@@ -315,7 +315,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   reload: function (options) {
-    console.log('> reload');
     options = options || {};
     var successCallback = options.success;
     var errorCallback = options.error;
@@ -360,7 +359,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   _initBindsAfterFirstMapInstantiation: function () {
-    console.log('> _initBindsAfterFirstMapInstantiation');
     this._layersCollection.bind('reset', this._onLayersResetted, this);
     this._layersCollection.bind('add', this._onLayerAdded, this);
     this._layersCollection.bind('remove', this._onLayerRemoved, this);
@@ -405,7 +403,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   _onDataviewAdded: function () {
-    console.log('> vis::_onDataviewAdded');
     this.reload();
   },
 
