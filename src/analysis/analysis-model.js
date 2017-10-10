@@ -177,6 +177,9 @@ var AnalysisModel = Model.extend({
 
   // Filters
   addFilter: function (filter) {
+    if (!filter || typeof filter.applyFilter === 'undefined') {
+      throw new TypeError('Filter added must be an instance of a proper Filter object');
+    }
     this._filters.add(filter);
   },
 

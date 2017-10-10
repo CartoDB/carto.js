@@ -1,59 +1,36 @@
 var _ = require('underscore');
 var VisModel = require('../../src/vis/vis');
 var AnalysisModel = require('../../src/analysis/analysis-model');
+var camshaftReference = require('../../src/analysis/camshaft-reference');
 
-// We use a "fake" reference instead of the one in src/analysis/camshaft-reference
-// to ensure that tests won't break if the real thing changes
-var fakeCamshaftReference = {
-  getSourceNamesForAnalysisType: function (analysisType) {
-    var map = {
-      'source': [],
-      'trade-area': ['source'],
-      'estimated-population': ['source'],
-      'point-in-polygon': ['points_source', 'polygons_source'],
-      'union': ['source']
-    };
-    if (!map[analysisType]) {
-      throw new Error('analysis type ' + analysisType + ' not supported');
-    }
-    return map[analysisType];
-  },
+var fakeCamshaftReference = camshaftReference;
 
-  getParamNamesForAnalysisType: function (analysisType) {
-    var map = {
-      'source': ['query'],
-      'trade-area': ['kind', 'time'],
-      'estimated-population': ['columnName'],
-      'point-in-polygon': [],
-      'union': ['join_on']
-    };
-    if (!map[analysisType]) {
-      throw new Error('analysis type ' + analysisType + ' not supported');
-    }
-    return map[analysisType];
-  }
+var createCamshaftReference = function () {
+  return fakeCamshaftReference;
 };
 
-var createAnalysisModel = function (attrs) {
+var createAnalysisModel = function (attrs, opts) {
   if (!_.has(attrs, 'type')) {
     attrs.type = 'source';
   }
+  opts = opts || {};
 
   var model = new AnalysisModel(attrs, {
-    camshaftReference: fakeCamshaftReference,
-    vis: {
-      reload: function () {}
-    }
+    camshaftReference: attrs.camshaftReference || createCamshaftReference(),
+    vis: opts.vis || createVisModel()
   });
 
   return model;
 };
 
 var createVisModel = function () {
-  return new VisModel();
+  var vis = new VisModel();
+  vis.reload = jasmine.createSpy('reload');
+  return vis;
 };
 
 module.exports = {
   createAnalysisModel: createAnalysisModel,
-  createVisModel: createVisModel
+  createVisModel: createVisModel,
+  createCamshaftReference: createCamshaftReference
 };

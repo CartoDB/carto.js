@@ -1,11 +1,10 @@
 var Model = require('../../core/model');
-var AnalysisModel = require('../../analysis/analysis-model');
 
 module.exports = Model.extend({
   constructor: function (options) {
     Model.apply(this);
 
-    if (!options || !(options.analysis instanceof AnalysisModel)) {
+    if (!options || !options.analysis || typeof options.analysis.addFilter === 'undefined') {
       throw new Error('Filter must have an instance of AnalysisModel.');
     }
     if (!options.column) {

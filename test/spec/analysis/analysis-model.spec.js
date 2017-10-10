@@ -2,51 +2,21 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var AnalysisModel = require('../../../src/analysis/analysis-model.js');
 var AnalysisService = require('../../../src/analysis/analysis-service.js');
-
-var fakeCamshaftReference = {
-  getSourceNamesForAnalysisType: function (analysisType) {
-    var map = {
-      'analysis-type-1': ['source1', 'source2'],
-      'trade-area': ['source'],
-      'estimated-population': ['source'],
-      'sql-function': ['source', 'target']
-    };
-    return map[analysisType];
-  },
-  getParamNamesForAnalysisType: function (analysisType) {
-    var map = {
-      'analysis-type-1': ['attribute1', 'attribute2'],
-      'trade-area': ['kind', 'time'],
-      'estimated-population': ['columnName']
-    };
-
-    return map[analysisType];
-  }
-};
-
-var createFakeVis = function () {
-  var vis = new Backbone.Model();
-  vis.reload = jasmine.createSpy('reload');
-  return vis;
-};
-
-var createFakeAnalysis = function (attrs, visModel) {
-  return new AnalysisModel(attrs, {
-    vis: visModel,
-    camshaftReference: fakeCamshaftReference
-  });
-};
+var fakeFactory = require('../../helpers/fakeFactory');
+var RangeFilter = require('../../../src/windshaft/filters/range');
 
 describe('src/analysis/analysis-model.js', function () {
   var vis;
 
   beforeEach(function () {
-    vis = createFakeVis();
-    this.analysisModel = createFakeAnalysis({
-      type: 'analysis-type-1',
-      attribute1: 'value1',
-      attribute2: 'value2'
-    }, vis);
+    vis = fakeFactory.createVisModel();
+    this.analysisModel = fakeFactory.createAnalysisModel({
+      type: 'sampling',
+      sampling: 15,
+      seed: 20
+    }, {
+      vis: vis
+    });
   });
 
   describe('.url', function () {
@@ -74,21 +44,21 @@ describe('src/analysis/analysis-model.js', function () {
     describe('on params change', function () {
       it('should reload the map', function () {
         this.analysisModel.set({
-          attribute1: 'newValue1'
+          sampling: this.analysisModel.get('sampling') + 1
         });
 
         expect(vis.reload).toHaveBeenCalled();
         vis.reload.calls.reset();
 
         this.analysisModel.set({
-          attribute2: 'newValue2'
+          seed: 25
         });
 
         expect(vis.reload).toHaveBeenCalled();
         vis.reload.calls.reset();
 
         this.analysisModel.set({
-          attribute900: 'something'
+          randomAttribute: 'something'
         });
 
         expect(vis.reload).not.toHaveBeenCalled();
@@ -96,7 +66,7 @@ describe('src/analysis/analysis-model.js', function () {
 
       it('should be marked as failed if request to reload the map fails', function () {
         this.analysisModel.set({
-          attribute1: 'newValue1',
+          sampling: this.analysisModel.get('sampling') + 1,
           status: AnalysisModel.STATUS.READY
         });
 
@@ -111,44 +81,44 @@ describe('src/analysis/analysis-model.js', function () {
       it('should unbind old params and bind new params', function () {
         spyOn(this.analysisModel, '_initBinds').and.callThrough();
         spyOn(this.analysisModel, 'unbind').and.callThrough();
-        this.analysisModel.set('type', 'new!');
+        this.analysisModel.set('type', 'source');
         expect(this.analysisModel.unbind).toHaveBeenCalled();
         expect(this.analysisModel._initBinds).toHaveBeenCalled();
       });
 
       it('should reload the map', function () {
-        this.analysisModel.set('type', 'something');
+        this.analysisModel.set('type', 'centroid');
         expect(vis.reload).toHaveBeenCalled();
       });
 
       it('should keep listening type change again', function () {
-        this.analysisModel.set('type', 'something');
+        this.analysisModel.set('type', 'concave-hull');
         expect(vis.reload).toHaveBeenCalled();
         vis.reload.calls.reset();
-        this.analysisModel.set('type', 'something else');
+        this.analysisModel.set('type', 'contour');
         expect(vis.reload).toHaveBeenCalled();
       });
     });
 
     describe('on status change', function () {
       var createAnalysisModelNoStatusNoReferences = function (visModel) {
-        var analysisModel = createFakeAnalysis({ id: 'a0' }, visModel);
+        var analysisModel = fakeFactory.createAnalysisModel({ id: 'a0' }, { vis: visModel });
         return analysisModel;
       };
 
       var createAnalysisModelNoStatusWithReferences = function (visModel) {
-        var analysisModel = createFakeAnalysis({ id: 'a0' }, visModel);
+        var analysisModel = fakeFactory.createAnalysisModel({ id: 'a0' }, { vis: visModel });
         analysisModel.markAsSourceOf(new Backbone.Model());
         return analysisModel;
       };
 
       var createAnalysisModelWithStatusNoReferences = function (visModel) {
-        var analysisModel = createFakeAnalysis({ id: 'a0', status: 'foo' }, visModel);
+        var analysisModel = fakeFactory.createAnalysisModel({ id: 'a0', status: 'foo' }, { vis: visModel });
         return analysisModel;
       };
 
       var createAnalysisModelWithStatusWithReferences = function (visModel) {
-        var analysisModel = createFakeAnalysis({ id: 'a0', status: 'foo' }, visModel);
+        var analysisModel = fakeFactory.createAnalysisModel({ id: 'a0', status: 'foo' }, { vis: visModel });
         analysisModel.markAsSourceOf(new Backbone.Model());
         return analysisModel;
       };
@@ -187,7 +157,7 @@ describe('src/analysis/analysis-model.js', function () {
           var visModel;
 
           beforeEach(function () {
-            visModel = createFakeVis();
+            visModel = fakeFactory.createVisModel();
             analysisModel = createAnalysisFn(visModel);
           });
 
@@ -455,22 +425,22 @@ describe('src/analysis/analysis-model.js', function () {
       analysisService = new AnalysisService({
         vis: vis,
         analysisCollection: new Backbone.Collection(),
-        camshaftReference: fakeCamshaftReference
+        camshaftReference: fakeFactory.createCamshaftReference()
       });
     });
     it('Should return a list of nodes from an analysis', function () {
       var analysis = analysisService.createAnalysis(
         {
           id: 'a2',
-          type: 'estimated-population',
+          type: 'filter-range',
           params: {
-            columnName: 'estimated_people',
+            column: 'estimated_people',
             source: {
               id: 'a1',
-              type: 'trade-area',
+              type: 'buffer',
               params: {
-                kind: 'walk',
-                time: 300,
+                dissolved: false,
+                radius: 300,
                 source: {
                   id: 'a0',
                   type: 'source',
@@ -514,6 +484,70 @@ describe('src/analysis/analysis-model.js', function () {
       this.analysisModel.unmarkAsSourceOf(model2);
 
       expect(this.analysisModel.isSourceOfAnyModel()).toBe(false);
+    });
+  });
+
+  describe('filters', function () {
+    it('should have an empty filter collection when created', function () {
+      var filters = this.analysisModel.getFilters();
+
+      expect(filters.length).toBe(0);
+    });
+
+    describe('.addFilter', function () {
+      it('should check that it is a proper instance of filter', function () {
+        var addEmptyFilter = function () {
+          this.analysisModel.addFilter();
+        };
+        var addWrongFilter = function () {
+          this.analysisModel.addFilter({
+            some: 'object'
+          });
+        };
+
+        expect(addEmptyFilter).toThrowError(TypeError);
+        expect(addWrongFilter).toThrowError(TypeError);
+      });
+
+      it('should add the filter to the inner collection', function () {
+        var filter = new RangeFilter({
+          analysis: this.analysisModel,
+          column: 'price'
+        });
+
+        expect(this.analysisModel.getFilters().length).toBe(1);
+        expect(this.analysisModel.getFilters().at(0)._column).toEqual('price');
+
+        filter.remove();
+      });
+    });
+
+    it('changing a filter should reload the visualization', function () {
+      var filter = new RangeFilter({
+        analysis: this.analysisModel,
+        column: 'price'
+      });
+
+      filter.setRange(0, 100);
+
+      expect(vis.reload.calls.mostRecent()).toBeDefined();
+      expect(vis.reload.calls.mostRecent().args[0].reason).toEqual('filtersChanged');
+
+      vis.reload.calls.reset();
+      filter.remove();
+    });
+
+    it('removing a filter should reload the visualization and remove it from the collection', function () {
+      var filter = new RangeFilter({
+        analysis: this.analysisModel,
+        column: 'price'
+      });
+
+      filter.remove();
+
+      expect(vis.reload.calls.mostRecent()).toBeDefined();
+      expect(vis.reload.calls.mostRecent().args[0].reason).toEqual('filtersChanged');
+      expect(this.analysisModel.getFilters().length).toBe(0);
     });
   });
 });
