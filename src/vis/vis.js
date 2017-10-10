@@ -158,15 +158,12 @@ var VisModel = Backbone.Model.extend({
     // Create the Map
     var allowDragging = util.isMobileDevice() || vizjson.hasZoomOverlay() || allowScrollInOptions;
 
-    // TODO: leave it as it was
-    // var renderMode = RenderModes.AUTO;
-    // if (vizjson.vector === true) {
-    //   renderMode = RenderModes.VECTOR;
-    // } else if (vizjson.vector === false) {
-    //   renderMode = RenderModes.RASTER;
-    // }
-
-    var renderMode = RenderModes.RASTER;
+    var renderMode = RenderModes.AUTO;
+    if (vizjson.vector === true) {
+      renderMode = RenderModes.VECTOR;
+    } else if (vizjson.vector === false) {
+      renderMode = RenderModes.RASTER;
+    }
 
     this.layersFactory = new LayersFactory({
       visModel: this,
