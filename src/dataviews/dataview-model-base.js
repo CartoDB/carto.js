@@ -99,12 +99,6 @@ module.exports = Model.extend({
 
     this.sync = BackboneAbortSync.bind(this);
 
-    // filter is optional, so have to guard before using it
-    this.filter = opts.filter;
-    if (this.filter) {
-      this.filter.set('dataviewId', this.id);
-    }
-
     this._initBinds();
     this._setupAnalysisStatusEvents();
   },
@@ -126,10 +120,6 @@ module.exports = Model.extend({
         this._initialFetch();
       }
     });
-
-    if (this.filter) {
-      this.listenTo(this.filter, 'change', this._onFilterChanged);
-    }
   },
 
   _onChangeBinds: function () {
@@ -211,10 +201,6 @@ module.exports = Model.extend({
   /**
    * @protected
    */
-  _onFilterChanged: function (filter) {
-    this._reloadVis();
-  },
-
   _reloadVis: function (opts) {
     opts = opts || {};
     this._vis.reload(
@@ -329,14 +315,6 @@ module.exports = Model.extend({
 
   setSource: function (source, options) {
     this.set('source', source, options);
-  },
-
-  isFiltered: function () {
-    var isFiltered = false;
-    if (this.filter) {
-      isFiltered = !this.filter.isEmpty();
-    }
-    return isFiltered;
   },
 
   remove: function () {

@@ -42,7 +42,7 @@ helper.isShorterThan = function (limit, aggregation) {
   return limitIndex > -1 && aggregationIndex > -1 && aggregationIndex < limitIndex;
 };
 
-helper.fillTimestampBuckets = function (buckets, start, aggregation, numberOfBins, offset, from, totalBuckets) {
+helper.fillTimestampBuckets = function (buckets, start, aggregation, numberOfBins, offset, fromTotals, totalBuckets) {
   var startOffset = helper.isShorterThan('day', aggregation) ? (offset || 0) : 0;
   var startDate = moment.unix(start + startOffset).utc();
   var UTCStartDate = moment.unix(start).utc();
@@ -63,7 +63,7 @@ helper.fillTimestampBuckets = function (buckets, start, aggregation, numberOfBin
     delete buckets[i].timestamp;
   }
 
-  return from === 'totals'
+  return fromTotals
     ? buckets
     : trimBuckets(buckets, filledBuckets, totalBuckets);
 };

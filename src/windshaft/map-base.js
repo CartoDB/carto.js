@@ -4,8 +4,9 @@ var WindshaftConfig = require('./config');
 var log = require('../cdb.log');
 var WindshaftError = require('./error');
 var Request = require('./request');
-var AnonymousMapSerializer = require('./map-serializer/anonymous-map-serializer/anonymous-map-serializer');
-var NamedMapSerializer = require('./map-serializer/named-map-serializer/named-map-serializer');
+var AnonymousMapSerializer = require('./serializers/anonymous-map-serializer/anonymous-map-serializer');
+var NamedMapSerializer = require('./serializers/named-map-serializer/named-map-serializer');
+var FiltersSerializer = require('./serializers/filters-serializer/filters-serializer');
 
 var WindshaftMap = Backbone.Model.extend({
   initialize: function (attrs, options) {
@@ -39,9 +40,10 @@ var WindshaftMap = Backbone.Model.extend({
     try {
       var payload = this.toJSON();
       var params = this._getParams();
+      var filtersPayload = FiltersSerializer.serialize(this._layersCollection, this._dataviewsCollection);
 
-      if (options.includeFilters && !_.isEmpty(this._dataviewsCollection.getFilters())) {
-        params.filters = this._dataviewsCollection.getFilters();
+      if (options.includeFilters && !_.isEmpty(filtersPayload)) {
+        params.filters = filtersPayload;
       }
 
       var oldSuccess = options.success;
@@ -59,6 +61,7 @@ var WindshaftMap = Backbone.Model.extend({
         this._modelUpdater.setErrors(windshaftErrors);
         oldError && oldError();
       }.bind(this);
+
       var request = new Request(payload, params, options);
       this.client.instantiateMap(request);
     } catch (e) {
@@ -229,12 +232,12 @@ var WindshaftMap = Backbone.Model.extend({
   },
 
   _getErrorsFromResponse: function (response) {
-    if (response.errors_with_context) {
+    if (response && response.errors_with_context) {
       return _.map(response.errors_with_context, function (error) {
         return new WindshaftError(error);
       });
     }
-    if (response.errors) {
+    if (response && response.errors) {
       return [
         new WindshaftError({ message: response.errors[0] })
       ];

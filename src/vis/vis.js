@@ -45,6 +45,8 @@ var VisModel = Backbone.Model.extend({
     });
 
     this._instantiateMapWasCalled = false;
+    this.set('canIncludeFilters', false);
+    this.listenTo(this, 'change:canIncludeFilters', this.reload);
   },
 
   getStaticImageURL: function (options) {
@@ -298,25 +300,27 @@ var VisModel = Backbone.Model.extend({
   },
 
   _onMapInstantiatedForTheFirstTime: function () {
-    var anyDataviewFiltered = this._isAnyDataviewFiltered();
-    whenAllDataviewsFetched(this._dataviewsCollection, this._onDataviewFetched.bind(this));
     this._initBindsAfterFirstMapInstantiation();
-
-    anyDataviewFiltered && this.reload({ includeFilters: anyDataviewFiltered });
+    whenAllDataviewsFetched(this._dataviewsCollection, this._onAllDataviewsFetched.bind(this));
   },
 
-  _isAnyDataviewFiltered: function () {
-    return this._dataviewsCollection.isAnyDataviewFiltered();
-  },
-
-  _onDataviewFetched: function () {
-    this.trigger('dataviewsFetched');
+  _onAllDataviewsFetched: function () {
+    if (this._dataviewsCollection.length > 0) {
+      this.trigger('dataviewsFetched');
+    }
+    this.set('canIncludeFilters', true);
   },
 
   reload: function (options) {
     options = options || {};
     var successCallback = options.success;
     var errorCallback = options.error;
+
+    // Every reload caused by a change in filters before we can include filters
+    // in the instantiation is aborted.
+    if (options.reason === 'filtersChanged' && !this.get('canIncludeFilters')) {
+      return;
+    }
 
     options = _.extend({
       includeFilters: true,
@@ -335,8 +339,10 @@ var VisModel = Backbone.Model.extend({
       error: function () {
         errorCallback && errorCallback();
       }
-    }, _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'));
-
+    },
+    _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'), {
+      includeFilters: this.get('canIncludeFilters')
+    });
     if (this._instantiateMapWasCalled) {
       this.trigger('reload');
       this._windshaftMap.createInstance(options); // this reload method is call from other places
@@ -360,6 +366,7 @@ var VisModel = Backbone.Model.extend({
       this.listenTo(this._dataviewsCollection, 'add', _.debounce(this._onDataviewAdded.bind(this), 10));
       this.listenTo(this._dataviewsCollection, 'remove', this._onDataviewRemoved);
     }
+    this.trigger('mapInstantiated');
   },
 
   _onDataviewRemoved: function (dataviewModel) {

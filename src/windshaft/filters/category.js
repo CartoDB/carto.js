@@ -6,28 +6,23 @@ var WindshaftFilterBase = require('./base');
  * Filter used by the category dataview
  */
 module.exports = WindshaftFilterBase.extend({
+  constructor: function (options) {
+    WindshaftFilterBase.apply(this, arguments);
 
-  defaults: {
-    rejectAll: false
+    this._rejectedCategories = new Backbone.Collection();
+    this._acceptedCategories = new Backbone.Collection();
   },
 
-  initialize: function () {
-    this.rejectedCategories = new Backbone.Collection();
-    this.acceptedCategories = new Backbone.Collection();
-    this._initBinds();
+  acceptedCategoriesSize: function () {
+    return this._acceptedCategories.size();
   },
 
-  _initBinds: function () {
-    this.listenTo(this.rejectedCategories, 'add remove', function () {
-      this.set('rejectAll', false);
-    });
-    this.listenTo(this.acceptedCategories, 'add remove', function () {
-      this.set('rejectAll', false);
-    });
+  rejectedCategoriesSize: function () {
+    return this._rejectedCategories.size();
   },
 
   isEmpty: function () {
-    return this.rejectedCategories.size() === 0 && this.acceptedCategories.size() === 0 && !this.get('rejectAll');
+    return this.acceptedCategoriesSize() === 0 && this.rejectedCategoriesSize() === 0;
   },
 
   accept: function (values, applyFilter) {
@@ -35,12 +30,12 @@ module.exports = WindshaftFilterBase.extend({
 
     _.each(values, function (value) {
       var d = { name: value };
-      var rejectedMdls = this.rejectedCategories.where(d);
-      var acceptedMdls = this.acceptedCategories.where(d);
+      var rejectedMdls = this._rejectedCategories.where(d);
+      var acceptedMdls = this._acceptedCategories.where(d);
       if (rejectedMdls.length > 0) {
-        this.rejectedCategories.remove(rejectedMdls);
+        this._rejectedCategories.remove(rejectedMdls);
       } else if (!acceptedMdls.length) {
-        this.acceptedCategories.add(d);
+        this._acceptedCategories.add(d);
       }
     }, this);
 
@@ -49,13 +44,8 @@ module.exports = WindshaftFilterBase.extend({
     }
   },
 
-  acceptAll: function () {
-    this.set('rejectAll', false);
-    this.cleanFilter();
-  },
-
   isAccepted: function (name) {
-    return this.acceptedCategories.where({ name: name }).length > 0;
+    return this._acceptedCategories.where({ name: name }).length > 0;
   },
 
   reject: function (values, applyFilter) {
@@ -63,13 +53,13 @@ module.exports = WindshaftFilterBase.extend({
 
     _.each(values, function (value) {
       var d = { name: value };
-      var acceptedMdls = this.acceptedCategories.where(d);
-      var rejectedMdls = this.rejectedCategories.where(d);
+      var acceptedMdls = this._acceptedCategories.where(d);
+      var rejectedMdls = this._rejectedCategories.where(d);
       if (acceptedMdls.length > 0) {
-        this.acceptedCategories.remove(acceptedMdls);
+        this._acceptedCategories.remove(acceptedMdls);
       } else {
         if (!rejectedMdls.length) {
-          this.rejectedCategories.add(d);
+          this._rejectedCategories.add(d);
         }
       }
     }, this);
@@ -80,65 +70,47 @@ module.exports = WindshaftFilterBase.extend({
   },
 
   isRejected: function (name) {
-    var acceptCount = this.acceptedCategories.size();
-    if (this.rejectedCategories.where({ name: name }).length > 0) {
+    var acceptCount = this.acceptedCategoriesSize();
+    if (this._rejectedCategories.where({ name: name }).length > 0) {
       return true;
-    } else if (acceptCount > 0 && this.acceptedCategories.where({ name: name }).length === 0) {
-      return true;
-    } else if (this.get('rejectAll')) {
+    } else if (acceptCount > 0 && this._acceptedCategories.where({ name: name }).length === 0) {
       return true;
     } else {
       return false;
     }
   },
 
-  rejectAll: function () {
-    this.set('rejectAll', true);
-    this.cleanFilter();
-  },
-
-  cleanFilter: function (triggerChange) {
-    this.acceptedCategories.reset();
-    this.rejectedCategories.reset();
-    if (triggerChange !== false) {
-      this.applyFilter();
-    }
-  },
-
-  applyFilter: function () {
-    this.trigger('change', this);
-  },
-
-  areAllRejected: function () {
-    return this.get('rejectAll');
+  resetFilter: function () {
+    this._acceptedCategories.reset();
+    this._rejectedCategories.reset();
+    this.applyFilter();
   },
 
   toJSON: function () {
-    var filter = {};
-    var rejectCount = this.rejectedCategories.size();
-    var acceptCount = this.acceptedCategories.size();
-    var acceptedCats = { accept: _.pluck(this.acceptedCategories.toJSON(), 'name') };
-    var rejectedCats = { reject: _.pluck(this.rejectedCategories.toJSON(), 'name') };
+    var filter = {
+      type: 'category',
+      column: this._column,
+      params: {}
+    };
+    var rejectCount = this.rejectedCategoriesSize();
+    var acceptCount = this.acceptedCategoriesSize();
+    var acceptedCats = { accept: _.pluck(this._acceptedCategories.toJSON(), 'name') };
+    var rejectedCats = { reject: _.pluck(this._rejectedCategories.toJSON(), 'name') };
 
-    if (this.get('rejectAll')) {
-      filter = { accept: [] };
-    } else if (acceptCount > 0) {
-      filter = acceptedCats;
+    if (acceptCount > 0) {
+      filter.params = acceptedCats;
     } else if (rejectCount > 0 && acceptCount === 0) {
-      filter = rejectedCats;
+      filter.params = rejectedCats;
     }
 
-    var json = {};
-    json[this.get('dataviewId')] = filter;
-
-    return json;
+    return filter;
   },
 
   getAcceptedCategoryNames: function () {
-    return this.acceptedCategories.map(function (category) { return category.get('name'); });
+    return this._acceptedCategories.map(function (category) { return category.get('name'); });
   },
 
   getRejectedCategoryNames: function () {
-    return this.rejectedCategories.map(function (category) { return category.get('name'); });
+    return this._rejectedCategories.map(function (category) { return category.get('name'); });
   }
 });

@@ -136,7 +136,7 @@ module.exports = Model.extend({
     }
 
     if (this.get('column_type') === 'date') {
-      parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, this._getCurrentOffset(), 'totals');
+      parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, this._getCurrentOffset(), true);
       numberOfBins = parsedData.data.length;
     } else {
       helper.fillNumericBuckets(parsedData.data, start, width, numberOfBins);

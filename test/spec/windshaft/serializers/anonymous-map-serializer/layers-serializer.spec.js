@@ -4,7 +4,7 @@ var PlainLayer = require('../../../../../src/geo/map/plain-layer');
 var TileLayer = require('../../../../../src/geo/map/tile-layer');
 var TorqueLayer = require('../../../../../src/geo/map/torque-layer');
 var VisModel = require('../../../../../src/vis/vis');
-var LayersSerializer = require('../../../../../src/windshaft/map-serializer/anonymous-map-serializer/layers-serializer');
+var LayersSerializer = require('../../../../../src/windshaft/serializers/anonymous-map-serializer/layers-serializer');
 var fakeFactory = require('../../../../helpers/fakeFactory');
 
 describe('layers-serializer', function () {
