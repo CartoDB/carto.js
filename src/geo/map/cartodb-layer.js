@@ -152,4 +152,5 @@ var CartoDBLayer = LayerModelBase.extend({
   }
 });
 
+window.CartoDBLayer = CartoDBLayer;
 module.exports = CartoDBLayer;
