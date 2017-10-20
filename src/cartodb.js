@@ -6,7 +6,7 @@ require('mwheelIntent'); // registers itself to $.event; TODO what's this requir
 
 var cdb = require('cdb');
 if (window) {
-  window.cartodb = window.cdb = cdb;
+  window.cartodb = window.cdb = window.carto = cdb;
 }
 
 if (isLeafletAlreadyLoaded) L.noConflict();
@@ -20,6 +20,8 @@ cdb.core.View = require('./core/view');
 cdb.SQL = require('./api/sql');
 
 cdb.createVis = require('./api/create-vis');
+cdb.Engine = require('./engine');
+cdb.Analysis = require('./api/v4/analysis');
 
 // log cartodb.js version
 var logger = require('cdb.log');
