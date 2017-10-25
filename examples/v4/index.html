@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Basic Carto.js example</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <!--Include carto styles  -->
+    <link rel="stylesheet" href="../../dist/themes/css/cartodb.css" />
+    <!-- Include cartodb.js Library -->
+    <script src="../../dist/cartodb.uncompressed.js"></script>
+    <style>
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([42.431234, -8.643616], 5);
+        L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png').addTo(map);
+
+        // Create the Engine
+        var engine = new carto.core.Engine({
+          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          authToken: undefined,
+          serverUrl: 'https://{user}.carto.com:443',
+          statTag: '544fde69-5bae-4a98-abeb-90114f8d96aa',
+          templateName: undefined,
+          username: 'cartojs-test'
+        });
+
+        // Create a source
+        var source = new carto.source.Dataset('a0', 'ne_10m_populated_places_simple', engine);
+
+        // Create a style
+        var style = new carto.style.CartoCSS({
+          '#layer': {
+            'marker-width': 10,
+            'marker-fill': 'rgba(255,128,0,1)'
+          }
+        });
+
+        // Create a layers
+        var layer = new carto.layer.Layer(source, style, engine);
+
+        // Add the layers
+        engine.addLayer(layer);
+
+        // Define the callback when the map is loaded.
+        engine.on(carto.core.Engine.Events.RELOAD_SUCCESS, function () {
+          console.log('reloaded');
+          LeafletCartoDBLayerGroupView(engine).addTo(map);
+        });
+
+        // Define the callback when some error happened
+        engine.on(carto.core.Engine.Events.RELOAD_ERROR, function (errors) {
+          console.error('Error:', errors[0].message);
+        });
+
+        engine.reload();
+
+        //var style = new carto.style.CartoCSS('#layer{ marker-width: 10; marker-fill: rgba(255,128,0,1);}');
+    </script>
+</body>
+
+</html>
