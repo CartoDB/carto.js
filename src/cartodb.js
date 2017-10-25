@@ -1,5 +1,5 @@
 var isLeafletAlreadyLoaded = !!window.L;
-
+var v4 = require('./api/v4');
 var L = require('leaflet');
 require('mousewheel'); // registers itself to $.event; TODO what's this required for? still relevant for supported browsers?
 require('mwheelIntent'); // registers itself to $.event; TODO what's this required for? still relevant for supported browsers?
@@ -20,9 +20,14 @@ cdb.core.View = require('./core/view');
 cdb.SQL = require('./api/sql');
 
 cdb.createVis = require('./api/create-vis');
-cdb.Engine = require('./engine');
-cdb.Analysis = require('./api/v4/analysis');
 
+// Expose v4 API
+cdb.core = v4.core;
+cdb.layer = v4.layer;
+cdb.source = v4.source;
+cdb.style = v4.style;
+
+window.carto = cdb;
 // log cartodb.js version
 var logger = require('cdb.log');
 logger.log('cartodb.js ' + cdb.VERSION);
