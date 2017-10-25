@@ -24,42 +24,35 @@
     <div id="map"></div>
 
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        var map = L.map('map').setView([42.431234, -8.643616], 5);
         L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png').addTo(map);
 
         // Create styles
-        let style0 = `#layer{ marker-width: 10; marker-fill: rgba(255,0,0,1);}`;
+        const style0 = `#layer{ marker-width: 10; marker-fill: rgba(255,128,0,1);}`;
 
         // Create the Engine
-        let engine = new carto.Engine({
-            apiKey: '552dc6b016acb007acf0b9091719be8d0a37847b',
+        const engine = new carto.core.Engine({
+            apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
             authToken: undefined,
             serverUrl: 'https://{user}.carto.com:443',
             statTag: '544fde69-5bae-4a98-abeb-90114f8d96aa',
             templateName: undefined,
-            username: 'iago-carto'
+            username: 'cartojs-test'
         });
-
 
         // Create a source node
-        const source = carto.Analysis.Source('a0','SELECT * FROM \"iago-carto\".data_1');
+        const source = carto.source.Dataset('a0', 'ne_10m_populated_places_simple', engine);
 
         // Create a layers
-        var layer = new CartoDBLayer({ source: source, cartocss: style0 }, {
-            vis: {
-                on: () => { },
-                reload: () => { }
-            }
-        });
+        const layer = carto.layer.Layer(source, style0, engine);
 
         // Add the layers
         engine.addLayer(layer);
 
         // Load the engine
-        engine.on(carto.Engine.Events.RELOAD_SUCCESS, function(){
+        engine.on(carto.core.Engine.Events.RELOAD_SUCCESS, function () {
             console.log('reloaded');
-            var cartoLayerGroup = L.Carto.leafletCartoLayerGroup(engine);
-            cartoLayerGroup.addTo(mymap);
+            LeafletCartoDBLayerGroupView(engine).addTo(map);
         });
 
         engine.reload();

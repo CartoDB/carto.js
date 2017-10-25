@@ -226,5 +226,4 @@ var AnalysisModel = Model.extend({
   STATUS: STATUS
 });
 
-window.carto.Analysis = AnalysisModel;
 module.exports = AnalysisModel;
