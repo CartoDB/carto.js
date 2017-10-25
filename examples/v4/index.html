@@ -28,10 +28,10 @@
         L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager_nolabels/{z}/{x}/{y}.png').addTo(map);
 
         // Create styles
-        const style0 = `#layer{ marker-width: 10; marker-fill: rgba(255,128,0,1);}`;
+        var style0 = `#layer{ marker-width: 10; marker-fill: rgba(255,128,0,1);}`;
 
         // Create the Engine
-        const engine = new carto.core.Engine({
+        var engine = new carto.core.Engine({
             apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
             authToken: undefined,
             serverUrl: 'https://{user}.carto.com:443',
@@ -41,18 +41,23 @@
         });
 
         // Create a source node
-        const source = carto.source.Dataset('a0', 'ne_10m_populated_places_simple', engine);
+        var source = carto.source.Dataset('a0', 'ne_10m_populated_places_simple', engine);
 
         // Create a layers
-        const layer = carto.layer.Layer(source, style0, engine);
+        var layer = carto.layer.Layer(source, style0, engine);
 
         // Add the layers
         engine.addLayer(layer);
 
-        // Load the engine
+        // Define the callback when the map is loaded.
         engine.on(carto.core.Engine.Events.RELOAD_SUCCESS, function () {
             console.log('reloaded');
             LeafletCartoDBLayerGroupView(engine).addTo(map);
+        });
+
+        // Define the callback when some error happened
+        engine.on(carto.core.Engine.Events.RELOAD_ERROR, function (errors) {
+            console.error('Error:', errors[0].message);
         });
 
         engine.reload();
