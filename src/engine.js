@@ -126,23 +126,25 @@ Engine.prototype.off = function off (event, callback, context) {
  * and update the internal models with the server response.
  *
  * Once the response has arrived trigger a 'reload-succes' or 'reload-error' event.
- *
- * @param {string} sourceId - The sourceId triggering the reload event. This is usefull to prevent uneeded requests and save data.
- * @param {boolean} forceFetch - Forces dataviews to fetch data from server after a reload
- * @param {boolean} includeFilters - Boolean flag to control if the filters need to be added in the payload.
+ * 
+ * @param {object} opts
+ * @param {string} opts.sourceId - The sourceId triggering the reload event. This is usefull to prevent uneeded requests and save data.
+ * @param {boolean} opts.forceFetch - Forces dataviews to fetch data from server after a reload
+ * @param {boolean} opts.includeFilters - Boolean flag to control if the filters need to be added in the payload.
  *
  * @fires Engine#Engine:RELOAD_SUCCESS
  * @fires Engine#Engine:RELOAD_ERROR
  *
  * @api
  */
-Engine.prototype.reload = function reload (sourceId, forceFetch, includeFilters) {
+Engine.prototype.reload = function reload (opts) {
+  opts = opts || {};
   // IncludeFilters must be true by default
-  includeFilters = (_.isUndefined(includeFilters) || includeFilters === null) ? true : !!includeFilters;
-  var params = this._buildParams(includeFilters);
+  opts.includeFilters = (_.isUndefined(opts.includeFilters) || opts.includeFilters === null) ? true : !!opts.includeFilters;
+  var params = this._buildParams(opts.includeFilters);
   var payload = this._getSerializer().serialize(this._layersCollection, this._dataviewsCollection);
   // TODO: update options, use promises or explicit callbacks function (error, params).
-  var options = this._buildOptions(sourceId, forceFetch, includeFilters);
+  var options = this._buildOptions(opts);
   var request = new Request(payload, params, options);
   this._eventEmmitter.trigger(Engine.Events.RELOAD_STARTED);
   this._windshaftClient.instantiateMap(request);
@@ -226,11 +228,11 @@ Engine.prototype._onReloadError = function _onReloadError (serverResponse) {
 /**
  * @private
  */
-Engine.prototype._buildOptions = function _buildOptions (sourceId, forceFetch, includeFilters) {
+Engine.prototype._buildOptions = function _buildOptions (opts) {
   return {
-    includeFilters: includeFilters,
+    includeFilters: opts.includeFilters,
     success: function (serverResponse) {
-      this._onReloadSuccess(serverResponse, sourceId, forceFetch);
+      this._onReloadSuccess(serverResponse, opts.sourceId, opts.forceFetch);
     }.bind(this),
     error: this._onReloadError.bind(this)
   };

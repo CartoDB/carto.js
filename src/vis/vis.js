@@ -160,9 +160,9 @@ var VisModel = Backbone.Model.extend({
       isFeatureInteractivityEnabled: this.get('interactiveFeatures'),
       renderMode: renderMode
     }, {
-      layersCollection: this._layersCollection,
-      layersFactory: this.layersFactory
-    });
+        layersCollection: this._layersCollection,
+        layersFactory: this.layersFactory
+      });
 
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
     this.listenTo(this.layerGroupModel, 'all', function (type, error) {
@@ -180,10 +180,10 @@ var VisModel = Backbone.Model.extend({
       apiKey: this.get('apiKey'),
       authToken: this.get('authToken')
     }, {
-      map: this.map,
-      engine: this._engine,
-      dataviewsCollection: this._dataviewsCollection
-    });
+        map: this.map,
+        engine: this._engine,
+        dataviewsCollection: this._dataviewsCollection
+      });
 
     // Create layers
     var analysisNodes = this._createAnalysisNodes(vizjson.analyses);
@@ -275,11 +275,14 @@ var VisModel = Backbone.Model.extend({
    */
   instantiateMap: function (options) {
     options = options || {};
-    if (this._instantiateMapWasCalled) {
+    if (this._instantiateMapWasCalled || this._firstTime) {
       return;
     }
 
-    this.reload({includeFilters: false, firstTime: true});
+    // This method should be called only once.
+    this.firstTime = true;
+
+    this.reload({ includeFilters: false, firstTime: true });
   },
 
   _onMapInstantiatedForTheFirstTime: function () {
@@ -307,7 +310,7 @@ var VisModel = Backbone.Model.extend({
 
     if (this._instantiateMapWasCalled || options.firstTime) {
       this.trigger('reload');
-      this._engine.reload(sourceId, forceFetch, includeFilters);
+      this._engine.reload({ sourceId: sourceId, forceFetch: forceFetch, includeFilters: includeFilters });
     }
   },
 
