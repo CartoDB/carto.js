@@ -1014,7 +1014,7 @@ describe('vis/vis', function () {
 
       expect(this.vis.setOk).not.toHaveBeenCalled();
       expect(this.vis.setError).toHaveBeenCalled();
-      
+
       var errorArgs = this.vis.setError.calls.mostRecent().args[0];
       expect(errorArgs).toBeDefined();
       expect(_.isArray(errorArgs)).toBe(true);

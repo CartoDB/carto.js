@@ -160,9 +160,9 @@ var VisModel = Backbone.Model.extend({
       isFeatureInteractivityEnabled: this.get('interactiveFeatures'),
       renderMode: renderMode
     }, {
-        layersCollection: this._layersCollection,
-        layersFactory: this.layersFactory
-      });
+      layersCollection: this._layersCollection,
+      layersFactory: this.layersFactory
+    });
 
     this.listenTo(this.map, 'cartodbLayerMoved', this.reload);
     this.listenTo(this.layerGroupModel, 'all', function (type, error) {
@@ -180,10 +180,10 @@ var VisModel = Backbone.Model.extend({
       apiKey: this.get('apiKey'),
       authToken: this.get('authToken')
     }, {
-        map: this.map,
-        engine: this._engine,
-        dataviewsCollection: this._dataviewsCollection
-      });
+      map: this.map,
+      engine: this._engine,
+      dataviewsCollection: this._dataviewsCollection
+    });
 
     // Create layers
     var analysisNodes = this._createAnalysisNodes(vizjson.analyses);
