@@ -117,6 +117,9 @@ var VisModel = Backbone.Model.extend({
 
     this._engine = this._createEngine(windshaftSettings);
 
+    this._engine.on(Engine.Events.RELOAD_SUCCESS, this._onReloadSuccess, this);
+    this._engine.on(Engine.Events.RELOAD_ERROR, this._onReloadError, this);
+
     // Bind layerGroupModel object to engine
     this.layerGroupModel = this._engine._cartoLayerGroup;
 
@@ -195,6 +198,22 @@ var VisModel = Backbone.Model.extend({
     }.bind(this));
   },
 
+  _onReloadSuccess: function () {
+    this.trigger('reloaded');
+    var analysisNodes = AnalysisService.getUniqueAnalysisNodes(this._layersCollection, this._dataviewsCollection);
+    this._isAnyAnalysisNodeLoading(analysisNodes) ? this.trackLoadingObject(this) : this.untrackLoadingObject(this);
+    this.setOk();
+
+    if (!this._instantiateMapWasCalled) {
+      this._instantiateMapWasCalled = true;
+      this._onMapInstantiatedForTheFirstTime();
+    }
+  },
+
+  _onReloadError: function (errors) {
+    this.setError(errors);
+  },
+
   _createEngine: function (windshaftSettings) {
     var engine = new Engine({
       apiKey: windshaftSettings.apiKey,
@@ -259,26 +278,17 @@ var VisModel = Backbone.Model.extend({
     if (this._instantiateMapWasCalled) {
       return;
     }
-    this._instantiateMapWasCalled = true;
 
-    this.reload({
-      success: function () {
-        this._onMapInstantiatedForTheFirstTime();
-        options.success && options.success();
-      }.bind(this),
-      error: function () {
-        options.error && options.error();
-      },
-      includeFilters: false
-    });
+    this.reload({includeFilters: false, firstTime: true});
   },
 
   _onMapInstantiatedForTheFirstTime: function () {
     var anyDataviewFiltered = this._isAnyDataviewFiltered();
     whenAllDataviewsFetched(this._dataviewsCollection, this._onDataviewFetched.bind(this));
     this._initBindsAfterFirstMapInstantiation();
-
-    anyDataviewFiltered && this.reload({ includeFilters: anyDataviewFiltered });
+    if (anyDataviewFiltered) {
+      this.reload();
+    }
   },
 
   _isAnyDataviewFiltered: function () {
@@ -293,27 +303,10 @@ var VisModel = Backbone.Model.extend({
     options = options || {};
     var sourceId = options.sourceId;
     var forceFetch = options.forceFetch;
-    var includeFilters = _.isUndefined(options.includeFilters) ? true : !!options.includeFilters;
+    var includeFilters = options.includeFilters;
 
-    var onSuccess = function () {
-      this._engine.off(Engine.Events.RELOAD_SUCCESS, onSuccess);
-      this.trigger('reloaded');
-      var analysisNodes = AnalysisService.getUniqueAnalysisNodes(this._layersCollection, this._dataviewsCollection);
-      this._isAnyAnalysisNodeLoading(analysisNodes) ? this.trackLoadingObject(this) : this.untrackLoadingObject(this);
-      this.setOk();
-      options.success && options.success();
-    }.bind(this);
-
-    var onError = function (errors) {
-      this._engine.off(Engine.Events.RELOAD_ERROR, onError);
-      this.setError(errors);
-      options.error && options.error();
-    }.bind(this);
-
-    if (this._instantiateMapWasCalled) {
+    if (this._instantiateMapWasCalled || options.firstTime) {
       this.trigger('reload');
-      this._engine.on(Engine.Events.RELOAD_SUCCESS, onSuccess);
-      this._engine.on(Engine.Events.RELOAD_ERROR, onError);
       this._engine.reload(sourceId, forceFetch, includeFilters);
     }
   },

@@ -6,7 +6,7 @@ var DataviewModelBase = require('../../../src/dataviews/dataview-model-base');
 var AnalysisModel = require('../../../src/analysis/analysis-model');
 var AnalysisService = require('../../../src/analysis/analysis-service');
 var LayersFactory = require('../../../src/vis/layers-factory');
-
+var Engine = require('../../../src/engine');
 var fakeVizJSON = function () {
   return {
     'id': '03a89434-379e-11e6-b2e3-0e674067d321',
@@ -225,25 +225,23 @@ describe('vis/vis', function () {
 
   describe('bindings to collection of layers', function () {
     beforeEach(function () {
-      Vis.prototype.reload.and.callFake(function (options) {
-        options && options.success && options.success();
-      });
-
       this.vis.load(new VizJSON(fakeVizJSON()), {});
+      spyOn(this.vis._engine, 'reload').and.callFake(function () {
+        this.vis._engine._eventEmmitter.trigger(Engine.Events.RELOAD_SUCCESS);
+      }.bind(this));
       this.vis.instantiateMap();
 
       Vis.prototype.reload.calls.reset();
     });
 
     it('should reload the map when layers are resetted', function () {
-      this.vis.map.layers.reset([{ id: 'layer1' }]);
-
-      expect(Vis.prototype.reload).toHaveBeenCalled();
+      this.vis.map.layers.reset([{ id: 'layer1', type: 'Plain' }]);
+      expect(this.vis.reload).toHaveBeenCalled();
     });
 
     describe('on added layer', function () {
       it('should reload the map', function () {
-        this.vis.map.layers.add({ id: 'layer1' });
+        this.vis.map.layers.add({ id: 'layer1', type: 'Plain' });
         expect(Vis.prototype.reload).toHaveBeenCalledWith({
           sourceId: 'layer1'
         });
@@ -286,7 +284,7 @@ describe('vis/vis', function () {
       }, { silent: true });
       this.vis.map.layers.add({
         id: 'layer2',
-        type: 'CartoDB'
+        type: 'Plain'
       }, { silent: true });
 
       Vis.prototype.reload.calls.reset();
@@ -324,10 +322,11 @@ describe('vis/vis', function () {
           forceFetch: 'forceFetchMock'
         });
 
-        expect(this.vis._engine.reload).toHaveBeenCalledWith('sourceIdMock', 'forceFetchMock', true);
+        expect(this.vis._engine.reload).toHaveBeenCalledWith('sourceIdMock', 'forceFetchMock', undefined);
       });
 
       it('should execute the success callback if the reload succeeds', function () {
+        pending('This callback is not used anymore??');
         var successSpy = jasmine.createSpy('sucessCallback');
         // Mock the server request. // TODO: Mock $.ajax
         spyOn(this.vis._engine._windshaftClient, 'instantiateMap').and.callFake(function (request) {
@@ -335,8 +334,6 @@ describe('vis/vis', function () {
         });
 
         this.vis.reload({
-          a: 1,
-          b: 2,
           sourceId: 'sourceIdMock',
           forceFetch: 'forceFetchMock',
           success: successSpy
@@ -387,16 +384,19 @@ describe('vis/vis', function () {
     });
 
     it('should instantiate twice if filters', function () {
-      this.vis._isAnyDataviewFiltered = function () {
-        return true;
-      };
+      spyOn(this.vis._engine, 'reload').and.callFake(function () {
+        this.vis._engine._eventEmmitter.trigger(Engine.Events.RELOAD_SUCCESS);
+      }.bind(this));
+      this.vis._isAnyDataviewFiltered = jasmine.createSpy().and.returnValue(true);
 
       Vis.prototype.reload.calls.reset();
       this.vis.instantiateMap();
-      Vis.prototype.reload.calls.mostRecent().args[0].success();
 
       expect(Vis.prototype.reload).toHaveBeenCalledTimes(2);
-      expect(Vis.prototype.reload.calls.mostRecent().args[0].includeFilters).toBe(true); // include filters
+      // First time is called with no filters to get all the widget data
+      expect(Vis.prototype.reload.calls.all()[0].args[0]).toEqual({includeFilters: false, firstTime: true});
+      // Second call with filters to get the filtered data.
+      expect(Vis.prototype.reload.calls.mostRecent().args).toEqual([]);
     });
   });
 
@@ -1008,15 +1008,17 @@ describe('vis/vis', function () {
         params.error(fakeResponse);
       });
 
+      this.vis.set('apiKey', 'fake-api-key');
       this.vis.load(new VizJSON(fakeVizJSON()));
       this.vis.instantiateMap();
 
       expect(this.vis.setOk).not.toHaveBeenCalled();
+      expect(this.vis.setError).toHaveBeenCalled();
+      
       var errorArgs = this.vis.setError.calls.mostRecent().args[0];
       expect(errorArgs).toBeDefined();
       expect(_.isArray(errorArgs)).toBe(true);
       expect(errorArgs[0].message).toEqual('the error message');
-      expect(this.vis.setError).toHaveBeenCalled();
     });
   });
 
@@ -1077,8 +1079,10 @@ describe('vis/vis', function () {
 
       this.vis = new Vis();
       this.vis.load(new VizJSON(fakeVizJSON()));
+      spyOn(this.vis._engine, 'reload').and.callFake(function () {
+        this.vis._engine._eventEmmitter.trigger(Engine.Events.RELOAD_SUCCESS);
+      }.bind(this));
       this.vis.instantiateMap();
-      Vis.prototype.reload.calls.mostRecent().args[0].success();
 
       source = this.vis.analysis.findNodeById('a0');
 
