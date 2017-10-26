@@ -199,7 +199,6 @@ var VisModel = Backbone.Model.extend({
   },
 
   _onReloadSuccess: function () {
-    this.trigger('reloaded');
     var analysisNodes = AnalysisService.getUniqueAnalysisNodes(this._layersCollection, this._dataviewsCollection);
     this._isAnyAnalysisNodeLoading(analysisNodes) ? this.trackLoadingObject(this) : this.untrackLoadingObject(this);
     this.setOk();
@@ -208,6 +207,7 @@ var VisModel = Backbone.Model.extend({
       this._instantiateMapWasCalled = true;
       this._onMapInstantiatedForTheFirstTime();
     }
+    this.trigger('reloaded');
   },
 
   _onReloadError: function (errors) {
