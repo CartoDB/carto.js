@@ -221,6 +221,8 @@ Engine.prototype._onReloadSuccess = function _onReloadSuccess (serverResponse, s
 /**
  * Callback executed when the windhsaft client returns a failed response.
  * Update internal models setting errores and trigger a reload_error event.
+ * 
+ * Global errors are propagated through events.
  * @private
  */
 Engine.prototype._onReloadError = function _onReloadError (serverResponse) {

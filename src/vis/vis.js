@@ -212,6 +212,7 @@ var VisModel = Backbone.Model.extend({
 
   _onReloadError: function (errors) {
     this.setError(errors);
+    this.trigger('reload-error');
   },
 
   _createEngine: function (windshaftSettings) {
@@ -278,6 +279,9 @@ var VisModel = Backbone.Model.extend({
     if (this._instantiateMapWasCalled || this._firstTime) {
       return;
     }
+
+    this.once('reloaded', options.success);
+    this.once('reload-error', options.error);
 
     // This method should be called only once.
     this.firstTime = true;
