@@ -142,7 +142,6 @@ Engine.prototype.reload = function reload (opts) {
   var options = this._buildOptions(opts);
   try {
   // IncludeFilters must be true by default
-    // throw new Error('PETA EL SERIALIZER');
     opts.includeFilters = (_.isUndefined(opts.includeFilters) || opts.includeFilters === null) ? true : !!opts.includeFilters;
     var params = this._buildParams(opts.includeFilters);
     var payload = this._getSerializer().serialize(this._layersCollection, this._dataviewsCollection);
