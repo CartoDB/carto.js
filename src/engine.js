@@ -11,7 +11,7 @@ var Request = require('./windshaft/request');
 var Response = require('./windshaft/response');
 var WindshaftClient = require('./windshaft/client');
 var AnalysisService = require('./analysis/analysis-service');
-var parseWindshaftErrors = require('./windshaft/error-parser');
+var ErrorParser = require('./windshaft/error-parser');
 
 /**
  *
@@ -224,9 +224,14 @@ Engine.prototype._onReloadSuccess = function _onReloadSuccess (serverResponse, s
  * @private
  */
 Engine.prototype._onReloadError = function _onReloadError (serverResponse) {
-  var errors = parseWindshaftErrors(serverResponse);
+  var errors = ErrorParser.parseWindshaftErrors(serverResponse);
+  // Update models with errors
   this._modelUpdater.setErrors(errors);
-  this._eventEmmitter.trigger(Engine.Events.RELOAD_ERROR, errors);
+  // Only global erros should be propagated.
+  var globalError = ErrorParser.getGlobalErrors(errors);
+  if (globalError) {
+    this._eventEmmitter.trigger(Engine.Events.RELOAD_ERROR, globalError);
+  }
 };
 
 /**

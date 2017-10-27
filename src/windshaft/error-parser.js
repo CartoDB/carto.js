@@ -15,4 +15,13 @@ var parseWindshaftErrors = function (response) {
   return [];
 };
 
-module.exports = parseWindshaftErrors;
+function getGlobalErrors (errors) {
+  return _.find(errors, function (error) {
+    return error.isGlobalError();
+  });
+}
+
+module.exports = {
+  parseWindshaftErrors: parseWindshaftErrors,
+  getGlobalErrors: getGlobalErrors
+};
