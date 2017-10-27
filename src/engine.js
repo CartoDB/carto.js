@@ -229,11 +229,8 @@ Engine.prototype._onReloadError = function _onReloadError (serverResponse) {
   var errors = ErrorParser.parseWindshaftErrors(serverResponse);
   // Update models with errors
   this._modelUpdater.setErrors(errors);
-  // Only global erros should be propagated.
   var globalError = ErrorParser.getGlobalErrors(errors);
-  if (globalError) {
-    this._eventEmmitter.trigger(Engine.Events.RELOAD_ERROR, globalError);
-  }
+  this._eventEmmitter.trigger(Engine.Events.RELOAD_ERROR, globalError);
 };
 
 /**

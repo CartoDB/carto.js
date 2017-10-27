@@ -212,7 +212,9 @@ var VisModel = Backbone.Model.extend({
 
   _onReloadError: function (errors) {
     this.setError(errors);
-    this.trigger('reload-error');
+    if (errors) {
+      this.trigger('reload-error');
+    }
   },
 
   _createEngine: function (windshaftSettings) {
