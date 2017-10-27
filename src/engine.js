@@ -139,10 +139,10 @@ Engine.prototype.off = function off (event, callback, context) {
  */
 Engine.prototype.reload = function reload (opts) {
   opts = opts || {};
+  // IncludeFilters must be true by default
+  opts.includeFilters = (_.isUndefined(opts.includeFilters) || opts.includeFilters === null) ? true : !!opts.includeFilters;
   var options = this._buildOptions(opts);
   try {
-  // IncludeFilters must be true by default
-    opts.includeFilters = (_.isUndefined(opts.includeFilters) || opts.includeFilters === null) ? true : !!opts.includeFilters;
     var params = this._buildParams(opts.includeFilters);
     var payload = this._getSerializer().serialize(this._layersCollection, this._dataviewsCollection);
     // TODO: update options, use promises or explicit callbacks function (error, params).
