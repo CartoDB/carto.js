@@ -1,4 +1,4 @@
-var parseWindshaftErrors = require('../../../src/windshaft/error-parser');
+var ErrorParser = require('../../../src/windshaft/error-parser');
 
 describe('error-parser', function () {
   it('should return errors with context if available', function () {
@@ -13,7 +13,7 @@ describe('error-parser', function () {
       errors: ['All your base are belong to us']
     };
 
-    var parsedErrors = parseWindshaftErrors(response);
+    var parsedErrors = ErrorParser.parseWindshaftErrors(response);
 
     expect(parsedErrors.length).toBe(1);
     expect(parsedErrors[0].message).toEqual('Your princess is in another castle');
@@ -28,7 +28,7 @@ describe('error-parser', function () {
       ]
     };
 
-    var parsedErrors = parseWindshaftErrors(response);
+    var parsedErrors = ErrorParser.parseWindshaftErrors(response);
 
     expect(parsedErrors.length).toBe(1);
     expect(parsedErrors[0].message).toEqual('You must defeat Sheng Long to stand a chance.');

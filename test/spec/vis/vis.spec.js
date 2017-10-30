@@ -322,7 +322,7 @@ describe('vis/vis', function () {
           forceFetch: 'forceFetchMock'
         });
 
-        expect(this.vis._engine.reload).toHaveBeenCalledWith({sourceId: 'sourceIdMock', forceFetch: 'forceFetchMock', includeFilters: undefined});
+        expect(this.vis._engine.reload).toHaveBeenCalledWith({ sourceId: 'sourceIdMock', forceFetch: 'forceFetchMock', includeFilters: undefined });
       });
 
       it('should execute the success callback if the reload succeeds', function () {
@@ -394,7 +394,7 @@ describe('vis/vis', function () {
 
       expect(Vis.prototype.reload).toHaveBeenCalledTimes(2);
       // First time is called with no filters to get all the widget data
-      expect(Vis.prototype.reload.calls.all()[0].args[0]).toEqual({includeFilters: false, firstTime: true});
+      expect(Vis.prototype.reload.calls.all()[0].args[0]).toEqual({ includeFilters: false, firstTime: true });
       // Second call with filters to get the filtered data.
       expect(Vis.prototype.reload.calls.mostRecent().args).toEqual([]);
     });
@@ -1017,8 +1017,7 @@ describe('vis/vis', function () {
 
       var errorArgs = this.vis.setError.calls.mostRecent().args[0];
       expect(errorArgs).toBeDefined();
-      expect(_.isArray(errorArgs)).toBe(true);
-      expect(errorArgs[0].message).toEqual('the error message');
+      expect(errorArgs.message).toEqual('the error message');
     });
   });
 
