@@ -6,7 +6,11 @@ var CARTODB_LAYER_TYPE = 'CartoDB';
 var TORQUE_LAYER_TYPE = 'torque';
 
 var isLayerOfType = function (layerModel, layerType) {
-  return layerModel.get('type').toLowerCase() === layerType.toLowerCase();
+  var type = layerModel.get('type');
+  if (!type) {
+    throw new TypeError('Found a layer without type');
+  }
+  return type.toLowerCase() === layerType.toLowerCase();
 };
 
 module.exports = {

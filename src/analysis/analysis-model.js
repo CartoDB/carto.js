@@ -89,6 +89,7 @@ var AnalysisModel = Model.extend({
   },
 
   _reload: function () {
+    // TODO: (iago) This is being ignored!!
     this._engine.reload({
       error: this._onMapReloadError.bind(this)
     });

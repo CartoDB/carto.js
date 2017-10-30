@@ -120,7 +120,7 @@ describe('create-vis:', function () {
   });
 
   describe('Options', function () {
-    describe('skipMapInstantiation', function () {
+    xdescribe('skipMapInstantiation', function () {
       it('should instantiate map when skipMapInstantiation option is falsy', function (done) {
         var visJson = scenarios.load('basic');
         var visModel = createVis(this.containerId, visJson);
