@@ -40,7 +40,7 @@ module.exports = DataviewModelBase.extend({
       }
 
       // Start - End
-      var limits = this._totals.getCurrentStartEnd();
+      var limits = this._totals.getStartEnd();
       if (limits !== null) {
         if (_.isNumber(limits.start)) {
           params.push('start=' + limits.start);
@@ -82,7 +82,7 @@ module.exports = DataviewModelBase.extend({
     this._updateURLBinding();
 
     // When original data gets fetched
-    this._totals.bind('change:data', this._onDataChanged, this);
+    this._totals.bind('change:data', this._onTotalsDataChanged, this);
     this._totals.bind('error', this.setUnavailable, this);
     this._totals.once('change:data', this._updateBindings, this);
 
@@ -204,13 +204,17 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onColumnChanged: function () {
+    this.set('aggregation', undefined, { silent: true });
     this._totals.set({
       column_type: this.get('column_type'),
       column: this.get('column')
     });
-    this.set('aggregation', undefined, { silent: true });
 
-    this._reloadAndForceFetch();
+    this._reloadAndForceFetch({
+      reason: 'columnChanged',
+      origin: 'dataview',
+      originId: this.id
+    });
   },
 
   _calculateTotalAmount: function (buckets) {
@@ -326,17 +330,30 @@ module.exports = DataviewModelBase.extend({
     DataviewModelBase.prototype._onChangeBinds.call(this);
   },
 
-  _onUrlChanged: function () {
-    this._totals.set({
-      offset: this.get('offset'),
-      bins: this.get('bins')
-    }, { silent: true });
+  _onUrlChanged: function (model, newUrl, options) {
+    var shoulFetchTotalsFirst = false;
+    if (this.previous('url') === '') {
+      this._totals.set({
+        offset: this.get('offset'),
+        bins: this.get('bins')
+      }, { silent: true });
 
-    this._totals.setUrl(this.get('url'));
+      shoulFetchTotalsFirst = true;
+    } else if (this._changeComesFromMe(options.origin, options.originId) && options.reason === 'columnChanged') {
+      shoulFetchTotalsFirst = true;
+    }
+
+    shoulFetchTotalsFirst
+      ? this._totals.setUrl(newUrl)
+      : this._refresh();
   },
 
-  _onDataChanged: function (model) {
-    var range = model && _.isFunction(model.getCurrentStartEnd) ? model.getCurrentStartEnd() : null;
+  _changeComesFromMe: function (origin, originId) {
+    return origin === 'dataview' && originId === this.id;
+  },
+
+  _onTotalsDataChanged: function (model) {
+    var range = model && _.isFunction(model.getStartEnd) ? model.getStartEnd() : null;
     if (range !== null) {
       this.set({
         start: range.start,
@@ -361,7 +378,7 @@ module.exports = DataviewModelBase.extend({
 
     resetFilter
       ? this._resetFilterAndFetch()
-      : this.fetch();
+      : this._refresh();
   },
 
   _onFieldsChanged: function () {
@@ -388,9 +405,13 @@ module.exports = DataviewModelBase.extend({
     }
   },
 
+  _refresh: function () {
+    this.fetch();
+  },
+
   _resetFilterAndFetch: function () {
     this._resetFilter();
-    this.fetch();
+    this._refresh();
   },
 
   _resetFilter: function () {

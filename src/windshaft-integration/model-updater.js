@@ -24,10 +24,10 @@ var ModelUpdater = function (deps) {
   this._dataviewsCollection = deps.dataviewsCollection;
 };
 
-ModelUpdater.prototype.updateModels = function (responseWrapper, sourceId, forceFetch) {
+ModelUpdater.prototype.updateModels = function (responseWrapper, sourceId, forceFetch, reason, origin, originId) {
   this._updateLayerModels(responseWrapper);
   this._updateLayerGroupModel(responseWrapper);
-  this._updateDataviewModels(responseWrapper, sourceId, forceFetch);
+  this._updateDataviewModels(responseWrapper, sourceId, forceFetch, reason, origin, originId);
   this._updateAnalysisModels(responseWrapper);
 };
 
@@ -170,7 +170,7 @@ ModelUpdater.prototype._updateLegendModel = function (legendModel, layerMetadata
   }
 };
 
-ModelUpdater.prototype._updateDataviewModels = function (responseWrapper, sourceId, forceFetch) {
+ModelUpdater.prototype._updateDataviewModels = function (responseWrapper, sourceId, forceFetch, reason, origin, originId) {
   this._dataviewsCollection.each(function (dataviewModel) {
     var dataviewMetadata = responseWrapper.getDataviewMetadata(dataviewModel.get('id'));
     if (dataviewMetadata) {
@@ -178,7 +178,10 @@ ModelUpdater.prototype._updateDataviewModels = function (responseWrapper, source
         url: dataviewMetadata.url[this._getProtocol()]
       }, {
         sourceId: sourceId,
-        forceFetch: forceFetch
+        forceFetch: forceFetch,
+        reason: reason,
+        origin: origin,
+        originId: originId
       });
     }
   }, this);

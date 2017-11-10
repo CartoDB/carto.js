@@ -35,6 +35,10 @@ function trimBuckets (buckets, filledBuckets, totalBuckets) {
     : buckets;
 }
 
+function round (value, decimals) {
+  return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+}
+
 helper.isShorterThan = function (limit, aggregation) {
   var keys = _.keys(MOMENT_AGGREGATIONS);
   var limitIndex = _.indexOf(keys, limit);
@@ -70,10 +74,15 @@ helper.fillTimestampBuckets = function (buckets, start, aggregation, numberOfBin
 
 helper.fillNumericBuckets = function (buckets, start, width, numberOfBins) {
   for (var i = 0; i < numberOfBins; i++) {
+    var end = start + ((i + 1) * width);
+    if (i === numberOfBins - 1) {
+      end = round(end, 8);
+    }
+
     buckets[i] = _.extend({
       bin: i,
       start: start + (i * width),
-      end: start + ((i + 1) * width),
+      end: end,
       freq: 0
     }, buckets[i]);
   }
@@ -83,25 +92,6 @@ helper.hasChangedSomeOf = function (list, changed) {
   return _.some(_.keys(changed), function (key) {
     return _.contains(list, key);
   });
-};
-
-helper.calculateLimits = function (bins) {
-  var start = Infinity;
-  var end = -Infinity;
-
-  _.each(bins, function (bin) {
-    if (_.isFinite(bin.min)) {
-      start = Math.min(bin.min, start);
-    }
-    if (_.isFinite(bin.max)) {
-      end = Math.max(bin.max, end);
-    }
-  });
-
-  return {
-    start: start !== Infinity ? start : null,
-    end: end !== -Infinity ? end : null
-  };
 };
 
 helper.calculateDateRanges = function (min, max) {

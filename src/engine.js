@@ -212,7 +212,7 @@ Engine.prototype.removeDataview = function (dataview) {
  */
 Engine.prototype._onReloadSuccess = function (serverResponse, options) {
   var responseWrapper = new Response(this._windshaftSettings, serverResponse);
-  this._modelUpdater.updateModels(responseWrapper, options.sourceId, options.forceFetch);
+  this._modelUpdater.updateModels(responseWrapper, options.sourceId, options.forceFetch, options.reason, options.origin, options.originId);
   this._restartAnalysisPolling();
   this._eventEmmitter.trigger(Engine.Events.RELOAD_SUCCESS);
   options.success && options.success();
@@ -245,7 +245,7 @@ Engine.prototype._buildOptions = function (options) {
     error: function (serverResponse) {
       this._onReloadError(serverResponse, options);
     }.bind(this)
-  }, _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'));
+  }, _.pick(options, 'sourceId', 'forceFetch', 'includeFilters', 'reason', 'origin', 'originId'));
 };
 
 /**
