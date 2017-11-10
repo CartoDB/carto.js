@@ -187,11 +187,15 @@ module.exports = Model.extend({
     });
   },
 
-  _reloadAndForceFetch: function () {
-    this._reload({
+  _reloadAndForceFetch: function (options) {
+    var opts = {
       sourceId: this.getSourceId(),
-      forceFetch: true
-    });
+      forceFetch: true,
+      reason: options.reason,
+      origin: options.origin,
+      originId: options.originId
+    };
+    this._reload(opts);
   },
 
   _reload: function (opts) {
