@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Response</title>
+    <title>JSDoc: Class: Dataset</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Response</h1>
+    <h1 class="page-title">Class: Dataset</h1>
 
     
 
@@ -28,7 +28,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Response<span class="signature">(windshaftSettings, serverResponse)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.source.html">.source</a>.</span>Dataset<span class="signature">(dataset)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +42,7 @@
     
 
     
-    <h4 class="name" id="Response"><span class="type-signature"></span>new Response<span class="signature">(windshaftSettings, serverResponse)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Dataset"><span class="type-signature"></span>new Dataset<span class="signature">(dataset)</span><span class="type-signature"></span></h4>
     
 
     
@@ -49,7 +50,7 @@
 
 
 <div class="description">
-    <p>Wrapper over a server response to a map instantiation giving some utility methods.</p>
+    <p>A Dataset that can be used as the data source for layers and dataviews.</p>
 </div>
 
 
@@ -85,30 +86,7 @@
 
         <tr>
             
-                <td class="name"><code>windshaftSettings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Object containing the request options.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>serverResponse</code></td>
+                <td class="name"><code>dataset</code></td>
             
 
             <td class="type">
@@ -124,319 +102,7 @@
 
             
 
-            <td class="description last"><p>The json string representing a windshaft response to a map instantiation.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="_getLayers"><span class="type-signature"></span>_getLayers<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the array with all the layers in the response</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getBaseURL"><span class="type-signature"></span>getBaseURL<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Build the base url to build windshaft map requests.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getLayerIndexesByType"><span class="type-signature"></span>getLayerIndexesByType<span class="signature">(Type)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the indexes of the layers for a certain type.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>Type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The type of the layers: mapnik, torque, plain, tiled.</p></td>
+            <td class="description last"><p>The name of an existing dataset</p></td>
         </tr>
 
     
@@ -501,10 +167,124 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// layers = [ carto, carto, tiled, plain, tiled, torque];
-getLayerIndexesByType('mapnik') // [0, 1]
-getLayerIndexesByType('tiled') // [2, 4]
-getLayerIndexesByType('torque') // [5]</code></pre>
+    <pre class="prettyprint"><code>new carto.source.Dataset('european_cities');</code></pre>
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="carto.source.Base.html">carto.source.Base</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="$getEngine"><span class="type-signature"></span>$getEngine<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the engine form the source internal model</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="carto.source.Base.html#$getEngine">carto.source.Base#$getEngine</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -514,7 +294,7 @@ getLayerIndexesByType('torque') // [5]</code></pre>
     
 
     
-    <h4 class="name" id="getStaticBaseURL"><span class="type-signature"></span>getStaticBaseURL<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="$getInternalModel"><span class="type-signature"></span>$getInternalModel<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -522,7 +302,7 @@ getLayerIndexesByType('torque') // [5]</code></pre>
 
 
 <div class="description">
-    <p>Build the base url for static maps.</p>
+    <p>Return the real carto.js model used by the source.</p>
 </div>
 
 
@@ -531,6 +311,142 @@ getLayerIndexesByType('torque') // [5]</code></pre>
 
 
 
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="carto.source.Base.html#$getInternalModel">carto.source.Base#$getInternalModel</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createInternalModel"><span class="type-signature"></span>_createInternalModel<span class="signature">(engine)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new internal model with the given engine
+and the attributes initialized in the constructor.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>engine</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Engine.html">Engine</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The engine object to be assigned to the internalModel.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -584,6 +500,114 @@ getLayerIndexesByType('torque') // [5]</code></pre>
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getId"><span class="type-signature"></span>getId<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return a unique autogenerated id.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="carto.source.Base.html#getId">carto.source.Base#getId</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Unique autogenerated id</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

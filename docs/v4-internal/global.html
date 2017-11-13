@@ -104,7 +104,7 @@
 
 
 <div class="description">
-    global configuration
+    <p>global configuration</p>
 </div>
 
 
@@ -161,12 +161,11 @@
 
 
 <div class="description">
-    FullScreen widget:
-
- var widget = new FullScreen({
-   doc: ".container", // optional; if not specified, we do the fullscreen of the whole window
-   template: this.getTemplate("table/views/fullscreen")
- });
+    <p>FullScreen widget:</p>
+<p> var widget = new FullScreen({
+   doc: &quot;.container&quot;, // optional; if not specified, we do the fullscreen of the whole window
+   template: this.getTemplate(&quot;table/views/fullscreen&quot;)
+ });</p>
 </div>
 
 
@@ -223,14 +222,13 @@
 
 
 <div class="description">
-    Usage:
+    <p>Usage:
 var infowindow = new Infowindow({
   model: infowindowModel,
   mapView: mapView
-});
-
-// Show the infowindow:
-infowindow.showInfowindow();
+});</p>
+<p>// Show the infowindow:
+infowindow.showInfowindow();</p>
 </div>
 
 
@@ -287,11 +285,10 @@ infowindow.showInfowindow();
 
 
 <div class="description">
-    geocoders for different services
-
-should implement a function called geocode the gets
+    <p>geocoders for different services</p>
+<p>should implement a function called geocode the gets
 the address and call callback with a list of placemarks with lat, lon
-(at least)
+(at least)</p>
 </div>
 
 
@@ -348,8 +345,8 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    Base Model for all CartoDB model.
-DO NOT USE Backbone.Model directly
+    <p>Base Model for all CartoDB model.
+DO NOT USE Backbone.Model directly</p>
 </div>
 
 
@@ -406,11 +403,10 @@ DO NOT USE Backbone.Model directly
 
 
 <div class="description">
-    geocoders for different services
-
-should implement a function called geocode the gets
+    <p>geocoders for different services</p>
+<p>should implement a function called geocode the gets
 the address and call callback with a list of placemarks with lat, lon
-(at least)
+(at least)</p>
 </div>
 
 
@@ -467,7 +463,7 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    this layer allows to put a plain color or image as layer (instead of tiles)
+    <p>this layer allows to put a plain color or image as layer (instead of tiles)</p>
 </div>
 
 
@@ -524,8 +520,8 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    UI component to place the map in the
- location found by the geocoder.
+    <p>UI component to place the map in the
+ location found by the geocoder.</p>
 </div>
 
 
@@ -582,20 +578,18 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    template system
+    <p>template system
 usage:
    var tmpl = new Template({
-     template: "hi, my name is {{ name }}",
+     template: &quot;hi, my name is {{ name }}&quot;,
      type: 'mustache' // undescore by default
    });
    console.log(tmpl.render({name: 'rambo'})));
-   // prints "hi, my name is rambo"
-
-   you could pass the compiled tempalte directly:
-
-   var tmpl = new Template({
+   // prints &quot;hi, my name is rambo&quot;</p>
+<p>   you could pass the compiled tempalte directly:</p>
+<p>   var tmpl = new Template({
      compiled: function() { return 'my compiled template'; }
-   });
+   });</p>
 </div>
 
 
@@ -652,12 +646,10 @@ usage:
 
 
 <div class="description">
-    Show or hide tiles loader
-
-Usage:
-
-var tiles_loader = new TilesLoader();
-mapWrapper.$el.append(tiles_loader.render().$el);
+    <p>Show or hide tiles loader</p>
+<p>Usage:</p>
+<p>var tiles_loader = new TilesLoader();
+mapWrapper.$el.append(tiles_loader.render().$el);</p>
 </div>
 
 
@@ -714,7 +706,7 @@ mapWrapper.$el.append(tiles_loader.render().$el);
 
 
 <div class="description">
-    Model for a Torque Layer
+    <p>Model for a Torque Layer</p>
 </div>
 
 
@@ -771,10 +763,9 @@ mapWrapper.$el.append(tiles_loader.render().$el);
 
 
 <div class="description">
-    Implementation of all common logic of a torque-layer view.
-All the methods and attributes here need to be consistent across all implementing models.
-
-Methods are prefixed with _ to indicate that they are not intended to be used outside the implementing models.
+    <p>Implementation of all common logic of a torque-layer view.
+All the methods and attributes here need to be consistent across all implementing models.</p>
+<p>Methods are prefixed with _ to indicate that they are not intended to be used outside the implementing models.</p>
 </div>
 
 
@@ -831,8 +822,8 @@ Methods are prefixed with _ to indicate that they are not intended to be used ou
 
 
 <div class="description">
-    Base View for all CartoDB views.
-DO NOT USE Backbone.View directly
+    <p>Base View for all CartoDB views.
+DO NOT USE Backbone.View directly</p>
 </div>
 
 
@@ -889,7 +880,7 @@ DO NOT USE Backbone.View directly
 
 
 <div class="description">
-    Visualization creation
+    <p>Visualization creation</p>
 </div>
 
 
@@ -946,7 +937,7 @@ DO NOT USE Backbone.View directly
 
 
 <div class="description">
-    WMS layer support
+    <p>WMS layer support</p>
 </div>
 
 
@@ -1003,11 +994,10 @@ DO NOT USE Backbone.View directly
 
 
 <div class="description">
-    geocoders for different services
-
-should implement a function called geocode the gets
+    <p>geocoders for different services</p>
+<p>should implement a function called geocode the gets
 the address and call callback with a list of placemarks with lat, lon
-(at least)
+(at least)</p>
 </div>
 
 
@@ -1076,7 +1066,7 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    Animate infowindow to show up
+    <p>Animate infowindow to show up</p>
 </div>
 
 
@@ -1157,7 +1147,7 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    Animate infowindow to disappear
+    <p>Animate infowindow to disappear</p>
 </div>
 
 
@@ -1238,8 +1228,8 @@ the address and call callback with a list of placemarks with lat, lon
 
 
 <div class="description">
-    each time a layer is added or removed
-the index should be recalculated
+    <p>each time a layer is added or removed
+the index should be recalculated</p>
 </div>
 
 
@@ -1320,7 +1310,89 @@ the index should be recalculated
 
 
 <div class="description">
-    bind model properties
+    <p>bind model properties</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_checkLayer"><span class="type-signature"></span>_checkLayer<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Utility function to reduce duplicated code.
+Check if an object inherits from LayerBase.</p>
 </div>
 
 
@@ -1401,7 +1473,7 @@ the index should be recalculated
 
 
 <div class="description">
-    Close infowindow
+    <p>Close infowindow</p>
 </div>
 
 
@@ -1482,7 +1554,7 @@ the index should be recalculated
 
 
 <div class="description">
-    Compile template of the infowindow
+    <p>Compile template of the infowindow</p>
 </div>
 
 
@@ -1563,7 +1635,7 @@ the index should be recalculated
 
 
 <div class="description">
-    Does header contain cover?
+    <p>Does header contain cover?</p>
 </div>
 
 
@@ -1644,9 +1716,90 @@ the index should be recalculated
 
 
 <div class="description">
-    "Load" existing analyses from the viz.json. This will generate
+    <p>&quot;Load&quot; existing analyses from the viz.json. This will generate
 the analyses graphs and index analysis nodes in the
-collection of analysis
+collection of analysis</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_createResult"><span class="type-signature"></span>_createResult<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Transform the histogram raw data into <a href="global.html#BinItem">BinItem</a></p>
 </div>
 
 
@@ -1727,7 +1880,7 @@ collection of analysis
 
 
 <div class="description">
-    Return an analysis list without duplicated or nested analyses
+    <p>Return an analysis list without duplicated or nested analyses</p>
 </div>
 
 
@@ -1808,8 +1961,8 @@ collection of analysis
 
 
 <div class="description">
-    Subclasses might override this method to define extra params that will be appended
-to the dataview's URL.
+    <p>Subclasses might override this method to define extra params that will be appended
+to the dataview's URL.</p>
 </div>
 
 
@@ -1875,7 +2028,7 @@ to the dataview's URL.
 
         
 <div class="param-desc">
-    An array of strings in the form of "key=value".
+    <p>An array of strings in the form of &quot;key=value&quot;.</p>
 </div>
 
 
@@ -1904,6 +2057,87 @@ to the dataview's URL.
     
 
     
+    <h4 class="name" id="_getInteractivityFields"><span class="type-signature"></span>_getInteractivityFields<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Transform the columns array into the format expected by the CartoDBLayer.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="_isAnalysisLinkedToLayer"><span class="type-signature"></span>_isAnalysisLinkedToLayer<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
@@ -1912,7 +2146,7 @@ to the dataview's URL.
 
 
 <div class="description">
-    Check if an analysis is the source of any layer.
+    <p>Check if an analysis is the source of any layer.</p>
 </div>
 
 
@@ -1993,8 +2227,8 @@ to the dataview's URL.
 
 
 <div class="description">
-    Check if an analysis is referenced by other anylisis in the given
-analysis collection.
+    <p>Check if an analysis is referenced by other anylisis in the given
+analysis collection.</p>
 </div>
 
 
@@ -2075,7 +2309,7 @@ analysis collection.
 
 
 <div class="description">
-    Return true if the provided URL is valid
+    <p>Return true if the provided URL is valid</p>
 </div>
 
 
@@ -2156,7 +2390,7 @@ analysis collection.
 
 
 <div class="description">
-    Creates an instance of a googleMaps Point
+    <p>Creates an instance of a googleMaps Point</p>
 </div>
 
 
@@ -2314,7 +2548,7 @@ analysis collection.
 
 
 <div class="description">
-    set model property but unbind changes first in order to not create an infinite loop
+    <p>set model property but unbind changes first in order to not create an infinite loop</p>
 </div>
 
 
@@ -2395,7 +2629,7 @@ analysis collection.
 
 
 <div class="description">
-    unbind model properties
+    <p>unbind model properties</p>
 </div>
 
 
@@ -2476,7 +2710,7 @@ analysis collection.
 
 
 <div class="description">
-    Update infowindow
+    <p>Update infowindow</p>
 </div>
 
 
@@ -2557,7 +2791,7 @@ analysis collection.
 
 
 <div class="description">
-    Update the position (private)
+    <p>Update the position (private)</p>
 </div>
 
 
@@ -2638,7 +2872,7 @@ analysis collection.
 
 
 <div class="description">
-    Adjust pan to show correctly the infowindow
+    <p>Adjust pan to show correctly the infowindow</p>
 </div>
 
 
@@ -2719,9 +2953,9 @@ analysis collection.
 
 
 <div class="description">
-    this method clean removes the view
+    <p>this method clean removes the view
 and clean and events associated. Call it when
-the view is not going to be used anymore
+the view is not going to be used anymore</p>
 </div>
 
 
@@ -2802,7 +3036,7 @@ the view is not going to be used anymore
 
 
 <div class="description">
-    Remove all the tipsy tooltips from the document
+    <p>Remove all the tipsy tooltips from the document</p>
 </div>
 
 
@@ -2883,7 +3117,7 @@ the view is not going to be used anymore
 
 
 <div class="description">
-    Compare two analysisModels.
+    <p>Compare two analysisModels.</p>
 </div>
 
 
@@ -2964,13 +3198,13 @@ the view is not going to be used anymore
 
 
 <div class="description">
-    when a view with events is inherit and you want to add more events
+    <p>when a view with events is inherit and you want to add more events
 this helper can be used:
 var MyView = new core.View({
  events: View.extendEvents({
      'click': 'fn'
  })
-});
+});</p>
 </div>
 
 
@@ -3051,8 +3285,8 @@ var MyView = new core.View({
 
 
 <div class="description">
-    We are redefining fetch to be able to trigger an event when the ajax call ends, no matter if there's
-a change in the data or not. Why don't backbone does this by default? ahh, my friend, who knows.
+    <p>We are redefining fetch to be able to trigger an event when the ajax call ends, no matter if there's
+a change in the data or not. Why don't backbone does this by default? ahh, my friend, who knows.</p>
 </div>
 
 
@@ -3182,7 +3416,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    Return the engine for this visModel
+    <p>Return the engine for this visModel</p>
 </div>
 
 
@@ -3311,7 +3545,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
             
 
-            <td class="description last">Layer index (including base layer if present)</td>
+            <td class="description last"><p>Layer index (including base layer if present)</p></td>
         </tr>
 
     
@@ -3469,7 +3703,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
         
 <div class="param-desc">
-    Array of
+    <p>Array of</p>
 </div>
 
 
@@ -3506,7 +3740,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    gets the url of the template of the tile layer
+    <p>gets the url of the template of the tile layer</p>
 </div>
 
 
@@ -3587,7 +3821,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    Return an Array with the complete node list for this analysis.
+    <p>Return an Array with the complete node list for this analysis.</p>
 </div>
 
 
@@ -3668,7 +3902,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    Return a Collection with the complete node list for this analysis.
+    <p>Return a Collection with the complete node list for this analysis.</p>
 </div>
 
 
@@ -3749,7 +3983,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    Only torque and cartodb layers have a source.
+    <p>Only torque and cartodb layers have a source.</p>
 </div>
 
 
@@ -3830,7 +4064,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    utility methods
+    <p>utility methods</p>
 </div>
 
 
@@ -3911,7 +4145,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    return getViewbounds if it is set
+    <p>return getViewbounds if it is set</p>
 </div>
 
 
@@ -3992,7 +4226,7 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    base layer for all google maps layers
+    <p>base layer for all google maps layers</p>
 </div>
 
 
@@ -4073,8 +4307,8 @@ a change in the data or not. Why don't backbone does this by default? ahh, my fr
 
 
 <div class="description">
-    Check if an analysis node is the layer's source.
-Only torque and cartodb layers have a source otherwise return false.
+    <p>Check if an analysis node is the layer's source.
+Only torque and cartodb layers have a source otherwise return false.</p>
 </div>
 
 
@@ -4155,8 +4389,8 @@ Only torque and cartodb layers have a source otherwise return false.
 
 
 <div class="description">
-    Check if an analysis node is the layer's source.
-Only torque and cartodb layers have a source otherwise return false.
+    <p>Check if an analysis node is the layer's source.
+Only torque and cartodb layers have a source otherwise return false.</p>
 </div>
 
 
@@ -4237,8 +4471,8 @@ Only torque and cartodb layers have a source otherwise return false.
 
 
 <div class="description">
-    Check if an analysis node is the layer's source.
-Only torque and cartodb layers have a source otherwise return false.
+    <p>Check if an analysis node is the layer's source.
+Only torque and cartodb layers have a source otherwise return false.</p>
 </div>
 
 
@@ -4319,7 +4553,7 @@ Only torque and cartodb layers have a source otherwise return false.
 
 
 <div class="description">
-    Set infowindow to hidden
+    <p>Set infowindow to hidden</p>
 </div>
 
 
@@ -4400,8 +4634,8 @@ Only torque and cartodb layers have a source otherwise return false.
 
 
 <div class="description">
-    Manages the infowindows for a map. It listens to events triggered by a
-CartoDBLayerGroupView and updates models accordingly
+    <p>Manages the infowindows for a map. It listens to events triggered by a
+CartoDBLayerGroupView and updates models accordingly</p>
 </div>
 
 
@@ -4482,8 +4716,8 @@ CartoDBLayerGroupView and updates models accordingly
 
 
 <div class="description">
-    Force a map instantiation.
-Only expected to be called once if {skipMapInstantiation} flag is set to true when vis is created.
+    <p>Force a map instantiation.
+Only expected to be called once if {skipMapInstantiation} flag is set to true when vis is created.</p>
 </div>
 
 
@@ -4564,7 +4798,7 @@ Only expected to be called once if {skipMapInstantiation} flag is set to true wh
 
 
 <div class="description">
-    Get infowindow visibility
+    <p>Get infowindow visibility</p>
 </div>
 
 
@@ -4645,7 +4879,7 @@ Only expected to be called once if {skipMapInstantiation} flag is set to true wh
 
 
 <div class="description">
-    Captures an event and prevents the default behaviour and stops it from bubbling
+    <p>Captures an event and prevents the default behaviour and stops it from bubbling</p>
 </div>
 
 
@@ -4775,8 +5009,8 @@ Only expected to be called once if {skipMapInstantiation} flag is set to true wh
 
 
 <div class="description">
-    Changes the mouse pointer based on feature events and status
-of map's interactivity.
+    <p>Changes the mouse pointer based on feature events and status
+of map's interactivity.</p>
 </div>
 
 
@@ -4828,7 +5062,7 @@ of map's interactivity.
 
             
 
-            <td class="description last">Dependencies</td>
+            <td class="description last"><p>Dependencies</p></td>
         </tr>
 
     
@@ -4906,8 +5140,8 @@ of map's interactivity.
 
 
 <div class="description">
-    Listens to feature events and "forwards" them to the map model
-when map's feature interactivity is enabled.
+    <p>Listens to feature events and &quot;forwards&quot; them to the map model
+when map's feature interactivity is enabled.</p>
 </div>
 
 
@@ -4959,7 +5193,7 @@ when map's feature interactivity is enabled.
 
             
 
-            <td class="description last">Dependencies</td>
+            <td class="description last"><p>Dependencies</p></td>
         </tr>
 
     
@@ -5037,7 +5271,7 @@ when map's feature interactivity is enabled.
 
 
 <div class="description">
-    Create a map view.
+    <p>Create a map view.</p>
 </div>
 
 
@@ -5118,8 +5352,290 @@ when map's feature interactivity is enabled.
 
 
 <div class="description">
-    This class exposes a method that knows how to set/update the metadata on internal
-CartoDB.js models that are linked to a "resource" in the Maps API.
+    <p>This class exposes a method that knows how to set/update the metadata on internal
+CartoDB.js models that are linked to a &quot;resource&quot; in the Maps API.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseHistogramData"><span class="type-signature"></span>parseHistogramData<span class="signature">(data, nulls, totalAmount)</span><span class="type-signature"> &rarr; {<a href="global.html#HistogramData">HistogramData</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Transform the data obtained from an internal histogram dataview into a 
+public object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The raw histogram data</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nulls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Number of data with a null</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>totalAmount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Total number of data in the histogram.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>The parsed and formatted data for the given parameters.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#HistogramData">HistogramData</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>renders the template with specified vars</p>
 </div>
 
 
@@ -5200,88 +5716,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    renders the template with specified vars
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Render infowindow content
+    <p>Render infowindow content</p>
 </div>
 
 
@@ -5362,7 +5797,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    Simple value object that holds everything need to instantiate a map using the Maps API
+    <p>Simple value object that holds everything need to instantiate a map using the Maps API</p>
 </div>
 
 
@@ -5443,7 +5878,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    Keeps track of subsequent equal requests to the Maps API
+    <p>Keeps track of subsequent equal requests to the Maps API</p>
 </div>
 
 
@@ -5495,7 +5930,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">Maximum number of subsequent requests allowed</td>
+            <td class="description last"><p>Maximum number of subsequent requests allowed</p></td>
         </tr>
 
     
@@ -5573,7 +6008,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    Listen for an event on another object and triggers on itself, with the same name or a new one
+    <p>Listen for an event on another object and triggers on itself, with the same name or a new one</p>
 </div>
 
 
@@ -5625,7 +6060,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">event who triggers the action</td>
+            <td class="description last"><p>event who triggers the action</p></td>
         </tr>
 
     
@@ -5648,7 +6083,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">object where the event happens</td>
+            <td class="description last"><p>object where the event happens</p></td>
         </tr>
 
     
@@ -5671,7 +6106,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">[optional] name of the retriggered event;</td>
+            <td class="description last"><p>[optional] name of the retriggered event;</p></td>
         </tr>
 
     
@@ -5749,7 +6184,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    Listen for an event on another object and triggers on itself, with the same name or a new one
+    <p>Listen for an event on another object and triggers on itself, with the same name or a new one</p>
 </div>
 
 
@@ -5801,7 +6236,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">event who triggers the action</td>
+            <td class="description last"><p>event who triggers the action</p></td>
         </tr>
 
     
@@ -5824,7 +6259,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">object where the event happens</td>
+            <td class="description last"><p>object where the event happens</p></td>
         </tr>
 
     
@@ -5847,7 +6282,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
             
 
-            <td class="description last">[optional] name of the retriggered event;</td>
+            <td class="description last"><p>[optional] name of the retriggered event;</p></td>
         </tr>
 
     
@@ -5932,7 +6367,7 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    search for views in a view and check if they are added as subviews
+    <p>search for views in a view and check if they are added as subviews</p>
 </div>
 
 
@@ -6013,10 +6448,10 @@ CartoDB.js models that are linked to a "resource" in the Maps API.
 
 
 <div class="description">
-    We need to override backbone save method to be able to introduce new kind of triggers that
+    <p>We need to override backbone save method to be able to introduce new kind of triggers that
 for some reason are not present in the original library. Because you know, it would be nice
-to be able to differenciate "a model has been updated" of "a model is being saved".
-TODO: remove jquery from here
+to be able to differenciate &quot;a model has been updated&quot; of &quot;a model is being saved&quot;.
+TODO: remove jquery from here</p>
 </div>
 
 
@@ -6187,8 +6622,7 @@ TODO: remove jquery from here
 
 
 <div class="description">
-    Return a payload with the serialization of all the analyses in the
-layersCollection and the dataviewsCollection.
+    <p>Transform a map visualization into a json payload compatible with the windshaft API.</p>
 </div>
 
 
@@ -6269,7 +6703,8 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Transform a map visualization into a json payload compatible with the windshaft API.
+    <p>Return a payload with the serialization of all the analyses in the
+layersCollection and the dataviewsCollection.</p>
 </div>
 
 
@@ -6350,7 +6785,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Generate a json payload from a layer collection of a map
+    <p>Generate a json payload from a layer collection of a map</p>
 </div>
 
 
@@ -6431,7 +6866,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Transform a map visualization into a json payload compatible with the windshaft API.
+    <p>Transform a map visualization into a json payload compatible with the windshaft API.</p>
 </div>
 
 
@@ -6512,7 +6947,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Changes the attribute used as Id
+    <p>Changes the attribute used as Id</p>
 </div>
 
 
@@ -6642,7 +7077,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Change multiple options at the same time
+    <p>Change multiple options at the same time</p>
 </div>
 
 
@@ -6723,7 +7158,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Show infowindow (update, pan, etc)
+    <p>Show infowindow (update, pan, etc)</p>
 </div>
 
 
@@ -6804,7 +7239,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Set visibility infowindow
+    <p>Set visibility infowindow</p>
 </div>
 
 
@@ -6885,7 +7320,7 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Toggle infowindow visibility
+    <p>Toggle infowindow visibility</p>
 </div>
 
 
@@ -6966,8 +7401,8 @@ layersCollection and the dataviewsCollection.
 
 
 <div class="description">
-    Manages the tooltips for a map. It listens to events triggered by a
-CartoDBLayerGroupView and updates models accordingly
+    <p>Manages the tooltips for a map. It listens to events triggered by a
+CartoDBLayerGroupView and updates models accordingly</p>
 </div>
 
 
@@ -7048,7 +7483,7 @@ CartoDBLayerGroupView and updates models accordingly
 
 
 <div class="description">
-    Windshaft client. It provides a method to create instances of maps in Windshaft.
+    <p>Windshaft client. It provides a method to create instances of maps in Windshaft.</p>
 </div>
 
 
@@ -7100,7 +7535,7 @@ CartoDBLayerGroupView and updates models accordingly
 
             
 
-            <td class="description last">Options to set up the client</td>
+            <td class="description last"><p>Options to set up the client</p></td>
         </tr>
 
     
@@ -7168,6 +7603,1118 @@ CartoDBLayerGroupView and updates models accordingly
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="BinItem">BinItem</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Number indicating the bin order.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>min</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Only appears if freq &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Only appears if freq &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>avg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Only appears if freq &gt; 0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>freq</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of the times the element appears in the data.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>normalized</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>-</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="CategoryData">CategoryData</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>count</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>min</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nulls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>operation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#CategoryItem">CategoryItem</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="CategoryItem">CategoryItem</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>group</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="FormulaData">FormulaData</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nulls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>operation</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="HistogramData">HistogramData</h4>
+
+
+
+
+<div class="description">
+    <p>#Object containing histogram data.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nulls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of items with null value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>totalAmount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of elements returned.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#BinItem">BinItem</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array containing the <a href="global.html#BinItem">data bins</a> for the histogram. .</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>String with value: <strong>histogram</strong></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="LatLng">LatLng</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Latitude</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lng</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Longitude</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
 
     
 </article>
@@ -7180,13 +8727,13 @@ CartoDBLayerGroupView and updates models accordingly
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Engine.html">Engine</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine:RELOAD_SUCCESS</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">Client</a></li><li><a href="carto.dataview.Base.html">Base</a></li><li><a href="carto.dataview.Category.html">Category</a></li><li><a href="carto.dataview.Formula.html">Formula</a></li><li><a href="carto.dataview.Histogram.html">Histogram</a></li><li><a href="carto.filter.Base.html">Base</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">Base</a></li><li><a href="carto.source.Base.html">Base</a></li><li><a href="carto.source.Dataset.html">Dataset</a></li><li><a href="carto.source.SQL.html">SQL</a></li><li><a href="carto.style.Base.html">Base</a></li><li><a href="carto.style.CartoCSS.html">CartoCSS</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">FeatureEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine:RELOAD_SUCCESS</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">dataview</a></li><li><a href="carto.filter.html">filter</a></li><li><a href="carto.layer.html">layer</a></li><li><a href="carto.Leaflet.html">Leaflet</a></li><li><a href="carto.source.html">source</a></li><li><a href="carto.style.html">style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 06 2017 10:42:16 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 13 2017 09:21:07 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

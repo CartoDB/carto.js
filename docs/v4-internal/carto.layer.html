@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Response</title>
+    <title>JSDoc: Namespace: layer</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Response</h1>
+    <h1 class="page-title">Namespace: layer</h1>
 
     
 
@@ -28,7 +28,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Response<span class="signature">(windshaftSettings, serverResponse)</span><span class="type-signature"></span></h2>
+        <h2>
+            <span class="ancestors"><a href="carto.html">carto</a>.</span>layer</h2>
         
     
 </header>
@@ -38,102 +39,7 @@
     
         
 
-    
-
-    
-    <h4 class="name" id="Response"><span class="type-signature"></span>new Response<span class="signature">(windshaftSettings, serverResponse)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Wrapper over a server response to a map instantiation giving some utility methods.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
         
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>windshaftSettings</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Object containing the request options.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>serverResponse</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The json string representing a windshaft response to a map instantiation.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
 
 
 <dl class="details">
@@ -172,22 +78,7 @@
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     
     </div>
 
@@ -196,7 +87,12 @@
     
 
     
+        <h3 class="subsection-title">Classes</h3>
 
+        <dl>
+            <dt><a href="carto.layer.Base.html">Base</a></dt>
+            <dd></dd>
+        </dl>
     
 
     
@@ -206,199 +102,40 @@
     
 
     
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id=".events"><span class="type-signature">(static, readonly) </span>events<span class="type-signature"> :string</span></h4>
 
-    
-
-    
-    <h4 class="name" id="_getLayers"><span class="type-signature"></span>_getLayers<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
 
 
 
 <div class="description">
-    <p>Return the array with all the layers in the response</p>
+    <p>Enum for event types.</p>
 </div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    <h5>Type:</h5>
+    <ul>
+        <li>
             
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
-    
-    <h4 class="name" id="getBaseURL"><span class="type-signature"></span>getBaseURL<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Build the base url to build windshaft map requests.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getLayerIndexesByType"><span class="type-signature"></span>getLayerIndexesByType<span class="signature">(Type)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the indexes of the layers for a certain type.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -420,7 +157,7 @@
 
         <tr>
             
-                <td class="name"><code>Type</code></td>
+                <td class="name"><code>FEATURE_CLICKED</code></td>
             
 
             <td class="type">
@@ -436,7 +173,53 @@
 
             
 
-            <td class="description last"><p>The type of the layers: mapnik, torque, plain, tiled.</p></td>
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>FEATURE_OVER</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>FEATURE_OUT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -446,8 +229,6 @@
 
 
 
-
-
 <dl class="details">
 
     
@@ -488,108 +269,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// layers = [ carto, carto, tiled, plain, tiled, torque];
-getLayerIndexesByType('mapnik') // [0, 1]
-getLayerIndexesByType('tiled') // [2, 4]
-getLayerIndexesByType('torque') // [5]</code></pre>
-
-
-
         
-            
-
     
 
-    
-    <h4 class="name" id="getStaticBaseURL"><span class="type-signature"></span>getStaticBaseURL<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Build the base url for static maps.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 
     

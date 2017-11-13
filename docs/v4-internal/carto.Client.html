@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Engine</title>
+    <title>JSDoc: Class: Client</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Engine</h1>
+    <h1 class="page-title">Class: Client</h1>
 
     
 
@@ -28,7 +28,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Engine<span class="signature">(params)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="carto.html">carto</a>.</span>Client<span class="signature">(settings)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +42,7 @@
     
 
     
-    <h4 class="name" id="Engine"><span class="type-signature"></span>new Engine<span class="signature">(params)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Client"><span class="type-signature"></span>new Client<span class="signature">(settings)</span><span class="type-signature"></span></h4>
     
 
     
@@ -49,15 +50,9 @@
 
 
 <div class="description">
-    <p>Creates a new Engine.
-An engine is the core of a carto app.</p>
-<p>With the help of external services the engine will:</p>
-<ul>
-<li>Keep the state of the layers and dataviews.</li>
-<li>Serialize the state and send requests to the server.</li>
-<li>Parse the server response and update the internal models.</li>
-<li>Notify errors or successful operations.</li>
-</ul>
+    <p>This is the main object in a Carto.js application.</p>
+<p>The carto client keeps both layer and dataview lists internaly. Every time some layer/dataview changes
+the client will trigger a carto-reload cycle.</p>
 </div>
 
 
@@ -93,13 +88,13 @@ An engine is the core of a carto app.</p>
 
         <tr>
             
-                <td class="name"><code>params</code></td>
+                <td class="name"><code>settings</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">object</span>
 
 
             
@@ -109,7 +104,7 @@ An engine is the core of a carto app.</p>
 
             
 
-            <td class="description last"><p>The parameters to initialize the engine.</p>
+            <td class="description last">
                 <h6>Properties</h6>
                 
 
@@ -152,29 +147,6 @@ An engine is the core of a carto app.</p>
             
 
             <td class="description last"><p>Api key used to be autenticate in the windshaft server.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>authToken</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Token used to be autenticate in the windshaft server.</p></td>
         </tr>
 
     
@@ -224,52 +196,6 @@ An engine is the core of a carto app.</p>
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>templateName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>While we dont remove named maps we must explicitly say when the map is named. Defaults to false.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>statTag</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Token used to get map view statistics.</p></td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -323,6 +249,13 @@ An engine is the core of a carto app.</p>
 
 
 
+
+<h5>Fires:</h5>
+<ul>
+    <li>carto.events.event:SUCCESS</li>
+
+    <li>carto.events.event:ERROR</li>
+</ul>
 
 
 
@@ -353,175 +286,6 @@ An engine is the core of a carto app.</p>
     
 
     
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id=".Events"><span class="type-signature">(static, readonly) </span>Events<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
-    <p>Events fired by the engine</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>RELOAD_STARTED</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Reload started event, fired every time the reload process starts.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>RELOAD_SUCCESS</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Reload success event, fired every time the reload function succeed.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>RELOAD_ERROR</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Reload success event, fired every time the reload function fails.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -532,7 +296,7 @@ An engine is the core of a carto app.</p>
     
 
     
-    <h4 class="name" id="addDataview"><span class="type-signature"></span>addDataview<span class="signature">(dataview)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addDataview"><span class="type-signature"></span>addDataview<span class="signature">(dataview)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -540,7 +304,7 @@ An engine is the core of a carto app.</p>
 
 
 <div class="description">
-    <p>Add a dataview to the engine dataviewsCollection</p>
+    <p>Add a dataview to the client.</p>
 </div>
 
 
@@ -582,7 +346,7 @@ An engine is the core of a carto app.</p>
             <td class="type">
             
                 
-<span class="param-type">Dataview</span>
+<span class="param-type"><a href="carto.dataview.Base.html">carto.dataview.Base</a></span>
 
 
             
@@ -592,7 +356,30 @@ An engine is the core of a carto app.</p>
 
             
 
-            <td class="description last"><p>A new dataview to be added to the engine.</p></td>
+            <td class="description last"><p>The dataview to be added</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts.reload</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
         </tr>
 
     
@@ -651,6 +438,30 @@ An engine is the core of a carto app.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A promise that will be fulfilled when the reload cycle is completed.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -662,7 +473,7 @@ An engine is the core of a carto app.</p>
     
 
     
-    <h4 class="name" id="addLayer"><span class="type-signature"></span>addLayer<span class="signature">(layer)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addDataviews"><span class="type-signature"></span>addDataviews<span class="signature">(dataviews, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -670,7 +481,231 @@ An engine is the core of a carto app.</p>
 
 
 <div class="description">
-    <p>Add a layer to the engine layersCollection</p>
+    <p>Add a dataview array to the client.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dataviews</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="carto.dataview.Base.html">carto.dataview.Base</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The dataview array to be added</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reload</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will be fulfilled when the reload cycle is completed.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="addLayer"><span class="type-signature"></span>addLayer<span class="signature">(layer, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Add a layer to the client.</p>
 </div>
 
 
@@ -712,7 +747,7 @@ An engine is the core of a carto app.</p>
             <td class="type">
             
                 
-<span class="param-type">layer</span>
+<span class="param-type"><a href="carto.layer.Base.html">carto.layer.Base</a></span>
 
 
             
@@ -722,7 +757,79 @@ An engine is the core of a carto app.</p>
 
             
 
-            <td class="description last"><p>A new layer to be added to the engine.</p></td>
+            <td class="description last"><p>The layer to be added</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reload</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -781,87 +888,30 @@ An engine is the core of a carto app.</p>
 
 
 
-
-
-
-
+<h5>Returns:</h5>
 
         
-            
-
-    
-
-    
-    <h4 class="name" id="getLayerGroup"><span class="type-signature"></span>getLayerGroup<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the cartoLayergroup attached to the engine</p>
+<div class="param-desc">
+    <ul>
+<li>A promise that will be fulfilled when the reload cycle is completed.</li>
+</ul>
 </div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
 
 
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    </dd>
 </dl>
 
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
@@ -873,7 +923,7 @@ An engine is the core of a carto app.</p>
     
 
     
-    <h4 class="name" id="off"><span class="type-signature"></span>off<span class="signature">(event, callback, context<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addLayers"><span class="type-signature"></span>addLayers<span class="signature">(layers, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -881,7 +931,7 @@ An engine is the core of a carto app.</p>
 
 
 <div class="description">
-    <p>Remove a previously-bound callback function from an event.</p>
+    <p>Add a layer array to the client.</p>
 </div>
 
 
@@ -905,7 +955,70 @@ An engine is the core of a carto app.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>layers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="carto.layer.Base.html">carto.layer.Base</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The layer array to be added</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
         
 
         
@@ -919,95 +1032,30 @@ An engine is the core of a carto app.</p>
 
         <tr>
             
-                <td class="name"><code>event</code></td>
+                <td class="name"><code>reload</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>The name of the event that triggers the callback execution.</p></td>
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
         </tr>
 
     
+    </tbody>
+</table>
 
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
             </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>A function callback to be removed when the event is fired.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>context</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The context value for this when the callback is invoked.</p></td>
         </tr>
 
     
@@ -1066,14 +1114,30 @@ An engine is the core of a carto app.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will be fulfilled when the reload cycle is completed.</p>
+</div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
 
-    <h5>Example</h5>
+
+    </dd>
+</dl>
+
     
-    <pre class="prettyprint"><code>// Remove the the `displayMap` listener function so it wont be executed anymore when the engine fires the `load` event.
-engine.off(Engine.Events.RELOAD_SUCCESS, onReload);</code></pre>
+
+
 
 
 
@@ -1083,7 +1147,294 @@ engine.off(Engine.Events.RELOAD_SUCCESS, onReload);</code></pre>
     
 
     
-    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(event, callback, context<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getDataviews"><span class="type-signature"></span>getDataviews<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="carto.dataview.Base.html">carto.dataview.Base</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get all the dataviews from the client</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An array with all the dataviews from the client.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="carto.dataview.Base.html">carto.dataview.Base</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getLayers"><span class="type-signature"></span>getLayers<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="carto.layer.Base.html">carto.layer.Base</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get all the layers from the client</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An array with all the Layers from the client.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="carto.layer.Base.html">carto.layer.Base</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getLeafletLayer"><span class="type-signature"></span>getLeafletLayer<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>...</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1115,8 +1466,6 @@ engine.off(Engine.Events.RELOAD_SUCCESS, onReload);</code></pre>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1142,14 +1491,6 @@ engine.off(Engine.Events.RELOAD_SUCCESS, onReload);</code></pre>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
@@ -1173,51 +1514,10 @@ engine.off(Engine.Events.RELOAD_SUCCESS, onReload);</code></pre>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
             <td class="description last"><p>A function to be executed when the event is fired.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>context</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The context value for this when the callback is invoked.</p></td>
         </tr>
 
     
@@ -1288,10 +1588,7 @@ function onReload(event) {
 }
 
 // Attach the callback to the RELOAD_SUCCESS event.
-engine.on(Engine.Events.RELOAD_SUCCESS, onReload);
-
-// Call the reload method and wait.
-engine.reload();</code></pre>
+client.on(carto.events.SUCCESS, onReload);</code></pre>
 
 
 
@@ -1301,7 +1598,7 @@ engine.reload();</code></pre>
     
 
     
-    <h4 class="name" id="reload"><span class="type-signature"></span>reload<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeDataview"><span class="type-signature"></span>removeDataview<span class="signature">(dataview, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1309,195 +1606,7 @@ engine.reload();</code></pre>
 
 
 <div class="description">
-    <p>This is the most important function of the engine.
-Generate a payload from the current state, send it to the windshaft server
-and update the internal models with the server response.</p>
-<p>Once the response has arrived trigger a 'reload-succes' or 'reload-error' event.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options.sourceId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The sourceId triggering the reload event. This is usefull to prevent uneeded requests and save data.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options.forceFetch</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Forces dataviews to fetch data from server after a reload</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options.includeFilters</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Boolean flag to control if the filters need to be added in the payload.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<h5>Fires:</h5>
-<ul>
-    <li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine#Engine:RELOAD_STARTED</a></li>
-
-    <li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine#Engine:RELOAD_SUCCESS</a></li>
-
-    <li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine#Engine:RELOAD_ERROR</a></li>
-</ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="removeDataview"><span class="type-signature"></span>removeDataview<span class="signature">(dataview)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Remove a dataview from the engine dataviewsCollection</p>
+    <p>Remove a dataview from the client</p>
 </div>
 
 
@@ -1539,7 +1648,7 @@ and update the internal models with the server response.</p>
             <td class="type">
             
                 
-<span class="param-type">Dataview</span>
+<span class="param-type"><a href="carto.dataview.Base.html">carto.dataview.Base</a></span>
 
 
             
@@ -1549,7 +1658,79 @@ and update the internal models with the server response.</p>
 
             
 
-            <td class="description last"><p>The Dataview to be removed to the engine.</p></td>
+            <td class="description last"><p>The dataview array to be removed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reload</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1608,6 +1789,28 @@ and update the internal models with the server response.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that will be fulfilled when the reload cycle is completed.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1619,7 +1822,7 @@ and update the internal models with the server response.</p>
     
 
     
-    <h4 class="name" id="removeLayer"><span class="type-signature"></span>removeLayer<span class="signature">(layer)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeLayer"><span class="type-signature"></span>removeLayer<span class="signature">(layer, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1627,7 +1830,7 @@ and update the internal models with the server response.</p>
 
 
 <div class="description">
-    <p>Remove a layer from the engine layersCollection</p>
+    <p>Remove a layer from the client</p>
 </div>
 
 
@@ -1669,7 +1872,7 @@ and update the internal models with the server response.</p>
             <td class="type">
             
                 
-<span class="param-type">layer</span>
+<span class="param-type"><a href="carto.layer.Base.html">carto.layer.Base</a></span>
 
 
             
@@ -1679,7 +1882,79 @@ and update the internal models with the server response.</p>
 
             
 
-            <td class="description last"><p>A new layer to be removed from the engine.</p></td>
+            <td class="description last"><p>The layer array to be removed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reload</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Default: true. A boolean flag controlling if the client should be reloaded</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1738,293 +2013,38 @@ and update the internal models with the server response.</p>
 
 
 
-
-
-
-
+<h5>Returns:</h5>
 
         
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="event:Engine:RELOAD_ERROR">Engine:RELOAD_ERROR</h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Reload success event, fired every time the reload function fails.</p>
+<div class="param-desc">
+    <p>A promise that will be fulfilled when the reload cycle is completed.</p>
 </div>
 
 
 
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
+    </dd>
 </dl>
 
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
 
 
         
-            
-
-    
-
-    
-    <h4 class="name" id="event:Engine:RELOAD_STARTED">Engine:RELOAD_STARTED</h4>
     
 
     
 
-
-
-<div class="description">
-    <p>Reload started event, fired every time the reload process starts.</p>
-</div>
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="event:Engine:RELOAD_SUCCESS">Engine:RELOAD_SUCCESS</h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Reload success event, fired every time the reload function succeed.</p>
-</div>
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 </article>
 
