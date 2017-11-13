@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: layer</title>
+    <title>JSDoc: Class: BoundingBox</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: layer</h1>
+    <h1 class="page-title">Class: BoundingBox</h1>
 
     
 
@@ -28,8 +28,8 @@
 
 <header>
     
-        <h2>
-            <span class="ancestors"><a href="carto.html">carto</a>.</span>layer</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.filter.html">.filter</a>.</span>BoundingBox<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -39,7 +39,30 @@
     
         
 
-        
+    
+
+    
+    <h4 class="name" id="BoundingBox"><span class="type-signature"></span>new BoundingBox<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Bounding box filter</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -78,21 +101,42 @@
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="carto.filter.Base.html">carto.filter.Base</a></li>
+    </ul>
+
 
     
 
     
-        <h3 class="subsection-title">Classes</h3>
 
-        <dl>
-            <dt><a href="carto.layer.Base.html">Base</a></dt>
-            <dd></dd>
-        </dl>
+    
+
     
 
     
@@ -102,40 +146,243 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+        <h3 class="subsection-title">Methods</h3>
 
         
             
-<h4 class="name" id=".events"><span class="type-signature">(static, readonly) </span>events<span class="type-signature"> :string</span></h4>
 
+    
+
+    
+    <h4 class="name" id="getBounds"><span class="type-signature"></span>getBounds<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.filter.html#.Bounds">carto.filter.Bounds</a>}</span></h4>
+    
+
+    
 
 
 
 <div class="description">
-    <p>Enum for event types.</p>
+    <p>Return the current bounds</p>
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">string</span>
-
-
-        </li>
-    </ul>
 
 
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
+
+
+
+
+
+<dl class="details">
 
     
 
-<table class="props">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Current bounds</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.html#.Bounds">carto.filter.Bounds</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resetBounds"><span class="type-signature"></span>resetBounds<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Reset the bounds</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setBounds"><span class="type-signature"></span>setBounds<span class="signature">(bounds)</span><span class="type-signature"> &rarr; {<a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set the bounds</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -157,59 +404,13 @@
 
         <tr>
             
-                <td class="name"><code>FEATURE_CLICKED</code></td>
+                <td class="name"><code>bounds</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>FEATURE_OVER</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>FEATURE_OUT</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
+<span class="param-type"><a href="carto.filter.html#.Bounds">carto.filter.Bounds</a></span>
 
 
             
@@ -225,6 +426,8 @@
     
     </tbody>
 </table>
+
+
 
 
 
@@ -269,9 +472,41 @@
 
 
 
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
         
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></span>
+
+
+    </dd>
+</dl>
+
     
 
+
+
+
+
+        
     
 
     
