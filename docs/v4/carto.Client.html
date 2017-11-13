@@ -1353,170 +1353,6 @@ the client will trigger a carto-reload cycle.</p>
     
 
     
-    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature">(event, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Bind a callback function to an event. The callback will be invoked whenever the event is fired.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The name of the event that triggers the callback execution.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A function to be executed when the event is fired.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// Define a callback to be executed once the map is reloaded.
-function onReload(event) {
- console.log(event); // "reload-success"
-}
-
-// Attach the callback to the RELOAD_SUCCESS event.
-client.on(carto.events.SUCCESS, onReload);</code></pre>
-
-
-
-        
-            
-
-    
-
-    
     <h4 class="name" id="removeDataview"><span class="type-signature"></span>removeDataview<span class="signature">(dataview, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
@@ -1975,13 +1811,13 @@ client.on(carto.events.SUCCESS, onReload);</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">Client</a></li><li><a href="carto.dataview.Base.html">Base</a></li><li><a href="carto.dataview.Category.html">Category</a></li><li><a href="carto.dataview.Formula.html">Formula</a></li><li><a href="carto.dataview.Histogram.html">Histogram</a></li><li><a href="carto.filter.Base.html">Base</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">Base</a></li><li><a href="carto.source.Base.html">Base</a></li><li><a href="carto.source.Dataset.html">Dataset</a></li><li><a href="carto.source.SQL.html">SQL</a></li><li><a href="carto.style.Base.html">Base</a></li><li><a href="carto.style.CartoCSS.html">CartoCSS</a></li><li><a href="Layer.html">Layer</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">FeatureEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">dataview</a></li><li><a href="carto.filter.html">filter</a></li><li><a href="carto.layer.html">layer</a></li><li><a href="carto.Leaflet.html">Leaflet</a></li><li><a href="carto.source.html">source</a></li><li><a href="carto.style.html">style</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">Client</a></li><li><a href="carto.dataview.Base.html">Base</a></li><li><a href="carto.dataview.Category.html">Category</a></li><li><a href="carto.dataview.Formula.html">Formula</a></li><li><a href="carto.dataview.Histogram.html">Histogram</a></li><li><a href="carto.filter.Base.html">Base</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">Base</a></li><li><a href="carto.source.Base.html">Base</a></li><li><a href="carto.source.Dataset.html">Dataset</a></li><li><a href="carto.source.SQL.html">SQL</a></li><li><a href="carto.style.Base.html">Base</a></li><li><a href="carto.style.CartoCSS.html">CartoCSS</a></li><li><a href="Layer.html">Layer</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">FeatureEvent</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">dataview</a></li><li><a href="carto.events.html">events</a></li><li><a href="carto.filter.html">filter</a></li><li><a href="carto.layer.html">layer</a></li><li><a href="carto.Leaflet.html">Leaflet</a></li><li><a href="carto.source.html">source</a></li><li><a href="carto.style.html">style</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 13 2017 15:31:39 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 13 2017 16:02:03 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

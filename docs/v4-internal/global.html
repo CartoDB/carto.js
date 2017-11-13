@@ -7837,6 +7837,137 @@ CartoDBLayerGroupView and updates models accordingly</p>
 
             
                 
+<h4 class="name" id="CartoError">CartoError</h4>
+
+
+
+
+<div class="description">
+    <p>Represents an error in the carto library.</p>
+<p>Some actions like adding a layer to a map will trigger a <strong>reload cycle</strong>
+if some error happens during this reload cycle will be captured and transformed into a 
+<code>CartoError</code>.</p>
+<p>The cartoErrors can be obtained listening to the client <a href="carto.events.html">error events</a> <code>client.on(carto.events.ERROR, callback);</code> 
+or through the promise returned by each async action.</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A short error description.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Listen when a layer has been added or there has been an error.
+client.addLayer(layerWithErrors)
+ .then(()=> console.log('Layer added succesfully'))
+ .catch(cartoError => console.error(cartoError.message))</code></pre>
+
+    <pre class="prettyprint"><code>// Events also will be registered here when the map changes.
+client.on(carto.events.SUCCESS, function () {
+ console.log('Client reloaded');
+});
+
+client.on(carto.events.ERROR, function (clientError) {
+ console.error(clientError.message);
+});</code></pre>
+
+
+
+            
+                
 <h4 class="name" id="CategoryData">CategoryData</h4>
 
 
@@ -8727,13 +8858,13 @@ CartoDBLayerGroupView and updates models accordingly</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">Client</a></li><li><a href="carto.dataview.Base.html">Base</a></li><li><a href="carto.dataview.Category.html">Category</a></li><li><a href="carto.dataview.Formula.html">Formula</a></li><li><a href="carto.dataview.Histogram.html">Histogram</a></li><li><a href="carto.filter.Base.html">Base</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">Base</a></li><li><a href="carto.source.Base.html">Base</a></li><li><a href="carto.source.Dataset.html">Dataset</a></li><li><a href="carto.source.SQL.html">SQL</a></li><li><a href="carto.style.Base.html">Base</a></li><li><a href="carto.style.CartoCSS.html">CartoCSS</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">FeatureEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine:RELOAD_SUCCESS</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">dataview</a></li><li><a href="carto.filter.html">filter</a></li><li><a href="carto.layer.html">layer</a></li><li><a href="carto.Leaflet.html">Leaflet</a></li><li><a href="carto.source.html">source</a></li><li><a href="carto.style.html">style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">Client</a></li><li><a href="carto.dataview.Base.html">Base</a></li><li><a href="carto.dataview.Category.html">Category</a></li><li><a href="carto.dataview.Formula.html">Formula</a></li><li><a href="carto.dataview.Histogram.html">Histogram</a></li><li><a href="carto.filter.Base.html">Base</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">Base</a></li><li><a href="carto.source.Base.html">Base</a></li><li><a href="carto.source.Dataset.html">Dataset</a></li><li><a href="carto.source.SQL.html">SQL</a></li><li><a href="carto.style.Base.html">Base</a></li><li><a href="carto.style.CartoCSS.html">CartoCSS</a></li><li><a href="global.html#CartoError">CartoError</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">FeatureEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine:RELOAD_SUCCESS</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">dataview</a></li><li><a href="carto.events.html">events</a></li><li><a href="carto.filter.html">filter</a></li><li><a href="carto.layer.html">layer</a></li><li><a href="carto.Leaflet.html">Leaflet</a></li><li><a href="carto.source.html">source</a></li><li><a href="carto.style.html">style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 13 2017 15:31:42 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 13 2017 16:02:08 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
