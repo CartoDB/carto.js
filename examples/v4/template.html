@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/prism.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.8.4/themes/prism.css" />
+  <link rel="stylesheet" href="./_style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<iframe src="http://cartodb.github.io/cartodb.js/examples/index.html" frameBorder="0"></iframe>
+
+<pre><code class="language-html"></code></pre>
+<script>
+$(function() {
+ $.ajax('http://cartodb.github.io/cartodb.js/examples/index.html').done(function(resp) {
+     var code = Prism.highlight(resp, Prism.languages.html);
+     $('.language-html').html(code);
+   });
+ });
+</script>
+
+</body>
+
+</html>

@@ -29,15 +29,20 @@ aside {
   overflow: scroll;
 }
 
-aside button {
+button {
   padding: 8px 10px;
   background: none;
   border: 1px solid #333;
 }
 
-aside pre {
+pre {
   position: relative;
-  font-size: 12px;
-  max-height: 200px;
+  font-size: 14px;
+  height: 400px;
   overflow: scroll;
+}
+
+iframe {
+  width: 100%;
+  height: 400px;
 }
