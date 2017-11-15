@@ -241,7 +241,7 @@ Backbone Poller may be freely distributed under the MIT license.
   return PollingManager;
 }));
 
-},{"backbone":2,"underscore":51}],2:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],2:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2140,7 +2140,7 @@ Backbone Poller may be freely distributed under the MIT license.
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"jquery":45,"underscore":51}],3:[function(require,module,exports){
+},{"jquery":47,"underscore":53}],3:[function(require,module,exports){
 'use strict';
 
 var version = require('./version');
@@ -2269,7 +2269,7 @@ module.exports.getVersion = function (version) {
 
 module.exports.versions = availableVersions;
 
-},{"./versions":43}],6:[function(require,module,exports){
+},{"./versions":45}],6:[function(require,module,exports){
 module.exports={
     "version": "0.1.0",
     "analyses": {
@@ -24732,6 +24732,2386 @@ module.exports={
 }
 },{}],40:[function(require,module,exports){
 module.exports={
+    "version": "0.59.3",
+    "analyses": {
+        "aggregate-intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "aggregate_function": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ]
+                },
+                "aggregate_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-box": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-circle": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "buffer": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "radius": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number",
+                    "optional": true
+                },
+                "dissolved": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "closest": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "responses": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 1
+                },
+                "category": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "concave-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target_percent": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.7
+                },
+                "allow_holes": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "contour": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "buffer": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.2
+                },
+                "method": {
+                    "type": "enum",
+                    "values": [
+                        "nearest_neighbor",
+                        "barymetric",
+                        "IDW"
+                    ],
+                    "optional": true,
+                    "default-value": "barymetric"
+                },
+                "class_method": {
+                    "type": "enum",
+                    "values": [
+                        "equals",
+                        "headstails",
+                        "jenks",
+                        "quantiles"
+                    ],
+                    "optional": true,
+                    "default-value": "quantiles"
+                },
+                "steps": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 7
+                },
+                "resolution": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -90
+                }
+            }
+        },
+        "convex-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-measure": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                },
+                "segment_name": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-multiple-measures": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "numerators": {
+                    "type": "array"
+                },
+                "normalizations": {
+                    "type": "array"
+                },
+                "denominators": {
+                    "type": "array"
+                },
+                "geom_ids": {
+                    "type": "array"
+                },
+                "numerator_timespans": {
+                    "type": "array"
+                },
+                "column_names": {
+                    "type": "array"
+                }
+            }
+        },
+        "deprecated-sql-function": {
+            "params": {
+                "function_name": {
+                    "type": "string"
+                },
+                "primary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "secondary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ],
+                    "optional": true
+                },
+                "function_args": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-by-node-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "filter_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "filter_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "filter-category": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "accept": {
+                    "type": "array",
+                    "optional": true
+                },
+                "reject": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-grouped-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "group": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-range": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "min_or_equal": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max_or_equal": {
+                    "type": "number",
+                    "optional": true
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "limit": {
+                    "type": "number"
+                },
+                "action": {
+                    "type": "enum",
+                    "values": [
+                        "show",
+                        "hide"
+                    ],
+                    "optional": true,
+                    "default-value": "show"
+                }
+            }
+        },
+        "georeference-admin-region": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "admin_region_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-city": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "city_column": {
+                    "type": "string"
+                },
+                "admin_region": {
+                    "type": "string",
+                    "optional": true
+                },
+                "admin_region_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-country": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "country_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-ip-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "ip_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-long-lat": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-postal-code": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "output_geometry_type": {
+                    "type": "enum",
+                    "values": [
+                        "point",
+                        "polygon"
+                    ],
+                    "optional": true,
+                    "default-value": "point"
+                },
+                "postal_code_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-street-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "street_address_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "street_address_template": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "gravity": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "weight_threshold": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -1e+308
+                },
+                "pop_column": {
+                    "type": "string"
+                },
+                "max_distance": {
+                    "type": "number"
+                },
+                "target_id": {
+                    "type": "number"
+                }
+            }
+        },
+        "intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                }
+            }
+        },
+        "kmeans": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "clusters": {
+                    "type": "number"
+                }
+            }
+        },
+        "line-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "order_column": {
+                    "type": "string"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "line-source-to-target": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "line-to-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "line-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "link-by-line": {
+            "params": {
+                "source_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "destination_column": {
+                    "type": "string"
+                },
+                "use_great_circle": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                }
+            }
+        },
+        "merge": {
+            "params": {
+                "left_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "right_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "left_source_column": {
+                    "type": "string"
+                },
+                "right_source_column": {
+                    "type": "string"
+                },
+                "join_operator": {
+                    "type": "enum",
+                    "values": [
+                        "inner",
+                        "left",
+                        "right"
+                    ],
+                    "optional": true,
+                    "default-value": "inner"
+                },
+                "source_geometry": {
+                    "type": "enum",
+                    "values": [
+                        "left_source",
+                        "right_source"
+                    ],
+                    "optional": true,
+                    "default-value": "left_source"
+                },
+                "left_source_columns": {
+                    "type": "array",
+                    "optional": true
+                },
+                "right_source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                }
+            }
+        },
+        "moran": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon",
+                        "point"
+                    ]
+                },
+                "numerator_column": {
+                    "type": "string"
+                },
+                "denominator_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "significance": {
+                    "type": "number"
+                },
+                "neighbours": {
+                    "type": "number",
+                    "optional": true
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true
+                },
+                "w_type": {
+                    "type": "enum",
+                    "values": [
+                        "knn",
+                        "queen"
+                    ],
+                    "optional": true,
+                    "default-value": "knn"
+                }
+            }
+        },
+        "point-in-polygon": {
+            "params": {
+                "points_source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "polygons_source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                }
+            }
+        },
+        "population-in-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "routing-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "order_column": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ],
+                    "optional": true,
+                    "default-value": "asc"
+                }
+            }
+        },
+        "routing-to-layer-all-to-all": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "routing-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                }
+            }
+        },
+        "sampling": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "sampling": {
+                    "type": "number"
+                },
+                "seed": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "source": {
+            "params": {
+                "query": {
+                    "type": "string"
+                }
+            }
+        },
+        "spatial-markov-trend": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "time_columns": {
+                    "type": "array"
+                },
+                "num_classes": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "weight_type": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "knn"
+                },
+                "num_ngbrs": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0
+                },
+                "geom_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "the_geom"
+                },
+                "id_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                }
+            }
+        },
+        "trade-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "kind": {
+                    "type": "enum",
+                    "values": [
+                        "walk",
+                        "car"
+                    ]
+                },
+                "time": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number"
+                },
+                "dissolved": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "weighted-centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        }
+    }
+}
+},{}],41:[function(require,module,exports){
+module.exports={
+    "version": "0.59.4",
+    "analyses": {
+        "aggregate-intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "aggregate_function": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ]
+                },
+                "aggregate_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-box": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-circle": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "buffer": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "radius": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number",
+                    "optional": true
+                },
+                "dissolved": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "closest": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "responses": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 1
+                },
+                "category": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "concave-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target_percent": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.7
+                },
+                "allow_holes": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "contour": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "buffer": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.2
+                },
+                "method": {
+                    "type": "enum",
+                    "values": [
+                        "nearest_neighbor",
+                        "barymetric",
+                        "IDW"
+                    ],
+                    "optional": true,
+                    "default-value": "barymetric"
+                },
+                "class_method": {
+                    "type": "enum",
+                    "values": [
+                        "equals",
+                        "headstails",
+                        "jenks",
+                        "quantiles"
+                    ],
+                    "optional": true,
+                    "default-value": "quantiles"
+                },
+                "steps": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 7
+                },
+                "resolution": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -90
+                }
+            }
+        },
+        "convex-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-measure": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                },
+                "segment_name": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-multiple-measures": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "numerators": {
+                    "type": "array"
+                },
+                "normalizations": {
+                    "type": "array"
+                },
+                "denominators": {
+                    "type": "array"
+                },
+                "geom_ids": {
+                    "type": "array"
+                },
+                "numerator_timespans": {
+                    "type": "array"
+                },
+                "column_names": {
+                    "type": "array"
+                }
+            }
+        },
+        "deprecated-sql-function": {
+            "params": {
+                "function_name": {
+                    "type": "string"
+                },
+                "primary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "secondary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ],
+                    "optional": true
+                },
+                "function_args": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-by-node-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "filter_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "filter_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "filter-category": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "accept": {
+                    "type": "array",
+                    "optional": true
+                },
+                "reject": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-grouped-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "group": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-range": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                },
+                "greater_than": {
+                    "type": "number",
+                    "optional": true
+                },
+                "greater_than_or_equal": {
+                    "type": "number",
+                    "optional": true
+                },
+                "less_than": {
+                    "type": "number",
+                    "optional": true
+                },
+                "less_than_or_equal": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "limit": {
+                    "type": "number"
+                },
+                "action": {
+                    "type": "enum",
+                    "values": [
+                        "show",
+                        "hide"
+                    ],
+                    "optional": true,
+                    "default-value": "show"
+                }
+            }
+        },
+        "georeference-admin-region": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "admin_region_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-city": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "city_column": {
+                    "type": "string"
+                },
+                "admin_region": {
+                    "type": "string",
+                    "optional": true
+                },
+                "admin_region_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-country": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "country_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-ip-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "ip_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-long-lat": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-postal-code": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "output_geometry_type": {
+                    "type": "enum",
+                    "values": [
+                        "point",
+                        "polygon"
+                    ],
+                    "optional": true,
+                    "default-value": "point"
+                },
+                "postal_code_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-street-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "street_address_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "street_address_template": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "gravity": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "weight_threshold": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -1e+308
+                },
+                "pop_column": {
+                    "type": "string"
+                },
+                "max_distance": {
+                    "type": "number"
+                },
+                "target_id": {
+                    "type": "number"
+                }
+            }
+        },
+        "intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                }
+            }
+        },
+        "kmeans": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "clusters": {
+                    "type": "number"
+                }
+            }
+        },
+        "line-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "order_column": {
+                    "type": "string"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "line-source-to-target": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "line-to-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "line-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "link-by-line": {
+            "params": {
+                "source_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "destination_column": {
+                    "type": "string"
+                },
+                "use_great_circle": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                }
+            }
+        },
+        "merge": {
+            "params": {
+                "left_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "right_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "left_source_column": {
+                    "type": "string"
+                },
+                "right_source_column": {
+                    "type": "string"
+                },
+                "join_operator": {
+                    "type": "enum",
+                    "values": [
+                        "inner",
+                        "left",
+                        "right"
+                    ],
+                    "optional": true,
+                    "default-value": "inner"
+                },
+                "source_geometry": {
+                    "type": "enum",
+                    "values": [
+                        "left_source",
+                        "right_source"
+                    ],
+                    "optional": true,
+                    "default-value": "left_source"
+                },
+                "left_source_columns": {
+                    "type": "array",
+                    "optional": true
+                },
+                "right_source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                }
+            }
+        },
+        "moran": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon",
+                        "point"
+                    ]
+                },
+                "numerator_column": {
+                    "type": "string"
+                },
+                "denominator_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "significance": {
+                    "type": "number"
+                },
+                "neighbours": {
+                    "type": "number",
+                    "optional": true
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true
+                },
+                "w_type": {
+                    "type": "enum",
+                    "values": [
+                        "knn",
+                        "queen"
+                    ],
+                    "optional": true,
+                    "default-value": "knn"
+                }
+            }
+        },
+        "point-in-polygon": {
+            "params": {
+                "points_source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "polygons_source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                }
+            }
+        },
+        "population-in-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "routing-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "order_column": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ],
+                    "optional": true,
+                    "default-value": "asc"
+                }
+            }
+        },
+        "routing-to-layer-all-to-all": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "routing-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                }
+            }
+        },
+        "sampling": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "sampling": {
+                    "type": "number"
+                },
+                "seed": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "source": {
+            "params": {
+                "query": {
+                    "type": "string"
+                }
+            }
+        },
+        "spatial-markov-trend": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "time_columns": {
+                    "type": "array"
+                },
+                "num_classes": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "weight_type": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "knn"
+                },
+                "num_ngbrs": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0
+                },
+                "geom_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "the_geom"
+                },
+                "id_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                }
+            }
+        },
+        "trade-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "kind": {
+                    "type": "enum",
+                    "values": [
+                        "walk",
+                        "car"
+                    ]
+                },
+                "time": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number"
+                },
+                "dissolved": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "weighted-centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        }
+    }
+}
+},{}],42:[function(require,module,exports){
+module.exports={
     "version": "0.6.0",
     "analyses": {
         "aggregate-intersection": {
@@ -24858,7 +27238,7 @@ module.exports={
         }
     }
 }
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 module.exports={
     "version": "0.7.0",
     "analyses": {
@@ -25022,7 +27402,7 @@ module.exports={
         }
     }
 }
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports={
     "version": "0.9.0",
     "analyses": {
@@ -25222,7 +27602,7 @@ module.exports={
         }
     }
 }
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var versions = {
     "0.1.0": require("./0.1.0/reference.json"),
     "0.2.0": require("./0.2.0/reference.json"),
@@ -25260,13 +27640,15 @@ var versions = {
     "0.54.0": require("./0.54.0/reference.json"),
     "0.55.0": require("./0.55.0/reference.json"),
     "0.55.1": require("./0.55.1/reference.json"),
-    "0.58.1": require("./0.58.1/reference.json")
+    "0.58.1": require("./0.58.1/reference.json"),
+    "0.59.3": require("./0.59.3/reference.json"),
+    "0.59.4": require("./0.59.4/reference.json")
 };
 
-versions.latest = versions["0.58.1"];
+versions.latest = versions["0.59.4"];
 module.exports = versions;
 
-},{"./0.1.0/reference.json":6,"./0.10.0/reference.json":7,"./0.14.0/reference.json":8,"./0.15.0/reference.json":9,"./0.16.0/reference.json":10,"./0.17.0/reference.json":11,"./0.18.0/reference.json":12,"./0.19.0/reference.json":13,"./0.2.0/reference.json":14,"./0.20.0/reference.json":15,"./0.21.0/reference.json":16,"./0.22.0/reference.json":17,"./0.23.0/reference.json":18,"./0.26.0/reference.json":19,"./0.27.0/reference.json":20,"./0.29.0/reference.json":21,"./0.3.0/reference.json":22,"./0.33.0/reference.json":23,"./0.34.0/reference.json":24,"./0.37.0/reference.json":25,"./0.37.1/reference.json":26,"./0.38.0/reference.json":27,"./0.4.0/reference.json":28,"./0.40.0/reference.json":29,"./0.41.0/reference.json":30,"./0.43.0/reference.json":31,"./0.44.0/reference.json":32,"./0.47.0/reference.json":33,"./0.51.0/reference.json":34,"./0.52.0/reference.json":35,"./0.54.0/reference.json":36,"./0.55.0/reference.json":37,"./0.55.1/reference.json":38,"./0.58.1/reference.json":39,"./0.6.0/reference.json":40,"./0.7.0/reference.json":41,"./0.9.0/reference.json":42}],44:[function(require,module,exports){
+},{"./0.1.0/reference.json":6,"./0.10.0/reference.json":7,"./0.14.0/reference.json":8,"./0.15.0/reference.json":9,"./0.16.0/reference.json":10,"./0.17.0/reference.json":11,"./0.18.0/reference.json":12,"./0.19.0/reference.json":13,"./0.2.0/reference.json":14,"./0.20.0/reference.json":15,"./0.21.0/reference.json":16,"./0.22.0/reference.json":17,"./0.23.0/reference.json":18,"./0.26.0/reference.json":19,"./0.27.0/reference.json":20,"./0.29.0/reference.json":21,"./0.3.0/reference.json":22,"./0.33.0/reference.json":23,"./0.34.0/reference.json":24,"./0.37.0/reference.json":25,"./0.37.1/reference.json":26,"./0.38.0/reference.json":27,"./0.4.0/reference.json":28,"./0.40.0/reference.json":29,"./0.41.0/reference.json":30,"./0.43.0/reference.json":31,"./0.44.0/reference.json":32,"./0.47.0/reference.json":33,"./0.51.0/reference.json":34,"./0.52.0/reference.json":35,"./0.54.0/reference.json":36,"./0.55.0/reference.json":37,"./0.55.1/reference.json":38,"./0.58.1/reference.json":39,"./0.59.3/reference.json":40,"./0.59.4/reference.json":41,"./0.6.0/reference.json":42,"./0.7.0/reference.json":43,"./0.9.0/reference.json":44}],46:[function(require,module,exports){
 // https://d3js.org/d3-array/ Version 1.2.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -25858,7 +28240,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -35070,7 +37452,7 @@ return jQuery;
 
 }));
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /*
  Leaflet 1.0.3, a JS library for interactive maps. http://leafletjs.com
  (c) 2010-2016 Vladimir Agafonkin, (c) 2010-2011 CloudMade
@@ -48322,9 +50704,9 @@ L.control.layers = function (baseLayers, overlays, options) {
 
 }(window, document));
 
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports={
-	"version": "2017b",
+	"version": "2017c",
 	"zones": [
 		"Africa/Abidjan|LMT GMT|g.8 0|01|-2ldXH.Q|48e5",
 		"Africa/Accra|LMT GMT +0020|.Q 0 -k|012121212121212121212121212121212121212121212121|-26BbX.8 6tzX.8 MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE 1BAk MnE 1C0k MnE 1BAk MnE 1BAk MnE|41e5",
@@ -48338,12 +50720,13 @@ module.exports={
 		"Africa/Ceuta|WET WEST CET CEST|0 -10 -10 -20|010101010101010101010232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-25KN0 11z0 drd0 18p0 3HX0 17d0 1fz0 1a10 1io0 1a00 1y7o0 LL0 gnd0 rz0 43d0 AL0 1Nd0 XX0 1Cp0 pz0 dEp0 4VB0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|85e3",
 		"Africa/El_Aaiun|LMT -01 WET WEST|Q.M 10 0 -10|01232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-1rDz7.c 1GVA7.c 6L0 AL0 1Nd0 XX0 1Cp0 pz0 1cBB0 AL0 1Nd0 wn0 1FB0 Db0 1zd0 Lz0 1Nf0 wM0 co0 go0 1o00 s00 dA0 vc0 11A0 A00 e00 y00 11A0 uM0 e00 Dc0 11A0 s00 e00 IM0 WM0 mo0 gM0 LA0 WM0 jA0 e00 Rc0 11A0 e00 e00 U00 11A0 8o0 e00 11A0 11A0 5A0 e00 17c0 1fA0 1a00 1a00 1fA0 17c0 1io0 14o0 1lc0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1lc0 14o0 1fA0|20e4",
 		"Africa/Johannesburg|SAST SAST SAST|-1u -20 -30|012121|-2GJdu 1Ajdu 1cL0 1cN0 1cL0|84e5",
-		"Africa/Khartoum|LMT CAT CAST EAT|-2a.8 -20 -30 -30|01212121212121212121212121212121213|-1yW2a.8 1zK0a.8 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0|51e5",
+		"Africa/Juba|LMT CAT CAST EAT|-26.s -20 -30 -30|01212121212121212121212121212121213|-1yW26.s 1zK06.s 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0",
+		"Africa/Khartoum|LMT CAT CAST EAT|-2a.8 -20 -30 -30|012121212121212121212121212121212131|-1yW2a.8 1zK0a.8 16L0 1iN0 17b0 1jd0 17b0 1ip0 17z0 1i10 17X0 1hB0 18n0 1hd0 19b0 1gp0 19z0 1iN0 17b0 1ip0 17z0 1i10 18n0 1hd0 18L0 1gN0 19b0 1gp0 19z0 1iN0 17z0 1i10 17X0 yGd0 HjL0|51e5",
 		"Africa/Monrovia|MMT MMT GMT|H.8 I.u 0|012|-23Lzg.Q 28G01.m|11e5",
 		"Africa/Ndjamena|LMT WAT WAST|-10.c -10 -20|0121|-2le10.c 2J3c0.c Wn0|13e5",
 		"Africa/Tripoli|LMT CET CEST EET|-Q.I -10 -20 -20|012121213121212121212121213123123|-21JcQ.I 1hnBQ.I vx0 4iP0 xx0 4eN0 Bb0 7ip0 U0n0 A10 1db0 1cN0 1db0 1dd0 1db0 1eN0 1bb0 1e10 1cL0 1c10 1db0 1dd0 1db0 1cN0 1db0 1q10 fAn0 1ep0 1db0 AKq0 TA0 1o00|11e5",
 		"Africa/Tunis|PMT CET CEST|-9.l -10 -20|0121212121212121212121212121212121|-2nco9.l 18pa9.l 1qM0 DA0 3Tc0 11B0 1ze0 WM0 7z0 3d0 14L0 1cN0 1f90 1ar0 16J0 1gXB0 WM0 1rA0 11c0 nwo0 Ko0 1cM0 1cM0 1rA0 10M0 zuM0 10N0 1aN0 1qM0 WM0 1qM0 11A0 1o00|20e5",
-		"Africa/Windhoek|+0130 SAST SAST CAT WAT WAST|-1u -20 -30 -20 -10 -20|012134545454545454545454545454545454545454545454545454545454545454545454545454545454545454545|-2GJdu 1Ajdu 1cL0 1SqL0 9NA0 11D0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0|32e4",
+		"Africa/Windhoek|+0130 SAST SAST CAT WAT WAST|-1u -20 -30 -20 -10 -20|01213454545454545454545454545454545454545454545454543|-2GJdu 1Ajdu 1cL0 1SqL0 9Io0 16P0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0|32e4",
 		"America/Adak|NST NWT NPT BST BDT AHST HST HDT|b0 a0 a0 b0 a0 a0 a0 90|012034343434343434343434343434343456767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17SX0 8wW0 iB0 Qlb0 52O0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cm0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|326",
 		"America/Anchorage|AST AWT APT AHST AHDT YST AKST AKDT|a0 90 90 a0 90 90 90 80|012034343434343434343434343434343456767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-17T00 8wX0 iA0 Qlb0 52O0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 cm0 10q0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
 		"America/Port_of_Spain|LMT AST|46.4 40|01|-2kNvR.U|43e3",
@@ -48387,7 +50770,7 @@ module.exports={
 		"America/Dawson|YST YDT YWT YPT YDDT PST PDT|90 80 80 80 70 80 70|0101023040565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565656565|-25TN0 1in0 1o10 13V0 Ser0 8x00 iz0 LCL0 1fA0 jrA0 fNd0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|13e2",
 		"America/Dawson_Creek|PST PDT PWT PPT MST|80 70 70 70 70|0102301010101010101010101010101010101010101010101010101014|-25TO0 1in0 UGp0 8x10 iy0 3NB0 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 ML0|12e3",
 		"America/Denver|MST MDT MWT MPT|70 60 60 60|01010101023010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261r0 1nX0 11B0 1nX0 11B0 1qL0 WN0 mn0 Ord0 8x20 ix0 LCN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
-		"America/Detroit|LMT CST EST EWT EPT EDT|5w.b 60 50 40 40 40|01234252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-2Cgir.N peqr.N 156L0 8x40 iv0 6fd0 11z0 Jy10 SL0 dnB0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e5",
+		"America/Detroit|LMT CST EST EWT EPT EDT|5w.b 60 50 40 40 40|012342525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252525252|-2Cgir.N peqr.N 156L0 8x40 iv0 6fd0 11z0 XQp0 1cL0 s10 1Vz0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e5",
 		"America/Edmonton|LMT MST MDT MWT MPT|7x.Q 70 60 60 60|01212121212121341212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2yd4q.8 shdq.8 1in0 17d0 hz0 2dB0 1fz0 1a10 11z0 1qN0 WL0 1qN0 11z0 IGN0 8x20 ix0 3NB0 11z0 LFB0 1cL0 3Cp0 1cL0 66N0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|10e5",
 		"America/Eirunepe|LMT -05 -04|4D.s 50 40|0121212121212121212121212121212121|-2glvk.w HdLk.w 1cc0 1e10 1bX0 Ezd0 So0 1vA0 Mn0 1BB0 ML0 1BB0 zX0 qe10 xb0 2ep0 nz0 1C10 zX0 1C10 LX0 1C10 Mn0 H210 Rb0 1tB0 IL0 1Fd0 FX0 dPB0 On0 yTd0 d5X0|31e3",
 		"America/El_Salvador|LMT CST CDT|5U.M 60 50|012121|-1XiG3.c 2Fvc3.c WL0 1qN0 WL0|11e5",
@@ -48398,7 +50781,7 @@ module.exports={
 		"America/Glace_Bay|LMT AST ADT AWT APT|3X.M 40 30 30 30|012134121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2IsI0.c CwO0.c 1in0 UGp0 8x50 iu0 iq10 11z0 Jg10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|19e3",
 		"America/Godthab|LMT -03 -02|3q.U 30 20|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-2a5Ux.4 2z5dx.4 19U0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|17e3",
 		"America/Goose_Bay|NST NDT NST NDT NWT NPT AST ADT ADDT|3u.Q 2u.Q 3u 2u 2u 2u 40 30 20|010232323232323245232323232323232323232323232323232323232326767676767676767676767676767676767676767676768676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676767676|-25TSt.8 1in0 DXb0 2HbX.8 WL0 1qN0 WL0 1qN0 WL0 1tB0 TX0 1tB0 WL0 1qN0 WL0 1qN0 7UHu itu 1tB0 WL0 1qN0 WL0 1qN0 WL0 1qN0 WL0 1tB0 WL0 1ld0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 S10 g0u 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14n1 1lb0 14p0 1nW0 11C0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zcX Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|76e2",
-		"America/Grand_Turk|KMT EST EDT AST|57.b 50 40 40|0121212121212121212121212121212121212121212121212121212121212121212121212123|-2l1uQ.N 2HHBQ.N 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e2",
+		"America/Grand_Turk|KMT EST EDT AST|57.b 50 40 40|01212121212121212121212121212121212121212121212121212121212121212121212121232121212121212121212121212121212121212121|-2l1uQ.N 2HHBQ.N 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 5Ip0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|37e2",
 		"America/Guatemala|LMT CST CDT|62.4 60 50|0121212121|-24KhV.U 2efXV.U An0 mtd0 Nz0 ifB0 17b0 zDB0 11z0|13e5",
 		"America/Guayaquil|QMT -05 -04|5e 50 40|0121|-1yVSK 2uILK rz0|27e5",
 		"America/Guyana|LMT -0345 -03 -04|3Q.E 3J 30 40|0123|-2dvU7.k 2r6LQ.k Bxbf|80e4",
@@ -48502,7 +50885,7 @@ module.exports={
 		"Asia/Beirut|EET EEST|-20 -30|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-21aq0 1on0 1410 1db0 19B0 1in0 1ip0 WL0 1lQp0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 11b0 q6N0 En0 1oN0 11b0 1oN0 11b0 1oN0 11b0 1pd0 11b0 1oN0 11b0 1op0 11b0 dA10 17b0 1iN0 17b0 1iN0 17b0 1iN0 17b0 1vB0 SL0 1mp0 13z0 1iN0 17b0 1iN0 17b0 1jd0 12n0 1a10 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0|22e5",
 		"Asia/Bishkek|LMT +05 +06 +07|-4W.o -50 -60 -70|012323232323232323232321212121212121212121212121212|-1Pc4W.o eUnW.o 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2e00 1tX0 17b0 1ip0 17b0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1cPu 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0|87e4",
 		"Asia/Brunei|LMT +0730 +08|-7D.E -7u -80|012|-1KITD.E gDc9.E|42e4",
-		"Asia/Kolkata|HMT +0630 IST|-5R.k -6u -5u|01212|-18LFR.k 1unn.k HB0 7zX0|15e6",
+		"Asia/Kolkata|MMT IST +0630|-5l.a -5u -6u|012121|-2zOtl.a 1r2LP.a 1un0 HB0 7zX0|15e6",
 		"Asia/Chita|LMT +08 +09 +10|-7x.Q -80 -90 -a0|012323232323232323232321232323232323232323232323232323232323232312|-21Q7x.Q pAnx.Q 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3re0|33e4",
 		"Asia/Choibalsan|LMT +07 +08 +10 +09|-7C -70 -80 -a0 -90|0123434343434343434343434343434343434343434343424242|-2APHC 2UkoC cKn0 1da0 1dd0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 6hD0 11z0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 3Db0 h1f0 1cJ0 1cP0 1cJ0|38e3",
 		"Asia/Shanghai|CST CDT|-80 -90|01010101010101010|-1c1I0 LX0 16p0 1jz0 1Myp0 Rb0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 11z0 1o10 11z0|23e6",
@@ -48512,7 +50895,7 @@ module.exports={
 		"Asia/Dili|LMT +08 +09|-8m.k -80 -90|01212|-2le8m.k 1dnXm.k 1nfA0 Xld0|19e4",
 		"Asia/Dubai|LMT +04|-3F.c -40|01|-21JfF.c|39e5",
 		"Asia/Dushanbe|LMT +05 +06 +07|-4z.c -50 -60 -70|012323232323232323232321|-1Pc4z.c eUnz.c 23CL0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2hB0|76e4",
-		"Asia/Famagusta|LMT EET EEST +03|-2f.M -20 -30 -30|01212121212121212121212121212121212121212121212121212121212121212121212121212121212123|-1Vc2f.M 2a3cf.M 1cL0 1qp0 Xz0 19B0 19X0 1fB0 1db0 1cp0 1cL0 1fB0 19X0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1o30 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 15U0",
+		"Asia/Famagusta|LMT EET EEST +03|-2f.M -20 -30 -30|0121212121212121212121212121212121212121212121212121212121212121212121212121212121212312121212121212121212121212121212121212121|-1Vc2f.M 2a3cf.M 1cL0 1qp0 Xz0 19B0 19X0 1fB0 1db0 1cp0 1cL0 1fB0 19X0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1o30 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 15U0 2Ks0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
 		"Asia/Gaza|EET EEST IST IDT|-20 -30 -20 -30|010101010101010101010101010101012323232323232323232323232320101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 npB0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 11z0 1o10 14o0 1lA1 SKX 1xd1 MKX 1AN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0|18e5",
 		"Asia/Hebron|EET EEST IST IDT|-20 -30 -20 -30|01010101010101010101010101010101232323232323232323232323232010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-1c2q0 5Rb0 10r0 1px0 10N0 1pz0 16p0 1jB0 16p0 1jx0 pBd0 Vz0 1oN0 11b0 1oO0 10N0 1pz0 10N0 1pb0 10N0 1pb0 10N0 1pb0 10N0 1pz0 10N0 1pb0 10N0 1pb0 11d0 1oL0 dW0 hfB0 Db0 1fB0 Rb0 npB0 11z0 1C10 IL0 1s10 10n0 1o10 WL0 1zd0 On0 1ld0 11z0 1o10 14n0 1o10 14n0 1nd0 12n0 1nd0 Xz0 1q10 12n0 M10 C00 17c0 1io0 17c0 1io0 17c0 1o00 1cL0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 17c0 1io0 18N0 1bz0 19z0 1gp0 1610 1iL0 12L0 1mN0 14o0 1lc0 Tb0 1xd1 MKX bB0 cn0 1cN0 1a00 1fA0 1cL0 1cN0 1nX0 1210 1nz0 1220 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1qL0|25e4",
 		"Asia/Ho_Chi_Minh|LMT PLMT +07 +08 +09|-76.E -76.u -70 -80 -90|0123423232|-2yC76.E bK00.a 1h7b6.u 5lz0 18o0 3Oq0 k5b0 aW00 BAM0|90e5",
@@ -48544,7 +50927,7 @@ module.exports={
 		"Asia/Pontianak|LMT PMT +0730 +09 +08 WITA WIB|-7h.k -7h.k -7u -90 -80 -80 -70|012324256|-2ua7h.k XE00 munL.k 8Rau 6kpu 4PXu xhcu Wqnu|23e4",
 		"Asia/Pyongyang|LMT KST JST KST|-8n -8u -90 -90|01231|-2um8n 97XR 1lTzu 2Onc0|29e5",
 		"Asia/Qyzylorda|LMT +04 +05 +06|-4l.Q -40 -50 -60|0123232323232323232323232323232323232323232323|-1Pc4l.Q eUol.Q 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 3ao0 1EM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0|73e4",
-		"Asia/Rangoon|RMT +0630 +09|-6o.E -6u -90|0121|-21Jio.E SmnS.E 7j9u|48e5",
+		"Asia/Rangoon|RMT +0630 +09|-6o.L -6u -90|0121|-21Jio.L SmnS.L 7j9u|48e5",
 		"Asia/Sakhalin|LMT +09 +11 +12 +10|-9u.M -90 -b0 -c0 -a0|01232323232323232323232423232323232424242424242424242424242424242|-2AGVu.M 1BoMu.M 1qFa0 1db0 1cN0 1db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 2pB0 IM0 rX0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 2pB0 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 8Hz0 3rd0|58e4",
 		"Asia/Samarkand|LMT +04 +05 +06|-4r.R -40 -50 -60|01232323232323232323232|-1Pc4r.R eUor.R 23CL0 3Db0 1cN0 1db0 1dd0 1cO0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|36e4",
 		"Asia/Seoul|LMT KST JST KST KDT KDT|-8r.Q -8u -90 -90 -9u -a0|0123141414141414135353|-2um8r.Q 97XV.Q 1m1zu kKo0 2I0u OL0 1FB0 Rb0 1qN0 TX0 1tB0 TX0 1tB0 TX0 1tB0 TX0 2ap0 12FBu 11A0 1o00 11A0|23e6",
@@ -48589,7 +50972,7 @@ module.exports={
 		"EET|EET EEST|-20 -30|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00",
 		"EST|EST|50|0|",
 		"EST5EDT|EST EDT EWT EPT|50 40 40 40|010102301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-261t0 1nX0 11B0 1nX0 SgN0 8x40 iv0 QwN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0",
-		"Europe/Dublin|DMT IST GMT BST IST|p.l -y.D 0 -10 -10|01232323232324242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242|-2ax9y.D Rc0 1fzy.D 14M0 1fc0 1g00 1co0 1dc0 1co0 1oo0 1400 1dc0 19A0 1io0 1io0 WM0 1o00 14o0 1o00 17c0 1io0 17c0 1fA0 1a00 1lc0 17c0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1cM0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1io0 1qM0 Dc0 g5X0 14p0 1wn0 17d0 1io0 11A0 1o00 17c0 1fA0 1a00 1fA0 1cM0 1fA0 1a00 17c0 1fA0 1a00 1io0 17c0 1lc0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1a00 1qM0 WM0 1qM0 11A0 1o00 WM0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1tA0 IM0 90o0 U00 1tA0 U00 1tA0 U00 1tA0 U00 1tA0 WM0 1qM0 WM0 1qM0 WM0 1tA0 U00 1tA0 U00 1tA0 11z0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 14o0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
+		"Europe/Dublin|DMT IST GMT BST IST|p.l -y.D 0 -10 -10|01232323232324242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242424242|-2ax9y.D Rc0 1fzy.D 14M0 1fc0 1g00 1co0 1dc0 1co0 1oo0 1400 1dc0 19A0 1io0 1io0 WM0 1o00 14o0 1o00 17c0 1io0 17c0 1fA0 1a00 1lc0 17c0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1cM0 1io0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1io0 1qM0 Dc0 g600 14o0 1wo0 17c0 1io0 11A0 1o00 17c0 1fA0 1a00 1fA0 1cM0 1fA0 1a00 17c0 1fA0 1a00 1io0 17c0 1lc0 17c0 1fA0 1a00 1io0 17c0 1io0 17c0 1fA0 1a00 1a00 1qM0 WM0 1qM0 11A0 1o00 WM0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1tA0 IM0 90o0 U00 1tA0 U00 1tA0 U00 1tA0 U00 1tA0 WM0 1qM0 WM0 1qM0 WM0 1tA0 U00 1tA0 U00 1tA0 11z0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 14o0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
 		"Etc/GMT+0|GMT|0|0|",
 		"Etc/GMT+1|-01|10|0|",
 		"Etc/GMT+10|-10|a0|0|",
@@ -48680,7 +51063,7 @@ module.exports={
 		"Pacific/Efate|LMT +11 +12|-bd.g -b0 -c0|0121212121212121212121|-2l9nd.g 2Szcd.g 1cL0 1oN0 10L0 1fB0 19X0 1fB0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1fB0 Lz0 1Nd0 An0|66e3",
 		"Pacific/Enderbury|-12 -11 +13|c0 b0 -d0|012|nIc0 B8n0|1",
 		"Pacific/Fakaofo|-11 +13|b0 -d0|01|1Gfn0|483",
-		"Pacific/Fiji|LMT +12 +13|-bT.I -c0 -d0|0121212121212121212121212121212121212121212121212121212121212121|-2bUzT.I 3m8NT.I LA0 1EM0 IM0 nJc0 LA0 1o00 Rc0 1wo0 Ao0 1Nc0 Ao0 1Q00 xz0 1SN0 uM0 1SM0 uM0 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0|88e4",
+		"Pacific/Fiji|LMT +12 +13|-bT.I -c0 -d0|0121212121212121212121212121212121212121212121212121212121212121|-2bUzT.I 3m8NT.I LA0 1EM0 IM0 nJc0 LA0 1o00 Rc0 1wo0 Ao0 1Nc0 Ao0 1Q00 xz0 1SN0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0|88e4",
 		"Pacific/Galapagos|LMT -05 -06|5W.o 50 60|01212|-1yVS1.A 2dTz1.A gNd0 rz0|25e3",
 		"Pacific/Gambier|LMT -09|8X.M 90|01|-2jof0.c|125",
 		"Pacific/Guadalcanal|LMT +11|-aD.M -b0|01|-2joyD.M|11e4",
@@ -48698,7 +51081,7 @@ module.exports={
 		"Pacific/Pitcairn|-0830 -08|8u 80|01|18Vku|56",
 		"Pacific/Rarotonga|-1030 -0930 -10|au 9u a0|012121212121212121212121212|lyWu IL0 1zcu Onu 1zcu Onu 1zcu Rbu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Onu 1zcu Rbu 1zcu Onu 1zcu Onu 1zcu Onu|13e3",
 		"Pacific/Tahiti|LMT -10|9W.g a0|01|-2joe1.I|18e4",
-		"Pacific/Tongatapu|+1220 +13 +14|-ck -d0 -e0|0121212121212121212121212121212121212121212121212121|-1aB0k 2n5dk 15A0 1wo0 xz0 1Q10 xz0 zWN0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0 1VA0 s00 1VA0 s00 1VA0 uM0 1SM0 uM0 1SM0 uM0 1SM0 uM0|75e3",
+		"Pacific/Tongatapu|+1220 +13 +14|-ck -d0 -e0|0121212121|-1aB0k 2n5dk 15A0 1wo0 xz0 1Q10 xz0 zWN0 s00|75e3",
 		"WET|WET WEST|0 -10|010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|hDB0 1a00 1fA0 1cM0 1cM0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00"
 	],
 	"links": [
@@ -48716,7 +51099,6 @@ module.exports={
 		"Africa/Cairo|Egypt",
 		"Africa/Johannesburg|Africa/Maseru",
 		"Africa/Johannesburg|Africa/Mbabane",
-		"Africa/Khartoum|Africa/Juba",
 		"Africa/Lagos|Africa/Bangui",
 		"Africa/Lagos|Africa/Brazzaville",
 		"Africa/Lagos|Africa/Douala",
@@ -48796,7 +51178,6 @@ module.exports={
 		"America/Port_of_Spain|America/St_Vincent",
 		"America/Port_of_Spain|America/Tortola",
 		"America/Port_of_Spain|America/Virgin",
-		"America/Regina|Canada/East-Saskatchewan",
 		"America/Regina|Canada/Saskatchewan",
 		"America/Rio_Branco|America/Porto_Acre",
 		"America/Rio_Branco|Brazil/Acre",
@@ -48923,13 +51304,13 @@ module.exports={
 		"Pacific/Tarawa|Pacific/Wallis"
 	]
 }
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 var moment = module.exports = require("./moment-timezone");
 moment.tz.load(require('./data/packed/latest.json'));
 
-},{"./data/packed/latest.json":47,"./moment-timezone":49}],49:[function(require,module,exports){
+},{"./data/packed/latest.json":49,"./moment-timezone":51}],51:[function(require,module,exports){
 //! moment-timezone.js
-//! version : 0.5.13
+//! version : 0.5.14
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -48954,7 +51335,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 	// 	return moment;
 	// }
 
-	var VERSION = "0.5.13",
+	var VERSION = "0.5.14",
 		zones = {},
 		links = {},
 		names = {},
@@ -49122,6 +51503,11 @@ moment.tz.load(require('./data/packed/latest.json'));
 		},
 
 		offset : function (mom) {
+			logError("zone.offset has been deprecated in favor of zone.utcOffset");
+			return this.offsets[this._index(mom)];
+		},
+
+		utcOffset : function (mom) {
 			return this.offsets[this._index(mom)];
 		}
 	};
@@ -49161,7 +51547,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 	}
 
 	ZoneScore.prototype.scoreOffsetAt = function (offsetAt) {
-		this.offsetScore += Math.abs(this.zone.offset(offsetAt.at) - offsetAt.offset);
+		this.offsetScore += Math.abs(this.zone.utcOffset(offsetAt.at) - offsetAt.offset);
 		if (this.zone.abbr(offsetAt.at).replace(/[^A-Z]/g, '') !== offsetAt.abbr) {
 			this.abbrScore++;
 		}
@@ -49255,7 +51641,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 		// use Intl API when available and returning valid time zone
 		try {
 			var intlName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			if (intlName){
+			if (intlName && intlName.length > 3) {
 				var name = names[normalizeName(intlName)];
 				if (name) {
 					return name;
@@ -49313,9 +51699,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 			normalized = normalizeName(name);
 			zones[normalized] = packed[i];
 			names[normalized] = name;
-			if (split[5]) {
-				addToGuesses(normalized, split[2].split(' '));
-			}
+			addToGuesses(normalized, split[2].split(' '));
 		}
 	}
 
@@ -49394,7 +51778,8 @@ moment.tz.load(require('./data/packed/latest.json'));
 	}
 
 	function needsOffset (m) {
-		return !!(m._a && (m._tzm === undefined));
+		var isUnixTimestamp = (m._f === 'X' || m._f === 'x');
+		return !!(m._a && (m._tzm === undefined) && !isUnixTimestamp);
 	}
 
 	function logError (message) {
@@ -49463,7 +51848,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 			mom._z = zone;
 		}
 		if (mom._z) {
-			offset = mom._z.offset(mom);
+			offset = mom._z.utcOffset(mom);
 			if (Math.abs(offset) < 16) {
 				offset = offset / 60;
 			}
@@ -49475,11 +51860,11 @@ moment.tz.load(require('./data/packed/latest.json'));
 		}
 	};
 
-	fn.tz = function (name) {
+	fn.tz = function (name, keepTime) {
 		if (name) {
 			this._z = getZone(name);
 			if (this._z) {
-				moment.updateOffset(this);
+				moment.updateOffset(this, keepTime);
 			} else {
 				logError("Moment Timezone has no data for " + name + ". See http://momentjs.com/timezone/docs/#/data-loading/.");
 			}
@@ -49530,9 +51915,9 @@ moment.tz.load(require('./data/packed/latest.json'));
 	return moment;
 }));
 
-},{"moment":50}],50:[function(require,module,exports){
+},{"moment":52}],52:[function(require,module,exports){
 //! moment.js
-//! version : 2.18.1
+//! version : 2.19.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -49566,12 +51951,17 @@ function isObject(input) {
 }
 
 function isObjectEmpty(obj) {
-    var k;
-    for (k in obj) {
-        // even if its not own property I'd still call it non-empty
-        return false;
+    if (Object.getOwnPropertyNames) {
+        return (Object.getOwnPropertyNames(obj).length === 0);
+    } else {
+        var k;
+        for (k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
 }
 
 function isUndefined(input) {
@@ -49665,12 +52055,10 @@ if (Array.prototype.some) {
     };
 }
 
-var some$1 = some;
-
 function isValid(m) {
     if (m._isValid == null) {
         var flags = getParsingFlags(m);
-        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
+        var parsedParts = some.call(flags.parsedDateParts, function (i) {
             return i != null;
         });
         var isNowValid = !isNaN(m._d.getTime()) &&
@@ -49678,6 +52066,7 @@ function isValid(m) {
             !flags.empty &&
             !flags.invalidMonth &&
             !flags.invalidWeekday &&
+            !flags.weekdayMismatch &&
             !flags.nullInput &&
             !flags.invalidFormat &&
             !flags.userInvalidated &&
@@ -49943,8 +52332,6 @@ if (Object.keys) {
     };
 }
 
-var keys$1 = keys;
-
 var defaultCalendar = {
     sameDay : '[Today at] LT',
     nextDay : '[Tomorrow at] LT',
@@ -50068,56 +52455,6 @@ function getPrioritizedUnits(unitsObj) {
         return a.priority - b.priority;
     });
     return units;
-}
-
-function makeGetSet (unit, keepTime) {
-    return function (value) {
-        if (value != null) {
-            set$1(this, unit, value);
-            hooks.updateOffset(this, keepTime);
-            return this;
-        } else {
-            return get(this, unit);
-        }
-    };
-}
-
-function get (mom, unit) {
-    return mom.isValid() ?
-        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-}
-
-function set$1 (mom, unit, value) {
-    if (mom.isValid()) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-    }
-}
-
-// MOMENTS
-
-function stringGet (units) {
-    units = normalizeUnits(units);
-    if (isFunction(this[units])) {
-        return this[units]();
-    }
-    return this;
-}
-
-
-function stringSet (units, value) {
-    if (typeof units === 'object') {
-        units = normalizeObjectUnits(units);
-        var prioritized = getPrioritizedUnits(units);
-        for (var i = 0; i < prioritized.length; i++) {
-            this[prioritized[i].unit](units[prioritized[i].unit]);
-        }
-    } else {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units](value);
-        }
-    }
-    return this;
 }
 
 function zeroFill(number, targetLength, forceSign) {
@@ -50310,6 +52647,131 @@ var MILLISECOND = 6;
 var WEEK = 7;
 var WEEKDAY = 8;
 
+// FORMATTING
+
+addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+});
+
+addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+});
+
+addFormatToken(0, ['YYYY',   4],       0, 'year');
+addFormatToken(0, ['YYYYY',  5],       0, 'year');
+addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+// ALIASES
+
+addUnitAlias('year', 'y');
+
+// PRIORITIES
+
+addUnitPriority('year', 1);
+
+// PARSING
+
+addRegexToken('Y',      matchSigned);
+addRegexToken('YY',     match1to2, match2);
+addRegexToken('YYYY',   match1to4, match4);
+addRegexToken('YYYYY',  match1to6, match6);
+addRegexToken('YYYYYY', match1to6, match6);
+
+addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+});
+addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+});
+addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+});
+
+// HELPERS
+
+function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+}
+
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+// HOOKS
+
+hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+};
+
+// MOMENTS
+
+var getSetYear = makeGetSet('FullYear', true);
+
+function getIsLeapYear () {
+    return isLeapYear(this.year());
+}
+
+function makeGetSet (unit, keepTime) {
+    return function (value) {
+        if (value != null) {
+            set$1(this, unit, value);
+            hooks.updateOffset(this, keepTime);
+            return this;
+        } else {
+            return get(this, unit);
+        }
+    };
+}
+
+function get (mom, unit) {
+    return mom.isValid() ?
+        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+}
+
+function set$1 (mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+        if (unit === 'FullYear' && isLeapYear(mom.year()) && mom.month() === 1 && mom.date() === 29) {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+        }
+        else {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+}
+
+// MOMENTS
+
+function stringGet (units) {
+    units = normalizeUnits(units);
+    if (isFunction(this[units])) {
+        return this[units]();
+    }
+    return this;
+}
+
+
+function stringSet (units, value) {
+    if (typeof units === 'object') {
+        units = normalizeObjectUnits(units);
+        var prioritized = getPrioritizedUnits(units);
+        for (var i = 0; i < prioritized.length; i++) {
+            this[prioritized[i].unit](units[prioritized[i].unit]);
+        }
+    } else {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units](value);
+        }
+    }
+    return this;
+}
+
+function mod(n, x) {
+    return ((n % x) + x) % x;
+}
+
 var indexOf;
 
 if (Array.prototype.indexOf) {
@@ -50327,10 +52789,13 @@ if (Array.prototype.indexOf) {
     };
 }
 
-var indexOf$1 = indexOf;
-
 function daysInMonth(year, month) {
-    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    if (isNaN(year) || isNaN(month)) {
+        return NaN;
+    }
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? (isLeapYear(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
 }
 
 // FORMATTING
@@ -50419,26 +52884,26 @@ function handleStrictParse(monthName, format, strict) {
 
     if (strict) {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -50595,72 +53060,6 @@ function computeMonthsParse () {
     this._monthsShortRegex = this._monthsRegex;
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-}
-
-// FORMATTING
-
-addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-});
-
-addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-});
-
-addFormatToken(0, ['YYYY',   4],       0, 'year');
-addFormatToken(0, ['YYYYY',  5],       0, 'year');
-addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-// ALIASES
-
-addUnitAlias('year', 'y');
-
-// PRIORITIES
-
-addUnitPriority('year', 1);
-
-// PARSING
-
-addRegexToken('Y',      matchSigned);
-addRegexToken('YY',     match1to2, match2);
-addRegexToken('YYYY',   match1to4, match4);
-addRegexToken('YYYYY',  match1to6, match6);
-addRegexToken('YYYYYY', match1to6, match6);
-
-addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-});
-addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-});
-addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-});
-
-// HELPERS
-
-function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-}
-
-function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-// HOOKS
-
-hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-};
-
-// MOMENTS
-
-var getSetYear = makeGetSet('FullYear', true);
-
-function getIsLeapYear () {
-    return isLeapYear(this.year());
 }
 
 function createDate (y, m, d, h, M, s, ms) {
@@ -50930,48 +53329,48 @@ function handleStrictParse$1(weekdayName, format, strict) {
 
     if (strict) {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -51360,11 +53759,10 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            require('./locale/' + name);
-            // because defineLocale currently also sets the global locale, we
-            // want to undo that for lazy loaded locales
+            var aliasedRequire = require;
+            aliasedRequire('./locale/' + name);
             getSetGlobalLocale(oldLocale);
-        } catch (e) { }
+        } catch (e) {}
     }
     return locales[name];
 }
@@ -51440,10 +53838,11 @@ function defineLocale (name, config) {
 
 function updateLocale(name, config) {
     if (config != null) {
-        var locale, parentConfig = baseConfig;
+        var locale, tmpLocale, parentConfig = baseConfig;
         // MERGE
-        if (locales[name] != null) {
-            parentConfig = locales[name]._config;
+        tmpLocale = loadLocale(name);
+        if (tmpLocale != null) {
+            parentConfig = tmpLocale._config;
         }
         config = mergeConfigs(parentConfig, config);
         locale = new Locale(config);
@@ -51490,7 +53889,7 @@ function getLocale (key) {
 }
 
 function listLocales() {
-    return keys$1(locales);
+    return keys(locales);
 }
 
 function checkOverflow (m) {
@@ -51521,6 +53920,154 @@ function checkOverflow (m) {
     }
 
     return m;
+}
+
+// Pick the first defined of two or three arguments.
+function defaults(a, b, c) {
+    if (a != null) {
+        return a;
+    }
+    if (b != null) {
+        return b;
+    }
+    return c;
+}
+
+function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+    if (config._useUTC) {
+        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+}
+
+// convert an array to a date.
+// the array should mirror the parameters below
+// note: all values past the year are optional and will default to the lowest possible value.
+// [year, month, day , hour, minute, second, millisecond]
+function configFromArray (config) {
+    var i, date, input = [], currentDate, yearToUse;
+
+    if (config._d) {
+        return;
+    }
+
+    currentDate = currentDateArray(config);
+
+    //compute day of the year from weeks and weekdays
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        dayOfYearFromWeekInfo(config);
+    }
+
+    //if the day of the year is set, figure out what it is
+    if (config._dayOfYear != null) {
+        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+            getParsingFlags(config)._overflowDayOfYear = true;
+        }
+
+        date = createUTCDate(yearToUse, 0, config._dayOfYear);
+        config._a[MONTH] = date.getUTCMonth();
+        config._a[DATE] = date.getUTCDate();
+    }
+
+    // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        config._a[i] = input[i] = currentDate[i];
+    }
+
+    // Zero out whatever was not defaulted, including time
+    for (; i < 7; i++) {
+        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+    }
+
+    // Check for 24:00:00.000
+    if (config._a[HOUR] === 24 &&
+            config._a[MINUTE] === 0 &&
+            config._a[SECOND] === 0 &&
+            config._a[MILLISECOND] === 0) {
+        config._nextDay = true;
+        config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+    if (config._tzm != null) {
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+        config._a[HOUR] = 24;
+    }
+
+    // check for mismatching day of week
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== config._d.getDay()) {
+        getParsingFlags(config).weekdayMismatch = true;
+    }
+}
+
+function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+    w = config._w;
+    if (w.GG != null || w.W != null || w.E != null) {
+        dow = 1;
+        doy = 4;
+
+        // TODO: We need to take the current isoWeekYear, but that depends on
+        // how we interpret now (local, utc, fixed offset). So create
+        // a now version of current config (take local/utc/offset flags, and
+        // create now).
+        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+        week = defaults(w.W, 1);
+        weekday = defaults(w.E, 1);
+        if (weekday < 1 || weekday > 7) {
+            weekdayOverflow = true;
+        }
+    } else {
+        dow = config._locale._week.dow;
+        doy = config._locale._week.doy;
+
+        var curWeek = weekOfYear(createLocal(), dow, doy);
+
+        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+        // Default to current week.
+        week = defaults(w.w, curWeek.week);
+
+        if (w.d != null) {
+            // weekday -- low day numbers are considered next week
+            weekday = w.d;
+            if (weekday < 0 || weekday > 6) {
+                weekdayOverflow = true;
+            }
+        } else if (w.e != null) {
+            // local weekday -- counting starts from begining of week
+            weekday = w.e + dow;
+            if (w.e < 0 || w.e > 6) {
+                weekdayOverflow = true;
+            }
+        } else {
+            // default to begining of week
+            weekday = dow;
+        }
+    }
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+        getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+        getParsingFlags(config)._overflowWeekday = true;
+    } else {
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+    }
 }
 
 // iso 8601 regex
@@ -51614,70 +54161,94 @@ function configFromISO(config) {
 }
 
 // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-var basicRfcRegex = /^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d?\d\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(?:\d\d)?\d\d\s)(\d\d:\d\d)(\:\d\d)?(\s(?:UT|GMT|[ECMP][SD]T|[A-IK-Za-ik-z]|[+-]\d{4}))$/;
+var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [
+        untruncateYear(yearStr),
+        defaultLocaleMonthsShort.indexOf(monthStr),
+        parseInt(dayStr, 10),
+        parseInt(hourStr, 10),
+        parseInt(minuteStr, 10)
+    ];
+
+    if (secondStr) {
+        result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+}
+
+function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+    if (year <= 49) {
+        return 2000 + year;
+    } else if (year <= 999) {
+        return 1900 + year;
+    }
+    return year;
+}
+
+function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').trim();
+}
+
+function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+        var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+            weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+        if (weekdayProvided !== weekdayActual) {
+            getParsingFlags(config).weekdayMismatch = true;
+            config._isValid = false;
+            return false;
+        }
+    }
+    return true;
+}
+
+var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
+};
+
+function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+        return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+        // the only allowed military tz is Z
+        return 0;
+    } else {
+        var hm = parseInt(numOffset, 10);
+        var m = hm % 100, h = (hm - m) / 100;
+        return h * 60 + m;
+    }
+}
 
 // date and time from ref 2822 format
 function configFromRFC2822(config) {
-    var string, match, dayFormat,
-        dateFormat, timeFormat, tzFormat;
-    var timezones = {
-        ' GMT': ' +0000',
-        ' EDT': ' -0400',
-        ' EST': ' -0500',
-        ' CDT': ' -0500',
-        ' CST': ' -0600',
-        ' MDT': ' -0600',
-        ' MST': ' -0700',
-        ' PDT': ' -0700',
-        ' PST': ' -0800'
-    };
-    var military = 'YXWVUTSRQPONZABCDEFGHIKLM';
-    var timezone, timezoneIndex;
-
-    string = config._i
-        .replace(/\([^\)]*\)|[\n\t]/g, ' ') // Remove comments and folding whitespace
-        .replace(/(\s\s+)/g, ' ') // Replace multiple-spaces with a single space
-        .replace(/^\s|\s$/g, ''); // Remove leading and trailing spaces
-    match = basicRfcRegex.exec(string);
-
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
     if (match) {
-        dayFormat = match[1] ? 'ddd' + ((match[1].length === 5) ? ', ' : ' ') : '';
-        dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
-        timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
-
-        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-        if (match[1]) { // day of week given
-            var momentDate = new Date(match[2]);
-            var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
-
-            if (match[1].substr(0,3) !== momentDay) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
-                return;
-            }
+        var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+        if (!checkWeekday(match[1], parsedArray, config)) {
+            return;
         }
 
-        switch (match[5].length) {
-            case 2: // military
-                if (timezoneIndex === 0) {
-                    timezone = ' +0000';
-                } else {
-                    timezoneIndex = military.indexOf(match[5][1].toUpperCase()) - 12;
-                    timezone = ((timezoneIndex < 0) ? ' -' : ' +') +
-                        (('' + timezoneIndex).replace(/^-?/, '0')).match(/..$/)[0] + '00';
-                }
-                break;
-            case 4: // Zone
-                timezone = timezones[match[5]];
-                break;
-            default: // UT or +/-9999
-                timezone = timezones[' GMT'];
-        }
-        match[5] = timezone;
-        config._i = match.splice(1).join('');
-        tzFormat = ' ZZ';
-        config._f = dayFormat + dateFormat + timeFormat + tzFormat;
-        configFromStringAndFormat(config);
+        config._a = parsedArray;
+        config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+        config._d = createUTCDate.apply(null, config._a);
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
         getParsingFlags(config).rfc2822 = true;
     } else {
         config._isValid = false;
@@ -51720,149 +54291,6 @@ hooks.createFromInputFallback = deprecate(
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
 );
-
-// Pick the first defined of two or three arguments.
-function defaults(a, b, c) {
-    if (a != null) {
-        return a;
-    }
-    if (b != null) {
-        return b;
-    }
-    return c;
-}
-
-function currentDateArray(config) {
-    // hooks is actually the exported moment object
-    var nowValue = new Date(hooks.now());
-    if (config._useUTC) {
-        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-    }
-    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-}
-
-// convert an array to a date.
-// the array should mirror the parameters below
-// note: all values past the year are optional and will default to the lowest possible value.
-// [year, month, day , hour, minute, second, millisecond]
-function configFromArray (config) {
-    var i, date, input = [], currentDate, yearToUse;
-
-    if (config._d) {
-        return;
-    }
-
-    currentDate = currentDateArray(config);
-
-    //compute day of the year from weeks and weekdays
-    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-        dayOfYearFromWeekInfo(config);
-    }
-
-    //if the day of the year is set, figure out what it is
-    if (config._dayOfYear != null) {
-        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-            getParsingFlags(config)._overflowDayOfYear = true;
-        }
-
-        date = createUTCDate(yearToUse, 0, config._dayOfYear);
-        config._a[MONTH] = date.getUTCMonth();
-        config._a[DATE] = date.getUTCDate();
-    }
-
-    // Default to current date.
-    // * if no year, month, day of month are given, default to today
-    // * if day of month is given, default month and year
-    // * if month is given, default only year
-    // * if year is given, don't default anything
-    for (i = 0; i < 3 && config._a[i] == null; ++i) {
-        config._a[i] = input[i] = currentDate[i];
-    }
-
-    // Zero out whatever was not defaulted, including time
-    for (; i < 7; i++) {
-        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
-    }
-
-    // Check for 24:00:00.000
-    if (config._a[HOUR] === 24 &&
-            config._a[MINUTE] === 0 &&
-            config._a[SECOND] === 0 &&
-            config._a[MILLISECOND] === 0) {
-        config._nextDay = true;
-        config._a[HOUR] = 0;
-    }
-
-    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-    // Apply timezone offset from input. The actual utcOffset can be changed
-    // with parseZone.
-    if (config._tzm != null) {
-        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-    }
-
-    if (config._nextDay) {
-        config._a[HOUR] = 24;
-    }
-}
-
-function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-    w = config._w;
-    if (w.GG != null || w.W != null || w.E != null) {
-        dow = 1;
-        doy = 4;
-
-        // TODO: We need to take the current isoWeekYear, but that depends on
-        // how we interpret now (local, utc, fixed offset). So create
-        // a now version of current config (take local/utc/offset flags, and
-        // create now).
-        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-        week = defaults(w.W, 1);
-        weekday = defaults(w.E, 1);
-        if (weekday < 1 || weekday > 7) {
-            weekdayOverflow = true;
-        }
-    } else {
-        dow = config._locale._week.dow;
-        doy = config._locale._week.doy;
-
-        var curWeek = weekOfYear(createLocal(), dow, doy);
-
-        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-        // Default to current week.
-        week = defaults(w.w, curWeek.week);
-
-        if (w.d != null) {
-            // weekday -- low day numbers are considered next week
-            weekday = w.d;
-            if (weekday < 0 || weekday > 6) {
-                weekdayOverflow = true;
-            }
-        } else if (w.e != null) {
-            // local weekday -- counting starts from begining of week
-            weekday = w.e + dow;
-            if (w.e < 0 || w.e > 6) {
-                weekdayOverflow = true;
-            }
-        } else {
-            // default to begining of week
-            weekday = dow;
-        }
-    }
-    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-        getParsingFlags(config)._overflowWeeks = true;
-    } else if (weekdayOverflow != null) {
-        getParsingFlags(config)._overflowWeekday = true;
-    } else {
-        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-        config._a[YEAR] = temp.year;
-        config._dayOfYear = temp.dayOfYear;
-    }
-}
 
 // constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
@@ -52188,7 +54616,7 @@ var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'se
 
 function isDurationValid(m) {
     for (var key in m) {
-        if (!(ordering.indexOf(key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
             return false;
         }
     }
@@ -52239,7 +54667,7 @@ function Duration (duration) {
     // day when working around DST, we need to store them separately
     this._days = +days +
         weeks * 7;
-    // It is impossible translate months into days without knowing
+    // It is impossible to translate months into days without knowing
     // which months you are are talking about, so we have to store
     // it separately.
     this._months = +months +
@@ -52486,12 +54914,12 @@ function isUtc () {
 }
 
 // ASP.NET json date format regex
-var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
 // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
 // and further modified to allow for strings containing both week and day
-var isoRegex = /^(-)?P(?:(-?[0-9,.]*)Y)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)W)?(?:(-?[0-9,.]*)D)?(?:T(?:(-?[0-9,.]*)H)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)S)?)?$/;
+var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
 function createDuration (input, key) {
     var duration = input,
@@ -52525,7 +54953,7 @@ function createDuration (input, key) {
             ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
         };
     } else if (!!(match = isoRegex.exec(input))) {
-        sign = (match[1] === '-') ? -1 : 1;
+        sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
         duration = {
             y : parseIso(match[2], sign),
             M : parseIso(match[3], sign),
@@ -52628,14 +55056,14 @@ function addSubtract (mom, duration, isAdding, updateOffset) {
 
     updateOffset = updateOffset == null ? true : updateOffset;
 
-    if (milliseconds) {
-        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    if (months) {
+        setMonth(mom, get(mom, 'Month') + months * isAdding);
     }
     if (days) {
         set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
     }
-    if (months) {
-        setMonth(mom, get(mom, 'Month') + months * isAdding);
+    if (milliseconds) {
+        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
     }
     if (updateOffset) {
         hooks.updateOffset(mom, days || months);
@@ -52745,22 +55173,18 @@ function diff (input, units, asFloat) {
 
     units = normalizeUnits(units);
 
-    if (units === 'year' || units === 'month' || units === 'quarter') {
-        output = monthDiff(this, that);
-        if (units === 'quarter') {
-            output = output / 3;
-        } else if (units === 'year') {
-            output = output / 12;
-        }
-    } else {
-        delta = this - that;
-        output = units === 'second' ? delta / 1e3 : // 1000
-            units === 'minute' ? delta / 6e4 : // 1000 * 60
-            units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
-            units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
-            units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
-            delta;
+    switch (units) {
+        case 'year': output = monthDiff(this, that) / 12; break;
+        case 'month': output = monthDiff(this, that); break;
+        case 'quarter': output = monthDiff(this, that) / 3; break;
+        case 'second': output = (this - that) / 1e3; break; // 1000
+        case 'minute': output = (this - that) / 6e4; break; // 1000 * 60
+        case 'hour': output = (this - that) / 36e5; break; // 1000 * 60 * 60
+        case 'day': output = (this - that - zoneDelta) / 864e5; break; // 1000 * 60 * 60 * 24, negate dst
+        case 'week': output = (this - that - zoneDelta) / 6048e5; break; // 1000 * 60 * 60 * 24 * 7, negate dst
+        default: output = this - that;
     }
+
     return asFloat ? output : absFloor(output);
 }
 
@@ -53738,6 +56162,10 @@ var asWeeks        = makeAs('w');
 var asMonths       = makeAs('M');
 var asYears        = makeAs('y');
 
+function clone$1 () {
+    return createDuration(this);
+}
+
 function get$2 (units) {
     units = normalizeUnits(units);
     return this.isValid() ? this[units + 's']() : NaN;
@@ -53847,6 +56275,10 @@ function humanize (withSuffix) {
 
 var abs$1 = Math.abs;
 
+function sign(x) {
+    return ((x > 0) - (x < 0)) || +x;
+}
+
 function toISOString$1() {
     // for ISO strings we do not use the normal bubbling rules:
     //  * milliseconds bubble up until they become hours
@@ -53881,7 +56313,7 @@ function toISOString$1() {
     var D = days;
     var h = hours;
     var m = minutes;
-    var s = seconds;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
     var total = this.asSeconds();
 
     if (!total) {
@@ -53890,15 +56322,19 @@ function toISOString$1() {
         return 'P0D';
     }
 
-    return (total < 0 ? '-' : '') +
-        'P' +
-        (Y ? Y + 'Y' : '') +
-        (M ? M + 'M' : '') +
-        (D ? D + 'D' : '') +
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+    return totalSign + 'P' +
+        (Y ? ymSign + Y + 'Y' : '') +
+        (M ? ymSign + M + 'M' : '') +
+        (D ? daysSign + D + 'D' : '') +
         ((h || m || s) ? 'T' : '') +
-        (h ? h + 'H' : '') +
-        (m ? m + 'M' : '') +
-        (s ? s + 'S' : '');
+        (h ? hmsSign + h + 'H' : '') +
+        (m ? hmsSign + m + 'M' : '') +
+        (s ? hmsSign + s + 'S' : '');
 }
 
 var proto$2 = Duration.prototype;
@@ -53918,6 +56354,7 @@ proto$2.asMonths       = asMonths;
 proto$2.asYears        = asYears;
 proto$2.valueOf        = valueOf$1;
 proto$2._bubble        = bubble;
+proto$2.clone          = clone$1;
 proto$2.get            = get$2;
 proto$2.milliseconds   = milliseconds;
 proto$2.seconds        = seconds;
@@ -53959,7 +56396,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.18.1';
+hooks.version = '2.19.2';
 
 setHookCallback(createLocal);
 
@@ -53986,7 +56423,7 @@ hooks.updateLocale          = updateLocale;
 hooks.locales               = listLocales;
 hooks.weekdaysShort         = listWeekdaysShort;
 hooks.normalizeUnits        = normalizeUnits;
-hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+hooks.relativeTimeRounding  = getSetRelativeTimeRounding;
 hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
 hooks.calendarFormat        = getCalendarFormat;
 hooks.prototype             = proto;
@@ -53995,7 +56432,7 @@ return hooks;
 
 })));
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -55545,7 +57982,7 @@ return hooks;
   }
 }.call(this));
 
-},{}],52:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports={
   "name": "cartodb.js",
   "version": "4.0.0-alpha.23",
@@ -55705,7 +58142,7 @@ module.exports={
   }
 }
 
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Model = require('../core/model');
@@ -55936,7 +58373,7 @@ var AnalysisModel = Model.extend({
 
 module.exports = AnalysisModel;
 
-},{"../core/model":91,"../core/util":92,"backbone":2,"underscore":51}],54:[function(require,module,exports){
+},{"../core/model":93,"../core/util":94,"backbone":2,"underscore":53}],56:[function(require,module,exports){
 var _ = require('underscore');
 var BackbonePoller = require('backbone-poller');
 
@@ -55998,7 +58435,7 @@ AnalysisPoller.prototype.reset = function () {
 
 module.exports = AnalysisPoller;
 
-},{"backbone-poller":1,"underscore":51}],55:[function(require,module,exports){
+},{"backbone-poller":1,"underscore":53}],57:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Analysis = require('./analysis-model');
@@ -56157,7 +58594,7 @@ function _getCartoDBAndTorqueLayers (layersCollection) {
 
 module.exports = AnalysisService;
 
-},{"../geo/map/layer-types.js":113,"./analysis-model":53,"./camshaft-reference":56,"backbone":2,"underscore":51}],56:[function(require,module,exports){
+},{"../geo/map/layer-types.js":115,"./analysis-model":55,"./camshaft-reference":58,"backbone":2,"underscore":53}],58:[function(require,module,exports){
 var camshaftReference = require('camshaft-reference').getVersion('latest');
 var PARAM_TYPES = {
   NODE: 'node',
@@ -56210,7 +58647,7 @@ module.exports = {
   }
 };
 
-},{"camshaft-reference":4}],57:[function(require,module,exports){
+},{"camshaft-reference":4}],59:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var CartoError = require('./error');
@@ -56485,7 +58922,7 @@ function _checkServerUrl (serverUrl, username) {
 
 module.exports = Client;
 
-},{"../../../package.json":52,"../../engine":104,"./error":65,"./events":66,"./layer/base":72,"./layers":76,"./leaflet":77,"backbone":2,"underscore":51}],58:[function(require,module,exports){
+},{"../../../package.json":54,"../../engine":106,"./error":67,"./events":68,"./layer/base":74,"./layers":78,"./leaflet":79,"backbone":2,"underscore":53}],60:[function(require,module,exports){
 var _ = require('underscore');
 /**
  * Constants module for dataviews
@@ -56532,7 +58969,7 @@ module.exports = {
   isValidOperation: isValidOperation
 };
 
-},{"underscore":51}],59:[function(require,module,exports){
+},{"underscore":53}],61:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var status = require('../constants').status;
@@ -56855,7 +59292,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"../constants":58,"../filter/base":67,"../filter/bounding-box":69,"../filter/bounding-box-leaflet":68,"../source/base":79,"backbone":2,"underscore":51}],60:[function(require,module,exports){
+},{"../constants":60,"../filter/base":69,"../filter/bounding-box":71,"../filter/bounding-box-leaflet":70,"../source/base":81,"backbone":2,"underscore":53}],62:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var constants = require('../constants');
@@ -57101,7 +59538,7 @@ Category.prototype._createInternalModel = function (engine) {
 
 module.exports = Category;
 
-},{"../../../dataviews/category-dataview-model":93,"../../../windshaft/filters/category":140,"../constants":58,"./base":59,"underscore":51}],61:[function(require,module,exports){
+},{"../../../dataviews/category-dataview-model":95,"../../../windshaft/filters/category":142,"../constants":60,"./base":61,"underscore":53}],63:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var constants = require('../constants');
@@ -57221,7 +59658,7 @@ Formula.prototype._createInternalModel = function (engine) {
 
 module.exports = Formula;
 
-},{"../../../dataviews/formula-dataview-model":100,"../constants":58,"./base":59,"underscore":51}],62:[function(require,module,exports){
+},{"../../../dataviews/formula-dataview-model":102,"../constants":60,"./base":61,"underscore":53}],64:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var HistogramDataviewModel = require('../../../..//dataviews/histogram-dataview-model');
@@ -57344,7 +59781,7 @@ Histogram.prototype._createInternalModel = function (engine) {
 
 module.exports = Histogram;
 
-},{"../../../..//dataviews/histogram-dataview-model":102,"../base":59,"./parse-histogram-data.js":63,"underscore":51}],63:[function(require,module,exports){
+},{"../../../..//dataviews/histogram-dataview-model":104,"../base":61,"./parse-histogram-data.js":65,"underscore":53}],65:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -57402,7 +59839,7 @@ function _createResult (data, maxFreq) {
 
 module.exports = parseHistogramData;
 
-},{"underscore":51}],64:[function(require,module,exports){
+},{"underscore":53}],66:[function(require,module,exports){
 var Category = require('./category');
 var Formula = require('./formula');
 var Histogram = require('./histogram');
@@ -57419,7 +59856,7 @@ module.exports = {
   status: status
 };
 
-},{"../constants":58,"./category":60,"./formula":61,"./histogram":62}],65:[function(require,module,exports){
+},{"../constants":60,"./category":62,"./formula":63,"./histogram":64}],67:[function(require,module,exports){
 /**
  * Build a cartoError from a generic error
  * @constructor
@@ -57476,7 +59913,7 @@ module.exports = CartoError;
  * @api
  */
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /**
  * @namespace carto.events
  * @api
@@ -57506,7 +59943,7 @@ module.exports = {
   ERROR: ERROR
 };
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -57524,7 +59961,7 @@ _.extend(Base.prototype, Backbone.Events);
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":51}],68:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],70:[function(require,module,exports){
 var Base = require('./base');
 var LeafletBoundingBoxAdapter = require('../../../geo/adapters/leaflet-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -57572,7 +60009,7 @@ BoundingBoxLeaflet.prototype.$getInternalModel = function () {
 
 module.exports = BoundingBoxLeaflet;
 
-},{"../../../geo/adapters/leaflet-bounding-box-adapter":105,"../../../windshaft/filters/bounding-box":139,"./base":67}],69:[function(require,module,exports){
+},{"../../../geo/adapters/leaflet-bounding-box-adapter":107,"../../../windshaft/filters/bounding-box":141,"./base":69}],71:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -57654,7 +60091,7 @@ BoundingBox.prototype.$getInternalModel = function () {
 
 module.exports = BoundingBox;
 
-},{"../../../windshaft/filters/bounding-box":139,"./base":67,"underscore":51}],70:[function(require,module,exports){
+},{"../../../windshaft/filters/bounding-box":141,"./base":69,"underscore":53}],72:[function(require,module,exports){
 var BoundingBox = require('./bounding-box');
 var BoundingBoxLeaflet = require('./bounding-box-leaflet');
 
@@ -57667,7 +60104,7 @@ module.exports = {
   BoundingBoxLeaflet: BoundingBoxLeaflet
 };
 
-},{"./bounding-box":69,"./bounding-box-leaflet":68}],71:[function(require,module,exports){
+},{"./bounding-box":71,"./bounding-box-leaflet":70}],73:[function(require,module,exports){
 /**
  *  @api
  *  @namespace carto
@@ -57710,7 +60147,7 @@ var carto = window.carto = {
 
 module.exports = carto;
 
-},{"./client":57,"./constants":58,"./dataview":64,"./events":66,"./filter":70,"./layer":74,"./source":81,"./style":85}],72:[function(require,module,exports){
+},{"./client":59,"./constants":60,"./dataview":66,"./events":68,"./filter":72,"./layer":76,"./source":83,"./style":87}],74:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -57760,7 +60197,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":51}],73:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],75:[function(require,module,exports){
 /**
  * Enum for event types.
  *
@@ -57777,7 +60214,7 @@ var events = {
 
 module.exports = events;
 
-},{}],74:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 var Layer = require('./layer');
 var EventTypes = require('./event-types');
 
@@ -57790,7 +60227,7 @@ module.exports = {
   events: EventTypes
 };
 
-},{"./event-types":73,"./layer":75}],75:[function(require,module,exports){
+},{"./event-types":75,"./layer":77}],77:[function(require,module,exports){
 var Base = require('./base');
 var CartoDBLayer = require('../../../geo/map/cartodb-layer');
 var SourceBase = require('../source/base');
@@ -58078,7 +60515,7 @@ function _checkSource (source) {
 
 module.exports = Layer;
 
-},{"../../../geo/map/cartodb-layer":110,"../source/base":79,"../style/base":83,"./base":72}],76:[function(require,module,exports){
+},{"../../../geo/map/cartodb-layer":112,"../source/base":81,"../style/base":85,"./base":74}],78:[function(require,module,exports){
 var _ = require('underscore');
 
 function Layers (layers) {
@@ -58110,7 +60547,7 @@ Layers.prototype.toArray = function () {
 
 module.exports = Layers;
 
-},{"underscore":51}],77:[function(require,module,exports){
+},{"underscore":53}],79:[function(require,module,exports){
 var LayerGroup = require('./layer-group');
 
 /**
@@ -58121,7 +60558,7 @@ module.exports = {
   LayerGroup: LayerGroup
 };
 
-},{"./layer-group":78}],78:[function(require,module,exports){
+},{"./layer-group":80}],80:[function(require,module,exports){
 var Layer = require('../layer/');
 var LeafletCartoLayerGroupView = require('../../../geo/leaflet/leaflet-cartodb-layer-group-view');
 
@@ -58210,7 +60647,7 @@ LayerGroup.prototype._triggerLayerFeatureEvent = function (eventName, internalEv
 
 module.exports = LayerGroup;
 
-},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":108,"../layer/":74}],79:[function(require,module,exports){
+},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":110,"../layer/":76}],81:[function(require,module,exports){
 /**
  * Base source object
  *
@@ -58272,7 +60709,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{}],80:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
@@ -58330,7 +60767,7 @@ function _checkDataset (dataset) {
 
 module.exports = Dataset;
 
-},{"../../../analysis/analysis-model":53,"../../../analysis/camshaft-reference":56,"./base":79,"underscore":51}],81:[function(require,module,exports){
+},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":81,"underscore":53}],83:[function(require,module,exports){
 var Dataset = require('./dataset');
 var SQL = require('./sql');
 
@@ -58343,7 +60780,7 @@ module.exports = {
   SQL: SQL
 };
 
-},{"./dataset":80,"./sql":82}],82:[function(require,module,exports){
+},{"./dataset":82,"./sql":84}],84:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
@@ -58421,7 +60858,7 @@ function _checkQuery (query) {
 }
 module.exports = SQL;
 
-},{"../../../analysis/analysis-model":53,"../../../analysis/camshaft-reference":56,"./base":79,"underscore":51}],83:[function(require,module,exports){
+},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":81,"underscore":53}],85:[function(require,module,exports){
 /**
  * Base style object
  *
@@ -58434,7 +60871,7 @@ function Base () {}
 
 module.exports = Base;
 
-},{}],84:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 
@@ -58479,7 +60916,7 @@ function _checkCartoCSS (cartoCSS) {
 
 module.exports = CartoCSS;
 
-},{"./base":83,"underscore":51}],85:[function(require,module,exports){
+},{"./base":85,"underscore":53}],87:[function(require,module,exports){
 var CartoCSS = require('./cartocss');
 
 /**
@@ -58490,7 +60927,7 @@ module.exports = {
   CartoCSS: CartoCSS
 };
 
-},{"./cartocss":84}],86:[function(require,module,exports){
+},{"./cartocss":86}],88:[function(require,module,exports){
 var Config = require('./core/config');
 
 var config = new Config();
@@ -58501,7 +60938,7 @@ config.set({
 
 module.exports = config;
 
-},{"./core/config":90}],87:[function(require,module,exports){
+},{"./core/config":92}],89:[function(require,module,exports){
 // Creates cdb object, mutated in the entry file cartodb.js
 // Used to avoid circular dependencies
 var cdb = {};
@@ -58513,7 +60950,7 @@ cdb.helpers = {};
 
 module.exports = cdb;
 
-},{"../package.json":52}],88:[function(require,module,exports){
+},{"../package.json":54}],90:[function(require,module,exports){
 var cdb = require('cdb');
 
 module.exports = {
@@ -58534,7 +60971,7 @@ module.exports = {
   }
 };
 
-},{"cdb":87}],89:[function(require,module,exports){
+},{"cdb":89}],91:[function(require,module,exports){
 module.exports = {
   OVERLAY_TYPES: {
     ATTRIBUTION: 'attribution',
@@ -58561,7 +60998,7 @@ module.exports = {
   }
 };
 
-},{}],90:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -58579,7 +61016,7 @@ var Config = Backbone.Model.extend({
 
 module.exports = Config;
 
-},{"backbone":2}],91:[function(require,module,exports){
+},{"backbone":2}],93:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -58662,7 +61099,7 @@ var Model = Backbone.Model.extend({
 
 module.exports = Model;
 
-},{"backbone":2,"jquery":45,"underscore":51}],92:[function(require,module,exports){
+},{"backbone":2,"jquery":47,"underscore":53}],94:[function(require,module,exports){
 var _ = require('underscore');
 
 var util = {};
@@ -58824,7 +61261,7 @@ util.checkRequiredOpts = function (actualOpts, requiredOpts, from) {
 
 module.exports = util;
 
-},{"underscore":51}],93:[function(require,module,exports){
+},{"underscore":53}],95:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 var SearchModel = require('./category-dataview/search-model');
@@ -59129,7 +61566,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./category-dataview/categories-collection":94,"./category-dataview/category-model-range":96,"./category-dataview/search-model":97,"./dataview-model-base":98,"underscore":51}],94:[function(require,module,exports){
+},{"./category-dataview/categories-collection":96,"./category-dataview/category-model-range":98,"./category-dataview/search-model":99,"./dataview-model-base":100,"underscore":53}],96:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var CategoryItemModel = require('./category-item-model');
@@ -59181,7 +61618,7 @@ module.exports = Backbone.Collection.extend({
 
 });
 
-},{"./category-item-model":95,"backbone":2,"underscore":51}],95:[function(require,module,exports){
+},{"./category-item-model":97,"backbone":2,"underscore":53}],97:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -59197,7 +61634,7 @@ module.exports = Model.extend({
 
 });
 
-},{"../../core/model":91}],96:[function(require,module,exports){
+},{"../../core/model":93}],98:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 
@@ -59259,7 +61696,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91,"underscore":51}],97:[function(require,module,exports){
+},{"../../core/model":93,"underscore":53}],99:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
@@ -59388,7 +61825,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91,"../../util/backbone-abort-sync":126,"./categories-collection":94,"underscore":51}],98:[function(require,module,exports){
+},{"../../core/model":93,"../../util/backbone-abort-sync":128,"./categories-collection":96,"underscore":53}],100:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../core/model');
 var BackboneAbortSync = require('../util/backbone-abort-sync');
@@ -59762,7 +62199,7 @@ module.exports = Model.extend({
   ]
 });
 
-},{"../analysis/analysis-model":53,"../core/model":91,"../core/util":92,"../util/backbone-abort-sync":126,"underscore":51}],99:[function(require,module,exports){
+},{"../analysis/analysis-model":55,"../core/model":93,"../core/util":94,"../util/backbone-abort-sync":128,"underscore":53}],101:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -59788,7 +62225,7 @@ var DataviewsCollection = Backbone.Collection.extend({
 
 module.exports = DataviewsCollection;
 
-},{"backbone":2,"underscore":51}],100:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],102:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 
@@ -59834,7 +62271,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./dataview-model-base":98,"underscore":51}],101:[function(require,module,exports){
+},{"./dataview-model-base":100,"underscore":53}],103:[function(require,module,exports){
 var moment = require('moment');
 var _ = require('underscore');
 
@@ -59965,7 +62402,7 @@ helper.formatUTCTimestamp = function (timestamp) {
 
 module.exports = helper;
 
-},{"moment":50,"underscore":51}],102:[function(require,module,exports){
+},{"moment":52,"underscore":53}],104:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3-array');
@@ -60387,7 +62824,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"../util/date-utils":127,"./dataview-model-base":98,"./helpers/histogram-helper":101,"./histogram-dataview/histogram-data-model":103,"backbone":2,"d3-array":44,"underscore":51}],103:[function(require,module,exports){
+},{"../util/date-utils":129,"./dataview-model-base":100,"./helpers/histogram-helper":103,"./histogram-dataview/histogram-data-model":105,"backbone":2,"d3-array":46,"underscore":53}],105:[function(require,module,exports){
 var _ = require('underscore');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
 var Model = require('../../core/model');
@@ -60603,7 +63040,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91,"../../util/backbone-abort-sync":126,"../helpers/histogram-helper":101,"underscore":51}],104:[function(require,module,exports){
+},{"../../core/model":93,"../../util/backbone-abort-sync":128,"../helpers/histogram-helper":103,"underscore":53}],106:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisPoller = require('./analysis/analysis-poller');
 var AnonymousMapSerializer = require('./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer');
@@ -60965,7 +63402,7 @@ module.exports = Engine;
   * @type {string}
   */
 
-},{"./analysis/analysis-poller":54,"./analysis/analysis-service":55,"./cdb.log":88,"./dataviews/dataviews-collection":99,"./geo/cartodb-layer-group":107,"./geo/map/layers":114,"./windshaft-integration/model-updater":133,"./windshaft/client":134,"./windshaft/error":137,"./windshaft/error-parser":136,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":142,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":145,"./windshaft/request":147,"./windshaft/response":148,"backbone":2,"underscore":51}],105:[function(require,module,exports){
+},{"./analysis/analysis-poller":56,"./analysis/analysis-service":57,"./cdb.log":90,"./dataviews/dataviews-collection":101,"./geo/cartodb-layer-group":109,"./geo/map/layers":116,"./windshaft-integration/model-updater":135,"./windshaft/client":136,"./windshaft/error":139,"./windshaft/error-parser":138,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":144,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":147,"./windshaft/request":149,"./windshaft/response":150,"backbone":2,"underscore":53}],107:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -60999,7 +63436,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91}],106:[function(require,module,exports){
+},{"../../core/model":93}],108:[function(require,module,exports){
 function CartoDBLayerGroupViewBase (layerGroupModel, nativeMap) {
   this.interaction = [];
   this.nativeMap = nativeMap;
@@ -61080,7 +63517,7 @@ CartoDBLayerGroupViewBase.prototype = {
 
 module.exports = CartoDBLayerGroupViewBase;
 
-},{}],107:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -61325,7 +63762,7 @@ var CartoDBLayerGroup = Backbone.Model.extend({
 
 module.exports = CartoDBLayerGroup;
 
-},{"../core/util":92,"./map/layer-types":113,"backbone":2,"jquery":45,"underscore":51}],108:[function(require,module,exports){
+},{"../core/util":94,"./map/layer-types":115,"backbone":2,"jquery":47,"underscore":53}],110:[function(require,module,exports){
 var _ = require('underscore');
 var L = require('leaflet');
 var C = require('../../constants');
@@ -61488,7 +63925,7 @@ LeafletCartoDBLayerGroupView.prototype.constructor = LeafletLayerView;
 
 module.exports = LeafletCartoDBLayerGroupView;
 
-},{"../../constants":89,"../cartodb-layer-group-view-base":106,"./leaflet-layer-view":109,"leaflet":46,"underscore":51,"wax.cartodb.js":150}],109:[function(require,module,exports){
+},{"../../constants":91,"../cartodb-layer-group-view-base":108,"./leaflet-layer-view":111,"leaflet":48,"underscore":53,"wax.cartodb.js":152}],111:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -61536,7 +63973,7 @@ _.extend(LeafletLayerView.prototype, {
 
 module.exports = LeafletLayerView;
 
-},{"backbone":2,"underscore":51}],110:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],112:[function(require,module,exports){
 var _ = require('underscore');
 var config = require('../../cdb.config');
 var LayerModelBase = require('./layer-model-base');
@@ -61692,7 +64129,7 @@ var CartoDBLayer = LayerModelBase.extend({
 
 module.exports = CartoDBLayer;
 
-},{"../../analysis/analysis-model":53,"../../cdb.config":86,"./infowindow-template":111,"./layer-model-base":112,"./legends/legends":121,"./tooltip-template":125,"underscore":51}],111:[function(require,module,exports){
+},{"../../analysis/analysis-model":55,"../../cdb.config":88,"./infowindow-template":113,"./layer-model-base":114,"./legends/legends":123,"./tooltip-template":127,"underscore":53}],113:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -61741,7 +64178,7 @@ var InfowindowTemplate = Backbone.Model.extend({
 
 module.exports = InfowindowTemplate;
 
-},{"./popup-fields":124,"backbone":2,"underscore":51}],112:[function(require,module,exports){
+},{"./popup-fields":126,"backbone":2,"underscore":53}],114:[function(require,module,exports){
 var log = require('../../cdb.log');
 var Model = require('../../core/model');
 
@@ -61820,7 +64257,7 @@ var MapLayer = Model.extend({
 
 module.exports = MapLayer;
 
-},{"../../cdb.log":88,"../../core/model":91}],113:[function(require,module,exports){
+},{"../../cdb.log":90,"../../core/model":93}],115:[function(require,module,exports){
 var TILED_LAYER_TYPE = 'Tiled';
 var PLAIN_LAYER_TYPE = 'Plain';
 var WMS_LAYER_TYPE = 'WMS';
@@ -61858,7 +64295,7 @@ module.exports = {
   }
 };
 
-},{}],114:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -61958,7 +64395,7 @@ var Layers = Backbone.Collection.extend({
 
 module.exports = Layers;
 
-},{"backbone":2,"underscore":51}],115:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],117:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -61987,7 +64424,7 @@ var BubbleLegendModel = LegendModelBase.extend({
 
 module.exports = BubbleLegendModel;
 
-},{"./legend-model-base":120,"underscore":51}],116:[function(require,module,exports){
+},{"./legend-model-base":122,"underscore":53}],118:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -62013,7 +64450,7 @@ var CategoryLegendModel = LegendModelBase.extend({
 
 module.exports = CategoryLegendModel;
 
-},{"./legend-model-base":120,"underscore":51}],117:[function(require,module,exports){
+},{"./legend-model-base":122,"underscore":53}],119:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -62043,7 +64480,7 @@ var ChoroplethLegendModel = LegendModelBase.extend({
 
 module.exports = ChoroplethLegendModel;
 
-},{"./legend-model-base":120,"underscore":51}],118:[function(require,module,exports){
+},{"./legend-model-base":122,"underscore":53}],120:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -62062,7 +64499,7 @@ var CustomChoroplethLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomChoroplethLegendModel;
 
-},{"./static-legend-model-base":122,"underscore":51}],119:[function(require,module,exports){
+},{"./static-legend-model-base":124,"underscore":53}],121:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -62078,7 +64515,7 @@ var CustomLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomLegendModel;
 
-},{"./static-legend-model-base":122,"underscore":51}],120:[function(require,module,exports){
+},{"./static-legend-model-base":124,"underscore":53}],122:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Engine = require('../../../engine');
@@ -62156,7 +64593,7 @@ var LegendModelBase = Backbone.Model.extend({
 
 module.exports = LegendModelBase;
 
-},{"../../../engine":104,"backbone":2,"underscore":51}],121:[function(require,module,exports){
+},{"../../../engine":106,"backbone":2,"underscore":53}],123:[function(require,module,exports){
 var _ = require('underscore');
 var CategoryLegendModel = require('./category-legend-model');
 var BubbleLegendModel = require('./bubble-legend-model');
@@ -62270,7 +64707,7 @@ Legends.prototype.hasAnyLegend = function () {
 
 module.exports = Legends;
 
-},{"./bubble-legend-model":115,"./category-legend-model":116,"./choropleth-legend-model":117,"./custom-choropleth-legend-model":118,"./custom-legend-model":119,"./torque-legend-model":123,"underscore":51}],122:[function(require,module,exports){
+},{"./bubble-legend-model":117,"./category-legend-model":118,"./choropleth-legend-model":119,"./custom-choropleth-legend-model":120,"./custom-legend-model":121,"./torque-legend-model":125,"underscore":53}],124:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -62288,7 +64725,7 @@ var StaticLegendModelBase = LegendModelBase.extend({
 
 module.exports = StaticLegendModelBase;
 
-},{"./legend-model-base":120,"underscore":51}],123:[function(require,module,exports){
+},{"./legend-model-base":122,"underscore":53}],125:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -62304,7 +64741,7 @@ var TorqueLegendModel = StaticLegendModelBase.extend({
 
 module.exports = TorqueLegendModel;
 
-},{"./static-legend-model-base":122,"underscore":51}],124:[function(require,module,exports){
+},{"./static-legend-model-base":124,"underscore":53}],126:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -62325,7 +64762,7 @@ var PopupFields = Backbone.Collection.extend({
 
 module.exports = PopupFields;
 
-},{"backbone":2,"underscore":51}],125:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],127:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -62375,7 +64812,7 @@ var TooltipTemplate = Backbone.Model.extend({
 
 module.exports = TooltipTemplate;
 
-},{"./popup-fields":124,"backbone":2,"underscore":51}],126:[function(require,module,exports){
+},{"./popup-fields":126,"backbone":2,"underscore":53}],128:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -62394,7 +64831,7 @@ module.exports = function (method, model, options) {
   return this._xhr;
 };
 
-},{"backbone":2}],127:[function(require,module,exports){
+},{"backbone":2}],129:[function(require,module,exports){
 var moment = require('moment');
 require('moment-timezone');
 
@@ -62406,7 +64843,7 @@ dateUtils.getLocalOffset = function () {
 
 module.exports = dateUtils;
 
-},{"moment":50,"moment-timezone":48}],128:[function(require,module,exports){
+},{"moment":52,"moment-timezone":50}],130:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -62446,7 +64883,7 @@ module.exports = {
   }
 };
 
-},{"./rule":132,"underscore":51}],129:[function(require,module,exports){
+},{"./rule":134,"underscore":53}],131:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -62510,7 +64947,7 @@ module.exports = {
   }
 };
 
-},{"./rule":132,"underscore":51}],130:[function(require,module,exports){
+},{"./rule":134,"underscore":53}],132:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -62560,7 +64997,7 @@ module.exports = {
   }
 };
 
-},{"./rule":132,"underscore":51}],131:[function(require,module,exports){
+},{"./rule":134,"underscore":53}],133:[function(require,module,exports){
 var ADAPTERS = {
   bubble: require('./rule-to-bubble-legend-adapter'),
   choropleth: require('./rule-to-choropleth-legend-adapter'),
@@ -62573,7 +65010,7 @@ module.exports = {
   }
 };
 
-},{"./rule-to-bubble-legend-adapter":128,"./rule-to-category-legend-adapter":129,"./rule-to-choropleth-legend-adapter":130}],132:[function(require,module,exports){
+},{"./rule-to-bubble-legend-adapter":130,"./rule-to-category-legend-adapter":131,"./rule-to-choropleth-legend-adapter":132}],134:[function(require,module,exports){
 var _ = require('underscore');
 
 var PROPERTY_KEY = 'prop';
@@ -62629,7 +65066,7 @@ Rule.prototype.getFilterAvg = function () {
 
 module.exports = Rule;
 
-},{"underscore":51}],133:[function(require,module,exports){
+},{"underscore":53}],135:[function(require,module,exports){
 var _ = require('underscore');
 var log = require('../cdb.log');
 var util = require('../core/util.js');
@@ -62897,7 +65334,7 @@ ModelUpdater.prototype._getUniqueAnalysisNodesCollection = function () {
 
 module.exports = ModelUpdater;
 
-},{"../analysis/analysis-service":55,"../cdb.log":88,"../core/util.js":92,"./legends/rule-to-legend-model-adapters":131,"backbone":2,"underscore":51}],134:[function(require,module,exports){
+},{"../analysis/analysis-service":57,"../cdb.log":90,"../core/util.js":94,"./legends/rule-to-legend-model-adapters":133,"backbone":2,"underscore":53}],136:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var LZMA = require('lzma');
@@ -63079,12 +65516,12 @@ WindshaftClient.prototype._jsonpCallbackName = function (payload) {
 
 module.exports = WindshaftClient;
 
-},{"../cdb.log":88,"../core/util":92,"./config":135,"./request-tracker":146,"jquery":45,"lzma":149,"underscore":51}],135:[function(require,module,exports){
+},{"../cdb.log":90,"../core/util":94,"./config":137,"./request-tracker":148,"jquery":47,"lzma":151,"underscore":53}],137:[function(require,module,exports){
 module.exports = {
   MAPS_API_BASE_URL: 'api/v1/map'
 };
 
-},{}],136:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftError = require('./error');
 
@@ -63105,7 +65542,7 @@ var parseWindshaftErrors = function (response) {
 
 module.exports = parseWindshaftErrors;
 
-},{"./error":137,"underscore":51}],137:[function(require,module,exports){
+},{"./error":139,"underscore":53}],139:[function(require,module,exports){
 var WINDSHAFT_ERRORS = require('../constants').WINDSHAFT_ERRORS;
 
 var WindshaftError = function (error) {
@@ -63142,7 +65579,7 @@ WindshaftError.prototype.isAnalysisError = function (errorType) {
 
 module.exports = WindshaftError;
 
-},{"../constants":89}],138:[function(require,module,exports){
+},{"../constants":91}],140:[function(require,module,exports){
 var Model = require('../../core/model');
 
 module.exports = Model.extend({
@@ -63161,7 +65598,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91}],139:[function(require,module,exports){
+},{"../../core/model":93}],141:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BOUNDING_BOX_FILTER_WAIT = 300;
@@ -63218,7 +65655,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":91,"underscore":51}],140:[function(require,module,exports){
+},{"../../core/model":93,"underscore":53}],142:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var WindshaftFilterBase = require('./base');
@@ -63364,7 +65801,7 @@ module.exports = WindshaftFilterBase.extend({
   }
 });
 
-},{"./base":138,"backbone":2,"underscore":51}],141:[function(require,module,exports){
+},{"./base":140,"backbone":2,"underscore":53}],143:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisService = require('../../../analysis/analysis-service');
 
@@ -63408,7 +65845,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../analysis/analysis-service":55,"underscore":51}],142:[function(require,module,exports){
+},{"../../../analysis/analysis-service":57,"underscore":53}],144:[function(require,module,exports){
 var AnalisysSerializer = require('./analysis-serializer');
 var DataviewSerializer = require('./dataviews-serializer');
 var LayerSerializer = require('./layers-serializer');
@@ -63429,7 +65866,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"./analysis-serializer":141,"./dataviews-serializer":143,"./layers-serializer":144}],143:[function(require,module,exports){
+},{"./analysis-serializer":143,"./dataviews-serializer":145,"./layers-serializer":146}],145:[function(require,module,exports){
 function serialize (dataviewsCollection) {
   return dataviewsCollection.reduce(function (dataviews, dataviewModel) {
     dataviews[dataviewModel.get('id')] = dataviewModel.toJSON();
@@ -63441,7 +65878,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{}],144:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 var LayerTypes = require('../../../geo/map/layer-types.js');
 
 var DEFAULT_CARTOCSS_VERSION = '2.1.0';
@@ -63553,7 +65990,7 @@ function sharedOptionsForMapnikAndTorqueLayers (layerModel) {
 }
 module.exports = { serialize: serialize };
 
-},{"../../../geo/map/layer-types.js":113}],145:[function(require,module,exports){
+},{"../../../geo/map/layer-types.js":115}],147:[function(require,module,exports){
 var _ = require('underscore');
 var LayerTypes = require('../../../geo/map/layer-types');
 
@@ -63590,7 +66027,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../geo/map/layer-types":113,"underscore":51}],146:[function(require,module,exports){
+},{"../../../geo/map/layer-types":115,"underscore":53}],148:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -63639,7 +66076,7 @@ RequestTracker.prototype.lastResponseEquals = function (response) {
 
 module.exports = RequestTracker;
 
-},{"underscore":51}],147:[function(require,module,exports){
+},{"underscore":53}],149:[function(require,module,exports){
 /**
  * Simple value object that holds everything need to instantiate a map using the Maps API
  */
@@ -63659,7 +66096,7 @@ Request.prototype.equals = function (request) {
 
 module.exports = Request;
 
-},{}],148:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftConfig = require('./config');
 
@@ -63810,7 +66247,7 @@ Response.prototype._getAnalyses = function _getAnalyses () {
 
 module.exports = Response;
 
-},{"./config":135,"underscore":51}],149:[function(require,module,exports){
+},{"./config":137,"underscore":53}],151:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 var LZMA = (function () {
@@ -67702,7 +70139,7 @@ this.LZMA = LZMA;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],150:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /* wax - 7.0.1 - v6.0.4-181-ga34788e */
@@ -71083,5 +73520,5 @@ wax.g.connector.prototype.getTileUrl = function(coord, z) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[71])
+},{}]},{},[73])
 //# sourceMappingURL=carto.uncompressed.map
