@@ -58373,7 +58373,7 @@ var AnalysisModel = Model.extend({
 
 module.exports = AnalysisModel;
 
-},{"../core/model":93,"../core/util":94,"backbone":2,"underscore":53}],56:[function(require,module,exports){
+},{"../core/model":95,"../core/util":96,"backbone":2,"underscore":53}],56:[function(require,module,exports){
 var _ = require('underscore');
 var BackbonePoller = require('backbone-poller');
 
@@ -58594,7 +58594,7 @@ function _getCartoDBAndTorqueLayers (layersCollection) {
 
 module.exports = AnalysisService;
 
-},{"../geo/map/layer-types.js":115,"./analysis-model":55,"./camshaft-reference":58,"backbone":2,"underscore":53}],58:[function(require,module,exports){
+},{"../geo/map/layer-types.js":117,"./analysis-model":55,"./camshaft-reference":58,"backbone":2,"underscore":53}],58:[function(require,module,exports){
 var camshaftReference = require('camshaft-reference').getVersion('latest');
 var PARAM_TYPES = {
   NODE: 'node',
@@ -58922,7 +58922,7 @@ function _checkServerUrl (serverUrl, username) {
 
 module.exports = Client;
 
-},{"../../../package.json":54,"../../engine":106,"./error":67,"./events":68,"./layer/base":74,"./layers":78,"./leaflet":79,"backbone":2,"underscore":53}],60:[function(require,module,exports){
+},{"../../../package.json":54,"../../engine":108,"./error":69,"./events":70,"./layer/base":76,"./layers":80,"./leaflet":81,"backbone":2,"underscore":53}],60:[function(require,module,exports){
 var _ = require('underscore');
 /**
  * Constants module for dataviews
@@ -58944,6 +58944,10 @@ var operation = {
   MIN: 'min'
 };
 
+function isValidOperation (op) {
+  return _.contains(operation, op);
+}
+
 /**
  * Enum for dataview status values.
  *
@@ -58959,14 +58963,36 @@ var status = {
   ERROR: 'error'
 };
 
-function isValidOperation (op) {
-  return _.contains(operation, op);
+/**
+ * Enum for dataview time aggregations.
+ * 
+ * @enum {string} carto.dataview.timeAggregation
+ * @readonly
+ * @memberOf carto.dataview
+ * @api
+ */
+
+var timeAggregation = {
+  AUTO: 'auto',
+  YEAR: 'year',
+  QUARTER: 'quarter',
+  MONTH: 'month',
+  WEEK: 'week',
+  DAY: 'day',
+  HOUR: 'hour',
+  MINUTE: 'minute'
+};
+
+function isValidTimeAggregation (agg) {
+  return _.contains(timeAggregation, agg);
 }
 
 module.exports = {
   operation: operation,
   status: status,
-  isValidOperation: isValidOperation
+  timeAggregation: timeAggregation,
+  isValidOperation: isValidOperation,
+  isValidTimeAggregation: isValidTimeAggregation
 };
 
 },{"underscore":53}],61:[function(require,module,exports){
@@ -59292,7 +59318,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"../constants":60,"../filter/base":69,"../filter/bounding-box":71,"../filter/bounding-box-leaflet":70,"../source/base":81,"backbone":2,"underscore":53}],62:[function(require,module,exports){
+},{"../constants":60,"../filter/base":71,"../filter/bounding-box":73,"../filter/bounding-box-leaflet":72,"../source/base":83,"backbone":2,"underscore":53}],62:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var constants = require('../constants');
@@ -59538,7 +59564,7 @@ Category.prototype._createInternalModel = function (engine) {
 
 module.exports = Category;
 
-},{"../../../dataviews/category-dataview-model":95,"../../../windshaft/filters/category":142,"../constants":60,"./base":61,"underscore":53}],63:[function(require,module,exports){
+},{"../../../dataviews/category-dataview-model":97,"../../../windshaft/filters/category":144,"../constants":60,"./base":61,"underscore":53}],63:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var constants = require('../constants');
@@ -59658,10 +59684,10 @@ Formula.prototype._createInternalModel = function (engine) {
 
 module.exports = Formula;
 
-},{"../../../dataviews/formula-dataview-model":102,"../constants":60,"./base":61,"underscore":53}],64:[function(require,module,exports){
+},{"../../../dataviews/formula-dataview-model":104,"../constants":60,"./base":61,"underscore":53}],64:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
-var HistogramDataviewModel = require('../../../..//dataviews/histogram-dataview-model');
+var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
 var parseHistogramData = require('./parse-histogram-data.js');
 
 /**
@@ -59696,7 +59722,7 @@ Histogram.prototype.DEFAULTS = {
  */
 Histogram.prototype.getData = function () {
   if (this._internalModel) {
-    return this._parseData(this._internalModel.get('data'), this._internalModel.get('nulls'), this._internalModel.get('totalAmount'));
+    return parseHistogramData(this._internalModel.get('data'), this._internalModel.get('nulls'), this._internalModel.get('totalAmount'));
   }
   return null;
 };
@@ -59744,10 +59770,6 @@ Histogram.prototype._validateBins = function (bins) {
   }
 };
 
-Histogram.prototype._parseData = function (data, nulls, totalAmount) {
-  return parseHistogramData(data, nulls, totalAmount);
-};
-
 Histogram.prototype._checkOptions = function (options) {
   if (_.isUndefined(options)) {
     throw new TypeError('Options object to create a histogram dataview is required.');
@@ -59781,7 +59803,7 @@ Histogram.prototype._createInternalModel = function (engine) {
 
 module.exports = Histogram;
 
-},{"../../../..//dataviews/histogram-dataview-model":104,"../base":61,"./parse-histogram-data.js":65,"underscore":53}],65:[function(require,module,exports){
+},{"../../../../dataviews/histogram-dataview-model":106,"../base":61,"./parse-histogram-data.js":65,"underscore":53}],65:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -59798,7 +59820,11 @@ function parseHistogramData (data, nulls, totalAmount) {
   if (!data) {
     return null;
   }
-  var maxFreq = _.max(data, function (bin) { return bin.freq || 0; }).freq;
+  var compactData = _.compact(data);
+  var maxBin = _.max(compactData, function (bin) { return bin.freq || 0; });
+  var maxFreq = _.isFinite(maxBin.freq) && maxBin.freq !== 0
+    ? maxBin.freq
+    : null;
 
   /**
    * @description
@@ -59807,12 +59833,12 @@ function parseHistogramData (data, nulls, totalAmount) {
    * @typedef {object} HistogramData
    * @property {number} nulls - The number of items with null value.
    * @property {number} totalAmount - The number of elements returned.
-   * @property {BinItem[]} result - Array containing the {@link BinItem|data bins} for the histogram. .
+   * @property {BinItem[]} bins - Array containing the {@link BinItem|data bins} for the histogram. .
    * @property {string} type - String with value: **histogram**
    * @api
    */
   return {
-    result: _createResult(data, maxFreq),
+    bins: _createResult(compactData, maxFreq),
     nulls: nulls || 0,
     totalAmount: totalAmount
   };
@@ -59826,14 +59852,16 @@ function _createResult (data, maxFreq) {
     /** 
       * @typedef {object} BinItem
       * @property {number} index - Number indicating the bin order.
-      * @property {number} min - Only appears if freq > 0
-      * @property {number} max - Only appears if freq > 0
-      * @property {number} avg - Only appears if freq > 0
+      * @property {number} start - Starting point of the bin.
+      * @property {number} end - Ending point of the bin.
+      * @property {number} min - Only appears if freq > 0.
+      * @property {number} max - Only appears if freq > 0.
+      * @property {number} avg - Only appears if freq > 0.
       * @property {number} freq - The number of the times the element appears in the data.
-      * @property {number} normalized - 
+      * @property {number} normalized - Normalized frequency with respect to the whole data.
       * @api
       */
-    return _.extend(bin, { normalized: _.isFinite(bin.freq) ? bin.freq / maxFreq : 0 });
+    return _.extend(bin, { normalized: _.isFinite(bin.freq) && maxFreq > 0 ? bin.freq / maxFreq : 0 });
   });
 }
 
@@ -59843,7 +59871,9 @@ module.exports = parseHistogramData;
 var Category = require('./category');
 var Formula = require('./formula');
 var Histogram = require('./histogram');
+var TimeSeries = require('./time-series');
 var status = require('../constants').status;
+var timeAggregation = require('../constants').timeAggregation;
 
 /**
  * @namespace carto.dataview
@@ -59853,10 +59883,267 @@ module.exports = {
   Category: Category,
   Formula: Formula,
   Histogram: Histogram,
-  status: status
+  TimeSeries: TimeSeries,
+  status: status,
+  timeAggregation: timeAggregation
 };
 
-},{"../constants":60,"./category":62,"./formula":63,"./histogram":64}],67:[function(require,module,exports){
+},{"../constants":60,"./category":62,"./formula":63,"./histogram":64,"./time-series":67}],67:[function(require,module,exports){
+var _ = require('underscore');
+var Base = require('../base');
+var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
+var parseTimeSeriesData = require('./parse-time-series-data');
+var timeAggregation = require('../../constants').timeAggregation;
+var isValidTimeAggregation = require('../../constants').isValidTimeAggregation;
+
+function hoursToSeconds (hours) {
+  return hours * 3600;
+}
+
+/**
+ * Time-Series dataview object
+ *
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data.
+ * @param {string} column - The column name to get the data.
+ * @param {object} options
+ * @param {carto.dataview.timeAggregation} [options.aggregation=auto] - Granularity of time aggregation.
+ * @param {number} offset - Amount of hours to displace the aggregation from UTC.
+ * @param {boolean} useLocalTimezone - Indicates to use the user local timezone or not.
+ * @constructor
+ * @extends carto.dataview.Base
+ * @memberof carto.dataview
+ * @api
+ */
+function TimeSeries (source, column, options) {
+  this._initialize(source, column, options);
+  this._aggregation = this._options.aggregation;
+  this._offset = this._options.offset;
+  this._localTimezone = this._options.useLocalTimezone;
+}
+
+TimeSeries.prototype = Object.create(Base.prototype);
+
+TimeSeries.prototype.DEFAULTS = {
+  aggregation: timeAggregation.AUTO,
+  offset: 0,
+  useLocalTimezone: false
+};
+
+/**
+ * Return the resulting data
+ *
+ * @return {TimeSeriesData}
+ * @api
+ */
+TimeSeries.prototype.getData = function () {
+  if (this._internalModel) {
+    return parseTimeSeriesData(this._internalModel.get('data'), this._internalModel.get('nulls'), this._internalModel.get('totalAmount'), this._internalModel.getCurrentOffset());
+  }
+  return null;
+};
+
+/**
+ * Set time aggregation
+ * 
+ * @param {carto.dataview.timeAggregation} aggregation
+ * @return {carto.dataview.TimeSeries} this
+ * @api
+ */
+TimeSeries.prototype.setAggregation = function (aggregation) {
+  this._validateAggregation(aggregation);
+  this._changeProperty('aggregation', aggregation);
+  return this;
+};
+
+/**
+ * Return the current time aggregation
+ * 
+ * @return {carto.dataview.timeAggregation} Current time aggregation
+ * @api 
+ */
+TimeSeries.prototype.getAggregation = function () {
+  return this._aggregation;
+};
+
+/**
+ * Set time offset
+ * 
+ * @param {number} offset
+ * @return {carto.dataview.TimeSeries} this
+ * @api
+ */
+TimeSeries.prototype.setOffset = function (offset) {
+  this._validateOffset(offset);
+  var prevOffset = this._offset;
+  this._offset = offset;
+  if (this._internalModel) {
+    this._internalModel.set('offset', hoursToSeconds(offset));
+  } else if (prevOffset !== offset) {
+    this._triggerChange('offset', offset);
+  }
+  return this;
+};
+
+/**
+ * Return the current time offset
+ * 
+ * @return {number} Current time offset
+ * @api 
+ */
+TimeSeries.prototype.getOffset = function () {
+  return this._offset;
+};
+
+/**
+ * Set the local timezone flag. If enabled, the time offset is overriden by the use local timezone
+ * 
+ * @param {boolean} localTimezone
+ * @return {carto.dataview.TimeSeries} this
+ * @api
+ */
+TimeSeries.prototype.useLocalTimezone = function (enable) {
+  this._validateLocalTimezone(enable);
+  this._changeProperty('localTimezone', enable);
+  return this;
+};
+
+/**
+ * Return the current local timezone flag
+ * 
+ * @return {boolean} Current local timezone flag
+ * @api 
+ */
+TimeSeries.prototype.isUsingLocalTimezone = function () {
+  return this._localTimezone;
+};
+
+TimeSeries.prototype._checkOptions = function (options) {
+  if (_.isUndefined(options)) {
+    throw new TypeError('Options object to create a histogram dataview is required.');
+  }
+  this._validateAggregation(options.aggregation);
+  this._validateOffset(options.offset);
+  this._validateLocalTimezone(options.useLocalTimezone);
+};
+
+TimeSeries.prototype._validateAggregation = function (aggregation) {
+  if (!isValidTimeAggregation(aggregation)) {
+    throw new TypeError('Time aggregation must be a valid value. Use carto.dataview.timeAggregation.');
+  }
+};
+
+TimeSeries.prototype._validateOffset = function (offset) {
+  if (!_.isFinite(offset) || Math.floor(offset) !== offset || offset < -12 || offset > 14) {
+    throw new TypeError('Offset must an integer value between -12 and 14.');
+  }
+};
+
+TimeSeries.prototype._validateLocalTimezone = function (localTimezone) {
+  if (!_.isBoolean(localTimezone)) {
+    throw new TypeError('LocalTimezone must be a boolean value.');
+  }
+};
+
+TimeSeries.prototype._listenToInternalModelSpecificEvents = function () {
+  // Empty function
+};
+
+TimeSeries.prototype._createInternalModel = function (engine) {
+  this._internalModel = new HistogramDataviewModel({
+    source: this._source.$getInternalModel(),
+    column: this._column,
+    aggregation: this._aggregation,
+    offset: hoursToSeconds(this._offset),
+    localTimezone: this._localTimezone,
+    sync_on_data_change: true,
+    sync_on_bbox_change: !!this._boundingBoxFilter,
+    enabled: this._enabled,
+    column_type: 'date'
+  }, {
+    engine: engine,
+    bboxFilter: this._boundingBoxFilter && this._boundingBoxFilter.$getInternalModel()
+  });
+};
+
+module.exports = TimeSeries;
+
+},{"../../../../dataviews/histogram-dataview-model":106,"../../constants":60,"../base":61,"./parse-time-series-data":68,"underscore":53}],68:[function(require,module,exports){
+var _ = require('underscore');
+
+function secondsToHours (seconds) {
+  return seconds / 3600;
+}
+
+/**
+ * Transform the data obtained from an internal timeseries dataview into a 
+ * public object.
+ * 
+ * @param {object[]} data - The raw time series data
+ * @param {number} nulls - Number of data with a null
+ * @param {number} totalAmount - Total number of data in the histogram.
+ * 
+ * @return {TimeSeriesData} - The parsed and formatted data for the given parameters.
+ */
+function parseTimeSeriesData (data, nulls, totalAmount, offset) {
+  if (!data) {
+    return null;
+  }
+  var compactData = _.compact(data);
+  var maxBin = _.max(compactData, function (bin) { return bin.freq || 0; });
+  var maxFreq = _.isFinite(maxBin.freq) && maxBin.freq !== 0
+    ? maxBin.freq
+    : null;
+
+  /**
+   * @description
+   * #Object containing time series data.
+   * 
+   * @typedef {object} TimeSeriesData
+   * @property {number} nulls - The number of items with null value.
+   * @property {number} totalAmount - The number of elements returned.
+   * @property {number} offset - The time offset in hours. Needed to format UTC timestamps into the proper timezone format.
+   * @property {TimeSeriesBinItem[]} bins - Array containing the {@link TimeSeriesBinItem|data bins} for the time series.
+   * @api
+   */
+  return {
+    bins: _createResult(compactData, maxFreq),
+    nulls: nulls || 0,
+    offset: secondsToHours(offset),
+    totalAmount: totalAmount
+  };
+}
+
+/**
+ * Transform the time series raw data into {@link TimeSeriesBinItem}
+ */
+function _createResult (data, maxFreq) {
+  return data.map(function (bin) {
+    /** 
+      * @typedef {object} TimeSeriesBinItem
+      * @property {number} index - Number indicating the bin order.
+      * @property {number} start - Starting UTC timestamp of the bin.
+      * @property {number} end - End UTC timestamp of the bin.
+      * @property {number} min - Minimum UTC timestamp present in the bin. Only appears if freq > 0
+      * @property {number} max - Maximum UTC timestamp present in the bin. Only appears if freq > 0
+      * @property {number} freq - Numbers of elements present in the bin
+      * @property {number} normalized - Normalized frequency with respect to the whole data.
+      * @api
+      */
+    return {
+      index: bin.bin,
+      start: bin.start,
+      end: bin.end,
+      min: bin.min,
+      max: bin.max,
+      freq: bin.freq,
+      normalized: _.isFinite(bin.freq) && maxFreq > 0 ? bin.freq / maxFreq : 0
+    };
+  });
+}
+
+module.exports = parseTimeSeriesData;
+
+},{"underscore":53}],69:[function(require,module,exports){
 /**
  * Build a cartoError from a generic error
  * @constructor
@@ -59913,7 +60200,7 @@ module.exports = CartoError;
  * @api
  */
 
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 /**
  * @namespace carto.events
  * @api
@@ -59943,7 +60230,7 @@ module.exports = {
   ERROR: ERROR
 };
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -59961,7 +60248,7 @@ _.extend(Base.prototype, Backbone.Events);
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":53}],70:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],72:[function(require,module,exports){
 var Base = require('./base');
 var LeafletBoundingBoxAdapter = require('../../../geo/adapters/leaflet-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -60009,7 +60296,7 @@ BoundingBoxLeaflet.prototype.$getInternalModel = function () {
 
 module.exports = BoundingBoxLeaflet;
 
-},{"../../../geo/adapters/leaflet-bounding-box-adapter":107,"../../../windshaft/filters/bounding-box":141,"./base":69}],71:[function(require,module,exports){
+},{"../../../geo/adapters/leaflet-bounding-box-adapter":109,"../../../windshaft/filters/bounding-box":143,"./base":71}],73:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -60091,7 +60378,7 @@ BoundingBox.prototype.$getInternalModel = function () {
 
 module.exports = BoundingBox;
 
-},{"../../../windshaft/filters/bounding-box":141,"./base":69,"underscore":53}],72:[function(require,module,exports){
+},{"../../../windshaft/filters/bounding-box":143,"./base":71,"underscore":53}],74:[function(require,module,exports){
 var BoundingBox = require('./bounding-box');
 var BoundingBoxLeaflet = require('./bounding-box-leaflet');
 
@@ -60104,7 +60391,7 @@ module.exports = {
   BoundingBoxLeaflet: BoundingBoxLeaflet
 };
 
-},{"./bounding-box":71,"./bounding-box-leaflet":70}],73:[function(require,module,exports){
+},{"./bounding-box":73,"./bounding-box-leaflet":72}],75:[function(require,module,exports){
 /**
  *  @api
  *  @namespace carto
@@ -60147,7 +60434,7 @@ var carto = window.carto = {
 
 module.exports = carto;
 
-},{"./client":59,"./constants":60,"./dataview":66,"./events":68,"./filter":72,"./layer":76,"./source":83,"./style":87}],74:[function(require,module,exports){
+},{"./client":59,"./constants":60,"./dataview":66,"./events":70,"./filter":74,"./layer":78,"./source":85,"./style":89}],76:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -60197,7 +60484,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":53}],75:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],77:[function(require,module,exports){
 /**
  * Enum for event types.
  *
@@ -60214,7 +60501,7 @@ var events = {
 
 module.exports = events;
 
-},{}],76:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 var Layer = require('./layer');
 var EventTypes = require('./event-types');
 
@@ -60227,7 +60514,7 @@ module.exports = {
   events: EventTypes
 };
 
-},{"./event-types":75,"./layer":77}],77:[function(require,module,exports){
+},{"./event-types":77,"./layer":79}],79:[function(require,module,exports){
 var Base = require('./base');
 var CartoDBLayer = require('../../../geo/map/cartodb-layer');
 var SourceBase = require('../source/base');
@@ -60515,7 +60802,7 @@ function _checkSource (source) {
 
 module.exports = Layer;
 
-},{"../../../geo/map/cartodb-layer":112,"../source/base":81,"../style/base":85,"./base":74}],78:[function(require,module,exports){
+},{"../../../geo/map/cartodb-layer":114,"../source/base":83,"../style/base":87,"./base":76}],80:[function(require,module,exports){
 var _ = require('underscore');
 
 function Layers (layers) {
@@ -60547,7 +60834,7 @@ Layers.prototype.toArray = function () {
 
 module.exports = Layers;
 
-},{"underscore":53}],79:[function(require,module,exports){
+},{"underscore":53}],81:[function(require,module,exports){
 var LayerGroup = require('./layer-group');
 
 /**
@@ -60558,7 +60845,7 @@ module.exports = {
   LayerGroup: LayerGroup
 };
 
-},{"./layer-group":80}],80:[function(require,module,exports){
+},{"./layer-group":82}],82:[function(require,module,exports){
 var Layer = require('../layer/');
 var LeafletCartoLayerGroupView = require('../../../geo/leaflet/leaflet-cartodb-layer-group-view');
 
@@ -60647,7 +60934,7 @@ LayerGroup.prototype._triggerLayerFeatureEvent = function (eventName, internalEv
 
 module.exports = LayerGroup;
 
-},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":110,"../layer/":76}],81:[function(require,module,exports){
+},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":112,"../layer/":78}],83:[function(require,module,exports){
 /**
  * Base source object
  *
@@ -60709,7 +60996,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{}],82:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
@@ -60767,7 +61054,7 @@ function _checkDataset (dataset) {
 
 module.exports = Dataset;
 
-},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":81,"underscore":53}],83:[function(require,module,exports){
+},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":83,"underscore":53}],85:[function(require,module,exports){
 var Dataset = require('./dataset');
 var SQL = require('./sql');
 
@@ -60780,7 +61067,7 @@ module.exports = {
   SQL: SQL
 };
 
-},{"./dataset":82,"./sql":84}],84:[function(require,module,exports){
+},{"./dataset":84,"./sql":86}],86:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
@@ -60858,7 +61145,7 @@ function _checkQuery (query) {
 }
 module.exports = SQL;
 
-},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":81,"underscore":53}],85:[function(require,module,exports){
+},{"../../../analysis/analysis-model":55,"../../../analysis/camshaft-reference":58,"./base":83,"underscore":53}],87:[function(require,module,exports){
 /**
  * Base style object
  *
@@ -60871,7 +61158,7 @@ function Base () {}
 
 module.exports = Base;
 
-},{}],86:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 
@@ -60916,7 +61203,7 @@ function _checkCartoCSS (cartoCSS) {
 
 module.exports = CartoCSS;
 
-},{"./base":85,"underscore":53}],87:[function(require,module,exports){
+},{"./base":87,"underscore":53}],89:[function(require,module,exports){
 var CartoCSS = require('./cartocss');
 
 /**
@@ -60927,7 +61214,7 @@ module.exports = {
   CartoCSS: CartoCSS
 };
 
-},{"./cartocss":86}],88:[function(require,module,exports){
+},{"./cartocss":88}],90:[function(require,module,exports){
 var Config = require('./core/config');
 
 var config = new Config();
@@ -60938,7 +61225,7 @@ config.set({
 
 module.exports = config;
 
-},{"./core/config":92}],89:[function(require,module,exports){
+},{"./core/config":94}],91:[function(require,module,exports){
 // Creates cdb object, mutated in the entry file cartodb.js
 // Used to avoid circular dependencies
 var cdb = {};
@@ -60950,7 +61237,7 @@ cdb.helpers = {};
 
 module.exports = cdb;
 
-},{"../package.json":54}],90:[function(require,module,exports){
+},{"../package.json":54}],92:[function(require,module,exports){
 var cdb = require('cdb');
 
 module.exports = {
@@ -60971,7 +61258,7 @@ module.exports = {
   }
 };
 
-},{"cdb":89}],91:[function(require,module,exports){
+},{"cdb":91}],93:[function(require,module,exports){
 module.exports = {
   OVERLAY_TYPES: {
     ATTRIBUTION: 'attribution',
@@ -60998,7 +61285,7 @@ module.exports = {
   }
 };
 
-},{}],92:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -61016,7 +61303,7 @@ var Config = Backbone.Model.extend({
 
 module.exports = Config;
 
-},{"backbone":2}],93:[function(require,module,exports){
+},{"backbone":2}],95:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -61099,7 +61386,7 @@ var Model = Backbone.Model.extend({
 
 module.exports = Model;
 
-},{"backbone":2,"jquery":47,"underscore":53}],94:[function(require,module,exports){
+},{"backbone":2,"jquery":47,"underscore":53}],96:[function(require,module,exports){
 var _ = require('underscore');
 
 var util = {};
@@ -61261,7 +61548,7 @@ util.checkRequiredOpts = function (actualOpts, requiredOpts, from) {
 
 module.exports = util;
 
-},{"underscore":53}],95:[function(require,module,exports){
+},{"underscore":53}],97:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 var SearchModel = require('./category-dataview/search-model');
@@ -61566,7 +61853,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./category-dataview/categories-collection":96,"./category-dataview/category-model-range":98,"./category-dataview/search-model":99,"./dataview-model-base":100,"underscore":53}],96:[function(require,module,exports){
+},{"./category-dataview/categories-collection":98,"./category-dataview/category-model-range":100,"./category-dataview/search-model":101,"./dataview-model-base":102,"underscore":53}],98:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var CategoryItemModel = require('./category-item-model');
@@ -61618,7 +61905,7 @@ module.exports = Backbone.Collection.extend({
 
 });
 
-},{"./category-item-model":97,"backbone":2,"underscore":53}],97:[function(require,module,exports){
+},{"./category-item-model":99,"backbone":2,"underscore":53}],99:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -61634,7 +61921,7 @@ module.exports = Model.extend({
 
 });
 
-},{"../../core/model":93}],98:[function(require,module,exports){
+},{"../../core/model":95}],100:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 
@@ -61696,7 +61983,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93,"underscore":53}],99:[function(require,module,exports){
+},{"../../core/model":95,"underscore":53}],101:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
@@ -61825,7 +62112,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93,"../../util/backbone-abort-sync":128,"./categories-collection":96,"underscore":53}],100:[function(require,module,exports){
+},{"../../core/model":95,"../../util/backbone-abort-sync":130,"./categories-collection":98,"underscore":53}],102:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../core/model');
 var BackboneAbortSync = require('../util/backbone-abort-sync');
@@ -62151,7 +62438,8 @@ module.exports = Model.extend({
     return this.get('enabled');
   },
 
-  setUnavailable: function () {
+  setUnavailable: function (error) {
+    this._triggerError(error);
     return this.set('status', FETCH_ERROR_STATUS);
   },
 
@@ -62199,7 +62487,7 @@ module.exports = Model.extend({
   ]
 });
 
-},{"../analysis/analysis-model":55,"../core/model":93,"../core/util":94,"../util/backbone-abort-sync":128,"underscore":53}],101:[function(require,module,exports){
+},{"../analysis/analysis-model":55,"../core/model":95,"../core/util":96,"../util/backbone-abort-sync":130,"underscore":53}],103:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -62225,7 +62513,7 @@ var DataviewsCollection = Backbone.Collection.extend({
 
 module.exports = DataviewsCollection;
 
-},{"backbone":2,"underscore":53}],102:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],104:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 
@@ -62271,7 +62559,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./dataview-model-base":100,"underscore":53}],103:[function(require,module,exports){
+},{"./dataview-model-base":102,"underscore":53}],105:[function(require,module,exports){
 var moment = require('moment');
 var _ = require('underscore');
 
@@ -62402,7 +62690,7 @@ helper.formatUTCTimestamp = function (timestamp) {
 
 module.exports = helper;
 
-},{"moment":52,"underscore":53}],104:[function(require,module,exports){
+},{"moment":52,"underscore":53}],106:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3-array');
@@ -62488,7 +62776,6 @@ module.exports = DataviewModelBase.extend({
 
     // When original data gets fetched
     this._totals.bind('change:data', this._onDataChanged, this);
-    this._totals.bind('error', this.setUnavailable, this);
     this._totals.once('change:data', this._updateBindings, this);
 
     this.on('change:column', this._onColumnChanged, this);
@@ -62824,13 +63111,11 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"../util/date-utils":129,"./dataview-model-base":100,"./helpers/histogram-helper":103,"./histogram-dataview/histogram-data-model":105,"backbone":2,"d3-array":46,"underscore":53}],105:[function(require,module,exports){
+},{"../util/date-utils":131,"./dataview-model-base":102,"./helpers/histogram-helper":105,"./histogram-dataview/histogram-data-model":107,"backbone":2,"d3-array":46,"underscore":53}],107:[function(require,module,exports){
 var _ = require('underscore');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
 var Model = require('../../core/model');
 var helper = require('../helpers/histogram-helper');
-
-var DEFAULT_MAX_BUCKETS = 367;
 
 /**
  *  This model is used for getting the total amount of data
@@ -62956,12 +63241,6 @@ module.exports = Model.extend({
       parsedData.data[bin.bin] = bin;
     });
 
-    if (numberOfBins > DEFAULT_MAX_BUCKETS && this.get('column_type') === 'date') {
-      parsedData.error = 'Max bins limit reached';
-      parsedData.bins = numberOfBins;
-      return parsedData;
-    }
-
     if (this.get('column_type') === 'date') {
       parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, 'totals');
       numberOfBins = parsedData.data.length;
@@ -63040,7 +63319,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93,"../../util/backbone-abort-sync":128,"../helpers/histogram-helper":103,"underscore":53}],106:[function(require,module,exports){
+},{"../../core/model":95,"../../util/backbone-abort-sync":130,"../helpers/histogram-helper":105,"underscore":53}],108:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisPoller = require('./analysis/analysis-poller');
 var AnonymousMapSerializer = require('./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer');
@@ -63402,7 +63681,7 @@ module.exports = Engine;
   * @type {string}
   */
 
-},{"./analysis/analysis-poller":56,"./analysis/analysis-service":57,"./cdb.log":90,"./dataviews/dataviews-collection":101,"./geo/cartodb-layer-group":109,"./geo/map/layers":116,"./windshaft-integration/model-updater":135,"./windshaft/client":136,"./windshaft/error":139,"./windshaft/error-parser":138,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":144,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":147,"./windshaft/request":149,"./windshaft/response":150,"backbone":2,"underscore":53}],107:[function(require,module,exports){
+},{"./analysis/analysis-poller":56,"./analysis/analysis-service":57,"./cdb.log":92,"./dataviews/dataviews-collection":103,"./geo/cartodb-layer-group":111,"./geo/map/layers":118,"./windshaft-integration/model-updater":137,"./windshaft/client":138,"./windshaft/error":141,"./windshaft/error-parser":140,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":146,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":149,"./windshaft/request":151,"./windshaft/response":152,"backbone":2,"underscore":53}],109:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -63436,7 +63715,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93}],108:[function(require,module,exports){
+},{"../../core/model":95}],110:[function(require,module,exports){
 function CartoDBLayerGroupViewBase (layerGroupModel, nativeMap) {
   this.interaction = [];
   this.nativeMap = nativeMap;
@@ -63517,7 +63796,7 @@ CartoDBLayerGroupViewBase.prototype = {
 
 module.exports = CartoDBLayerGroupViewBase;
 
-},{}],109:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -63762,7 +64041,7 @@ var CartoDBLayerGroup = Backbone.Model.extend({
 
 module.exports = CartoDBLayerGroup;
 
-},{"../core/util":94,"./map/layer-types":115,"backbone":2,"jquery":47,"underscore":53}],110:[function(require,module,exports){
+},{"../core/util":96,"./map/layer-types":117,"backbone":2,"jquery":47,"underscore":53}],112:[function(require,module,exports){
 var _ = require('underscore');
 var L = require('leaflet');
 var C = require('../../constants');
@@ -63925,7 +64204,7 @@ LeafletCartoDBLayerGroupView.prototype.constructor = LeafletLayerView;
 
 module.exports = LeafletCartoDBLayerGroupView;
 
-},{"../../constants":91,"../cartodb-layer-group-view-base":108,"./leaflet-layer-view":111,"leaflet":48,"underscore":53,"wax.cartodb.js":152}],111:[function(require,module,exports){
+},{"../../constants":93,"../cartodb-layer-group-view-base":110,"./leaflet-layer-view":113,"leaflet":48,"underscore":53,"wax.cartodb.js":154}],113:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -63973,7 +64252,7 @@ _.extend(LeafletLayerView.prototype, {
 
 module.exports = LeafletLayerView;
 
-},{"backbone":2,"underscore":53}],112:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],114:[function(require,module,exports){
 var _ = require('underscore');
 var config = require('../../cdb.config');
 var LayerModelBase = require('./layer-model-base');
@@ -64129,7 +64408,7 @@ var CartoDBLayer = LayerModelBase.extend({
 
 module.exports = CartoDBLayer;
 
-},{"../../analysis/analysis-model":55,"../../cdb.config":88,"./infowindow-template":113,"./layer-model-base":114,"./legends/legends":123,"./tooltip-template":127,"underscore":53}],113:[function(require,module,exports){
+},{"../../analysis/analysis-model":55,"../../cdb.config":90,"./infowindow-template":115,"./layer-model-base":116,"./legends/legends":125,"./tooltip-template":129,"underscore":53}],115:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -64178,7 +64457,7 @@ var InfowindowTemplate = Backbone.Model.extend({
 
 module.exports = InfowindowTemplate;
 
-},{"./popup-fields":126,"backbone":2,"underscore":53}],114:[function(require,module,exports){
+},{"./popup-fields":128,"backbone":2,"underscore":53}],116:[function(require,module,exports){
 var log = require('../../cdb.log');
 var Model = require('../../core/model');
 
@@ -64257,7 +64536,7 @@ var MapLayer = Model.extend({
 
 module.exports = MapLayer;
 
-},{"../../cdb.log":90,"../../core/model":93}],115:[function(require,module,exports){
+},{"../../cdb.log":92,"../../core/model":95}],117:[function(require,module,exports){
 var TILED_LAYER_TYPE = 'Tiled';
 var PLAIN_LAYER_TYPE = 'Plain';
 var WMS_LAYER_TYPE = 'WMS';
@@ -64295,7 +64574,7 @@ module.exports = {
   }
 };
 
-},{}],116:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -64395,7 +64674,7 @@ var Layers = Backbone.Collection.extend({
 
 module.exports = Layers;
 
-},{"backbone":2,"underscore":53}],117:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],119:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -64424,7 +64703,7 @@ var BubbleLegendModel = LegendModelBase.extend({
 
 module.exports = BubbleLegendModel;
 
-},{"./legend-model-base":122,"underscore":53}],118:[function(require,module,exports){
+},{"./legend-model-base":124,"underscore":53}],120:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -64450,7 +64729,7 @@ var CategoryLegendModel = LegendModelBase.extend({
 
 module.exports = CategoryLegendModel;
 
-},{"./legend-model-base":122,"underscore":53}],119:[function(require,module,exports){
+},{"./legend-model-base":124,"underscore":53}],121:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -64480,7 +64759,7 @@ var ChoroplethLegendModel = LegendModelBase.extend({
 
 module.exports = ChoroplethLegendModel;
 
-},{"./legend-model-base":122,"underscore":53}],120:[function(require,module,exports){
+},{"./legend-model-base":124,"underscore":53}],122:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -64499,7 +64778,7 @@ var CustomChoroplethLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomChoroplethLegendModel;
 
-},{"./static-legend-model-base":124,"underscore":53}],121:[function(require,module,exports){
+},{"./static-legend-model-base":126,"underscore":53}],123:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -64515,7 +64794,7 @@ var CustomLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomLegendModel;
 
-},{"./static-legend-model-base":124,"underscore":53}],122:[function(require,module,exports){
+},{"./static-legend-model-base":126,"underscore":53}],124:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Engine = require('../../../engine');
@@ -64593,7 +64872,7 @@ var LegendModelBase = Backbone.Model.extend({
 
 module.exports = LegendModelBase;
 
-},{"../../../engine":106,"backbone":2,"underscore":53}],123:[function(require,module,exports){
+},{"../../../engine":108,"backbone":2,"underscore":53}],125:[function(require,module,exports){
 var _ = require('underscore');
 var CategoryLegendModel = require('./category-legend-model');
 var BubbleLegendModel = require('./bubble-legend-model');
@@ -64707,7 +64986,7 @@ Legends.prototype.hasAnyLegend = function () {
 
 module.exports = Legends;
 
-},{"./bubble-legend-model":117,"./category-legend-model":118,"./choropleth-legend-model":119,"./custom-choropleth-legend-model":120,"./custom-legend-model":121,"./torque-legend-model":125,"underscore":53}],124:[function(require,module,exports){
+},{"./bubble-legend-model":119,"./category-legend-model":120,"./choropleth-legend-model":121,"./custom-choropleth-legend-model":122,"./custom-legend-model":123,"./torque-legend-model":127,"underscore":53}],126:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -64725,7 +65004,7 @@ var StaticLegendModelBase = LegendModelBase.extend({
 
 module.exports = StaticLegendModelBase;
 
-},{"./legend-model-base":122,"underscore":53}],125:[function(require,module,exports){
+},{"./legend-model-base":124,"underscore":53}],127:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -64741,7 +65020,7 @@ var TorqueLegendModel = StaticLegendModelBase.extend({
 
 module.exports = TorqueLegendModel;
 
-},{"./static-legend-model-base":124,"underscore":53}],126:[function(require,module,exports){
+},{"./static-legend-model-base":126,"underscore":53}],128:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -64762,7 +65041,7 @@ var PopupFields = Backbone.Collection.extend({
 
 module.exports = PopupFields;
 
-},{"backbone":2,"underscore":53}],127:[function(require,module,exports){
+},{"backbone":2,"underscore":53}],129:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -64812,7 +65091,7 @@ var TooltipTemplate = Backbone.Model.extend({
 
 module.exports = TooltipTemplate;
 
-},{"./popup-fields":126,"backbone":2,"underscore":53}],128:[function(require,module,exports){
+},{"./popup-fields":128,"backbone":2,"underscore":53}],130:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -64831,7 +65110,7 @@ module.exports = function (method, model, options) {
   return this._xhr;
 };
 
-},{"backbone":2}],129:[function(require,module,exports){
+},{"backbone":2}],131:[function(require,module,exports){
 var moment = require('moment');
 require('moment-timezone');
 
@@ -64843,7 +65122,7 @@ dateUtils.getLocalOffset = function () {
 
 module.exports = dateUtils;
 
-},{"moment":52,"moment-timezone":50}],130:[function(require,module,exports){
+},{"moment":52,"moment-timezone":50}],132:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -64883,7 +65162,7 @@ module.exports = {
   }
 };
 
-},{"./rule":134,"underscore":53}],131:[function(require,module,exports){
+},{"./rule":136,"underscore":53}],133:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -64947,7 +65226,7 @@ module.exports = {
   }
 };
 
-},{"./rule":134,"underscore":53}],132:[function(require,module,exports){
+},{"./rule":136,"underscore":53}],134:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -64997,7 +65276,7 @@ module.exports = {
   }
 };
 
-},{"./rule":134,"underscore":53}],133:[function(require,module,exports){
+},{"./rule":136,"underscore":53}],135:[function(require,module,exports){
 var ADAPTERS = {
   bubble: require('./rule-to-bubble-legend-adapter'),
   choropleth: require('./rule-to-choropleth-legend-adapter'),
@@ -65010,7 +65289,7 @@ module.exports = {
   }
 };
 
-},{"./rule-to-bubble-legend-adapter":130,"./rule-to-category-legend-adapter":131,"./rule-to-choropleth-legend-adapter":132}],134:[function(require,module,exports){
+},{"./rule-to-bubble-legend-adapter":132,"./rule-to-category-legend-adapter":133,"./rule-to-choropleth-legend-adapter":134}],136:[function(require,module,exports){
 var _ = require('underscore');
 
 var PROPERTY_KEY = 'prop';
@@ -65066,7 +65345,7 @@ Rule.prototype.getFilterAvg = function () {
 
 module.exports = Rule;
 
-},{"underscore":53}],135:[function(require,module,exports){
+},{"underscore":53}],137:[function(require,module,exports){
 var _ = require('underscore');
 var log = require('../cdb.log');
 var util = require('../core/util.js');
@@ -65334,7 +65613,7 @@ ModelUpdater.prototype._getUniqueAnalysisNodesCollection = function () {
 
 module.exports = ModelUpdater;
 
-},{"../analysis/analysis-service":57,"../cdb.log":90,"../core/util.js":94,"./legends/rule-to-legend-model-adapters":133,"backbone":2,"underscore":53}],136:[function(require,module,exports){
+},{"../analysis/analysis-service":57,"../cdb.log":92,"../core/util.js":96,"./legends/rule-to-legend-model-adapters":135,"backbone":2,"underscore":53}],138:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var LZMA = require('lzma');
@@ -65516,12 +65795,12 @@ WindshaftClient.prototype._jsonpCallbackName = function (payload) {
 
 module.exports = WindshaftClient;
 
-},{"../cdb.log":90,"../core/util":94,"./config":137,"./request-tracker":148,"jquery":47,"lzma":151,"underscore":53}],137:[function(require,module,exports){
+},{"../cdb.log":92,"../core/util":96,"./config":139,"./request-tracker":150,"jquery":47,"lzma":153,"underscore":53}],139:[function(require,module,exports){
 module.exports = {
   MAPS_API_BASE_URL: 'api/v1/map'
 };
 
-},{}],138:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftError = require('./error');
 
@@ -65542,7 +65821,7 @@ var parseWindshaftErrors = function (response) {
 
 module.exports = parseWindshaftErrors;
 
-},{"./error":139,"underscore":53}],139:[function(require,module,exports){
+},{"./error":141,"underscore":53}],141:[function(require,module,exports){
 var WINDSHAFT_ERRORS = require('../constants').WINDSHAFT_ERRORS;
 
 var WindshaftError = function (error) {
@@ -65579,7 +65858,7 @@ WindshaftError.prototype.isAnalysisError = function (errorType) {
 
 module.exports = WindshaftError;
 
-},{"../constants":91}],140:[function(require,module,exports){
+},{"../constants":93}],142:[function(require,module,exports){
 var Model = require('../../core/model');
 
 module.exports = Model.extend({
@@ -65598,7 +65877,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93}],141:[function(require,module,exports){
+},{"../../core/model":95}],143:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BOUNDING_BOX_FILTER_WAIT = 300;
@@ -65655,7 +65934,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":93,"underscore":53}],142:[function(require,module,exports){
+},{"../../core/model":95,"underscore":53}],144:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var WindshaftFilterBase = require('./base');
@@ -65801,7 +66080,7 @@ module.exports = WindshaftFilterBase.extend({
   }
 });
 
-},{"./base":140,"backbone":2,"underscore":53}],143:[function(require,module,exports){
+},{"./base":142,"backbone":2,"underscore":53}],145:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisService = require('../../../analysis/analysis-service');
 
@@ -65845,7 +66124,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../analysis/analysis-service":57,"underscore":53}],144:[function(require,module,exports){
+},{"../../../analysis/analysis-service":57,"underscore":53}],146:[function(require,module,exports){
 var AnalisysSerializer = require('./analysis-serializer');
 var DataviewSerializer = require('./dataviews-serializer');
 var LayerSerializer = require('./layers-serializer');
@@ -65866,7 +66145,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"./analysis-serializer":143,"./dataviews-serializer":145,"./layers-serializer":146}],145:[function(require,module,exports){
+},{"./analysis-serializer":145,"./dataviews-serializer":147,"./layers-serializer":148}],147:[function(require,module,exports){
 function serialize (dataviewsCollection) {
   return dataviewsCollection.reduce(function (dataviews, dataviewModel) {
     dataviews[dataviewModel.get('id')] = dataviewModel.toJSON();
@@ -65878,7 +66157,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{}],146:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 var LayerTypes = require('../../../geo/map/layer-types.js');
 
 var DEFAULT_CARTOCSS_VERSION = '2.1.0';
@@ -65990,7 +66269,7 @@ function sharedOptionsForMapnikAndTorqueLayers (layerModel) {
 }
 module.exports = { serialize: serialize };
 
-},{"../../../geo/map/layer-types.js":115}],147:[function(require,module,exports){
+},{"../../../geo/map/layer-types.js":117}],149:[function(require,module,exports){
 var _ = require('underscore');
 var LayerTypes = require('../../../geo/map/layer-types');
 
@@ -66027,7 +66306,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../geo/map/layer-types":115,"underscore":53}],148:[function(require,module,exports){
+},{"../../../geo/map/layer-types":117,"underscore":53}],150:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -66076,7 +66355,7 @@ RequestTracker.prototype.lastResponseEquals = function (response) {
 
 module.exports = RequestTracker;
 
-},{"underscore":53}],149:[function(require,module,exports){
+},{"underscore":53}],151:[function(require,module,exports){
 /**
  * Simple value object that holds everything need to instantiate a map using the Maps API
  */
@@ -66096,7 +66375,7 @@ Request.prototype.equals = function (request) {
 
 module.exports = Request;
 
-},{}],150:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftConfig = require('./config');
 
@@ -66247,7 +66526,7 @@ Response.prototype._getAnalyses = function _getAnalyses () {
 
 module.exports = Response;
 
-},{"./config":137,"underscore":53}],151:[function(require,module,exports){
+},{"./config":139,"underscore":53}],153:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 var LZMA = (function () {
@@ -70139,7 +70418,7 @@ this.LZMA = LZMA;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],152:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /* wax - 7.0.1 - v6.0.4-181-ga34788e */
@@ -73520,5 +73799,5 @@ wax.g.connector.prototype.getTileUrl = function(coord, z) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[73])
+},{}]},{},[75])
 //# sourceMappingURL=carto.uncompressed.map
