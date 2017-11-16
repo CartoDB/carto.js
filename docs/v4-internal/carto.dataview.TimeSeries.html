@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Histogram</title>
+    <title>JSDoc: Class: TimeSeries</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Histogram</h1>
+    <h1 class="page-title">Class: TimeSeries</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.dataview.html">.dataview</a>.</span>Histogram<span class="signature">(source, column, options)</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.dataview.html">.dataview</a>.</span>TimeSeries<span class="signature">(source, column, options, offset, useLocalTimezone)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -42,7 +42,7 @@
     
 
     
-    <h4 class="name" id="Histogram"><span class="type-signature"></span>new Histogram<span class="signature">(source, column, options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TimeSeries"><span class="type-signature"></span>new TimeSeries<span class="signature">(source, column, options, offset, useLocalTimezone)</span><span class="type-signature"></span></h4>
     
 
     
@@ -50,7 +50,7 @@
 
 
 <div class="description">
-    <p>Histogram dataview object</p>
+    <p>Time-Series dataview object</p>
 </div>
 
 
@@ -178,13 +178,13 @@
 
         <tr>
             
-                <td class="name"><code>bins</code></td>
+                <td class="name"><code>aggregation</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="carto.dataview.html#.timeAggregation">carto.dataview.timeAggregation</a></span>
 
 
             
@@ -205,12 +205,12 @@
             
                 <td class="default">
                 
-                    10
+                    auto
                 
                 </td>
             
 
-            <td class="description last"><p>Number of bins to aggregate the data range into.</p></td>
+            <td class="description last"><p>Granularity of time aggregation.</p></td>
         </tr>
 
     
@@ -218,6 +218,52 @@
 </table>
 
             </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Amount of hours to displace the aggregation from UTC.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>useLocalTimezone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Indicates to use the user local timezone or not.</p></td>
         </tr>
 
     
@@ -876,7 +922,7 @@ bounding box).</p>
     
 
     
-    <h4 class="name" id="getBins"><span class="type-signature"></span>getBins<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="getAggregation"><span class="type-signature"></span>getAggregation<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.dataview.html#.timeAggregation">carto.dataview.timeAggregation</a>}</span></h4>
     
 
     
@@ -884,7 +930,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current number of bins</p>
+    <p>Return the current time aggregation</p>
 </div>
 
 
@@ -950,7 +996,7 @@ bounding box).</p>
 
         
 <div class="param-desc">
-    <p>Current number of bins</p>
+    <p>Current time aggregation</p>
 </div>
 
 
@@ -961,7 +1007,7 @@ bounding box).</p>
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type"><a href="carto.dataview.html#.timeAggregation">carto.dataview.timeAggregation</a></span>
 
 
     </dd>
@@ -1087,7 +1133,7 @@ bounding box).</p>
     
 
     
-    <h4 class="name" id="getData"><span class="type-signature"></span>getData<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#HistogramData">HistogramData</a>}</span></h4>
+    <h4 class="name" id="getData"><span class="type-signature"></span>getData<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#TimeSeriesData">TimeSeriesData</a>}</span></h4>
     
 
     
@@ -1168,7 +1214,7 @@ bounding box).</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#HistogramData">HistogramData</a></span>
+<span class="param-type"><a href="global.html#TimeSeriesData">TimeSeriesData</a></span>
 
 
     </dd>
@@ -1186,7 +1232,7 @@ bounding box).</p>
     
 
     
-    <h4 class="name" id="getDistributionType"><span class="type-signature"></span>getDistributionType<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="getOffset"><span class="type-signature"></span>getOffset<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
     
 
     
@@ -1194,7 +1240,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the distribution type of the current data according to <a href="https://en.wikipedia.org/wiki/Multimodal_distribution#Galtung.27s_classification">Galtung’s AJUS System</a></p>
+    <p>Return the current time offset</p>
 </div>
 
 
@@ -1260,7 +1306,7 @@ bounding box).</p>
 
         
 <div class="param-desc">
-    <p>Distribution type of current data</p>
+    <p>Current time offset</p>
 </div>
 
 
@@ -1271,7 +1317,7 @@ bounding box).</p>
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">number</span>
 
 
     </dd>
@@ -1970,6 +2016,109 @@ bounding box).</p>
     
 
     
+    <h4 class="name" id="isUsingLocalTimezone"><span class="type-signature"></span>isUsingLocalTimezone<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current local timezone flag</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Current local timezone flag</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="removeFilter"><span class="type-signature"></span>removeFilter<span class="signature">(filter)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.Base.html">carto.dataview.Base</a>}</span></h4>
     
 
@@ -2127,7 +2276,7 @@ bounding box).</p>
     
 
     
-    <h4 class="name" id="setBins"><span class="type-signature"></span>setBins<span class="signature">(bins)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a>}</span></h4>
+    <h4 class="name" id="setAggregation"><span class="type-signature"></span>setAggregation<span class="signature">(aggregation)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a>}</span></h4>
     
 
     
@@ -2135,7 +2284,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Set number of bins</p>
+    <p>Set time aggregation</p>
 </div>
 
 
@@ -2171,13 +2320,13 @@ bounding box).</p>
 
         <tr>
             
-                <td class="name"><code>bins</code></td>
+                <td class="name"><code>aggregation</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="carto.dataview.html#.timeAggregation">carto.dataview.timeAggregation</a></span>
 
 
             
@@ -2261,7 +2410,7 @@ bounding box).</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></span>
+<span class="param-type"><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></span>
 
 
     </dd>
@@ -2419,6 +2568,310 @@ bounding box).</p>
     <dd>
         
 <span class="param-type"><a href="carto.dataview.Base.html">carto.dataview.Base</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setOffset"><span class="type-signature"></span>setOffset<span class="signature">(offset)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set time offset</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="useLocalTimezone"><span class="type-signature"></span>useLocalTimezone<span class="signature">(localTimezone)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set the local timezone flag. If enabled, the time offset is overriden by the use local timezone</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>localTimezone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></span>
 
 
     </dd>
