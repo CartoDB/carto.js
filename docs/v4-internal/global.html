@@ -1799,7 +1799,7 @@ collection of analysis</p>
 
 
 <div class="description">
-    <p>Transform the histogram raw data into <a href="global.html#BinItem">BinItem</a></p>
+    <p>Transform the histogram raw data into <a href="carto.dataview.html#.BinItem">carto.dataview.BinItem</a></p>
 </div>
 
 
@@ -1880,7 +1880,7 @@ collection of analysis</p>
 
 
 <div class="description">
-    <p>Transform the time series raw data into <a href="global.html#TimeSeriesBinItem">TimeSeriesBinItem</a></p>
+    <p>Transform the time series raw data into <a href="carto.dataview.html#.TimeSeriesBinItem">carto.dataview.TimeSeriesBinItem</a>.</p>
 </div>
 
 
@@ -2310,6 +2310,87 @@ to the dataview's URL.</p>
 <div class="description">
     <p>Check if an analysis is referenced by other anylisis in the given
 analysis collection.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="_isStyleError"><span class="type-signature"></span>_isStyleError<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return true when a windshaft error is because a styling error.</p>
 </div>
 
 
@@ -5507,7 +5588,7 @@ CartoDB.js models that are linked to a &quot;resource&quot; in the Maps API.</p>
     
 
     
-    <h4 class="name" id="parseHistogramData"><span class="type-signature"></span>parseHistogramData<span class="signature">(data, nulls, totalAmount)</span><span class="type-signature"> &rarr; {<a href="global.html#HistogramData">HistogramData</a>}</span></h4>
+    <h4 class="name" id="parseHistogramData"><span class="type-signature"></span>parseHistogramData<span class="signature">(data, nulls, totalAmount)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.html#.HistogramData">carto.dataview.HistogramData</a>}</span></h4>
     
 
     
@@ -5515,7 +5596,7 @@ CartoDB.js models that are linked to a &quot;resource&quot; in the Maps API.</p>
 
 
 <div class="description">
-    <p>Transform the data obtained from an internal histogram dataview into a 
+    <p>Transform the data obtained from an internal histogram dataview into a
 public object.</p>
 </div>
 
@@ -5614,7 +5695,7 @@ public object.</p>
 
             
 
-            <td class="description last"><p>Total number of data in the histogram.</p></td>
+            <td class="description last"><p>Total number of data in the histogram</p></td>
         </tr>
 
     
@@ -5678,7 +5759,7 @@ public object.</p>
         
 <div class="param-desc">
     <ul>
-<li>The parsed and formatted data for the given parameters.</li>
+<li>The parsed and formatted data for the given parameters</li>
 </ul>
 </div>
 
@@ -5690,7 +5771,7 @@ public object.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#HistogramData">HistogramData</a></span>
+<span class="param-type"><a href="carto.dataview.html#.HistogramData">carto.dataview.HistogramData</a></span>
 
 
     </dd>
@@ -5708,7 +5789,7 @@ public object.</p>
     
 
     
-    <h4 class="name" id="parseTimeSeriesData"><span class="type-signature"></span>parseTimeSeriesData<span class="signature">(data, nulls, totalAmount)</span><span class="type-signature"> &rarr; {<a href="global.html#TimeSeriesData">TimeSeriesData</a>}</span></h4>
+    <h4 class="name" id="parseTimeSeriesData"><span class="type-signature"></span>parseTimeSeriesData<span class="signature">(data, nulls, totalAmount)</span><span class="type-signature"> &rarr; {TimeSeriesData}</span></h4>
     
 
     
@@ -5716,8 +5797,7 @@ public object.</p>
 
 
 <div class="description">
-    <p>Transform the data obtained from an internal timeseries dataview into a 
-public object.</p>
+    <p>Transform the data obtained from an internal timeseries dataview into a  public object.</p>
 </div>
 
 
@@ -5815,7 +5895,7 @@ public object.</p>
 
             
 
-            <td class="description last"><p>Total number of data in the histogram.</p></td>
+            <td class="description last"><p>Total number of data in the histogram</p></td>
         </tr>
 
     
@@ -5879,7 +5959,7 @@ public object.</p>
         
 <div class="param-desc">
     <ul>
-<li>The parsed and formatted data for the given parameters.</li>
+<li>The parsed and formatted data for the given parameters</li>
 </ul>
 </div>
 
@@ -5891,7 +5971,7 @@ public object.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#TimeSeriesData">TimeSeriesData</a></span>
+<span class="param-type">TimeSeriesData</span>
 
 
     </dd>
@@ -6388,7 +6468,7 @@ public object.</p>
 
             
 
-            <td class="description last"><p>[optional] name of the retriggered event;</p></td>
+            <td class="description last"><p>[optional] name of the retriggered event</p></td>
         </tr>
 
     
@@ -6432,6 +6512,13 @@ public object.</p>
 
     
 
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>[xabel]: This method is repeated here and in the base view definition. There's should be a way to make it unique</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -6608,13 +6695,6 @@ public object.</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>[xabel]: This method is repeated here and in the base view definition. There's should be a way to make it unique</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -6904,6 +6984,169 @@ TODO: remove jquery from here</p>
 
 
 <div class="description">
+    <p>Return a payload with the serialization of all the analyses in the
+layersCollection and the dataviewsCollection.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="serialize"><span class="type-signature"></span>serialize<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Transform a map visualization into a json payload compatible with the windshaft API.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="serialize"><span class="type-signature"></span>serialize<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
     <p>Generate a json payload from a layer collection of a map</p>
 </div>
 
@@ -6986,169 +7229,6 @@ TODO: remove jquery from here</p>
 
 <div class="description">
     <p>Transform a map visualization into a json payload compatible with the windshaft API.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="serialize"><span class="type-signature"></span>serialize<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Transform a map visualization into a json payload compatible with the windshaft API.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="serialize"><span class="type-signature"></span>serialize<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return a payload with the serialization of all the analyses in the
-layersCollection and the dataviewsCollection.</p>
 </div>
 
 
@@ -7889,1153 +7969,6 @@ CartoDBLayerGroupView and updates models accordingly</p>
 
         
                 
-<h4 class="name" id="BinItem">BinItem</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Number indicating the bin order.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Starting point of the bin.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>end</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Ending point of the bin.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>min</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Only appears if freq &gt; 0.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Only appears if freq &gt; 0.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>avg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Only appears if freq &gt; 0.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>freq</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The number of the times the element appears in the data.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>normalized</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Normalized frequency with respect to the whole data.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="CartoError">CartoError</h4>
-
-
-
-
-<div class="description">
-    <p>Represents an error in the carto library.</p>
-<p>Some actions like adding a layer to a map will trigger a <strong>reload cycle</strong>
-if some error happens during this reload cycle will be captured and transformed into a 
-<code>CartoError</code>.</p>
-<p>The cartoErrors can be obtained listening to the client <a href="carto.events.html">error events</a> <code>client.on(carto.events.ERROR, callback);</code> 
-or through the promise returned by each async action.</p>
-</div>
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A short error description.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// Listen when a layer has been added or there has been an error.
-client.addLayer(layerWithErrors)
- .then(()=> console.log('Layer added succesfully'))
- .catch(cartoError => console.error(cartoError.message))</code></pre>
-
-    <pre class="prettyprint"><code>// Events also will be registered here when the map changes.
-client.on(carto.events.SUCCESS, function () {
- console.log('Client reloaded');
-});
-
-client.on(carto.events.ERROR, function (clientError) {
- console.error(clientError.message);
-});</code></pre>
-
-
-
-            
-                
-<h4 class="name" id="CategoryData">CategoryData</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>count</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>min</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>nulls</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>operation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>result</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#CategoryItem">CategoryItem</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="CategoryItem">CategoryItem</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>group</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="FormulaData">FormulaData</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>nulls</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>operation</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>result</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="HistogramData">HistogramData</h4>
-
-
-
-
-<div class="description">
-    <p>#Object containing histogram data.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>nulls</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The number of items with null value.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>totalAmount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The number of elements returned.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bins</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#BinItem">BinItem</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array containing the <a href="global.html#BinItem">data bins</a> for the histogram. .</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>String with value: <strong>histogram</strong></p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
 <h4 class="name" id="LatLng">LatLng</h4>
 
 
@@ -9173,268 +8106,35 @@ client.on(carto.events.ERROR, function (clientError) {
 
 
             
-                
-<h4 class="name" id="TimeSeriesBinItem">TimeSeriesBinItem</h4>
-
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
     
 
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
+    
+        <h3 class="subsection-title">Events</h3>
 
         
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
             
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Number indicating the bin order.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>start</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Starting UTC timestamp of the bin.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>end</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>End UTC timestamp of the bin.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>min</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Minimum UTC timestamp present in the bin. Only appears if freq &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>max</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Maximum UTC timestamp present in the bin. Only appears if freq &gt; 0</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>freq</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Numbers of elements present in the bin</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>normalized</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Normalized frequency with respect to the whole data.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
 
     
 
     
-
+    <h4 class="name" id="event:CartoError">CartoError</h4>
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-            
-                
-<h4 class="name" id="TimeSeriesData">TimeSeriesData</h4>
-
 
 
 
 <div class="description">
-    <p>#Object containing time series data.</p>
+    <p>Represents an error in the carto library.</p>
+<p>Some actions like adding a layer to a map will trigger a <strong>reload cycle</strong>
+if some error happens during this reload cycle will be captured and transformed into a 
+<code>CartoError</code>.</p>
+<p>The cartoErrors can be obtained listening to the client <a href="carto.events.html">error events</a> <code>client.on(carto.events.ERROR, callback);</code> 
+or through any async action events.</p>
+<p>Promises are also rejected with a cartoError.</p>
 </div>
+
+
 
 
 
@@ -9447,6 +8147,10 @@ client.on(carto.events.ERROR, function (clientError) {
 
         </li>
     </ul>
+
+
+
+
 
 
 
@@ -9478,13 +8182,13 @@ client.on(carto.events.ERROR, function (clientError) {
 
         <tr>
             
-                <td class="name"><code>nulls</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -9494,76 +8198,7 @@ client.on(carto.events.ERROR, function (clientError) {
 
             
 
-            <td class="description last"><p>The number of items with null value.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>totalAmount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The number of elements returned.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>offset</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The time offset in hours. Needed to format UTC timestamps into the proper timezone format.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>bins</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#TimeSeriesBinItem">TimeSeriesBinItem</a>></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array containing the <a href="global.html#TimeSeriesBinItem">data bins</a> for the time series.</p></td>
+            <td class="description last"><p>A short error description.</p></td>
         </tr>
 
     
@@ -9613,9 +8248,36 @@ client.on(carto.events.ERROR, function (clientError) {
 
 
 
-            
-    
 
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Listen when a layer has been added or there has been an error.
+client.addLayer(layerWithErrors)
+ .then(()=> console.log('Layer added succesfully'))
+ .catch(cartoError => console.error(cartoError.message))</code></pre>
+
+    <pre class="prettyprint"><code>// Events also will be registered here when the map changes.
+client.on(carto.events.SUCCESS, function () {
+ console.log('Client reloaded');
+});
+
+client.on(carto.events.ERROR, function (clientError) {
+ console.error(clientError.message);
+});</code></pre>
+
+
+
+        
     
 </article>
 
@@ -9627,13 +8289,13 @@ client.on(carto.events.ERROR, function (clientError) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li><li><a href="global.html#CartoError">CartoError</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">carto.layer.Layer.FeatureEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine#Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine#Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine#Engine:RELOAD_SUCCESS</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.events.html">carto.events</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.Leaflet.html">carto.Leaflet</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#parseTimeSeriesData">parseTimeSeriesData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.layer.Layer.html">carto.layer.Layer</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li><li><a href="CartoError.html">CartoError</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.dataview.Base.html#.event:columnChanged">carto.dataview.Base.columnChanged</a></li><li><a href="carto.dataview.Base.html#.event:statusChanged">carto.dataview.Base.statusChanged</a></li><li><a href="carto.dataview.Category.html#.event:dataChanged">carto.dataview.Category.dataChanged</a></li><li><a href="carto.dataview.Category.html#.event:limitChanged">carto.dataview.Category.limitChanged</a></li><li><a href="carto.dataview.Category.html#.event:operationChanged">carto.dataview.Category.operationChanged</a></li><li><a href="carto.dataview.Category.html#.event:operationColumnChanged">carto.dataview.Category.operationColumnChanged</a></li><li><a href="carto.dataview.Formula.html#.event:dataChanged">carto.dataview.Formula.dataChanged</a></li><li><a href="carto.dataview.Formula.html#.event:operationChanged">carto.dataview.Formula.operationChanged</a></li><li><a href="carto.dataview.Histogram.html#.event:binsChanged">carto.dataview.Histogram.binsChanged</a></li><li><a href="carto.dataview.Histogram.html#.event:dataChanged">carto.dataview.Histogram.dataChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:aggregationChanged">carto.dataview.TimeSeries.aggregationChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:dataChanged">carto.dataview.TimeSeries.dataChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:localTimezoneChanged">carto.dataview.TimeSeries.localTimezoneChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:offsetChanged">carto.dataview.TimeSeries.offsetChanged</a></li><li><a href="carto.filter.BoundingBox.html#.event:boundsChanged">carto.filter.BoundingBox.boundsChanged</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html#.event:boundsChanged">carto.filter.BoundingBoxLeaflet.boundsChanged</a></li><li><a href="carto.layer.Layer.html#.event:FeatureEvent">carto.layer.Layer.FeatureEvent</a></li><li><a href="carto.layer.Layer.html#.event:sourceChanged">carto.layer.Layer.sourceChanged</a></li><li><a href="carto.layer.Layer.html#.event:styleChanged">carto.layer.Layer.styleChanged</a></li><li><a href="carto.source.SQL.html#.event:queryChangedEvent">carto.source.SQL.queryChangedEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine#Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine#Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine#Engine:RELOAD_SUCCESS</a></li><li><a href="global.html#event:CartoError">CartoError</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.events.html">carto.events</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.Leaflet.html">carto.Leaflet</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isStyleError">_isStyleError</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#parseTimeSeriesData">parseTimeSeriesData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 12:24:22 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 20 2017 11:50:07 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

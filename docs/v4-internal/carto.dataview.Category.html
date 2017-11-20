@@ -50,7 +50,14 @@
 
 
 <div class="description">
-    <p>Category dataview object</p>
+    <p>A category dataview is used to aggregate data performing a operation.</p>
+<p>This is similar to a group by SQL operation, for example:</p>
+<pre class="prettyprint source lang-sql"><code>SELECT country, AVG(population) GROUP BY country</code></pre><p>The following code is the carto.js equivalent:</p>
+<pre class="prettyprint source lang-javascript"><code>var categoryDataview = new carto.dataview.Category(citiesSource, 'country', {
+    operation: carto.operation.AVG, // Compute the average
+    operationColumn: 'population' // The name of the column where the operation will be applied.
+ });</code></pre><p>Like all dataviews is an async object so you must wait for the data to be availiable.</p>
+<p>The data format for the category-dataview is described in <a href="carto.dataview.html#.CategoryItem">carto.dataview.CategoryItem</a></p>
 </div>
 
 
@@ -102,7 +109,7 @@
 
             
 
-            <td class="description last"><p>The source where the dataview will fetch the data.</p></td>
+            <td class="description last"><p>The source where the dataview will fetch the data</p></td>
         </tr>
 
     
@@ -125,7 +132,7 @@
 
             
 
-            <td class="description last"><p>The column name to get the data.</p></td>
+            <td class="description last"><p>The name of the column used to create categories</p></td>
         </tr>
 
     
@@ -210,7 +217,7 @@
                 </td>
             
 
-            <td class="description last"><p>The maximum number of categories in the response.</p></td>
+            <td class="description last"><p>The maximum number of categories in the response</p></td>
         </tr>
 
     
@@ -245,7 +252,7 @@
                 </td>
             
 
-            <td class="description last"><p>The operation to apply to the data.</p></td>
+            <td class="description last"><p>The operation to apply to the data</p></td>
         </tr>
 
     
@@ -280,7 +287,7 @@
                 </td>
             
 
-            <td class="description last"><p>The column name used in the operation.</p></td>
+            <td class="description last"><p>The column where the operation will be applied</p></td>
         </tr>
 
     
@@ -338,6 +345,16 @@
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="carto.dataview.Category.html#.event:dataChanged">carto.dataview.Category.event:dataChanged</a></li>
+
+    <li><a href="carto.dataview.Category.html#.event:limitChanged">carto.dataview.Category.event:limitChanged</a></li>
+
+    <li><a href="carto.dataview.Category.html#.event:operationChanged">carto.dataview.Category.event:operationChanged</a></li>
+
+    <li><a href="carto.dataview.Category.html#.event:operationColumnChanged">carto.dataview.Category.event:operationColumnChanged</a></li>
+</ul>
 
 
 
@@ -348,6 +365,31 @@
 
 
 
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// From a cities dataset with name, country and population show the average city population per country:
+var column = 'country'; // Aggregate the data by country.
+var categoryDataview = new carto.dataview.Category(citiesSource, column, {
+    operation: carto.operation.AVG, // Compute the average
+    operationColumn: 'population' // The name of the column where the operation will be applied.
+ });
+
+// This will give data like this: { Spain: 1234, France: 3456 ...} To view the actual format see: "CategoryItem".</code></pre>
+
+    <pre class="prettyprint"><code>// You can listen to multiple events emmited by the category-dataview.
+// Data and status are fired by all dataviews.
+categoryDataview.on('dataChanged', newData => { });
+categoryDataview.on('statusChanged', (newData, error) => { });
+categoryDataview.on('error', cartoError => { });
+
+// Listen to specific category-dataview events.
+categoryDataview.on('columnChanged', newData => { });
+categoryDataview.on('limitChanged', newData => { });
+categoryDataview.on('operationChanged', newData => { });
+categoryDataview.on('operationColumnChanged', newData => { });</code></pre>
 
 
 
@@ -396,7 +438,7 @@
 
 
 <div class="description">
-    <p>Initialize dataview</p>
+    <p>Initialize dataview.</p>
 </div>
 
 
@@ -448,7 +490,7 @@
 
             
 
-            <td class="description last"><p>The source where the dataview will fetch the data.</p></td>
+            <td class="description last"><p>The source where the dataview will fetch the data</p></td>
         </tr>
 
     
@@ -471,7 +513,7 @@
 
             
 
-            <td class="description last"><p>The column name to get the data.</p></td>
+            <td class="description last"><p>The column name to get the data</p></td>
         </tr>
 
     
@@ -494,7 +536,7 @@
 
             
 
-            <td class="description last"><p>It depends on the instance.</p></td>
+            <td class="description last"><p>It depends on the instance</p></td>
         </tr>
 
     
@@ -569,6 +611,92 @@
     
 
     
+    <h4 class="name" id="_triggerError"><span class="type-signature"></span>_triggerError<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Fire a CartoError event from a internalDataviewError.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="carto.dataview.Base.html#_triggerError">carto.dataview.Base#_triggerError</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="addFilter"><span class="type-signature"></span>addFilter<span class="signature">(filter)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.Base.html">carto.dataview.Base</a>}</span></h4>
     
 
@@ -577,7 +705,7 @@
 
 
 <div class="description">
-    <p>Add a filter</p>
+    <p>Add a filter.</p>
 </div>
 
 
@@ -954,7 +1082,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current dataview column</p>
+    <p>Return the current dataview column.</p>
 </div>
 
 
@@ -1054,7 +1182,7 @@ bounding box).</p>
     
 
     
-    <h4 class="name" id="getData"><span class="type-signature"></span>getData<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#CategoryData">CategoryData</a>}</span></h4>
+    <h4 class="name" id="getData"><span class="type-signature"></span>getData<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.dataview.html#.CategoryData">carto.dataview.CategoryData</a>}</span></h4>
     
 
     
@@ -1062,7 +1190,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the resulting data</p>
+    <p>Return the resulting data.</p>
 </div>
 
 
@@ -1135,7 +1263,7 @@ bounding box).</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="global.html#CategoryData">CategoryData</a></span>
+<span class="param-type"><a href="carto.dataview.html#.CategoryData">carto.dataview.CategoryData</a></span>
 
 
     </dd>
@@ -1161,7 +1289,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current categories limit</p>
+    <p>Return the current categories limit.</p>
 </div>
 
 
@@ -1264,7 +1392,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current dataview operation</p>
+    <p>Return the current dataview operation.</p>
 </div>
 
 
@@ -1367,7 +1495,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current dataview operationColumn</p>
+    <p>Return the current dataview operationColumn.</p>
 </div>
 
 
@@ -1470,7 +1598,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return the current dataview status</p>
+    <p>Return the current dataview status.</p>
 </div>
 
 
@@ -1682,7 +1810,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return true if the filter is added</p>
+    <p>Return true if the filter is added.</p>
 </div>
 
 
@@ -1839,7 +1967,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Return true if the dataview is enabled</p>
+    <p>Return true if the dataview is enabled.</p>
 </div>
 
 
@@ -2151,7 +2279,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Remove a filter</p>
+    <p>Remove a filter.</p>
 </div>
 
 
@@ -2308,7 +2436,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Set the dataview column</p>
+    <p>Set the dataview column.</p>
 </div>
 
 
@@ -2416,6 +2544,11 @@ bounding box).</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="carto.dataview.Base.html#.event:columnChanged">carto.dataview.Base.event:columnChanged</a></li>
+</ul>
+
 
 
 
@@ -2465,7 +2598,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Set the categories limit</p>
+    <p>Set the categories limit.</p>
 </div>
 
 
@@ -2568,6 +2701,11 @@ bounding box).</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="carto.dataview.Category.html#.event:limitChanged">carto.dataview.Category.event:limitChanged</a></li>
+</ul>
+
 
 
 
@@ -2617,7 +2755,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Set the dataview operation</p>
+    <p>Set the dataview operation.</p>
 </div>
 
 
@@ -2720,6 +2858,11 @@ bounding box).</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="carto.dataview.Category.html#.event:operationChanged">carto.dataview.Category.event:operationChanged</a></li>
+</ul>
+
 
 
 
@@ -2769,7 +2912,7 @@ bounding box).</p>
 
 
 <div class="description">
-    <p>Set the dataview operationColumn</p>
+    <p>Set the dataview operationColumn.</p>
 </div>
 
 
@@ -2872,6 +3015,11 @@ bounding box).</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="carto.dataview.Category.html#.event:operationColumnChanged">carto.dataview.Category.event:operationColumnChanged</a></li>
+</ul>
+
 
 
 
@@ -2913,6 +3061,378 @@ bounding box).</p>
     
 
     
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".event:dataChanged">dataChanged</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event triggered when the data in a cateogry-dataview changes.</p>
+<p>Contains a single argument with the <a href="carto.dataview.html#.CategoryData">carto.dataview.CategoryData</a></p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="carto.dataview.html#.CategoryData">carto.dataview.CategoryData</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".event:limitChanged">limitChanged</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event triggered when the limit in a cateogry-dataview changes.</p>
+<p>Contains a single argument with the new limit.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".event:operationChanged">operationChanged</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event triggered when the operation in a cateogry-dataview changes.</p>
+<p>Contains a single argument with the new operation name.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".event:operationColumnChanged">operationColumnChanged</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Event triggered when the operationColumn in a cateogry-dataview changes.</p>
+<p>Contains a single argument with the new operationColumn name.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
 </article>
 
 </section>
@@ -2923,13 +3443,13 @@ bounding box).</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li><li><a href="global.html#CartoError">CartoError</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Layer.html">Layer</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.layer.Layer.html#.event:FeatureEvent">carto.layer.Layer.FeatureEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine#Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine#Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine#Engine:RELOAD_SUCCESS</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.events.html">carto.events</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.Leaflet.html">carto.Leaflet</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#parseTimeSeriesData">parseTimeSeriesData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.layer.Layer.html">carto.layer.Layer</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li><li><a href="CartoError.html">CartoError</a></li><li><a href="Engine.html">Engine</a></li><li><a href="Response.html">Response</a></li></ul><h3>Events</h3><ul><li><a href="carto.dataview.Base.html#.event:columnChanged">carto.dataview.Base.columnChanged</a></li><li><a href="carto.dataview.Base.html#.event:statusChanged">carto.dataview.Base.statusChanged</a></li><li><a href="carto.dataview.Category.html#.event:dataChanged">carto.dataview.Category.dataChanged</a></li><li><a href="carto.dataview.Category.html#.event:limitChanged">carto.dataview.Category.limitChanged</a></li><li><a href="carto.dataview.Category.html#.event:operationChanged">carto.dataview.Category.operationChanged</a></li><li><a href="carto.dataview.Category.html#.event:operationColumnChanged">carto.dataview.Category.operationColumnChanged</a></li><li><a href="carto.dataview.Formula.html#.event:dataChanged">carto.dataview.Formula.dataChanged</a></li><li><a href="carto.dataview.Formula.html#.event:operationChanged">carto.dataview.Formula.operationChanged</a></li><li><a href="carto.dataview.Histogram.html#.event:binsChanged">carto.dataview.Histogram.binsChanged</a></li><li><a href="carto.dataview.Histogram.html#.event:dataChanged">carto.dataview.Histogram.dataChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:aggregationChanged">carto.dataview.TimeSeries.aggregationChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:dataChanged">carto.dataview.TimeSeries.dataChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:localTimezoneChanged">carto.dataview.TimeSeries.localTimezoneChanged</a></li><li><a href="carto.dataview.TimeSeries.html#.event:offsetChanged">carto.dataview.TimeSeries.offsetChanged</a></li><li><a href="carto.filter.BoundingBox.html#.event:boundsChanged">carto.filter.BoundingBox.boundsChanged</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html#.event:boundsChanged">carto.filter.BoundingBoxLeaflet.boundsChanged</a></li><li><a href="carto.layer.Layer.html#.event:FeatureEvent">carto.layer.Layer.FeatureEvent</a></li><li><a href="carto.layer.Layer.html#.event:sourceChanged">carto.layer.Layer.sourceChanged</a></li><li><a href="carto.layer.Layer.html#.event:styleChanged">carto.layer.Layer.styleChanged</a></li><li><a href="carto.source.SQL.html#.event:queryChangedEvent">carto.source.SQL.queryChangedEvent</a></li><li><a href="Engine.html#event:Engine:RELOAD_ERROR">Engine#Engine:RELOAD_ERROR</a></li><li><a href="Engine.html#event:Engine:RELOAD_STARTED">Engine#Engine:RELOAD_STARTED</a></li><li><a href="Engine.html#event:Engine:RELOAD_SUCCESS">Engine#Engine:RELOAD_SUCCESS</a></li><li><a href="global.html#event:CartoError">CartoError</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.events.html">carto.events</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.Leaflet.html">carto.Leaflet</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_animateIn">_animateIn</a></li><li><a href="global.html#_animateOut">_animateOut</a></li><li><a href="global.html#_assignIndexes">_assignIndexes</a></li><li><a href="global.html#_bindModel">_bindModel</a></li><li><a href="global.html#_checkLayer">_checkLayer</a></li><li><a href="global.html#_closeInfowindow">_closeInfowindow</a></li><li><a href="global.html#_compileTemplate">_compileTemplate</a></li><li><a href="global.html#_containsCover">_containsCover</a></li><li><a href="global.html#_createAnalysisNodes">_createAnalysisNodes</a></li><li><a href="global.html#_createResult">_createResult</a></li><li><a href="global.html#_generateUniqueAnalysisList">_generateUniqueAnalysisList</a></li><li><a href="global.html#_getDataviewSpecificURLParams">_getDataviewSpecificURLParams</a></li><li><a href="global.html#_getInteractivityFields">_getInteractivityFields</a></li><li><a href="global.html#_isAnalysisLinkedToLayer">_isAnalysisLinkedToLayer</a></li><li><a href="global.html#_isAnalysisPartOfOtherAnalyses">_isAnalysisPartOfOtherAnalyses</a></li><li><a href="global.html#_isStyleError">_isStyleError</a></li><li><a href="global.html#_isValidURL">_isValidURL</a></li><li><a href="global.html#_newPoint">_newPoint</a></li><li><a href="global.html#_onFilterChanged">_onFilterChanged</a></li><li><a href="global.html#_setModelProperty">_setModelProperty</a></li><li><a href="global.html#_unbindModel">_unbindModel</a></li><li><a href="global.html#_update">_update</a></li><li><a href="global.html#_updatePosition">_updatePosition</a></li><li><a href="global.html#adjustPan">adjustPan</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#cleanTooltips">cleanTooltips</a></li><li><a href="global.html#Config">Config</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#extendEvents">extendEvents</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#FullScreen">FullScreen</a></li><li><a href="global.html#getEngine">getEngine</a></li><li><a href="global.html#getLayer">getLayer</a></li><li><a href="global.html#getLayers">getLayers</a></li><li><a href="global.html#getLayerTemplate">getLayerTemplate</a></li><li><a href="global.html#getNodes">getNodes</a></li><li><a href="global.html#getNodesCollection">getNodesCollection</a></li><li><a href="global.html#getSourceId">getSourceId</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getViewBounds">getViewBounds</a></li><li><a href="global.html#GMapsLayerView">GMapsLayerView</a></li><li><a href="global.html#hasSource">hasSource</a></li><li><a href="global.html#hide">hide</a></li><li><a href="global.html#Infowindow">Infowindow</a></li><li><a href="global.html#InfowindowManager">InfowindowManager</a></li><li><a href="global.html#instantiateMap">instantiateMap</a></li><li><a href="global.html#isHidden">isHidden</a></li><li><a href="global.html#killEvent">killEvent</a></li><li><a href="global.html#MapCursorManager">MapCursorManager</a></li><li><a href="global.html#MapModelEventsManager">MapModelEventsManager</a></li><li><a href="global.html#MapViewFactory">MapViewFactory</a></li><li><a href="global.html#MAPZEN">MAPZEN</a></li><li><a href="global.html#Model">Model</a></li><li><a href="global.html#ModelUpdater">ModelUpdater</a></li><li><a href="global.html#NOKIA">NOKIA</a></li><li><a href="global.html#parseHistogramData">parseHistogramData</a></li><li><a href="global.html#parseTimeSeriesData">parseTimeSeriesData</a></li><li><a href="global.html#PlainLayer">PlainLayer</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#Request">Request</a></li><li><a href="global.html#RequestTracker">RequestTracker</a></li><li><a href="global.html#retrigger">retrigger</a></li><li><a href="global.html#runChecker">runChecker</a></li><li><a href="global.html#save">save</a></li><li><a href="global.html#Search">Search</a></li><li><a href="global.html#serialize">serialize</a></li><li><a href="global.html#setIdAttribute">setIdAttribute</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#showInfowindow">showInfowindow</a></li><li><a href="global.html#Template">Template</a></li><li><a href="global.html#TilesLoader">TilesLoader</a></li><li><a href="global.html#toggle">toggle</a></li><li><a href="global.html#TooltipManager">TooltipManager</a></li><li><a href="global.html#TorqueLayer">TorqueLayer</a></li><li><a href="global.html#TorqueLayerViewBase">TorqueLayerViewBase</a></li><li><a href="global.html#View">View</a></li><li><a href="global.html#Vis">Vis</a></li><li><a href="global.html#WindshaftClient">WindshaftClient</a></li><li><a href="global.html#WMSLayer">WMSLayer</a></li><li><a href="global.html#YAHOO">YAHOO</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 12:24:22 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Nov 20 2017 11:50:08 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
