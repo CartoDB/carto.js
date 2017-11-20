@@ -44733,7 +44733,7 @@ return hooks;
 },{}],53:[function(require,module,exports){
 module.exports={
   "name": "cartodb.js",
-  "version": "4.0.0-alpha.23",
+  "version": "4.0.0-alpha.25",
   "description": "CARTO javascript library",
   "repository": {
     "type": "git",
@@ -44768,13 +44768,12 @@ module.exports={
     "d3-format": "1.2.0",
     "d3-time-format": "2.1.0",
     "jquery": "2.1.4",
-    "leaflet": "1.0.3",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "mustache": "1.1.0",
     "perfect-scrollbar": "git://github.com/CartoDB/perfect-scrollbar.git#master",
     "postcss": "5.0.19",
-    "tangram.cartodb": "~0.5.6",
+    "tangram.cartodb": "~0.5.7",
     "torque.js": "CartoDB/torque#master",
     "underscore": "1.8.3"
   },
@@ -44818,6 +44817,7 @@ module.exports={
     "jasmine-ajax": "git://github.com/nobuti/jasmine-ajax.git#master",
     "jsdoc": "~3.5.5",
     "jstify": "0.12.0",
+    "leaflet": "1.0.3",
     "load-grunt-tasks": "~0.6.0",
     "npm-watch": "^0.3.0",
     "semver": "~4.1.0",
@@ -45285,7 +45285,6 @@ AnalysisService.prototype._onAnalysisRemoved = function (analysis) {
 /**
  * Return all the analysis nodes without duplicates.
  * The analyses are obtained from the layers and dataviews collections.
- *
  * @example
  * We have the following analyses:  (a0->a1->a2), (b0->a2)
  * This method will give us: (a0->a1->a2), (a1->a2), (a2), (b0->a2)
@@ -45304,7 +45303,6 @@ AnalysisService.getUniqueAnalysisNodes = function (layersCollection, dataviewsCo
 
 /**
  * Return a list with all the analyses contained in the given collections.
- *
  * @example
  * We have the following analyses:  (a0->a1->a2), (b0->a2)
  * This method will give us: (a0->a1->a2), (b0->a2)
@@ -45410,20 +45408,20 @@ var VERSION = require('../../../package.json').version;
 /**
  * This is the main object in a Carto.js application.
  *
- * The carto client keeps both layer and dataview lists internaly. Every time some layer/dataview changes
- * the client will trigger a carto-reload cycle.
+ * The carto client keeps both layer and dataview lists internaly.
+ * Every time some layer/dataview changes the client will trigger a carto-reload cycle.
  *
  * @param {object} settings
- * @param {string} settings.apiKey - Api key used to be autenticate in the windshaft server.
- * @param {string} settings.username - Name of the user registered in the windshaft server.
- * @param {string} settings.serverUrl - Url of the windshaft server.
+ * @param {string} settings.apiKey - Api key used to be autenticate in the windshaft server
+ * @param {string} settings.username - Name of the user registered in the windshaft server
+ * @param {string} settings.serverUrl - Url of the windshaft server
  *
  * @constructor
  * @memberof carto
  * @api
  *
+ * @fires CartoError
  * @fires carto.events.SUCCESS
- * @fires carto.events.ERROR
  */
 function Client (settings) {
   _checkSettings(settings);
@@ -45446,8 +45444,11 @@ _.extend(Client.prototype, Backbone.Events);
  * @param {carto.layer.Base} - The layer to be added
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
+ * 
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
  *
- * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed.
+ * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.addLayer = function (layer, opts) {
@@ -45461,7 +45462,10 @@ Client.prototype.addLayer = function (layer, opts) {
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed.
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
+ *
+ * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.addLayers = function (layers, opts) {
@@ -45476,18 +45480,36 @@ Client.prototype.addLayers = function (layers, opts) {
 /**
  * Remove a layer from the client
  *
- * @param {carto.layer.Base} - The layer array to be removed
+ * @param {carto.layer.Base} - The layer to be removed
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
+ * 
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed.
+ * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.removeLayer = function (layer, opts) {
-  _checkLayer(layer);
+  return this.removeLayers([layer], opts);
+};
+
+/**
+ * Remove a layer from the client
+ *
+ * @param {carto.layer.Base[]} - The layer array to be removed
+ * @param {object} opts
+ * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
+ * 
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
+ *
+ * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @api
+ */
+Client.prototype.removeLayers = function (layers, opts) {
   opts = opts || {};
-  this._layers.remove(layer);
-  this._engine.removeLayer(layer.$getInternalModel());
+  layers.forEach(this._removeLayer, this);
   if (opts.reload === false) {
     return Promise.resolve();
   }
@@ -45497,7 +45519,7 @@ Client.prototype.removeLayer = function (layer, opts) {
 /**
  * Get all the layers from the client
  *
- * @returns {carto.layer.Base[]} An array with all the Layers from the client.
+ * @returns {carto.layer.Base[]} An array with all the Layers from the client
  * @api
  */
 Client.prototype.getLayers = function () {
@@ -45510,7 +45532,10 @@ Client.prototype.getLayers = function () {
  * @param {carto.dataview.Base} - The dataview to be added
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
- * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed.
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
+ * 
+ * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.addDataview = function (dataview, opts) {
@@ -45524,7 +45549,10 @@ Client.prototype.addDataview = function (dataview, opts) {
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed.
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
+ * 
+ * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.addDataviews = function (dataviews, opts) {
@@ -45537,13 +45565,16 @@ Client.prototype.addDataviews = function (dataviews, opts) {
 };
 
 /**
- * Remove a dataview from the client
+ * Remove a dataview from the client.
  *
  * @param {carto.dataview.Base} - The dataview array to be removed
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed.
+ * @fires CartoError
+ * @fires carto.events.SUCCESS
+ * 
+ * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
 Client.prototype.removeDataview = function (dataview, opts) {
@@ -45559,7 +45590,7 @@ Client.prototype.removeDataview = function (dataview, opts) {
 /**
  * Get all the dataviews from the client
  *
- * @returns {carto.dataview.Base[]} An array with all the dataviews from the client.
+ * @returns {carto.dataview.Base[]} An array with all the dataviews from the client
  * @api
  */
 Client.prototype.getDataviews = function () {
@@ -45567,7 +45598,9 @@ Client.prototype.getDataviews = function () {
 };
 
 /**
- * ...
+ * Return the a leaflet layer for the given client.
+ * 
+ * @api
  */
 Client.prototype.getLeafletLayer = function () {
   this._leafletLayer = this._leafletLayer || new Leaflet.LayerGroup(this._layers, this._engine);
@@ -45597,6 +45630,15 @@ Client.prototype._addLayer = function (layer, engine) {
   this._layers.add(layer);
   layer.$setEngine(this._engine);
   this._engine.addLayer(layer.$getInternalModel());
+};
+
+/**
+ * Helper used to remove a layer from the client.
+ */
+Client.prototype._removeLayer = function (layer) {
+  _checkLayer(layer);
+  this._layers.remove(layer);
+  this._engine.removeLayer(layer.$getInternalModel());
 };
 
 /**
@@ -45686,10 +45728,15 @@ var _ = require('underscore');
  * @api
  */
 var operation = {
+  /** Number of elements */
   COUNT: 'count',
+  /** Sum */
   SUM: 'sum',
+  /** Average */
   AVG: 'avg',
+  /** Maximum */
   MAX: 'max',
+  /** Minimum */
   MIN: 'min'
 };
 
@@ -45706,15 +45753,19 @@ function isValidOperation (op) {
  * @api
  */
 var status = {
+  /** Not fetched with the server */
   NOT_LOADED: 'notLoaded',
+  /** Fetching with the server */
   LOADING: 'loading',
+  /** Fetch completed */
   LOADED: 'loaded',
+  /** Error in fetch */
   ERROR: 'error'
 };
 
 /**
  * Enum for dataview time aggregations.
- * 
+ *
  * @enum {string} carto.dataview.timeAggregation
  * @readonly
  * @memberOf carto.dataview
@@ -45752,21 +45803,24 @@ var SourceBase = require('../source/base');
 var FilterBase = require('../filter/base');
 var BoundingBoxFilter = require('../filter/bounding-box');
 var BoundingBoxLeafletFilter = require('../filter/bounding-box-leaflet');
+var CartoError = require('../error');
 
 /**
- * Base dataview object
+ * Base dataview object.
  *
  * @constructor
  * @abstract
  * @memberof carto.dataview
+ * @fires carto.dataview.Base.columnChanged
+ * @fires carto.dataview.Base.statusChanged
  * @api
  */
-function Base () {}
+function Base () { }
 
 _.extend(Base.prototype, Backbone.Events);
 
 /**
- * Return the current dataview status
+ * Return the current dataview status.
  *
  * @return {carto.dataview.status} Current dataview status
  * @api
@@ -45830,7 +45884,7 @@ Base.prototype.disable = function () {
 };
 
 /**
- * Return true if the dataview is enabled
+ * Return true if the dataview is enabled.
  *
  * @return {boolean}
  * @api
@@ -45840,9 +45894,10 @@ Base.prototype.isEnabled = function () {
 };
 
 /**
- * Set the dataview column
+ * Set the dataview column.
  *
  * @param  {string} column
+ * @fires carto.dataview.Base.columnChanged
  * @return {carto.dataview.Base} this
  * @api
  */
@@ -45856,7 +45911,7 @@ Base.prototype.setColumn = function (column) {
 };
 
 /**
- * Return the current dataview column
+ * Return the current dataview column.
  *
  * @return {string} Current dataview column
  * @api
@@ -45866,7 +45921,7 @@ Base.prototype.getColumn = function () {
 };
 
 /**
- * Add a filter
+ * Add a filter.
  *
  * @param  {carto.filter.Base} filter
  * @return {carto.dataview.Base} this
@@ -45875,14 +45930,14 @@ Base.prototype.getColumn = function () {
 Base.prototype.addFilter = function (filter) {
   this._checkFilter(filter);
   if ((filter !== this._boundingBoxFilter) &&
-      (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter)) {
+    (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter)) {
     this._addBoundingBoxFilter(filter);
   }
   return this;
 };
 
 /**
- * Remove a filter
+ * Remove a filter.
  *
  * @param  {carto.filter.Base} filter
  * @return {carto.dataview.Base} this
@@ -45891,14 +45946,14 @@ Base.prototype.addFilter = function (filter) {
 Base.prototype.removeFilter = function (filter) {
   this._checkFilter(filter);
   if ((filter === this._boundingBoxFilter) &&
-      (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter)) {
+    (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter)) {
     this._removeBoundingBoxFilter();
   }
   return this;
 };
 
 /**
- * Return true if the filter is added
+ * Return true if the filter is added.
  *
  * @param  {carto.filter.Base} filter
  * @return {carto.dataview.Base} this
@@ -45907,8 +45962,8 @@ Base.prototype.removeFilter = function (filter) {
 Base.prototype.hasFilter = function (filter) {
   this._checkFilter(filter);
   return (filter === this._boundingBoxFilter) &&
-         (this._internalModel && this._internalModel.get('sync_on_bbox_change')) &&
-         (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter);
+    (this._internalModel && this._internalModel.get('sync_on_bbox_change')) &&
+    (filter instanceof BoundingBoxFilter || filter instanceof BoundingBoxLeafletFilter);
 };
 
 Base.prototype.getData = function () {
@@ -45920,11 +45975,11 @@ Base.prototype.getData = function () {
 Base.prototype.DEFAULTS = {};
 
 /**
- * Initialize dataview
+ * Initialize dataview.
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data.
- * @param {string} column - The column name to get the data.
- * @param  {object} options - It depends on the instance.
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data
+ * @param {string} column - The column name to get the data
+ * @param  {object} options - It depends on the instance
  */
 Base.prototype._initialize = function (source, column, options) {
   options = _.defaults(options || {}, this.DEFAULTS);
@@ -45988,7 +46043,7 @@ Base.prototype._listenToInternalModelSharedEvents = function () {
     this.listenTo(this._internalModel, 'change:column', this._onColumnChanged);
     this.listenTo(this._internalModel, 'loading', this._onStatusLoading);
     this.listenTo(this._internalModel, 'loaded', this._onStatusLoaded);
-    this.listenTo(this._internalModel, 'error', this._onStatusError);
+    this.listenTo(this._internalModel, 'statusError', this._onStatusError);
     this._listenToInternalModelSpecificEvents();
   }
 };
@@ -46021,6 +46076,7 @@ Base.prototype._onStatusLoaded = function () {
 Base.prototype._onStatusError = function (model, error) {
   this._status = status.ERROR;
   this.trigger('statusChanged', this._status, error);
+  this._triggerError(this, error);
 };
 
 Base.prototype._changeProperty = function (key, value, internalKey) {
@@ -46037,6 +46093,13 @@ Base.prototype._triggerChange = function (key, value) {
   this.trigger(key + 'Changed', value);
 };
 
+/**
+ * Fire a CartoError event from a internalDataviewError.
+ */
+Base.prototype._triggerError = function (model, internalDataviewError) {
+  this.trigger('error', new CartoError(internalDataviewError));
+};
+
 Base.prototype._addBoundingBoxFilter = function (filter) {
   this._boundingBoxFilter = filter;
   if (this._internalModel) {
@@ -46046,6 +46109,7 @@ Base.prototype._addBoundingBoxFilter = function (filter) {
 };
 
 Base.prototype._removeBoundingBoxFilter = function () {
+  this._boundingBoxFilter = null;
   if (this._internalModel) {
     this._internalModel.set('sync_on_bbox_change', false);
   }
@@ -46067,7 +46131,27 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"../constants":59,"../filter/base":70,"../filter/bounding-box":72,"../filter/bounding-box-leaflet":71,"../source/base":82,"backbone":2,"underscore":52}],61:[function(require,module,exports){
+/**
+ * Event triggered when the column in a dataview changes.
+ *
+ * Contains a single argument with the name of the changed column.
+ *
+ * @event carto.dataview.Base.columnChanged
+ * @type {string}
+ * @api
+ */
+
+/**
+ * Event triggered when the status in a dataview changes.
+ *
+ * Contains a single argument with the new status.
+ *
+ * @event carto.dataview.Base.statusChanged
+ * @type {carto.dataview.status}
+ * @api
+ */
+
+},{"../constants":59,"../error":68,"../filter/base":70,"../filter/bounding-box":72,"../filter/bounding-box-leaflet":71,"../source/base":82,"backbone":2,"underscore":52}],61:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var constants = require('../constants');
@@ -46075,19 +46159,64 @@ var CategoryDataviewModel = require('../../../dataviews/category-dataview-model'
 var CategoryFilter = require('../../../windshaft/filters/category');
 
 /**
- * Category dataview object
+ * 
+ * A category dataview is used to aggregate data performing a operation.
+ * 
+ * This is similar to a group by SQL operation, for example:
+ * 
+ * ```sql
+ * SELECT country, AVG(population) GROUP BY country
+ * ```
+ * The following code is the carto.js equivalent:
+ * 
+ * ```javascript
+ * var categoryDataview = new carto.dataview.Category(citiesSource, 'country', {
+ *     operation: carto.operation.AVG, // Compute the average
+ *     operationColumn: 'population' // The name of the column where the operation will be applied.
+ *  });
+ * ```
+ * 
+ * Like all dataviews is an async object so you must wait for the data to be availiable.
+ * 
+ * The data format for the category-dataview is described in {@link carto.dataview.CategoryItem}
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data.
- * @param {string} column - The column name to get the data.
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data
+ * @param {string} column - The name of the column used to create categories
  * @param {object} options
- * @param {number} [options.limit=6] - The maximum number of categories in the response.
- * @param {carto.operation} options.operation - The operation to apply to the data.
- * @param {string} options.operationColumn - The column name used in the operation.
+ * @param {number} [options.limit=6] - The maximum number of categories in the response
+ * @param {carto.operation} options.operation - The operation to apply to the data
+ * @param {string} options.operationColumn - The column where the operation will be applied
  *
+ * @fires carto.dataview.Category.dataChanged
+ * @fires carto.dataview.Category.limitChanged
+ * @fires carto.dataview.Category.operationChanged
+ * @fires carto.dataview.Category.operationColumnChanged
+ * 
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
  * @api
+ * @example
+ * // From a cities dataset with name, country and population show the average city population per country:
+ * var column = 'country'; // Aggregate the data by country.
+ * var categoryDataview = new carto.dataview.Category(citiesSource, column, {
+ *     operation: carto.operation.AVG, // Compute the average
+ *     operationColumn: 'population' // The name of the column where the operation will be applied.
+ *  });
+ * 
+ * // This will give data like this: { Spain: 1234, France: 3456 ...} To view the actual format see: "CategoryItem".
+ * @example
+ * // You can listen to multiple events emmited by the category-dataview.
+ * // Data and status are fired by all dataviews.
+ * categoryDataview.on('dataChanged', newData => { });
+ * categoryDataview.on('statusChanged', (newData, error) => { });
+ * categoryDataview.on('error', cartoError => { });
+ *
+ * // Listen to specific category-dataview events.
+ * categoryDataview.on('columnChanged', newData => { });
+ * categoryDataview.on('limitChanged', newData => { });
+ * categoryDataview.on('operationChanged', newData => { });
+ * categoryDataview.on('operationColumnChanged', newData => { });
  */
 function Category (source, column, options) {
   this.DEFAULTS.operationColumn = column;
@@ -46101,9 +46230,10 @@ function Category (source, column, options) {
 Category.prototype = Object.create(Base.prototype);
 
 /**
- * Set the categories limit
+ * Set the categories limit.
  *
  * @param  {number} limit
+ * @fires carto.dataview.Category.limitChanged
  * @return {carto.dataview.Category} this
  * @api
  */
@@ -46117,7 +46247,7 @@ Category.prototype.setLimit = function (limit) {
 };
 
 /**
- * Return the current categories limit
+ * Return the current categories limit.
  *
  * @return {number} Current dataview limit
  * @api
@@ -46127,9 +46257,10 @@ Category.prototype.getLimit = function () {
 };
 
 /**
- * Set the dataview operation
+ * Set the dataview operation.
  *
  * @param  {carto.operation} operation
+ * @fires carto.dataview.Category.operationChanged
  * @return {carto.dataview.Category} this
  * @api
  */
@@ -46143,7 +46274,7 @@ Category.prototype.setOperation = function (operation) {
 };
 
 /**
- * Return the current dataview operation
+ * Return the current dataview operation.
  *
  * @return {carto.operation} Current dataview operation
  * @api
@@ -46153,9 +46284,10 @@ Category.prototype.getOperation = function () {
 };
 
 /**
- * Set the dataview operationColumn
+ * Set the dataview operationColumn.
  *
  * @param  {string} operationColumn
+ * @fires carto.dataview.Category.operationColumnChanged
  * @return {carto.dataview.Category} this
  * @api
  */
@@ -46169,7 +46301,7 @@ Category.prototype.setOperationColumn = function (operationColumn) {
 };
 
 /**
- * Return the current dataview operationColumn
+ * Return the current dataview operationColumn.
  *
  * @return {string} Current dataview operationColumn
  * @api
@@ -46179,32 +46311,32 @@ Category.prototype.getOperationColumn = function () {
 };
 
 /**
- * Return the resulting data
+ * Return the resulting data.
  *
- * @return {CategoryData}
+ * @return {carto.dataview.CategoryData}
  * @api
  */
 Category.prototype.getData = function () {
   if (this._internalModel) {
     /**
-     * @typedef {object} CategoryItem
-     * @property {boolean} group
-     * @property {string} name
-     * @property {number} value
+     * @typedef {object} carto.dataview.CategoryItem
+     * @property {boolean} group - Category is a group
+     * @property {string} name - Category name
+     * @property {number} value - Category value
      * @api
      */
     /**
-     * @typedef {object} CategoryData
-     * @property {number} count
-     * @property {number} max
-     * @property {number} min
-     * @property {number} nulls
-     * @property {string} operation
-     * @property {CategoryItem[]} result
+     * @typedef {object} carto.dataview.CategoryData
+     * @property {number} count - The total number of categories
+     * @property {number} max - Maximum category value
+     * @property {number} min - Minimum category value
+     * @property {number} nulls - Number of null categories
+     * @property {string} operation - Operation used
+     * @property {carto.dataview.CategoryItem[]} categories
      * @api
      */
     var data = this._internalModel.get('data');
-    var result = _.map(data, function (item) {
+    var categories = _.map(data, function (item) {
       return {
         group: item.agg,
         name: item.name,
@@ -46217,7 +46349,7 @@ Category.prototype.getData = function () {
       min: this._internalModel.get('min'),
       nulls: this._internalModel.get('nulls'),
       operation: this._operation,
-      result: result
+      categories: categories
     };
   }
   return null;
@@ -46313,6 +46445,46 @@ Category.prototype._createInternalModel = function (engine) {
 
 module.exports = Category;
 
+/**
+ * Event triggered when the data in a cateogry-dataview changes.
+ *
+ * Contains a single argument with the {@link carto.dataview.CategoryData}
+ * 
+ * @event carto.dataview.Category.dataChanged
+ * @type {carto.dataview.CategoryData}
+ * @api
+ */
+
+/**
+ * Event triggered when the limit in a cateogry-dataview changes.
+ *
+ * Contains a single argument with the new limit.
+ * 
+ * @event carto.dataview.Category.limitChanged
+ * @type {number}
+ * @api
+ */
+
+/**
+ * Event triggered when the operation in a cateogry-dataview changes.
+ *
+ * Contains a single argument with the new operation name.
+ * 
+ * @event carto.dataview.Category.operationChanged
+ * @type {string}
+ * @api
+ */
+
+/**
+ * Event triggered when the operationColumn in a cateogry-dataview changes.
+ *
+ * Contains a single argument with the new operationColumn name.
+ * 
+ * @event carto.dataview.Category.operationColumnChanged
+ * @type {string}
+ * @api
+ */ 
+
 },{"../../../dataviews/category-dataview-model":96,"../../../windshaft/filters/category":143,"../constants":59,"./base":60,"underscore":52}],62:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
@@ -46320,17 +46492,37 @@ var constants = require('../constants');
 var FormulaDataviewModel = require('../../../dataviews/formula-dataview-model');
 
 /**
- * Formula dataview object
+ * A formula is a simple numeric operation applied to a column in a dataset.
+ * 
+ * Like all dataviews is an async object so you must wait for the data to be availiable.
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data.
- * @param {string} column - The column name to get the data.
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data
+ * @param {string} column - The column name to get the data
  * @param {object} options
- * @param {carto.operation} options.operation - The operation to apply to the data.
+ * @param {carto.operation} options.operation - The operation to apply to the data
+ * 
+ * @fires carto.dataview.Formula.dataChanged
+ * @fires carto.dataview.Formula.operationChanged
  *
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
  * @api
+ * @example
+ * // Given a cities dataset get the most populated city
+ * var formulaDataview = new carto.dataview.Formula(citiesSource, 'population', {
+ *  operation: carto.operation.MAX,
+ * });
+ * @example
+ * // You can listen to multiple events emmited by the formula-dataview.
+ * // Data and status are fired by all dataviews.
+ * formulaDataview.on('dataChanged', newData => { });
+ * formulaDataview.on('statusChanged', (newData, error) => { });
+ * formulaDataview.on('error', cartoError => { });
+ * 
+ * // Listen to specific formula-dataview events
+ * formulaDataview.on('columnChanged', newData => { });
+ * formulaDataview.on('operationChanged', newData => { });
  */
 function Formula (source, column, options) {
   this._initialize(source, column, options);
@@ -46340,9 +46532,10 @@ function Formula (source, column, options) {
 Formula.prototype = Object.create(Base.prototype);
 
 /**
- * Set the dataview operation
+ * Set the dataview operation.
  *
  * @param  {carto.operation} operation
+ * @fires carto.dataview.Formula.operationChanged
  * @return {carto.dataview.Formula} this
  * @api
  */
@@ -46356,7 +46549,7 @@ Formula.prototype.setOperation = function (operation) {
 };
 
 /**
- * Return the current dataview operation
+ * Return the current dataview operation.
  *
  * @return {carto.operation} Current dataview operation
  * @api
@@ -46366,18 +46559,18 @@ Formula.prototype.getOperation = function () {
 };
 
 /**
- * Return the resulting data
+ * Return the resulting data.
  *
- * @return {FormulaData}
+ * @return {carto.dataview.FormulaData}
  * @api
  */
 Formula.prototype.getData = function () {
   if (this._internalModel) {
     /**
-     * @typedef {object} FormulaData
-     * @property {number} nulls
-     * @property {string} operation
-     * @property {number} result
+     * @typedef {object} carto.dataview.FormulaData
+     * @property {number} nulls - Number of null categories
+     * @property {string} operation - Operation used
+     * @property {number} result - Result of the operation
      * @api
      */
     return {
@@ -46433,24 +46626,71 @@ Formula.prototype._createInternalModel = function (engine) {
 
 module.exports = Formula;
 
+/**
+ * Event triggered when the data in a formula-dataview changes.
+ *
+ * Contains a single argument with the new data.
+ * 
+ * @event carto.dataview.Formula.dataChanged
+ * @type {carto.dataview.FormulaData}
+ * @api
+ */ 
+
+/**
+ * Event triggered when the operation in a formula-dataview changes.
+ *
+ * Contains a single argument with new operation.
+ * 
+ * @event carto.dataview.Formula.operationChanged
+ * @type {carto.operation}
+ * @api
+ */ 
+
 },{"../../../dataviews/formula-dataview-model":103,"../constants":59,"./base":60,"underscore":52}],63:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
-var parseHistogramData = require('./parse-histogram-data.js');
+var parseHistogramData = require('./parse-data.js');
 
 /**
- * Histogram dataview object
+ * An histogram is used to represent the distribution of numerical data.
+ * 
+ * See {@link https://en.wikipedia.org/wiki/Histogram}.
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data.
- * @param {string} column - The column name to get the data.
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data
+ * @param {string} column - The column name to get the data
  * @param {object} options
- * @param {number} [options.bins=10] - Number of bins to aggregate the data range into.
+ * @param {number} [options.bins=10] - Number of bins to aggregate the data range into
+ * 
+ * @fires carto.dataview.Histogram.dataChanged
+ * @fires carto.dataview.Histogram.binsChanged
  *
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
  * @api
+ * @example
+ * // Create a cities population histogram.
+ * var histogram = new carto.dataview.Histogram(citiesSource, 'population');
+ * // Set up a callback to render the histogram data every time new data is obtained.
+ *  histogram.on('dataChanged', renderData);
+ * // Add the histogram to the client
+ * client.addDataview(histogram);
+ * @example 
+ * // Create a cities population histogram with only 4 bins
+ * var histogram = new carto.dataview.Histogram(citiesSource, 'population', {bins: 4});
+ * // Add a bounding box filter, so the data will change when the map is moved.
+ * var bboxFilter = new carto.filter.BoundingBoxLeaflet(map);
+ * // Set up a callback to render the histogram data every time new data is obtained.
+ *  histogram.on('dataChanged', renderData);
+ * // Add the histogram to the client
+ * client.addDataview(histogram);
+ * @example
+ * // The histogram is an async object so it can be on different states: LOADING, ERROR...
+ * // Listen to state events
+ * histogram.on('statusChanged', (newStatus, error) => { });
+ * // Listen to histogram errors
+ * histogram.on('error', error => { });
  */
 function Histogram (source, column, options) {
   this._initialize(source, column, options);
@@ -46466,7 +46706,7 @@ Histogram.prototype.DEFAULTS = {
 /**
  * Return the resulting data
  *
- * @return {HistogramData}
+ * @return {carto.dataview.HistogramData}
  * @api
  */
 Histogram.prototype.getData = function () {
@@ -46478,8 +46718,9 @@ Histogram.prototype.getData = function () {
 
 /**
  * Set number of bins
- * 
+ *
  * @param {number} bins
+ * @fires carto.dataview.Histogram.dataChanged
  * @return {carto.dataview.Histogram} this
  * @api
  */
@@ -46491,9 +46732,9 @@ Histogram.prototype.setBins = function (bins) {
 
 /**
  * Return the current number of bins
- * 
+ *
  * @return {number} Current number of bins
- * @api 
+ * @api
  */
 Histogram.prototype.getBins = function () {
   return this._bins;
@@ -46501,9 +46742,9 @@ Histogram.prototype.getBins = function () {
 
 /**
  * Return the distribution type of the current data according to [Galtung’s AJUS System]{@link https://en.wikipedia.org/wiki/Multimodal_distribution#Galtung.27s_classification}
- * 
+ *
  * @return {string} Distribution type of current data
- * @api 
+ * @api
  */
 Histogram.prototype.getDistributionType = function () {
   if (this._internalModel) {
@@ -46552,18 +46793,38 @@ Histogram.prototype._createInternalModel = function (engine) {
 
 module.exports = Histogram;
 
-},{"../../../../dataviews/histogram-dataview-model":105,"../base":60,"./parse-histogram-data.js":64,"underscore":52}],64:[function(require,module,exports){
+/**
+ * Event triggered when the data in a histogram-dataview changes.
+ *
+ * Contains a single argument with the new data.
+ * 
+ * @event carto.dataview.Histogram.dataChanged
+ * @type {carto.dataview.HistogramData}
+ * @api
+ */ 
+
+/**
+ * Event triggered when the bins in a histogram-dataview changes.
+ *
+ * Contains a single argument with new number of bins.
+ * 
+ * @event carto.dataview.Histogram.binsChanged
+ * @type {number}
+ * @api
+ */ 
+
+},{"../../../../dataviews/histogram-dataview-model":105,"../base":60,"./parse-data.js":64,"underscore":52}],64:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
- * Transform the data obtained from an internal histogram dataview into a 
+ * Transform the data obtained from an internal histogram dataview into a
  * public object.
- * 
+ *
  * @param {object[]} data - The raw histogram data
  * @param {number} nulls - Number of data with a null
- * @param {number} totalAmount - Total number of data in the histogram.
- * 
- * @return {HistogramData} - The parsed and formatted data for the given parameters.
+ * @param {number} totalAmount - Total number of data in the histogram
+ *
+ * @return {carto.dataview.HistogramData} - The parsed and formatted data for the given parameters
  */
 function parseHistogramData (data, nulls, totalAmount) {
   if (!data) {
@@ -46578,11 +46839,11 @@ function parseHistogramData (data, nulls, totalAmount) {
   /**
    * @description
    * #Object containing histogram data.
-   * 
-   * @typedef {object} HistogramData
-   * @property {number} nulls - The number of items with null value.
-   * @property {number} totalAmount - The number of elements returned.
-   * @property {BinItem[]} bins - Array containing the {@link BinItem|data bins} for the histogram. .
+   *
+   * @typedef {object} carto.dataview.HistogramData
+   * @property {number} nulls - The number of items with null value
+   * @property {number} totalAmount - The number of elements returned
+   * @property {carto.dataview.BinItem[]} bins - Array containing the {@link carto.dataview.BinItem|data bins} for the histogram
    * @property {string} type - String with value: **histogram**
    * @api
    */
@@ -46594,20 +46855,20 @@ function parseHistogramData (data, nulls, totalAmount) {
 }
 
 /**
- * Transform the histogram raw data into {@link BinItem}
+ * Transform the histogram raw data into {@link carto.dataview.BinItem}
  */
 function _createResult (data, maxFreq) {
   return data.map(function (bin) {
-    /** 
-      * @typedef {object} BinItem
-      * @property {number} index - Number indicating the bin order.
-      * @property {number} start - Starting point of the bin.
-      * @property {number} end - Ending point of the bin.
-      * @property {number} min - Only appears if freq > 0.
-      * @property {number} max - Only appears if freq > 0.
-      * @property {number} avg - Only appears if freq > 0.
-      * @property {number} freq - The number of the times the element appears in the data.
-      * @property {number} normalized - Normalized frequency with respect to the whole data.
+    /**
+      * @typedef {object} carto.dataview.BinItem
+      * @property {number} index - Number indicating the bin order
+      * @property {number} start - Starting point of the bin
+      * @property {number} end - Ending point of the bin
+      * @property {number} min - Only appears if freq > 0
+      * @property {number} max - Only appears if freq > 0
+      * @property {number} avg - Only appears if freq > 0
+      * @property {number} freq - The number of the times the element appears in the data
+      * @property {number} normalized - Normalized frequency with respect to the whole data
       * @api
       */
     return _.extend(bin, { normalized: _.isFinite(bin.freq) && maxFreq > 0 ? bin.freq / maxFreq : 0 });
@@ -46641,7 +46902,7 @@ module.exports = {
 var _ = require('underscore');
 var Base = require('../base');
 var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
-var parseTimeSeriesData = require('./parse-time-series-data');
+var parseTimeSeriesData = require('./parse-data');
 var timeAggregation = require('../../constants').timeAggregation;
 var isValidTimeAggregation = require('../../constants').isValidTimeAggregation;
 
@@ -46650,18 +46911,36 @@ function hoursToSeconds (hours) {
 }
 
 /**
- * Time-Series dataview object
+ * A dataview to represent an histogram of temporal data allowing to specify the granularity of the temporal-bins.
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data.
- * @param {string} column - The column name to get the data.
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data
+ * @param {string} column - The column name to get the data
  * @param {object} options
- * @param {carto.dataview.timeAggregation} [options.aggregation=auto] - Granularity of time aggregation.
- * @param {number} offset - Amount of hours to displace the aggregation from UTC.
- * @param {boolean} useLocalTimezone - Indicates to use the user local timezone or not.
+ * @param {carto.dataview.timeAggregation} [options.aggregation=auto] - Granularity of time aggregation
+ * @param {number} offset - Amount of hours to displace the aggregation from UTC
+ * @param {boolean} useLocalTimezone - Indicates to use the user local timezone or not
+ * 
+ * @fires carto.dataview.TimeSeries.dataChanged
+ * @fires carto.dataview.TimeSeries.aggregationChanged
+ * @fires carto.dataview.TimeSeries.localTimezoneChanged
+ * @fires carto.dataview.TimeSeries.offsetChanged
+ * 
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
  * @api
+ * @example
+ * // We have a tweets dataset and we want to show a "per hour histogram" with the data.
+ * var timeSeries = new carto.dataview.TimeSeries(source0, 'last_review', {
+ *  offset: 0,
+ *  aggregation: 'hour'
+ * }); 
+ * @example
+ * // You can listen to multiple events emmited by the time-series-dataview.
+ * // Data and status are fired by all dataviews.
+ * timeSeries.on('dataChanged', newData => { });
+ * timeSeries.on('statusChanged', (newData, error) => { });
+ * timeSeries.on('error', cartoError => { });
  */
 function TimeSeries (source, column, options) {
   this._initialize(source, column, options);
@@ -46679,9 +46958,9 @@ TimeSeries.prototype.DEFAULTS = {
 };
 
 /**
- * Return the resulting data
+ * Return the resulting data.
  *
- * @return {TimeSeriesData}
+ * @return {carto.dataview.TimeSeriesData}
  * @api
  */
 TimeSeries.prototype.getData = function () {
@@ -46692,9 +46971,10 @@ TimeSeries.prototype.getData = function () {
 };
 
 /**
- * Set time aggregation
- * 
+ * Set time aggregation.
+ *
  * @param {carto.dataview.timeAggregation} aggregation
+ * @fires carto.dataview.TimeSeries.aggregationChanged
  * @return {carto.dataview.TimeSeries} this
  * @api
  */
@@ -46705,19 +46985,20 @@ TimeSeries.prototype.setAggregation = function (aggregation) {
 };
 
 /**
- * Return the current time aggregation
- * 
+ * Return the current time aggregation.
+ *
  * @return {carto.dataview.timeAggregation} Current time aggregation
- * @api 
+ * @api
  */
 TimeSeries.prototype.getAggregation = function () {
   return this._aggregation;
 };
 
 /**
- * Set time offset
- * 
+ * Set time offset.
+ *
  * @param {number} offset
+ * @fires carto.dataview.TimeSeries.offsetChanged
  * @return {carto.dataview.TimeSeries} this
  * @api
  */
@@ -46734,18 +47015,18 @@ TimeSeries.prototype.setOffset = function (offset) {
 };
 
 /**
- * Return the current time offset
- * 
+ * Return the current time offset.
+ *
  * @return {number} Current time offset
- * @api 
+ * @api
  */
 TimeSeries.prototype.getOffset = function () {
   return this._offset;
 };
 
 /**
- * Set the local timezone flag. If enabled, the time offset is overriden by the use local timezone
- * 
+ * Set the local timezone flag. If enabled, the time offset is overriden by the use local timezone.
+ *
  * @param {boolean} localTimezone
  * @return {carto.dataview.TimeSeries} this
  * @api
@@ -46757,10 +47038,10 @@ TimeSeries.prototype.useLocalTimezone = function (enable) {
 };
 
 /**
- * Return the current local timezone flag
- * 
+ * Return the current local timezone flag.
+ *
  * @return {boolean} Current local timezone flag
- * @api 
+ * @api
  */
 TimeSeries.prototype.isUsingLocalTimezone = function () {
   return this._localTimezone;
@@ -46816,7 +47097,47 @@ TimeSeries.prototype._createInternalModel = function (engine) {
 
 module.exports = TimeSeries;
 
-},{"../../../../dataviews/histogram-dataview-model":105,"../../constants":59,"../base":60,"./parse-time-series-data":67,"underscore":52}],67:[function(require,module,exports){
+/**
+ * Event triggered when the totals data in a time-series-dataview changes.
+ *
+ * Contains a single argument with the new data.
+ * 
+ * @event carto.dataview.TimeSeries.dataChanged
+ * @type {carto.dataview.TimeSeriesData}
+ * @api
+ */ 
+
+/**
+ * Event triggered when the aggregation in a TimeSeries-dataview changes.
+ *
+ * Contains a single argument with new aggregation.
+ * 
+ * @event carto.dataview.TimeSeries.aggregationChanged
+ * @type {string}
+ * @api
+ */ 
+
+/**
+ * Event triggered when the timezone in a TimeSeries-dataview changes.
+ *
+ * Contains a single boolean argument (???).
+ * 
+ * @event carto.dataview.TimeSeries.localTimezoneChanged
+ * @type {boolean}
+ * @api
+ */ 
+
+/**
+ * Event triggered when the offset in a TimeSeries-dataview changes.
+ *
+ * Contains a single string argument with the new offset
+ * 
+ * @event carto.dataview.TimeSeries.offsetChanged
+ * @type {string}
+ * @api
+ */ 
+
+},{"../../../../dataviews/histogram-dataview-model":105,"../../constants":59,"../base":60,"./parse-data":67,"underscore":52}],67:[function(require,module,exports){
 var _ = require('underscore');
 
 function secondsToHours (seconds) {
@@ -46824,14 +47145,13 @@ function secondsToHours (seconds) {
 }
 
 /**
- * Transform the data obtained from an internal timeseries dataview into a 
- * public object.
- * 
+ * Transform the data obtained from an internal timeseries dataview into a  public object.
+ *
  * @param {object[]} data - The raw time series data
  * @param {number} nulls - Number of data with a null
- * @param {number} totalAmount - Total number of data in the histogram.
- * 
- * @return {TimeSeriesData} - The parsed and formatted data for the given parameters.
+ * @param {number} totalAmount - Total number of data in the histogram
+ *
+ * @return {TimeSeriesData} - The parsed and formatted data for the given parameters
  */
 function parseTimeSeriesData (data, nulls, totalAmount, offset) {
   if (!data) {
@@ -46846,12 +47166,12 @@ function parseTimeSeriesData (data, nulls, totalAmount, offset) {
   /**
    * @description
    * #Object containing time series data.
-   * 
-   * @typedef {object} TimeSeriesData
-   * @property {number} nulls - The number of items with null value.
-   * @property {number} totalAmount - The number of elements returned.
-   * @property {number} offset - The time offset in hours. Needed to format UTC timestamps into the proper timezone format.
-   * @property {TimeSeriesBinItem[]} bins - Array containing the {@link TimeSeriesBinItem|data bins} for the time series.
+   *
+   * @typedef {object} carto.dataview.TimeSeriesData
+   * @property {number} nulls - The number of items with null value
+   * @property {number} totalAmount - The number of elements returned
+   * @property {number} offset - The time offset in hours. Needed to format UTC timestamps into the proper timezone format
+   * @property {carto.dataview.TimeSeriesBinItem[]} bins - Array containing the {@link carto.dataview.TimeSeriesBinItem|data bins} for the time series
    * @api
    */
   return {
@@ -46863,19 +47183,19 @@ function parseTimeSeriesData (data, nulls, totalAmount, offset) {
 }
 
 /**
- * Transform the time series raw data into {@link TimeSeriesBinItem}
+ * Transform the time series raw data into {@link carto.dataview.TimeSeriesBinItem}.
  */
 function _createResult (data, maxFreq) {
   return data.map(function (bin) {
-    /** 
-      * @typedef {object} TimeSeriesBinItem
-      * @property {number} index - Number indicating the bin order.
-      * @property {number} start - Starting UTC timestamp of the bin.
-      * @property {number} end - End UTC timestamp of the bin.
+    /**
+      * @typedef {object} carto.dataview.TimeSeriesBinItem
+      * @property {number} index - Number indicating the bin order
+      * @property {number} start - Starting UTC timestamp of the bin
+      * @property {number} end - End UTC timestamp of the bin
       * @property {number} min - Minimum UTC timestamp present in the bin. Only appears if freq > 0
       * @property {number} max - Maximum UTC timestamp present in the bin. Only appears if freq > 0
       * @property {number} freq - Numbers of elements present in the bin
-      * @property {number} normalized - Normalized frequency with respect to the whole data.
+      * @property {number} normalized - Normalized frequency with respect to the whole data
       * @api
       */
     return {
@@ -46893,11 +47213,15 @@ function _createResult (data, maxFreq) {
 module.exports = parseTimeSeriesData;
 
 },{"underscore":52}],68:[function(require,module,exports){
+var UNEXPECTED_ERROR = 'unexpected error';
+
 /**
- * Build a cartoError from a generic error
+ * Build a cartoError from a generic error.
  * @constructor
  * 
  * @return {CartoError} A well formed object representing the error.
+ *
+ * @api
  */
 function CartoError (error) {
   if (_isWindshaftError(error)) {
@@ -46908,32 +47232,48 @@ function CartoError (error) {
     this.message = error.message;
     return this;
   }
-  this.message = 'unexpected error';
+  if (error && error.responseText) {
+    this.message = _handleAjaxResponse(error);
+    return this;
+  }
+
+  this.message = UNEXPECTED_ERROR;
 }
 
 function _isWindshaftError (error) {
   return error && error.errors_with_context;
 }
 
+function _handleAjaxResponse (error) {
+  var errorMessage = '';
+
+  try {
+    var parsedError = JSON.parse(error.responseText);
+    errorMessage = parsedError.errors[0];
+  } catch (exc) {
+    // Swallow parse error
+  }
+  return errorMessage || UNEXPECTED_ERROR;
+}
+
 module.exports = CartoError;
 
 /**
- * 
- * Represents an error in the carto library.
+* Represents an error in the carto library.
  * 
  * Some actions like adding a layer to a map will trigger a **reload cycle**
  * if some error happens during this reload cycle will be captured and transformed into a 
  * `CartoError`.
  * 
  * The cartoErrors can be obtained listening to the client {@link carto.events|error events} `client.on(carto.events.ERROR, callback);` 
- * or through the promise returned by each async action.
+ * or through any async action events.
  * 
+ * Promises are also rejected with a cartoError.
  * @example
  * // Listen when a layer has been added or there has been an error.
  * client.addLayer(layerWithErrors)
  *  .then(()=> console.log('Layer added succesfully'))
  *  .catch(cartoError => console.error(cartoError.message))
- * 
  * @example 
  * // Events also will be registered here when the map changes.
  * client.on(carto.events.SUCCESS, function () {
@@ -46943,8 +47283,8 @@ module.exports = CartoError;
  * client.on(carto.events.ERROR, function (clientError) {
  *  console.error(clientError.message);
  * });
- * 
- * @typedef CartoError
+ * @event CartoError
+ * @type {object}
  * @property {string} message - A short error description.
  * @api
  */
@@ -46956,19 +47296,18 @@ module.exports = CartoError;
  */
 
 /**
-  * @constant {string} SUCCESS
-  * @description
   * Reload started event, fired every time the reload process is completed succesfully.
+  *
+  * @constant {string} SUCCESS
   * @memberof carto.events
   * @api
   */
 var SUCCESS = 'success';
 
 /**
- * @constant {string} ERROR
- * @description 
  * Reload started event, fired every time the reload process has some error.
- * 
+ *
+ * @constant {string} ERROR
  * @memberof carto.events
  * @api
  */
@@ -47003,9 +47342,11 @@ var LeafletBoundingBoxAdapter = require('../../../geo/adapters/leaflet-bounding-
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 
 /**
- * Bounding box filter for Leaflet maps
+ * Bounding box filter for Leaflet maps.
  *
  * @param {L.Map} map - The map view
+ * 
+ * @fires carto.filter.BoundingBoxLeaflet.boundsChanged
  *
  * @constructor
  * @extends carto.filter.Base
@@ -47026,7 +47367,7 @@ function BoundingBoxLeaflet (map) {
 BoundingBoxLeaflet.prototype = Object.create(Base.prototype);
 
 /**
- * Return the current bounds
+ * Return the current bounds.
  *
  * @return {carto.filter.Bounds} Current bounds
  * @api
@@ -47045,14 +47386,26 @@ BoundingBoxLeaflet.prototype.$getInternalModel = function () {
 
 module.exports = BoundingBoxLeaflet;
 
+/**
+ * Event triggered when bounds of a bounding-box-leaflet-filter changes.
+ *
+ * Contains a single {@link carto.filter.Bounds} argument with the new bounds.
+ * 
+ * @event carto.filter.BoundingBoxLeaflet.boundsChanged
+ * @type {carto.filter.Bounds}
+ * @api
+ */ 
+
 },{"../../../geo/adapters/leaflet-bounding-box-adapter":108,"../../../windshaft/filters/bounding-box":142,"./base":70}],72:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 
 /**
- * Bounding box filter
+ * Bounding box filter.
  *
+ * @fires carto.filter.BoundingBox.boundsChanged
+ * 
  * @constructor
  * @extends carto.filter.Base
  * @memberof carto.filter
@@ -47066,9 +47419,10 @@ function BoundingBox () {
 BoundingBox.prototype = Object.create(Base.prototype);
 
 /**
- * Set the bounds
+ * Set the bounds.
  *
  * @param  {carto.filter.Bounds} bounds
+ * @fires carto.filter.BoundingBox.boundsChanged
  * @return {carto.filter.BoundingBox} this
  * @api
  */
@@ -47080,8 +47434,9 @@ BoundingBox.prototype.setBounds = function (bounds) {
 };
 
 /**
- * Reset the bounds
+ * Reset the bounds.
  *
+ * @fires carto.filter.BoundingBox.boundsChanged
  * @return {carto.filter.BoundingBox} this
  * @api
  */
@@ -47090,7 +47445,7 @@ BoundingBox.prototype.resetBounds = function () {
 };
 
 /**
- * Return the current bounds
+ * Return the current bounds.
  *
  * @return {carto.filter.Bounds} Current bounds
  * @api
@@ -47098,10 +47453,10 @@ BoundingBox.prototype.resetBounds = function () {
 BoundingBox.prototype.getBounds = function () {
   /**
    * @typedef {object} carto.filter.Bounds
-   * @property {number} west
-   * @property {number} south
-   * @property {number} east
-   * @property {number} north
+   * @property {number} west - West coordinate
+   * @property {number} south - South coordinate
+   * @property {number} east - East coordinate
+   * @property {number} north - North coordinate
    * @api
    */
   return this._internalModel.getBounds();
@@ -47126,6 +47481,16 @@ BoundingBox.prototype.$getInternalModel = function () {
 };
 
 module.exports = BoundingBox;
+
+/**
+ * Event triggered when bounds of a bounding-box-filter changes.
+ *
+ * Contains a single {@link carto.filter.Bounds} argument with the new bounds.
+ * 
+ * @event carto.filter.BoundingBox.boundsChanged
+ * @type {carto.filter.Bounds}
+ * @api
+ */ 
 
 },{"../../../windshaft/filters/bounding-box":142,"./base":70,"underscore":52}],73:[function(require,module,exports){
 var BoundingBox = require('./bounding-box');
@@ -47196,7 +47561,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 
 /**
- * Base layer object
+ * Base layer object.
  *
  * @constructor
  * @abstract
@@ -47276,36 +47641,30 @@ var Base = require('./base');
 var CartoDBLayer = require('../../../geo/map/cartodb-layer');
 var SourceBase = require('../source/base');
 var StyleBase = require('../style/base');
-
+var CartoError = require('../error');
 /**
  * Represent a layer Object.
- * 
- * @param {object} source - The source where the layer will fetch the data.
- * @param {carto.style.CartoCSS} style - A CartoCSS object with the layer styling.
+ *
+ * @param {object} source - The source where the layer will fetch the data
+ * @param {carto.style.CartoCSS} style - A CartoCSS object with the layer styling
  * @param {object} [options]
- * @param {Array<string>} [options.featureClickColumns=[]] - Columns that will be available for `featureClick` events. 
- * @param {Array<string>} [options.featureOverColumns=[]] - Columns that will be available for `featureOver` events.
- *
- * @param {carto.source.Base} source - The source where the layer will fetch the data.
- * @param {carto.style.Base} style - A CartoCSS object with the layer styling.
- *
+ * @param {Array<string>} [options.featureClickColumns=[]] - Columns that will be available for `featureClick` events
+ * @param {Array<string>} [options.featureOverColumns=[]] - Columns that will be available for `featureOver` events
  * @fires carto.layer.Layer.FeatureEvent
- * 
- * @example 
- * 
+ * @fires carto.layer.Layer.sourceChanged
+ * @fires carto.layer.Layer.styleChanged
+ * @example
  * // no options
  * new carto.layer.Layer(citiesSource, citiesStyle);
- *
  * @example
- *
  * // with options
  * new carto.layer.Layer(citiesSource, citiesStyle, {
  *   featureClickColumns: [ 'name', 'population' ],
  *   featureOverColumns: [ 'name' ]
  * });
- * 
  * @constructor
  * @extends carto.layer.Base
+ * @memberof carto.layer
  * @api
  */
 function Layer (source, style, options) {
@@ -47330,28 +47689,31 @@ Layer.prototype = Object.create(Base.prototype);
 
 /**
  * Set a new style for this layer.
- * 
+ *
  * @param {carto.style.CartoCSS} New style
+ * @fires carto.layer.Layer.styleChanged
  * @return {carto.layer.Layer} this
- * 
+ *
  * @api
  */
 Layer.prototype.setStyle = function (style, opts) {
+  var prevStyle = this._style;
   _checkStyle(style);
   opts = opts || {};
   this._style = style;
   if (this._internalModel) {
     this._internalModel.set('cartocss', style.toCartoCSS());
   }
-
+  if (prevStyle !== style) {
+    this.trigger('styleChanged', this);
+  }
   return this;
 };
 
 /**
  * Get the current style for this layer.
- * 
- * @return {carto.style.CartoCSS} Current style.
  *
+ * @return {carto.style.CartoCSS} Current style
  * @api
  */
 Layer.prototype.getStyle = function () {
@@ -47360,16 +47722,17 @@ Layer.prototype.getStyle = function () {
 
 /**
  * Set a new source for this layer.
- * 
- * A source and a layer must belong to the same client so you can't 
- * add a source belonging to a different client.
- * 
- * @param {carto.source.Dataset|carto.source.SQL} source New source
- * @return {carto.layer.Layer} this
  *
+ * A source and a layer must belong to the same client so you can't
+ * add a source belonging to a different client.
+ *
+ * @param {carto.source.Dataset|carto.source.SQL} source New source
+ * @fires carto.layer.Layer.sourceChanged
+ * @return {carto.layer.Layer} this
  * @api
  */
 Layer.prototype.setSource = function (source) {
+  var prevSource = this._source;
   _checkSource(source);
   if (this._internalModel) {
     // If the source already has an engine and is different from the layer's engine throw an error.
@@ -47379,14 +47742,16 @@ Layer.prototype.setSource = function (source) {
     this._internalModel.set('source', source.$getInternalModel());
   }
   this._source = source;
+  if (prevSource !== source) {
+    this.trigger('sourceChanged', this);
+  }
   return this;
 };
 
 /**
- * Get the current source for this layer
- * 
- * @return {carto.source.Dataset|carto.source.SQL} Current source.
+ * Get the current source for this layer.
  *
+ * @return {carto.source.Dataset|carto.source.SQL} Current source
  * @api
  */
 Layer.prototype.getSource = function () {
@@ -47394,11 +47759,10 @@ Layer.prototype.getSource = function () {
 };
 
 /**
- * Set new columns for `featureClick` events
- * 
- * @param {Array<string>} columns An array containing column names.
- * @return {carto.layer.Layer} this
+ * Set new columns for `featureClick` events.
  *
+ * @param {Array<string>} columns An array containing column names
+ * @return {carto.layer.Layer} this
  * @api
  */
 Layer.prototype.setFeatureClickColumns = function (columns) {
@@ -47412,9 +47776,8 @@ Layer.prototype.setFeatureClickColumns = function (columns) {
 
 /**
  * Return the columns available in `featureClicked` events.
- * 
- * @return  {Array<string>} Column names available in `featureClicked` events
  *
+ * @return  {Array<string>} Column names available in `featureClicked` events
  * @api
  */
 Layer.prototype.getFeatureClickColumns = function (columns) {
@@ -47426,11 +47789,10 @@ Layer.prototype.hasFeatureClickColumns = function (columns) {
 };
 
 /**
- * Set new columns for `featureOver` events
- * 
+ * Set new columns for `featureOver` events.
+ *
  * @param {Array<string>} columns An array containing column names
  * @return {carto.layer.Layer} this
- *
  * @api
  */
 Layer.prototype.setFeatureOverColumns = function (columns) {
@@ -47444,9 +47806,8 @@ Layer.prototype.setFeatureOverColumns = function (columns) {
 
 /**
  * Return the columns available in `featureOver` events.
- * 
- * @return  {Array<string>} Column names available in `featureOver` events
  *
+ * @return  {Array<string>} Column names available in `featureOver` events
  * @api
  */
 Layer.prototype.getFeatureOverColumns = function (columns) {
@@ -47460,35 +47821,72 @@ Layer.prototype.hasFeatureOverColumns = function (columns) {
 /**
  * Hides the layer.
  *
+ * @return {carto.layer.Layer} this
  * @api
  */
 Layer.prototype.hide = function () {
+  var prevStatus = this._visible;
   this._visible = false;
   if (this._internalModel) {
     this._internalModel.set('visible', false);
   }
-
+  if (prevStatus) {
+    this.trigger('visibilityChanged', false);
+  }
   return this;
 };
 
 /**
  * Shows the layer.
  *
+ * @return {carto.layer.Layer} this
  * @api
  */
 Layer.prototype.show = function () {
+  var prevStatus = this._visible;
   this._visible = true;
   if (this._internalModel) {
     this._internalModel.set('visible', true);
   }
-
+  if (!prevStatus) {
+    this.trigger('visibilityChanged', false);
+  }
   return this;
+};
+
+/**
+ * Change the layer's visibility.
+ *
+ * @return {carto.layer.Layer} this
+ */
+Layer.prototype.toggle = function () {
+  return this.isVisible() ? this.hide() : this.show();
+};
+
+/**
+ * Return true if the layer is visible and false when not visible.
+ *
+ * @return {boolean} - A boolean value indicating the layer's visibility
+ * @api
+ */
+Layer.prototype.isVisible = function () {
+  return this._visible;
+};
+
+/**
+ * Return `true` if the layer is not visible and false when visible.
+ *
+ * @return {boolean} - A boolean value indicating the layer's visibility
+ * @api
+ */
+Layer.prototype.isHidden = function () {
+  return !this.isVisible();
 };
 
 // Private functions.
 
 Layer.prototype._createInternalModel = function (engine) {
-  return new CartoDBLayer({
+  var internalModel = new CartoDBLayer({
     id: this._id,
     source: this._source.$getInternalModel(),
     cartocss: this._style.toCartoCSS(),
@@ -47496,14 +47894,14 @@ Layer.prototype._createInternalModel = function (engine) {
     infowindow: _getInteractivityFields(this._featureClickColumns),
     tooltip: _getInteractivityFields(this._featureOverColumns)
   }, { engine: engine });
-};
 
-Layer.prototype._reloadEngine = function () {
-  if (this._engine) {
-    return this._engine.reload();
-  }
+  internalModel.on('change:error', function (model, value) {
+    if (value && _isStyleError(value)) {
+      this._style.$setError(new CartoError(value));
+    }
+  }, this);
 
-  return Promise.resolve();
+  return internalModel;
 };
 
 // Internal functions.
@@ -47549,17 +47947,45 @@ function _checkSource (source) {
     throw new TypeError('The given object is not a valid source. See "carto.source.Base"');
   }
 }
+
+/**
+ * Return true when a windshaft error is because a styling error.
+ */
+function _isStyleError (windshaftError) {
+  return windshaftError.message && windshaftError.message.indexOf('style') === 0;
+}
+
 /**
  * @typedef {Object} LatLng
  * @property {number} lat - Latitude
  * @property {number} lng - Longitude
+ *
+ * @api
+ */
+
+/**
+ * Event triggered when the source of the layer changes.
+ *
+ * Contains a single argument with the Layer where the source has changed.
  * 
+ * @event carto.layer.Layer.sourceChanged
+ * @type {carto.layer.Layer}
+ * @api
+ */
+
+/**
+ * Event triggered when the style of the layer changes.
+ *
+ * Contains a single argument with the Layer where the style has changed.
+ * 
+ * @event carto.layer.Layer.styleChanged
+ * @type {carto.layer.Layer}
  * @api
  */
 
 module.exports = Layer;
 
-},{"../../../geo/map/cartodb-layer":113,"../source/base":82,"../style/base":86,"./base":75}],79:[function(require,module,exports){
+},{"../../../geo/map/cartodb-layer":113,"../error":68,"../source/base":82,"../style/base":86,"./base":75}],79:[function(require,module,exports){
 var _ = require('underscore');
 
 function Layers (layers) {
@@ -47692,8 +48118,12 @@ LayerGroup.prototype._triggerLayerFeatureEvent = function (eventName, internalEv
 module.exports = LayerGroup;
 
 },{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":111,"../layer/":77}],82:[function(require,module,exports){
+var _ = require('underscore');
+var Backbone = require('backbone');
+var CartoError = require('../error');
+
 /**
- * Base source object
+ * Base source object.
  *
  * @constructor
  * @abstract
@@ -47703,6 +48133,8 @@ module.exports = LayerGroup;
 function Base () {
   this._id = Base.$generateId();
 }
+
+_.extend(Base.prototype, Backbone.Events);
 
 /**
  * The instance id will be autogenerated by incrementing this variable.
@@ -47729,9 +48161,17 @@ Base.prototype._createInternalModel = function (engine) {
   throw new Error('_createInternalModel must be implemented by the particular source');
 };
 
+/**
+ * Fire a CartoError event from a internalError
+ */
+Base.prototype._triggerError = function (model, internalError) {
+  this.trigger('error', new CartoError(internalError));
+};
+
 Base.prototype.$setEngine = function (engine) {
   if (!this._internalModel) {
     this._internalModel = this._createInternalModel(engine);
+    this._internalModel.on('change:error', this._triggerError, this);
   }
 };
 
@@ -47753,7 +48193,7 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{}],83:[function(require,module,exports){
+},{"../error":68,"backbone":2,"underscore":52}],83:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
@@ -47761,51 +48201,60 @@ var CamshaftReference = require('../../../analysis/camshaft-reference');
 
 /**
  * A Dataset that can be used as the data source for layers and dataviews.
- * 
- * @param {string} dataset The name of an existing dataset
  *
+ * @param {string} tableName The name of an existing table
  * @example
- *
  * new carto.source.Dataset('european_cities');
- * 
  * @constructor
  * @extends carto.source.Base
  * @memberof carto.source
  * @api
- *
  */
-function Dataset (dataset) {
-  _checkDataset(dataset);
-  this._dataset = dataset;
+function Dataset (tableName) {
+  _checkTableName(tableName);
+  this._tableName = tableName;
   Base.apply(this, arguments);
 }
 
 Dataset.prototype = Object.create(Base.prototype);
 
 /**
- * Creates a new internal model with the given engine
- * and the attributes initialized in the constructor.
- * 
- * @param {Engine} engine - The engine object to be assigned to the internalModel.
+ * Return the table name being used in  this Dataset object.
+ *
+ * @return {string} The table name being used in  this Dataset object
+ * @api
+ */
+Dataset.prototype.getTableName = function () {
+  return this._tableName;
+};
+
+/**
+ * Creates a new internal model with the given engine and attributes initialized in the constructor.
+ *
+ * @param {Engine} engine - The engine object to be assigned to the internalModel
  */
 Dataset.prototype._createInternalModel = function (engine) {
-  return new AnalysisModel({
+  var internalModel = new AnalysisModel({
     id: this.getId(),
     type: 'source',
-    query: 'SELECT * from ' + this._dataset
+    query: 'SELECT * from ' + this._tableName
   }, {
     camshaftReference: CamshaftReference,
     engine: engine
   });
+
+  return internalModel;
 };
 
-function _checkDataset (dataset) {
-  if (!dataset) {
-    throw new TypeError('dataset is required.');
+function _checkTableName (tableName) {
+  if (_.isUndefined(tableName)) {
+    throw new TypeError('Table name is required.');
   }
-
-  if (!_.isString(dataset)) {
-    throw new Error('dataset must be a string.');
+  if (!_.isString(tableName)) {
+    throw new TypeError('Table name must be a string.');
+  }
+  if (_.isEmpty(tableName)) {
+    throw new TypeError('Table name must be not empty.');
   }
 }
 
@@ -47832,18 +48281,15 @@ var CamshaftReference = require('../../../analysis/camshaft-reference');
 
 /**
  * A SQL Query that can be used as the data source for layers and dataviews.
- * 
+ *
  * @param {string} query A SQL query containing a SELECT statement
- *
  * @example
- *
  * new carto.source.SQL('SELECT * FROM european_cities');
- * 
  * @constructor
  * @extends carto.source.Base
  * @memberof carto.source
+ * @fires carto.source.SQL.queryChangedEvent
  * @api
- *
  */
 function SQL (query) {
   _checkQuery(query);
@@ -47855,33 +48301,39 @@ SQL.prototype = Object.create(Base.prototype);
 
 /**
  * Store the query internally and if in the internal model when exists.
- * 
- * @param {string} query - The sql query that will be the source of the data. 
+ *
+ * @param {string} query - The sql query that will be the source of the data
+ * @fires carto.source.SQL.queryChangedEvent
+ * @api
  */
 SQL.prototype.setQuery = function (query) {
   _checkQuery(query);
   this._query = query;
   if (this._internalModel) {
     this._internalModel.set('query', query);
+  } else {
+    this._triggerQueryChanged(this, query);
   }
   return this;
 };
 
 /**
  * Get the query being used in this SQL source.
+ *
+ * @return {string} The query being used in this SQL object
+ * @api
  */
 SQL.prototype.getQuery = function () {
   return this._query;
 };
 
 /**
- * Creates a new internal model with the given engine
- * and the attributes initialized in the constructor.
- * 
- * @param {Engine} engine - The engine object to be assigned to the internalModel.
+ * Creates a new internal model with the given engine and attributes initialized in the constructor.
+ *
+ * @param {Engine} engine - The engine object to be assigned to the internalModel
  */
 SQL.prototype._createInternalModel = function (engine) {
-  return new AnalysisModel({
+  var internalModel = new AnalysisModel({
     id: this.getId(),
     type: 'source',
     query: this._query
@@ -47889,6 +48341,14 @@ SQL.prototype._createInternalModel = function (engine) {
     camshaftReference: CamshaftReference,
     engine: engine
   });
+
+  internalModel.on('change:query', this._triggerQueryChanged, this);
+
+  return internalModel;
+};
+
+SQL.prototype._triggerQueryChanged = function (model, value) {
+  this.trigger('queryChanged', value);
 };
 
 function _checkQuery (query) {
@@ -47900,11 +48360,24 @@ function _checkQuery (query) {
     throw new Error('query must be a string.');
   }
 }
+
 module.exports = SQL;
 
-},{"../../../analysis/analysis-model":54,"../../../analysis/camshaft-reference":57,"./base":82,"underscore":52}],86:[function(require,module,exports){
 /**
- * Base style object
+ * Triggered every time the query is changed.
+ * Contains a string with the new query.
+ *
+ * @event carto.source.SQL.queryChangedEvent
+ * @type {string}
+ * @api
+ */
+
+},{"../../../analysis/analysis-model":54,"../../../analysis/camshaft-reference":57,"./base":82,"underscore":52}],86:[function(require,module,exports){
+var _ = require('underscore');
+var Backbone = require('backbone');
+
+/**
+ * Base style object.
  *
  * @constructor
  * @abstract
@@ -47913,29 +48386,32 @@ module.exports = SQL;
  */
 function Base () {}
 
+_.extend(Base.prototype, Backbone.Events);
+
+Base.prototype.$setError = function (cartoError) {
+  this._error = cartoError;
+  this.trigger('error', cartoError);
+};
+
 module.exports = Base;
 
-},{}],87:[function(require,module,exports){
+},{"backbone":2,"underscore":52}],87:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 
 /**
  * @param {string} cartocss CartoCSS
- *
  * @example
- *
  * var style = new carto.style.CartoCSS(`
  *   #layer {
  *     marker-fill: #FABADA;
  *     marker-width: 10;
  *   }
  * `);
- *
  * @constructor
  * @extends carto.style.Base
  * @memberof carto.style
  * @api
- *
  */
 function CartoCSS (cartoCSS) {
   _checkCartoCSS(cartoCSS);
@@ -47945,6 +48421,16 @@ function CartoCSS (cartoCSS) {
 CartoCSS.prototype = Object.create(Base.prototype);
 
 CartoCSS.prototype.toCartoCSS = function () {
+  return this._cartoCSS;
+};
+
+/**
+ * Return the TurboCarto style for this CartoCSS object.
+ * 
+ * @return {string} - The TurboCarto style for this CartoCSS object
+ * @api
+ */
+CartoCSS.prototype.getStyle = function () {
   return this._cartoCSS;
 };
 
@@ -48021,6 +48507,7 @@ module.exports = {
     ATTRIBUTION: 'attribution',
     HEADER: 'header',
     LIMITS: 'limits',
+    TILES: 'tiles',
     LOADER: 'loader',
     LOGO: 'logo',
     SEARCH: 'search',
@@ -48106,7 +48593,7 @@ var Model = Backbone.Model.extend({
   * @method retrigger
   * @param ev {String} event who triggers the action
   * @param obj {Object} object where the event happens
-  * @param obj {Object} [optional] name of the retriggered event;
+  * @param obj {Object} [optional] name of the retriggered event
   * @todo [xabel]: This method is repeated here and in the base view definition. There's should be a way to make it unique
   */
   retrigger: function (ev, obj, retrigEvent) {
@@ -48875,6 +49362,7 @@ var Model = require('../core/model');
 var BackboneAbortSync = require('../util/backbone-abort-sync');
 var AnalysisModel = require('../analysis/analysis-model');
 var util = require('../core/util');
+var parseWindshaftErrors = require('../windshaft/error-parser');
 
 var UNFETCHED_STATUS = 'unfetched';
 var FETCHING_STATUS = 'fetching';
@@ -49031,7 +49519,7 @@ module.exports = Model.extend({
     if (analysis.isLoading()) {
       this._triggerLoading();
     } else if (analysis.isFailed()) {
-      this._triggerError(analysis.get('error'));
+      this._triggerStatusError(analysis.get('error'));
     }
     // loaded will be triggered through the default behavior, so not necessary to react on that status here
   },
@@ -49040,8 +49528,8 @@ module.exports = Model.extend({
     this.trigger('loading', this);
   },
 
-  _triggerError: function (error) {
-    this.trigger('error', this, error);
+  _triggerStatusError: function (error) {
+    this.trigger('statusError', this, error); // Backbone already emits an event `error` in failed requests. Avoiding name collision.
   },
 
   /**
@@ -49141,7 +49629,8 @@ module.exports = Model.extend({
       error: function (_model, response) {
         if (!response || (response && response.statusText !== 'abort')) {
           this.set('status', FETCH_ERROR_STATUS);
-          this._triggerError(response);
+          var error = this._parseAjaxError(response);
+          this._triggerStatusError(error);
         }
       }.bind(this)
     }));
@@ -49195,8 +49684,7 @@ module.exports = Model.extend({
     return this.get('enabled');
   },
 
-  setUnavailable: function (error) {
-    this._triggerError(error);
+  setUnavailable: function () {
     return this.set('status', FETCH_ERROR_STATUS);
   },
 
@@ -49230,6 +49718,17 @@ module.exports = Model.extend({
     if (this._bboxFilter) {
       this.stopListening(this._bboxFilter, 'boundsChanged');
     }
+  },
+
+  _parseAjaxError: function (response) {
+    var error = response && response.statusText;
+    if (response && response.responseJSON) {
+      var errors = parseWindshaftErrors(response.responseJSON);
+      if (errors.length > 0) {
+        error = errors[0];
+      }
+    }
+    return error;
   }
 },
 
@@ -49244,7 +49743,7 @@ module.exports = Model.extend({
   ]
 });
 
-},{"../analysis/analysis-model":54,"../core/model":94,"../core/util":95,"../util/backbone-abort-sync":129,"underscore":52}],102:[function(require,module,exports){
+},{"../analysis/analysis-model":54,"../core/model":94,"../core/util":95,"../util/backbone-abort-sync":129,"../windshaft/error-parser":139,"underscore":52}],102:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -49533,6 +50032,8 @@ module.exports = DataviewModelBase.extend({
 
     // When original data gets fetched
     this._totals.bind('change:data', this._onDataChanged, this);
+    this._totals.bind('error', this.setUnavailable, this);
+    this._totals.bind('error', this._onTotalsError, this);
     this._totals.once('change:data', this._updateBindings, this);
 
     this.on('change:column', this._onColumnChanged, this);
@@ -49589,7 +50090,9 @@ module.exports = DataviewModelBase.extend({
 
   parse: function (data) {
     var aggregation = data.aggregation || (this._totals && this._totals.get('aggregation'));
-    var numberOfBins = data.bins_count;
+    var numberOfBins = _.isFinite(data.bins_count)
+      ? data.bins_count
+      : this.get('bins');
     var width = data.bin_width;
     var start = this.get('column_type') === 'date' ? data.timestamp_start : data.bins_start;
 
@@ -49845,6 +50348,11 @@ module.exports = DataviewModelBase.extend({
   _resetFilter: function () {
     this.disableFilter();
     this.filter && this.filter.unsetRange();
+  },
+
+  _onTotalsError: function (model, error) {
+    var parsedError = error && this._parseAjaxError(error);
+    this._triggerStatusError(parsedError);
   },
 
   getCurrentOffset: function () {
@@ -50113,7 +50621,7 @@ var WindshaftError = require('./windshaft/error');
  * @param {string} params.serverUrl - Url of the windshaft server.
  * @param {boolean} params.templateName - While we dont remove named maps we must explicitly say when the map is named. Defaults to false.
  * @param {boolean} params.statTag - Token used to get map view statistics.
- * @class
+ * @constructor
  */
 function Engine (params) {
   if (!params) throw new Error('new Engine() called with no paramters');
@@ -50162,21 +50670,16 @@ Engine.prototype.getLayerGroup = function () {
  * @param {string} event - The name of the event that triggers the callback execution.
  * @param {function} callback - A function to be executed when the event is fired.
  * @param {function} [context] - The context value for this when the callback is invoked.
- *
  * @example
- *
  * // Define a callback to be executed once the map is reloaded.
  * function onReload(event) {
  *  console.log(event); // "reload-success"
  * }
- *
  * // Attach the callback to the RELOAD_SUCCESS event.
  * engine.on(Engine.Events.RELOAD_SUCCESS, onReload);
- *
  * // Call the reload method and wait.
  * engine.reload();
  *
- * @api
  */
 Engine.prototype.on = function (event, callback, context) {
   this._eventEmmitter.on(event, callback, context);
@@ -50188,13 +50691,10 @@ Engine.prototype.on = function (event, callback, context) {
  * @param {string} event - The name of the event that triggers the callback execution.
  * @param {function} callback - A function callback to be removed when the event is fired.
  * @param {function} [context] - The context value for this when the callback is invoked.
- *
  * @example
- *
  * // Remove the the `displayMap` listener function so it wont be executed anymore when the engine fires the `load` event.
  * engine.off(Engine.Events.RELOAD_SUCCESS, onReload);
  *
- * @api
  */
 Engine.prototype.off = function (event, callback, context) {
   this._eventEmmitter.off(event, callback, context);
@@ -50215,7 +50715,6 @@ Engine.prototype.off = function (event, callback, context) {
  * @fires Engine#Engine:RELOAD_SUCCESS
  * @fires Engine#Engine:RELOAD_ERROR
  *
- * @api
  */
 Engine.prototype.reload = function (options) {
   return new Promise(function (resolve, reject) {
@@ -50251,7 +50750,6 @@ Engine.prototype.reload = function (options) {
  * @param {layer} layer - A new layer to be added to the engine.
  *
  * @public
- * @api
  */
 Engine.prototype.addLayer = function (layer) {
   this._layersCollection.add(layer);
@@ -50264,7 +50762,6 @@ Engine.prototype.addLayer = function (layer) {
  * @param {layer} layer - A new layer to be removed from the engine.
  *
  * @public
- * @api
  */
 Engine.prototype.removeLayer = function (layer) {
   this._layersCollection.remove(layer);
@@ -50277,7 +50774,6 @@ Engine.prototype.removeLayer = function (layer) {
  * @param {Dataview} dataview - A new dataview to be added to the engine.
  *
  * @public
- * @api
  */
 Engine.prototype.addDataview = function (dataview) {
   this._dataviewsCollection.add(dataview);
@@ -50290,7 +50786,6 @@ Engine.prototype.addDataview = function (dataview) {
  * @param {Dataview} dataview - The Dataview to be removed to the engine.
  *
  * @public
- * @api
  */
 Engine.prototype.removeDataview = function (dataview) {
   this._dataviewsCollection.remove(dataview);
@@ -50398,7 +50893,6 @@ Engine.prototype._manageClientError = function (error, options) {
  *
  * @readonly
  * @enum {string}
- * @api
  */
 Engine.Events = {
   /**
@@ -50968,10 +51462,12 @@ module.exports = LeafletCartoDBLayerGroupView;
 var _ = require('underscore');
 var Backbone = require('backbone');
 
-var LeafletLayerView = function (layerModel, leafletMap) {
+var LeafletLayerView = function (layerModel, leafletMap, mapModel, showLimitErrors) {
+  this.showLimitErrors = showLimitErrors;
   this.leafletLayer = this._createLeafletLayer(layerModel);
   this.leafletMap = leafletMap;
   this.model = layerModel;
+  this.mapModel = mapModel;
 
   this.setModel(layerModel);
 
@@ -53156,13 +53652,11 @@ function Response (windshaftSettings, serverResponse) {
 
 /**
  * Return the indexes of the layers for a certain type.
- * 
  * @example
  * // layers = [ carto, carto, tiled, plain, tiled, torque];
  * getLayerIndexesByType('mapnik') // [0, 1]
  * getLayerIndexesByType('tiled') // [2, 4]
  * getLayerIndexesByType('torque') // [5]
- * 
  * @param {string} Type - The type of the layers: mapnik, torque, plain, tiled.
  */
 Response.prototype.getLayerIndexesByType = function getLayerIndexesByType (layerType) {
