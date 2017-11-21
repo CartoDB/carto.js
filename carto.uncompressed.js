@@ -44733,7 +44733,7 @@ return hooks;
 },{}],53:[function(require,module,exports){
 module.exports={
   "name": "cartodb.js",
-  "version": "4.0.0-alpha.25",
+  "version": "4.0.0-alpha.28",
   "description": "CARTO javascript library",
   "repository": {
     "type": "git",
@@ -45406,15 +45406,23 @@ var Leaflet = require('./leaflet');
 var VERSION = require('../../../package.json').version;
 
 /**
- * This is the main object in a Carto.js application.
+ * This is the entry point for a Carto.js application.
  *
- * The carto client keeps both layer and dataview lists internaly.
- * Every time some layer/dataview changes the client will trigger a carto-reload cycle.
+ * A CARTO client allows managing layers and dataviews. It also takes care
+ * of the communication between a Carto.js application and the services in CARTO.
+ * To create a new client you need a CARTO account, where you will be able to get
+ * your API key and username.
  *
  * @param {object} settings
- * @param {string} settings.apiKey - Api key used to be autenticate in the windshaft server
- * @param {string} settings.username - Name of the user registered in the windshaft server
- * @param {string} settings.serverUrl - Url of the windshaft server
+ * @param {string} settings.apiKey - API key used to authenticate against CARTO
+ * @param {string} settings.username - Name of the user
+ * @param {string} [settings.serverUrl] - URL of the windshaft server
+ *
+ * @example
+ * var client = new carto.Client({
+ *   apiKey: 'YOUR_API_KEY_HERE',
+ *   username: 'YOUR_USERNAME_HERE'
+ * });
  *
  * @constructor
  * @memberof carto
@@ -45444,7 +45452,7 @@ _.extend(Client.prototype, Backbone.Events);
  * @param {carto.layer.Base} - The layer to be added
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- * 
+ *
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
@@ -45456,9 +45464,9 @@ Client.prototype.addLayer = function (layer, opts) {
 };
 
 /**
- * Add a layer array to the client.
+ * Add multiple layers to the client.
  *
- * @param {carto.layer.Base[]} - The layer array to be added
+ * @param {carto.layer.Base[]} - An array with the layers to be added
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
@@ -45483,7 +45491,7 @@ Client.prototype.addLayers = function (layers, opts) {
  * @param {carto.layer.Base} - The layer to be removed
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- * 
+ *
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
@@ -45495,12 +45503,12 @@ Client.prototype.removeLayer = function (layer, opts) {
 };
 
 /**
- * Remove a layer from the client
+ * Remove multiple layer from the client
  *
- * @param {carto.layer.Base[]} - The layer array to be removed
+ * @param {carto.layer.Base[]} - An array with the layers to be removed
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- * 
+ *
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
@@ -45534,7 +45542,7 @@ Client.prototype.getLayers = function () {
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
- * 
+ *
  * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
@@ -45543,15 +45551,15 @@ Client.prototype.addDataview = function (dataview, opts) {
 };
 
 /**
- * Add a dataview array to the client.
+ * Add multipe dataviews to the client.
  *
- * @param {carto.dataview.Base[]} - The dataview array to be added
+ * @param {carto.dataview.Base[]} - An array with the dataviews to be added
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
- * 
+ *
  * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
@@ -45573,7 +45581,7 @@ Client.prototype.addDataviews = function (dataviews, opts) {
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
- * 
+ *
  * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
  * @api
  */
@@ -45598,8 +45606,9 @@ Client.prototype.getDataviews = function () {
 };
 
 /**
- * Return the a leaflet layer for the given client.
- * 
+ * Return a Leaflet layer that groups all the layers that have been
+ * added to this client.
+ *
  * @api
  */
 Client.prototype.getLeafletLayer = function () {
@@ -45652,8 +45661,8 @@ Client.prototype._addDataview = function (dataview, engine) {
 };
 
 /**
- * Client exposes Event.SUCCESS and RELOAD_ERROR to the api users, 
- * those events are wrappers using _engine internaly. 
+ * Client exposes Event.SUCCESS and RELOAD_ERROR to the api users,
+ * those events are wrappers using _engine internaly.
  */
 Client.prototype._bindEngine = function (engine) {
   engine.on(Engine.Events.RELOAD_SUCCESS, function () {
@@ -45806,8 +45815,16 @@ var BoundingBoxLeafletFilter = require('../filter/bounding-box-leaflet');
 var CartoError = require('../error');
 
 /**
- * Base dataview object.
+ * Base class for dataview objects.
  *
+ * Dataviews are a way to extract data from a CARTO account in predefined ways
+ * (eg: a list of categories, the result of a formula operation, etc.). See
+ * carto.dataview.Base subclasses to learn about each way of getting data.
+ *
+ * All dataviews point to a data source (dataset, sql query) that might change
+ * due to different reasons (eg: SQL query changed). Dataview objects will trigger
+ * events to notify subscribers when new data is available.
+ * 
  * @constructor
  * @abstract
  * @memberof carto.dataview
@@ -46159,39 +46176,39 @@ var CategoryDataviewModel = require('../../../dataviews/category-dataview-model'
 var CategoryFilter = require('../../../windshaft/filters/category');
 
 /**
- * 
+ *
  * A category dataview is used to aggregate data performing a operation.
- * 
+ *
  * This is similar to a group by SQL operation, for example:
- * 
+ *
  * ```sql
  * SELECT country, AVG(population) GROUP BY country
  * ```
  * The following code is the carto.js equivalent:
- * 
+ *
  * ```javascript
  * var categoryDataview = new carto.dataview.Category(citiesSource, 'country', {
  *     operation: carto.operation.AVG, // Compute the average
  *     operationColumn: 'population' // The name of the column where the operation will be applied.
  *  });
  * ```
- * 
+ *
  * Like all dataviews is an async object so you must wait for the data to be availiable.
- * 
+ *
  * The data format for the category-dataview is described in {@link carto.dataview.CategoryItem}
  *
  * @param {carto.source.Base} source - The source where the dataview will fetch the data
  * @param {string} column - The name of the column used to create categories
- * @param {object} options
+ * @param {object} [options]
  * @param {number} [options.limit=6] - The maximum number of categories in the response
- * @param {carto.operation} options.operation - The operation to apply to the data
- * @param {string} options.operationColumn - The column where the operation will be applied
+ * @param {carto.operation} [options.operation] - The operation to apply to the data
+ * @param {string} [options.operationColumn] - The column where the operation will be applied
  *
  * @fires carto.dataview.Category.dataChanged
  * @fires carto.dataview.Category.limitChanged
  * @fires carto.dataview.Category.operationChanged
  * @fires carto.dataview.Category.operationColumnChanged
- * 
+ *
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
@@ -46203,7 +46220,7 @@ var CategoryFilter = require('../../../windshaft/filters/category');
  *     operation: carto.operation.AVG, // Compute the average
  *     operationColumn: 'population' // The name of the column where the operation will be applied.
  *  });
- * 
+ *
  * // This will give data like this: { Spain: 1234, France: 3456 ...} To view the actual format see: "CategoryItem".
  * @example
  * // You can listen to multiple events emmited by the category-dataview.
@@ -46449,7 +46466,7 @@ module.exports = Category;
  * Event triggered when the data in a cateogry-dataview changes.
  *
  * Contains a single argument with the {@link carto.dataview.CategoryData}
- * 
+ *
  * @event carto.dataview.Category.dataChanged
  * @type {carto.dataview.CategoryData}
  * @api
@@ -46459,7 +46476,7 @@ module.exports = Category;
  * Event triggered when the limit in a cateogry-dataview changes.
  *
  * Contains a single argument with the new limit.
- * 
+ *
  * @event carto.dataview.Category.limitChanged
  * @type {number}
  * @api
@@ -46469,7 +46486,7 @@ module.exports = Category;
  * Event triggered when the operation in a cateogry-dataview changes.
  *
  * Contains a single argument with the new operation name.
- * 
+ *
  * @event carto.dataview.Category.operationChanged
  * @type {string}
  * @api
@@ -46479,11 +46496,11 @@ module.exports = Category;
  * Event triggered when the operationColumn in a cateogry-dataview changes.
  *
  * Contains a single argument with the new operationColumn name.
- * 
+ *
  * @event carto.dataview.Category.operationColumnChanged
  * @type {string}
  * @api
- */ 
+ */
 
 },{"../../../dataviews/category-dataview-model":96,"../../../windshaft/filters/category":143,"../constants":59,"./base":60,"underscore":52}],62:[function(require,module,exports){
 var _ = require('underscore');
@@ -46492,15 +46509,15 @@ var constants = require('../constants');
 var FormulaDataviewModel = require('../../../dataviews/formula-dataview-model');
 
 /**
- * A formula is a simple numeric operation applied to a column in a dataset.
- * 
- * Like all dataviews is an async object so you must wait for the data to be availiable.
+ * A formula is a simple numeric operation applied to the column of a data source (dataset or sql query).
  *
- * @param {carto.source.Base} source - The source where the dataview will fetch the data
- * @param {string} column - The column name to get the data
- * @param {object} options
- * @param {carto.operation} options.operation - The operation to apply to the data
- * 
+ * Like all dataviews, it is an async object so you must wait for the data to be available.
+ *
+ * @param {carto.source.Base} source - The source where the dataview will fetch the data from
+ * @param {string} column - The operation will be performed using this column
+ * @param {object} [options]
+ * @param {carto.operation} [options.operation] - The operation to apply to the data
+ *
  * @fires carto.dataview.Formula.dataChanged
  * @fires carto.dataview.Formula.operationChanged
  *
@@ -46514,12 +46531,12 @@ var FormulaDataviewModel = require('../../../dataviews/formula-dataview-model');
  *  operation: carto.operation.MAX,
  * });
  * @example
- * // You can listen to multiple events emmited by the formula-dataview.
+ * // You can listen to multiple events emitted by a formula dataview.
  * // Data and status are fired by all dataviews.
  * formulaDataview.on('dataChanged', newData => { });
  * formulaDataview.on('statusChanged', (newData, error) => { });
  * formulaDataview.on('error', cartoError => { });
- * 
+ *
  * // Listen to specific formula-dataview events
  * formulaDataview.on('columnChanged', newData => { });
  * formulaDataview.on('operationChanged', newData => { });
@@ -46630,21 +46647,21 @@ module.exports = Formula;
  * Event triggered when the data in a formula-dataview changes.
  *
  * Contains a single argument with the new data.
- * 
+ *
  * @event carto.dataview.Formula.dataChanged
  * @type {carto.dataview.FormulaData}
  * @api
- */ 
+ */
 
 /**
  * Event triggered when the operation in a formula-dataview changes.
  *
  * Contains a single argument with new operation.
- * 
+ *
  * @event carto.dataview.Formula.operationChanged
  * @type {carto.operation}
  * @api
- */ 
+ */
 
 },{"../../../dataviews/formula-dataview-model":103,"../constants":59,"./base":60,"underscore":52}],63:[function(require,module,exports){
 var _ = require('underscore');
@@ -46654,14 +46671,14 @@ var parseHistogramData = require('./parse-data.js');
 
 /**
  * An histogram is used to represent the distribution of numerical data.
- * 
+ *
  * See {@link https://en.wikipedia.org/wiki/Histogram}.
  *
  * @param {carto.source.Base} source - The source where the dataview will fetch the data
  * @param {string} column - The column name to get the data
- * @param {object} options
+ * @param {object} [options]
  * @param {number} [options.bins=10] - Number of bins to aggregate the data range into
- * 
+ *
  * @fires carto.dataview.Histogram.dataChanged
  * @fires carto.dataview.Histogram.binsChanged
  *
@@ -46676,7 +46693,7 @@ var parseHistogramData = require('./parse-data.js');
  *  histogram.on('dataChanged', renderData);
  * // Add the histogram to the client
  * client.addDataview(histogram);
- * @example 
+ * @example
  * // Create a cities population histogram with only 4 bins
  * var histogram = new carto.dataview.Histogram(citiesSource, 'population', {bins: 4});
  * // Add a bounding box filter, so the data will change when the map is moved.
@@ -46797,21 +46814,21 @@ module.exports = Histogram;
  * Event triggered when the data in a histogram-dataview changes.
  *
  * Contains a single argument with the new data.
- * 
+ *
  * @event carto.dataview.Histogram.dataChanged
  * @type {carto.dataview.HistogramData}
  * @api
- */ 
+ */
 
 /**
  * Event triggered when the bins in a histogram-dataview changes.
  *
  * Contains a single argument with new number of bins.
- * 
+ *
  * @event carto.dataview.Histogram.binsChanged
  * @type {number}
  * @api
- */ 
+ */
 
 },{"../../../../dataviews/histogram-dataview-model":105,"../base":60,"./parse-data.js":64,"underscore":52}],64:[function(require,module,exports){
 var _ = require('underscore');
@@ -46915,16 +46932,16 @@ function hoursToSeconds (hours) {
  *
  * @param {carto.source.Base} source - The source where the dataview will fetch the data
  * @param {string} column - The column name to get the data
- * @param {object} options
+ * @param {object} [options]
  * @param {carto.dataview.timeAggregation} [options.aggregation=auto] - Granularity of time aggregation
- * @param {number} offset - Amount of hours to displace the aggregation from UTC
- * @param {boolean} useLocalTimezone - Indicates to use the user local timezone or not
- * 
+ * @param {number} [options.offset] - Amount of hours to displace the aggregation from UTC
+ * @param {boolean} [options.useLocalTimezone] - Indicates to use the user local timezone or not
+ *
  * @fires carto.dataview.TimeSeries.dataChanged
  * @fires carto.dataview.TimeSeries.aggregationChanged
  * @fires carto.dataview.TimeSeries.localTimezoneChanged
  * @fires carto.dataview.TimeSeries.offsetChanged
- * 
+ *
  * @constructor
  * @extends carto.dataview.Base
  * @memberof carto.dataview
@@ -46934,7 +46951,7 @@ function hoursToSeconds (hours) {
  * var timeSeries = new carto.dataview.TimeSeries(source0, 'last_review', {
  *  offset: 0,
  *  aggregation: 'hour'
- * }); 
+ * });
  * @example
  * // You can listen to multiple events emmited by the time-series-dataview.
  * // Data and status are fired by all dataviews.
@@ -47101,41 +47118,41 @@ module.exports = TimeSeries;
  * Event triggered when the totals data in a time-series-dataview changes.
  *
  * Contains a single argument with the new data.
- * 
+ *
  * @event carto.dataview.TimeSeries.dataChanged
  * @type {carto.dataview.TimeSeriesData}
  * @api
- */ 
+ */
 
 /**
  * Event triggered when the aggregation in a TimeSeries-dataview changes.
  *
  * Contains a single argument with new aggregation.
- * 
+ *
  * @event carto.dataview.TimeSeries.aggregationChanged
  * @type {string}
  * @api
- */ 
+ */
 
 /**
  * Event triggered when the timezone in a TimeSeries-dataview changes.
  *
  * Contains a single boolean argument (???).
- * 
+ *
  * @event carto.dataview.TimeSeries.localTimezoneChanged
  * @type {boolean}
  * @api
- */ 
+ */
 
 /**
  * Event triggered when the offset in a TimeSeries-dataview changes.
  *
  * Contains a single string argument with the new offset
- * 
+ *
  * @event carto.dataview.TimeSeries.offsetChanged
  * @type {string}
  * @api
- */ 
+ */
 
 },{"../../../../dataviews/histogram-dataview-model":105,"../../constants":59,"../base":60,"./parse-data":67,"underscore":52}],67:[function(require,module,exports){
 var _ = require('underscore');
@@ -47402,7 +47419,7 @@ var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 
 /**
- * Bounding box filter.
+ * Generic bounding box filter.
  *
  * @fires carto.filter.BoundingBox.boundsChanged
  * 
@@ -47544,6 +47561,7 @@ var events = require('./events');
 var operation = require('./constants').operation;
 
 var carto = window.carto = {
+  VERSION: require('../../../package.json').version,
   Client: Client,
   source: source,
   style: style,
@@ -47556,7 +47574,7 @@ var carto = window.carto = {
 
 module.exports = carto;
 
-},{"./client":58,"./constants":59,"./dataview":65,"./events":69,"./filter":73,"./layer":77,"./source":84,"./style":88}],75:[function(require,module,exports){
+},{"../../../package.json":53,"./client":58,"./constants":59,"./dataview":65,"./events":69,"./filter":73,"./layer":77,"./source":84,"./style":88}],75:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -47575,11 +47593,10 @@ function Base () {
 _.extend(Base.prototype, Backbone.Events);
 
 /**
- * Return a unique autogenerated id.
+ * Get the unique autogenerated id.
  * 
  * @return {string} Unique autogenerated id
  * 
- * @api
  */
 Base.prototype.getId = function () {
   return this._id;
@@ -47759,7 +47776,7 @@ Layer.prototype.getSource = function () {
 };
 
 /**
- * Set new columns for `featureClick` events.
+ * Set new columns for featureClick events.
  *
  * @param {Array<string>} columns An array containing column names
  * @return {carto.layer.Layer} this
@@ -47775,9 +47792,9 @@ Layer.prototype.setFeatureClickColumns = function (columns) {
 };
 
 /**
- * Return the columns available in `featureClicked` events.
+ * Get the columns available in featureClicked events.
  *
- * @return  {Array<string>} Column names available in `featureClicked` events
+ * @return  {Array<string>} Column names available in featureClicked events
  * @api
  */
 Layer.prototype.getFeatureClickColumns = function (columns) {
@@ -47789,7 +47806,7 @@ Layer.prototype.hasFeatureClickColumns = function (columns) {
 };
 
 /**
- * Set new columns for `featureOver` events.
+ * Set new columns for featureOver events.
  *
  * @param {Array<string>} columns An array containing column names
  * @return {carto.layer.Layer} this
@@ -47805,9 +47822,9 @@ Layer.prototype.setFeatureOverColumns = function (columns) {
 };
 
 /**
- * Return the columns available in `featureOver` events.
+ * Get the columns available in featureOver events.
  *
- * @return  {Array<string>} Column names available in `featureOver` events
+ * @return  {Array<string>} Column names available in featureOver events
  * @api
  */
 Layer.prototype.getFeatureOverColumns = function (columns) {
@@ -48123,7 +48140,7 @@ var Backbone = require('backbone');
 var CartoError = require('../error');
 
 /**
- * Base source object.
+ * Base data source object.
  *
  * @constructor
  * @abstract
@@ -48400,6 +48417,7 @@ var _ = require('underscore');
 var Base = require('./base');
 
 /**
+ * A CartoCSS/TurboCarto style that can be applied to a {@link carto.layer.Layer}.
  * @param {string} cartocss CartoCSS
  * @example
  * var style = new carto.style.CartoCSS(`
@@ -48425,7 +48443,7 @@ CartoCSS.prototype.toCartoCSS = function () {
 };
 
 /**
- * Return the TurboCarto style for this CartoCSS object.
+ * Get the current CartoCSS/TurboCarto style as a string.
  * 
  * @return {string} - The TurboCarto style for this CartoCSS object
  * @api
@@ -51022,10 +51040,17 @@ CartoDBLayerGroupViewBase.prototype = {
         .on('off', function (o) {
           if (self._interactionDisabled) return;
           o = o || {};
+          if (o.errors != null) {
+            self._manageInteractivityErrors(o);
+          }
           o.layer = layerIndexInLayerGroup;
           self._manageOffEvents(self.nativeMap, o);
         });
     }
+  },
+
+  _manageInteractivityErrors: function (payload) {
+    this.trigger('featureError', payload);
   },
 
   _generateTileJSON: function (layerIndexInLayerGroup) {
@@ -57675,7 +57700,7 @@ this.LZMA = LZMA;
 },{}],153:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
-/* wax - 7.0.1 - v6.0.4-181-ga34788e */
+/* wax - 7.0.1 - v6.0.4-193-g0530212 */
 
 
 !function (name, context, definition) {
@@ -58632,11 +58657,11 @@ var html = (function (html4) {
     lt   : '<',
     gt   : '>',
     amp  : '&',
-    nbsp : '\u00A0',
+    nbsp : '\240',
     quot : '"',
     apos : '\''
   };
-
+  
   // Schemes on which to defer to uripolicy. Urls with other schemes are denied
   var WHITELISTED_SCHEMES = /^(?:https?|mailto|data)$/i;
 
@@ -59987,6 +60012,7 @@ wax.gm = function() {
 
         wax.request.get(gurl, function(err, t) {
             if (err) return callback(err, null);
+            if (t.errors_with_context) return callback(t.errors_with_context, null);
             callback(null, wax.gi(t, {
                 formatter: formatter,
                 resolution: resolution
@@ -60167,7 +60193,7 @@ wax.interaction = function() {
         var _e = (e.type !== "MSPointerMove" && e.type !== "pointermove" ? e : e.originalEvent);
         var pos = wax.u.eventoffset(_e);
 
-        interaction.screen_feature(pos, function(feature) {
+        interaction.screen_feature(pos, function(error, feature) {
             if (feature) {
                 bean.fire(interaction, 'on', {
                     parent: parent(),
@@ -60176,7 +60202,9 @@ wax.interaction = function() {
                     e: e
                 });
             } else {
-                bean.fire(interaction, 'off');
+                bean.fire(interaction, 'off', error && {
+                    errors: error
+                });
             }
         });
     }
@@ -60302,7 +60330,7 @@ wax.interaction = function() {
 
     // Handle a click event. Takes a second
     interaction.click = function(e, pos) {
-        interaction.screen_feature(pos, function(feature) {
+        interaction.screen_feature(pos, function(err, feature) {
             if (feature) bean.fire(interaction, 'on', {
                 parent: parent(),
                 data: feature,
@@ -60314,11 +60342,12 @@ wax.interaction = function() {
 
     interaction.screen_feature = function(pos, callback) {
         var tile = getTile(pos);
-        if (!tile) callback(null);
+        if (!tile) callback(null, null);
         gm.getGrid(tile.src, function(err, g) {
-            if (err || !g) return callback(null);
+            if (err) return callback(err, null);
+            if (!g) return callback(null, null);
             var feature = g.tileFeature(pos.x, pos.y, tile);
-            callback(feature);
+            callback(null, feature);
         });
     };
 
@@ -60756,7 +60785,7 @@ wax.leaf.interaction = function() {
                         for (var tile in layers[layerId]._tiles) {
                             var _tile = layers[layerId]._tiles[tile].el;
                             // avoid adding tiles without src, grid url can't be found for them
-                            if(_tile && _tile.src) {
+                            if(_tile.src) {
                               var offset = wax.u.offset(_tile);
                               o.push([offset.top, offset.left, _tile]);
                             }
@@ -61036,8 +61065,7 @@ wax.g.connector.prototype.getTileUrl = function(coord, z) {
 
     x = (x < 0) ? (coord.x % mod) + mod : x;
 
-    // Fix upper limit to load the default empty image if it is rebased
-    if (y < 0 || y >= mod ) return this.options.blankImage;
+    if (y < 0 || y > (mod - 1)) return this.options.blankImage;
 
     return this.options.tiles
         [parseInt(x + y, 10) %
