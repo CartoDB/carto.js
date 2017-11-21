@@ -53,22 +53,35 @@ Layer.prototype = Object.create(Base.prototype);
  *
  * @param {carto.style.CartoCSS} New style
  * @fires carto.layer.Layer.styleChanged
- * @return {carto.layer.Layer} this
- *
+ * @return {Promise} A promise that will be fulfilled when the style is applied to the layer or rejected with a
+ * {@link CartoError} if something goes bad
  * @api
  */
 Layer.prototype.setStyle = function (style, opts) {
+  var self = this;
   var prevStyle = this._style;
   _checkStyle(style);
   opts = opts || {};
-  this._style = style;
+  if (prevStyle === style) {
+    return;
+  }
   if (this._internalModel) {
-    this._internalModel.set('cartocss', style.toCartoCSS());
-  }
-  if (prevStyle !== style) {
+    this._internalModel.set('cartocss', style.toCartoCSS(), { silent: true });
+    return this._engine.reload()
+      .then(function () {
+        self._style = style;
+        self.trigger('styleChanged', this);
+      })
+      .catch(function (err) {
+        var error = new CartoError(err);
+        self.trigger('error', new CartoError(error));
+        return Promise.reject(error);
+      });
+  } else {
+    self._style = style;
     this.trigger('styleChanged', this);
+    return Promise.resolve();
   }
-  return this;
 };
 
 /**
@@ -89,24 +102,46 @@ Layer.prototype.getStyle = function () {
  *
  * @param {carto.source.Dataset|carto.source.SQL} source New source
  * @fires carto.layer.Layer.sourceChanged
- * @return {carto.layer.Layer} this
+ * @return {Promise} A promise that will be fulfilled when the style is applied to the layer or rejected with a
+ * {@link CartoError} if something goes bad
  * @api
  */
 Layer.prototype.setSource = function (source) {
+  var self = this;
   var prevSource = this._source;
   _checkSource(source);
+  if (prevSource === source) {
+    return;
+  }
+  // If layer is not instantiated just store the new status
+  if (!this._internalModel) {
+    self._source = source;
+    this.trigger('sourceChanged', this);
+    return Promise.resolve();
+  }
+  // If layer has been instantiated 
   if (this._internalModel) {
     // If the source already has an engine and is different from the layer's engine throw an error.
     if (source.$getEngine() && source.$getEngine() !== this._internalModel._engine) {
       throw new Error('A layer can\'t have a source which belongs to a different client');
     }
-    this._internalModel.set('source', source.$getInternalModel());
+    // If source has no engine use the layer engine.
+    if (!source.$getEngine()) {
+      source.$setEngine(this._engine);
+    }
+    // Update the internalModel and return a promise
+    this._internalModel.set('source', source.$getInternalModel(), { silent: true });
+    return this._engine.reload()
+      .then(function () {
+        self._source = source;
+        self.trigger('sourceChanged', this);
+      })
+      .catch(function (err) {
+        var error = new CartoError(err);
+        self.trigger('error', error);
+        return Promise.reject(error);
+      });
   }
-  this._source = source;
-  if (prevSource !== source) {
-    this.trigger('sourceChanged', this);
-  }
-  return this;
 };
 
 /**

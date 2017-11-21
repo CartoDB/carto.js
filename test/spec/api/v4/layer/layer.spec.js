@@ -103,6 +103,24 @@ describe('api/v4/layer', function () {
       layer.setStyle(newStyle);
     });
 
+    it('should fire a styleChanged event when the layer belongs to a client', function (done) {
+      var client = new carto.Client({
+        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        username: 'cartojs-test'
+      });
+      var styleChangedSpy = jasmine.createSpy('styleChangedSpy');
+      layer.on('styleChanged', styleChangedSpy);
+
+      client.addLayer(layer)
+        .then(function () {
+          return layer.setStyle(newStyle);
+        })
+        .then(function () {
+          expect(styleChangedSpy).toHaveBeenCalled();
+          done();
+        });
+    });
+
     it('should not fire a styleChanged event when setting the same style twice', function () {
       var styleChangedSpy = jasmine.createSpy('styleChangedSpy');
       layer.on('styleChanged', styleChangedSpy);
@@ -110,6 +128,24 @@ describe('api/v4/layer', function () {
       layer.setStyle(style);
 
       expect(styleChangedSpy).not.toHaveBeenCalled();
+    });
+
+    it('should fire a cartoError when the style is invalid', function (done) {
+      var client = new carto.Client({
+        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        username: 'cartojs-test'
+      });
+      var styleChangedSpy = jasmine.createSpy('styleChangedSpy');
+      layer.on('error', styleChangedSpy);
+      client.addLayer(layer)
+        .then(function () {
+          var malformedStyle = new carto.style.CartoCSS('#layer { invalid-rule: foo}');
+          return layer.setStyle(malformedStyle);
+        })
+        .catch(function () {
+          expect(styleChangedSpy).toHaveBeenCalled();
+          done();
+        });
     });
   });
 
@@ -134,22 +170,46 @@ describe('api/v4/layer', function () {
 
         expect(layer.getSource()).toEqual(newSource);
       });
+
+      it('should fire a sourceChanged event', function (done) {
+        layer.on('sourceChanged', function (l) {
+          expect(l).toBe(layer);
+          expect(l.getSource()).toEqual(newSource);
+          done();
+        });
+
+        layer.setSource(newSource);
+      });
     });
 
     describe('when the layer has been set an engine', function () {
       var engineMock;
       beforeEach(function () {
-        engineMock = { on: jasmine.createSpy('on'), reload: jasmine.createSpy('reload') };
+        engineMock = { on: jasmine.createSpy('on'), reload: jasmine.createSpy('reload').and.returnValue(Promise.resolve()) };
         layer.$setEngine(engineMock);
       });
 
       describe('and the source has no engine', function () {
-        it('should normally add the source', function () {
-          layer.setSource(newSource);
+        it('should normally add the source', function (done) {
+          layer.setSource(newSource)
+            .then(function () {
+              var actualSource = layer.$getInternalModel().get('source');
+              var expectedSource = newSource.$getInternalModel();
+              expect(actualSource).toBeDefined();
+              expect(actualSource).toEqual(expectedSource);
+              done();
+            });
+        });
 
-          var actualSource = layer.$getInternalModel().get('source');
-          var expectedSource = newSource.$getInternalModel();
-          expect(actualSource).toEqual(expectedSource);
+        it('should fire a sourceChanged event', function (done) {
+          var sourceChangedSpy = jasmine.createSpy('sourceChangedSpy');
+          layer.on('sourceChanged', sourceChangedSpy);
+
+          layer.setSource(newSource)
+            .then(function () {
+              expect(sourceChangedSpy).toHaveBeenCalled();
+              done();
+            });
         });
       });
 
@@ -176,16 +236,6 @@ describe('api/v4/layer', function () {
       });
     });
 
-    it('should fire a sourceChanged event', function (done) {
-      layer.on('sourceChanged', function (l) {
-        expect(l).toBe(layer);
-        expect(l.getSource()).toEqual(newSource);
-        done();
-      });
-
-      layer.setSource(newSource);
-    });
-
     it('should not fire a sourceChanged event when setting the same source twice', function () {
       var sourceChangedSpy = jasmine.createSpy('sourceChangedSpy');
       layer.on('sourceChanged', sourceChangedSpy);
@@ -193,6 +243,24 @@ describe('api/v4/layer', function () {
       layer.setSource(source);
 
       expect(sourceChangedSpy).not.toHaveBeenCalled();
+    });
+
+    it('should fire a cartoError when the source is invalid', function (done) {
+      var client = new carto.Client({
+        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        username: 'cartojs-test'
+      });
+      var sourceChangedSoy = jasmine.createSpy('sourceChangedSoy');
+      layer.on('error', sourceChangedSoy);
+      client.addLayer(layer)
+        .then(function () {
+          var invalidDataset = new carto.source.Dataset('invalid_dataset');
+          return layer.setSource(invalidDataset);
+        })
+        .catch(function () {
+          expect(sourceChangedSoy).toHaveBeenCalled();
+          done();
+        });
     });
   });
 
