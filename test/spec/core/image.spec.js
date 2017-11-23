@@ -515,7 +515,7 @@ describe("Image", function() {
 
     };
 
-    var image = cartodb.Image(vizjson, opt, optionss).size(400, 300);
+    var image = cartodb.Image(vizjson, options).size(400, 300);
 
     image.getUrl(function(err, url) {
       expect(image.options.layers.layers[1].options.auth_tokens.length > 0).toBe(true);
