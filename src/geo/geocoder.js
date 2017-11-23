@@ -83,32 +83,31 @@ cdb.geo.geocoder.MAPZEN = {
     }
 
     $.getJSON(protocol + '//search.mapzen.com/v1/search?text=' + encodeURIComponent(address) + '&api_key=' + this.keys.app_id, function(data) {
-  
-    var coordinates = [];
-    if (data && data.features && data.features.length > 0) {
-      var res = data.features;
-      for (var i in res){
-        var r = res[i],
-        position;
-        position = {
-          lat: r.geometry.coordinates[1],
-          lon: r.geometry.coordinates[0]
-        };
-        if(r.properties.layer){
-          position.type = r.properties.layer;
-        }  
-        
-        if(r.properties.label){
-          position.title = r.properties.label;
-        } 
+      var coordinates = [];
+      if (data && data.features && data.features.length > 0) {
+        var res = data.features;
+        for (var i in res){
+          var r = res[i],
+          position;
+          position = {
+            lat: r.geometry.coordinates[1],
+            lon: r.geometry.coordinates[0]
+          };
+          if(r.properties.layer){
+            position.type = r.properties.layer;
+          }  
+          
+          if(r.properties.label){
+            position.title = r.properties.label;
+          } 
 
-        coordinates.push(position);
+          coordinates.push(position);
+        }
       }
-    }
-    if (callback) {
-      callback.call(this, coordinates);
-    }
-  });
+      if (callback) {
+        callback.call(this, coordinates);
+      }
+    });
   }
 };
 
