@@ -85,9 +85,9 @@
 
       this.no_cdn = options.no_cdn;
 
-      this.userOptions = options;
-
       this.auth_tokens = options.auth_tokens;
+
+      this.userOptions = options;
 
       options = _.defaults({ vizjson: vizjson, temp_id: "s" + this._getUUID() }, this.defaults);
 
