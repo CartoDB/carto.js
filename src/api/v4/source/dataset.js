@@ -14,10 +14,24 @@ var CamshaftReference = require('../../../analysis/camshaft-reference');
  * @memberof carto.source
  * @api
  */
-function Dataset (tableName) {
+function Dataset (tableName, auth) {
   _checkTableName(tableName);
+  // TODO: check auth
+
   this._tableName = tableName;
+
   Base.apply(this, arguments);
+
+  this._internalModel = new AnalysisModel({
+    id: this.getId(),
+    type: 'source',
+    query: 'SELECT * from ' + tableName
+  }, {
+    camshaftReference: CamshaftReference,
+    engine: auth._engine
+  });
+
+  this._internalModel.on('change:error', this._triggerError, this);
 }
 
 Dataset.prototype = Object.create(Base.prototype);
@@ -30,24 +44,6 @@ Dataset.prototype = Object.create(Base.prototype);
  */
 Dataset.prototype.getTableName = function () {
   return this._tableName;
-};
-
-/**
- * Creates a new internal model with the given engine and attributes initialized in the constructor.
- *
- * @param {Engine} engine - The engine object to be assigned to the internalModel
- */
-Dataset.prototype._createInternalModel = function (engine) {
-  var internalModel = new AnalysisModel({
-    id: this.getId(),
-    type: 'source',
-    query: 'SELECT * from ' + this._tableName
-  }, {
-    camshaftReference: CamshaftReference,
-    engine: engine
-  });
-
-  return internalModel;
 };
 
 function _checkTableName (tableName) {

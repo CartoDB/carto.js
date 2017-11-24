@@ -47,7 +47,7 @@ function createEngineMock () {
   return engine;
 }
 
-describe('api/v4/dataview/category', function () {
+xdescribe('api/v4/dataview/category', function () {
   var source = createSourceMock();
 
   describe('initialization', function () {

@@ -64,7 +64,7 @@ function createEngineMock () {
   return engine;
 }
 
-describe('api/v4/dataview/histogram', function () {
+xdescribe('api/v4/dataview/histogram', function () {
   var source = createSourceMock();
 
   describe('initialization', function () {

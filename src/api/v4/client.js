@@ -3,9 +3,6 @@ var Backbone = require('backbone');
 var CartoError = require('./error');
 var Engine = require('../../engine');
 var Events = require('./events');
-var LayerBase = require('./layer/base');
-var Layers = require('./layers');
-var LeafletLayer = require('./leaflet-layer');
 var VERSION = require('../../../package.json').version;
 
 /**
@@ -36,7 +33,6 @@ var VERSION = require('../../../package.json').version;
  */
 function Client (settings) {
   _checkSettings(settings);
-  this._layers = new Layers();
   this._dataviews = [];
   this._engine = new Engine({
     apiKey: settings.apiKey,
@@ -48,94 +44,6 @@ function Client (settings) {
 }
 
 _.extend(Client.prototype, Backbone.Events);
-
-/**
- * Add a layer to the client.
- *
- * @param {carto.layer.Base} - The layer to be added
- * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- *
- * @fires CartoError
- * @fires carto.events.SUCCESS
- *
- * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
- * @api
- */
-Client.prototype.addLayer = function (layer, opts) {
-  return this.addLayers([layer], opts);
-};
-
-/**
- * Add multiple layers to the client.
- *
- * @param {carto.layer.Base[]} - An array with the layers to be added
- * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- *
- * @fires CartoError
- * @fires carto.events.SUCCESS
- *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
- * @api
- */
-Client.prototype.addLayers = function (layers, opts) {
-  opts = opts || {};
-  layers.forEach(this._addLayer, this);
-  if (opts.reload === false) {
-    return Promise.resolve();
-  }
-  return this._reload();
-};
-
-/**
- * Remove a layer from the client
- *
- * @param {carto.layer.Base} - The layer to be removed
- * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- *
- * @fires CartoError
- * @fires carto.events.SUCCESS
- *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
- * @api
- */
-Client.prototype.removeLayer = function (layer, opts) {
-  return this.removeLayers([layer], opts);
-};
-
-/**
- * Remove multiple layer from the client
- *
- * @param {carto.layer.Base[]} - An array with the layers to be removed
- * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
- *
- * @fires CartoError
- * @fires carto.events.SUCCESS
- *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
- * @api
- */
-Client.prototype.removeLayers = function (layers, opts) {
-  opts = opts || {};
-  layers.forEach(this._removeLayer, this);
-  if (opts.reload === false) {
-    return Promise.resolve();
-  }
-  return this._reload();
-};
-
-/**
- * Get all the layers from the client
- *
- * @returns {carto.layer.Base[]} An array with all the Layers from the client
- * @api
- */
-Client.prototype.getLayers = function () {
-  return this._layers.toArray();
-};
 
 /**
  * Add a dataview to the client.
@@ -199,29 +107,6 @@ Client.prototype.removeDataview = function (dataview, opts) {
 };
 
 /**
- * Get all the dataviews from the client
- *
- * @returns {carto.dataview.Base[]} An array with all the dataviews from the client
- * @api
- */
-Client.prototype.getDataviews = function () {
-  return this._dataviews;
-};
-
-/**
- * Return a Leaflet layer that groups all the layers that have been
- * added to this client.
- *
- * @returns {L.TileLayer} A Leaflet layer that groups all the layers:
- * {@link http://leafletjs.com/reference-1.2.0.html#tilelayer|L.TileLayer}
- * @api
- */
-Client.prototype.getLeafletLayer = function () {
-  this._leafletLayer = this._leafletLayer || new LeafletLayer(this._layers, this._engine);
-  return this._leafletLayer;
-};
-
-/**
  * Call engine.reload wrapping the native cartojs errors
  * into public CartoErrors.
  */
@@ -233,26 +118,6 @@ Client.prototype._reload = function () {
     .catch(function (error) {
       return Promise.reject(new CartoError(error));
     });
-};
-
-/**
- * Helper used to link a layer and an engine.
- * @private
- */
-Client.prototype._addLayer = function (layer, engine) {
-  _checkLayer(layer);
-  this._layers.add(layer);
-  layer.$setEngine(this._engine);
-  this._engine.addLayer(layer.$getInternalModel());
-};
-
-/**
- * Helper used to remove a layer from the client.
- */
-Client.prototype._removeLayer = function (layer) {
-  _checkLayer(layer);
-  this._layers.remove(layer);
-  this._engine.removeLayer(layer.$getInternalModel());
 };
 
 /**
@@ -278,16 +143,6 @@ Client.prototype._bindEngine = function (engine) {
     this.trigger(Events.ERROR, new CartoError(err));
   }.bind(this));
 };
-
-/**
- * Utility function to reduce duplicated code.
- * Check if an object inherits from LayerBase.
- */
-function _checkLayer (object) {
-  if (!(object instanceof LayerBase)) {
-    throw new TypeError('The given object is not a layer');
-  }
-}
 
 function _checkSettings (settings) {
   _checkApiKey(settings.apiKey);

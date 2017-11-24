@@ -67,7 +67,7 @@ function createEngineMock () {
   return engine;
 }
 
-describe('api/v4/dataview/time-series', function () {
+xdescribe('api/v4/dataview/time-series', function () {
   var source = createSourceMock();
 
   describe('initialization', function () {
