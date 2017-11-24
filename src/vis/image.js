@@ -85,6 +85,8 @@
 
       this.no_cdn = options.no_cdn;
 
+      this.auth_tokens = options.auth_tokens;
+
       this.userOptions = options;
 
       options = _.defaults({ vizjson: vizjson, temp_id: "s" + this._getUUID() }, this.defaults);
@@ -147,7 +149,6 @@
           this.options.maps_api_template = dataLayer.options.maps_api_template;
         }
 
-        this.auth_tokens = data.auth_tokens;
         this.endPoint = "/api/v1/map";
 
         var bbox = [];
