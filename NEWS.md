@@ -1,7 +1,7 @@
 3.15.12 (12/06/2017)
 -------
 * New Mapzen API key.
-* Added auth_tokens as an options for StaticImage instead of searching for them in vizjson (deprecated). See [#13089](https://github.com/CartoDB/cartodb/issues/13089).
+* Added auth_tokens as an option for StaticImage instead of searching for them in vizjson (deprecated). See [#13089](https://github.com/CartoDB/cartodb/issues/13089).
 
 3.15.11 (21/02/2017)
 -------
