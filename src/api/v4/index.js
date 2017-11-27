@@ -30,17 +30,23 @@ var dataview = require('./dataview');
 var filter = require('./filter');
 var events = require('./events');
 var operation = require('./constants').operation;
+var LeafletLayer = require('./leaflet-layer');
+
+var leafletLayer = new LeafletLayer(); // Singleton
 
 var carto = window.carto = {
   VERSION: require('../../../package.json').version,
-  Client: Client,
+  Auth: Client,
   source: source,
   style: style,
   layer: layer,
   dataview: dataview,
   filter: filter,
   events: events,
-  operation: operation
+  operation: operation,
+  leafletLayer: function () {
+    return leafletLayer;
+  }
 };
 
 module.exports = carto;

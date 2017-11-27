@@ -34,8 +34,7 @@ function Layer (source, style, options) {
   _checkSource(source);
   _checkStyle(style);
 
-  this._engine = undefined;
-  this._internalModel = undefined;
+  Base.apply(this, arguments);
 
   this._source = source;
   this._style = style;
@@ -43,7 +42,22 @@ function Layer (source, style, options) {
   this._featureClickColumns = options.featureClickColumns || [];
   this._featureOverColumns = options.featureOverColumns || [];
 
-  Base.apply(this, arguments);
+  this._internalModel = new CartoDBLayer({
+    id: this.getId(),
+    source: source.$getInternalModel(),
+    cartocss: style.toCartoCSS(),
+    visible: this._visible,
+    infowindow: _getInteractivityFields(this._featureClickColumns),
+    tooltip: _getInteractivityFields(this._featureOverColumns)
+  }, {
+    engine: source.$getEngine()
+  });
+
+  this._internalModel.on('change:error', function (model, value) {
+    if (value && _isStyleError(value)) {
+      this._style.$setError(new CartoError(value));
+    }
+  }, this);
 }
 
 Layer.prototype = Object.create(Base.prototype);
@@ -51,21 +65,17 @@ Layer.prototype = Object.create(Base.prototype);
 /**
  * Set a new style for this layer.
  *
- * @param {carto.style.CartoCSS} New style
+ * @param {carto.style.CartoCSS} style - New style
  * @fires carto.layer.Layer.styleChanged
  * @return {carto.layer.Layer} this
  *
  * @api
  */
-Layer.prototype.setStyle = function (style, opts) {
-  var prevStyle = this._style;
-  _checkStyle(style);
-  opts = opts || {};
-  this._style = style;
-  if (this._internalModel) {
+Layer.prototype.setStyle = function (style) {
+  if (this._style !== style) {
+    _checkStyle(style);
+    this._style = style;
     this._internalModel.set('cartocss', style.toCartoCSS());
-  }
-  if (prevStyle !== style) {
     this.trigger('styleChanged', this);
   }
   return this;
@@ -87,23 +97,16 @@ Layer.prototype.getStyle = function () {
  * A source and a layer must belong to the same client so you can't
  * add a source belonging to a different client.
  *
- * @param {carto.source.Dataset|carto.source.SQL} source New source
+ * @param {carto.source.Dataset|carto.source.SQL} source - New source
  * @fires carto.layer.Layer.sourceChanged
  * @return {carto.layer.Layer} this
  * @api
  */
 Layer.prototype.setSource = function (source) {
-  var prevSource = this._source;
-  _checkSource(source);
-  if (this._internalModel) {
-    // If the source already has an engine and is different from the layer's engine throw an error.
-    if (source.$getEngine() && source.$getEngine() !== this._internalModel._engine) {
-      throw new Error('A layer can\'t have a source which belongs to a different client');
-    }
+  if (this._source !== source) {
+    _checkSource(source);
+    this._source = source;
     this._internalModel.set('source', source.$getInternalModel());
-  }
-  this._source = source;
-  if (prevSource !== source) {
     this.trigger('sourceChanged', this);
   }
   return this;
@@ -128,9 +131,7 @@ Layer.prototype.getSource = function () {
  */
 Layer.prototype.setFeatureClickColumns = function (columns) {
   this._featureClickColumns = columns;
-  if (this._internalModel) {
-    this._internalModel.infowindow.update(_getInteractivityFields(columns));
-  }
+  this._internalModel.infowindow.update(_getInteractivityFields(columns));
 
   return this;
 };
@@ -158,9 +159,7 @@ Layer.prototype.hasFeatureClickColumns = function (columns) {
  */
 Layer.prototype.setFeatureOverColumns = function (columns) {
   this._featureOverColumns = columns;
-  if (this._internalModel) {
-    this._internalModel.tooltip.update(_getInteractivityFields(columns));
-  }
+  this._internalModel.tooltip.update(_getInteractivityFields(columns));
 
   return this;
 };
@@ -186,12 +185,9 @@ Layer.prototype.hasFeatureOverColumns = function (columns) {
  * @api
  */
 Layer.prototype.hide = function () {
-  var prevStatus = this._visible;
-  this._visible = false;
-  if (this._internalModel) {
+  if (this._visible) {
+    this._visible = false;
     this._internalModel.set('visible', false);
-  }
-  if (prevStatus) {
     this.trigger('visibilityChanged', false);
   }
   return this;
@@ -204,12 +200,9 @@ Layer.prototype.hide = function () {
  * @api
  */
 Layer.prototype.show = function () {
-  var prevStatus = this._visible;
-  this._visible = true;
-  if (this._internalModel) {
+  if (!this._visible) {
+    this._visible = true;
     this._internalModel.set('visible', true);
-  }
-  if (!prevStatus) {
     this.trigger('visibilityChanged', false);
   }
   return this;
@@ -242,40 +235,6 @@ Layer.prototype.isVisible = function () {
  */
 Layer.prototype.isHidden = function () {
   return !this.isVisible();
-};
-
-// Private functions.
-
-Layer.prototype._createInternalModel = function (engine) {
-  var internalModel = new CartoDBLayer({
-    id: this._id,
-    source: this._source.$getInternalModel(),
-    cartocss: this._style.toCartoCSS(),
-    visible: this._visible,
-    infowindow: _getInteractivityFields(this._featureClickColumns),
-    tooltip: _getInteractivityFields(this._featureOverColumns)
-  }, { engine: engine });
-
-  internalModel.on('change:error', function (model, value) {
-    if (value && _isStyleError(value)) {
-      this._style.$setError(new CartoError(value));
-    }
-  }, this);
-
-  return internalModel;
-};
-
-// Internal functions.
-
-Layer.prototype.$setEngine = function (engine) {
-  if (this._engine) {
-    return;
-  }
-  this._engine = engine;
-  this._source.$setEngine(engine);
-  if (!this._internalModel) {
-    this._internalModel = this._createInternalModel(engine);
-  }
 };
 
 // Scope functions
@@ -328,7 +287,7 @@ function _isStyleError (windshaftError) {
  * Event triggered when the source of the layer changes.
  *
  * Contains a single argument with the Layer where the source has changed.
- * 
+ *
  * @event carto.layer.Layer.sourceChanged
  * @type {carto.layer.Layer}
  * @api
@@ -338,7 +297,7 @@ function _isStyleError (windshaftError) {
  * Event triggered when the style of the layer changes.
  *
  * Contains a single argument with the Layer where the style has changed.
- * 
+ *
  * @event carto.layer.Layer.styleChanged
  * @type {carto.layer.Layer}
  * @api

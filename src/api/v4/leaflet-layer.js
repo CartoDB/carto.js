@@ -1,11 +1,14 @@
 var L = require('leaflet');
 var Layer = require('./layer');
+var Layers = require('./layers');
+var CartoError = require('./error');
+var LayerBase = require('./layer/base');
 var LeafletCartoLayerGroupView = require('../../geo/leaflet/leaflet-cartodb-layer-group-view');
 
 /**
  * This object is a custom Leaflet layer to enable feature interactivity
  * using an internal LeafletCartoLayerGroupView instance.
- * 
+ *
  * There are some overwritten functions:
  * - getAttribution: returns always a custom OpenStreetMap / Carto attribution message
  * - addTo: when the layer is added to a map it also creates a LeafletCartoLayerGroupView
@@ -22,9 +25,9 @@ var LeafletLayer = L.TileLayer.extend({
     maxZoom: 30
   },
 
-  initialize: function (layers, engine) {
-    this._layers = layers;
-    this._engine = engine;
+  initialize: function () {
+    this._layers = new Layers();
+    this._engine = null;
     this._internalView = null;
   },
 
@@ -56,6 +59,61 @@ var LeafletLayer = L.TileLayer.extend({
     this._internalView = null;
 
     return L.TileLayer.prototype.removeFrom.call(this, map);
+  },
+
+  addLayer: function (layer) {
+    return this.addLayers([layer]);
+  },
+
+  addLayers: function (layers) {
+    layers.forEach(this._addLayer, this);
+    return this._reload();
+  },
+
+  removeLayer: function (layer) {
+    return this.removeLayers([layer]);
+  },
+
+  removeLayers: function (layers) {
+    layers.forEach(this._removeLayer, this);
+    return this._reload();
+  },
+
+  getLayers: function () {
+    return this._layers.toArray();
+  },
+
+  _addLayer: function (layer) {
+    this._checkLayer(layer);
+    this._layers.add(layer);
+    if (!this._engine) {
+      this._engine = layer.$getEngine();
+    }
+    // TODO: check current.engine and layer.engine
+    this._engine.addLayer(layer.$getInternalModel());
+  },
+
+  _removeLayer: function (layer) {
+    this._checkLayer(layer);
+    // TODO: check current.engine
+    this._layers.remove(layer);
+    this._engine.removeLayer(layer.$getInternalModel());
+  },
+
+  _checkLayer: function (object) {
+    if (!(object instanceof LayerBase)) {
+      throw new TypeError('The given object is not a layer');
+    }
+  },
+
+  _reload: function () {
+    return this._engine.reload()
+      .then(function () {
+        return Promise.resolve();
+      })
+      .catch(function (error) {
+        return Promise.reject(new CartoError(error));
+      });
   },
 
   _onFeatureClick: function (internalEvent) {

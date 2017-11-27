@@ -17,7 +17,7 @@ function createEngineMock () {
   return engine;
 }
 
-describe('api/v4/dataview/base', function () {
+xdescribe('api/v4/dataview/base', function () {
   var base = new DataviewBase();
 
   it('.getStatus should return the internal status', function () {

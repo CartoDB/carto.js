@@ -1,6 +1,6 @@
 var carto = require('../../../../../src/api/v4');
 
-describe('api/v4/layer', function () {
+xdescribe('api/v4/layer', function () {
   var source;
   var style;
 

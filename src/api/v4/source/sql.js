@@ -15,10 +15,24 @@ var CamshaftReference = require('../../../analysis/camshaft-reference');
  * @fires carto.source.SQL.queryChangedEvent
  * @api
  */
-function SQL (query) {
+function SQL (query, auth) {
   _checkQuery(query);
+  // TODO: check auth
+
   this._query = query;
+
   Base.apply(this, arguments);
+
+  this._internalModel = new AnalysisModel({
+    id: this.getId(),
+    type: 'source',
+    query: query
+  }, {
+    camshaftReference: CamshaftReference,
+    engine: auth._engine
+  });
+
+  this._internalModel.on('change:error', this._triggerError, this);
 }
 
 SQL.prototype = Object.create(Base.prototype);
@@ -33,11 +47,7 @@ SQL.prototype = Object.create(Base.prototype);
 SQL.prototype.setQuery = function (query) {
   _checkQuery(query);
   this._query = query;
-  if (this._internalModel) {
-    this._internalModel.set('query', query);
-  } else {
-    this._triggerQueryChanged(this, query);
-  }
+  this._internalModel.set('query', query);
   return this;
 };
 
@@ -52,25 +62,13 @@ SQL.prototype.getQuery = function () {
 };
 
 /**
- * Creates a new internal model with the given engine and attributes initialized in the constructor.
+ * Triggered every time the query is changed.
+ * Contains a string with the new query.
  *
- * @param {Engine} engine - The engine object to be assigned to the internalModel
+ * @event carto.source.SQL.queryChangedEvent
+ * @type {string}
+ * @api
  */
-SQL.prototype._createInternalModel = function (engine) {
-  var internalModel = new AnalysisModel({
-    id: this.getId(),
-    type: 'source',
-    query: this._query
-  }, {
-    camshaftReference: CamshaftReference,
-    engine: engine
-  });
-
-  internalModel.on('change:query', this._triggerQueryChanged, this);
-
-  return internalModel;
-};
-
 SQL.prototype._triggerQueryChanged = function (model, value) {
   this.trigger('queryChanged', value);
 };
@@ -86,12 +84,3 @@ function _checkQuery (query) {
 }
 
 module.exports = SQL;
-
-/**
- * Triggered every time the query is changed.
- * Contains a string with the new query.
- *
- * @event carto.source.SQL.queryChangedEvent
- * @type {string}
- * @api
- */

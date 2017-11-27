@@ -1,6 +1,6 @@
 var carto = require('../../../../../src/api/v4');
 
-describe('api/v4/source/sql', function () {
+xdescribe('api/v4/source/sql', function () {
   var sqlQuery;
 
   beforeEach(function () {
