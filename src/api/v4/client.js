@@ -31,13 +31,19 @@ var VERSION = require('../../../package.json').version;
  * @fires CartoError
  * @fires carto.events.SUCCESS
  */
-function Client (settings) {
-  _checkSettings(settings);
+function Client (username, apiKey, options) {
+  // _checkSettings(settings);
+  _checkUsername(username);
+  _checkApiKey(apiKey);
+  options = options || {};
+  if (options.serverUrl) {
+    _checkServerUrl(options.serverUrl, options.username);
+  }
   this._dataviews = [];
   this._engine = new Engine({
-    apiKey: settings.apiKey,
-    username: settings.username,
-    serverUrl: settings.serverUrl || 'https://{user}.carto.com'.replace(/{user}/, settings.username),
+    apiKey: apiKey,
+    username: username,
+    serverUrl: options.serverUrl || 'https://{user}.carto.com'.replace(/{user}/, username),
     statTag: 'carto.js-v' + VERSION
   });
   this._bindEngine(this._engine);
@@ -143,14 +149,6 @@ Client.prototype._bindEngine = function (engine) {
     this.trigger(Events.ERROR, new CartoError(err));
   }.bind(this));
 };
-
-function _checkSettings (settings) {
-  _checkApiKey(settings.apiKey);
-  _checkUsername(settings.username);
-  if (settings.serverUrl) {
-    _checkServerUrl(settings.serverUrl, settings.username);
-  }
-}
 
 function _checkApiKey (apiKey) {
   if (!apiKey) {

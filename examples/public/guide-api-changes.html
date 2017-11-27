@@ -58,10 +58,7 @@
       }).addTo(map);
 
       // 2 Defining a carto.Auth
-      var auth = new carto.Auth({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
-        username: 'cartojs-test'
-      });
+      var auth = new carto.Auth('cartojs-test', '84fdbd587e4a942510270a48e843b4c1baa11e18');
 
       // 3. Displaying countries and cities on the map
       // 3.1 Defining the layers
