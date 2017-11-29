@@ -16,7 +16,7 @@ describe('geo/ui/infowindow-view', function () {
     mapView = new MapView({
       el: container,
       mapModel: map,
-      visModel: new Backbone.Model(),
+      engine: new Backbone.Model(),
       layerViewFactory: jasmine.createSpyObj('layerViewFactory', ['createLayerView']),
       layerGroupModel: new Backbone.Model()
     });
@@ -298,7 +298,7 @@ describe('geo/ui/infowindow-view', function () {
       mapView = new MapView({
         el: container,
         mapModel: map,
-        visModel: new Backbone.Model(),
+        engine: new Backbone.Model(),
         layerViewFactory: jasmine.createSpyObj('layerViewFactory', ['createLayerView']),
         layerGroupModel: new Backbone.Model()
       });
@@ -326,9 +326,9 @@ describe('geo/ui/infowindow-view', function () {
       view.model.set({
         template: ['{{#content.fields}}',
           '<li class="CDB-infowindow-listItem">',
-            '{{#title}}<h5 class="CDB-infowindow-subtitle">{{title}}</h5>{{/title}}',
-            '{{#value}}<h4 class="CDB-infowindow-title">{{{ value }}}</h4>{{/value}}',
-            '{{^value}}<h4 class="CDB-infowindow-title">null</h4>{{/value}}',
+          '{{#title}}<h5 class="CDB-infowindow-subtitle">{{title}}</h5>{{/title}}',
+          '{{#value}}<h4 class="CDB-infowindow-title">{{{ value }}}</h4>{{/value}}',
+          '{{^value}}<h4 class="CDB-infowindow-title">null</h4>{{/value}}',
           '</li>',
           '{{/content.fields}}'].join(' '),
         content: {
@@ -346,9 +346,9 @@ describe('geo/ui/infowindow-view', function () {
       view.model.set({
         template: ['{{#content.fields}}',
           '<li class="CDB-infowindow-listItem">',
-            '{{#title}}<h5 class="CDB-infowindow-subtitle">{{title}}</h5>{{/title}}',
-            '{{#value}}<h4 class="CDB-infowindow-title">{{{ value }}}</h4>{{/value}}',
-            '{{^value}}<h4 class="CDB-infowindow-title">null</h4>{{/value}}',
+          '{{#title}}<h5 class="CDB-infowindow-subtitle">{{title}}</h5>{{/title}}',
+          '{{#value}}<h4 class="CDB-infowindow-title">{{{ value }}}</h4>{{/value}}',
+          '{{^value}}<h4 class="CDB-infowindow-title">null</h4>{{/value}}',
           '</li>',
           '{{/content.fields}}'].join(' '),
         content: {
@@ -425,7 +425,7 @@ describe('geo/ui/infowindow-view', function () {
       mapView = new MapView({
         el: container,
         mapModel: map,
-        visModel: new Backbone.Model(),
+        engine: new Backbone.Model(),
         layerViewFactory: jasmine.createSpyObj('layerViewFactory', ['createLayerView']),
         layerGroupModel: new Backbone.Model()
       });

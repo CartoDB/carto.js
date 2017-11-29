@@ -1,43 +1,53 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
-var VisModel = require('../../../src/vis/vis.js');
-var CategoryDataviewModel = require('../../../src/dataviews/category-dataview-model.js');
+var CategoryDataviewModel = require('../../../src/dataviews/category-dataview-model');
 var WindshaftFiltersCategory = require('../../../src/windshaft/filters/category');
+var WindshaftFiltersBoundingBox = require('../../../src/windshaft/filters/bounding-box');
+var AnalysisService = require('../../../src/analysis/analysis-service');
+var MapModelBoundingBoxAdapter = require('../../../src/geo/adapters/map-model-bounding-box-adapter');
+var MockFactory = require('../../helpers/mockFactory');
 
 describe('dataviews/category-dataview-model', function () {
+  var engineMock;
+
   beforeEach(function () {
     this.map = new Backbone.Model();
     this.map.getViewBounds = jasmine.createSpy();
-    this.vis = new VisModel();
-    spyOn(this.vis, 'reload');
+    engineMock = MockFactory.createEngine();
+    spyOn(engineMock, 'reload');
     this.map.getViewBounds.and.returnValue([[1, 2], [3, 4]]);
+    var analysisDefinition = {
+      id: 'a0',
+      type: 'source',
+      params: {
+        query: 'SELECT * FROM blairbnb_listings'
+      }
+    };
 
-    this.layer = new Backbone.Model();
-    this.layer.getDataProvider = jasmine.createSpy('layer.getDataProvider');
+    var analysisService = new AnalysisService({ engine: engineMock });
+    this.source = analysisService.analyse(analysisDefinition);
 
     this.model = new CategoryDataviewModel({
-      source: {id: 'a0'}
+      source: this.source
     }, {
-      map: this.map,
-      vis: this.vis,
-      layer: this.layer,
+      engine: engineMock,
       filter: new WindshaftFiltersCategory(),
-      analysisCollection: new Backbone.Collection()
+      bboxFilter: new WindshaftFiltersBoundingBox(new MapModelBoundingBoxAdapter(this.map))
     });
   });
 
   it('should reload map and force fetch on changing attrs', function () {
-    this.vis.reload.calls.reset();
+    engineMock.reload.calls.reset();
     this.model.set('column', 'random_col');
-    expect(this.vis.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
+    expect(engineMock.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
 
-    this.vis.reload.calls.reset();
+    engineMock.reload.calls.reset();
     this.model.set('aggregation', 'count');
-    expect(this.vis.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
+    expect(engineMock.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
 
-    this.vis.reload.calls.reset();
+    engineMock.reload.calls.reset();
     this.model.set('aggregation_column', 'other');
-    expect(this.vis.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
+    expect(engineMock.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
   });
 
   it('should define several internal models/collections', function () {
@@ -48,14 +58,13 @@ describe('dataviews/category-dataview-model', function () {
 
   it('should set the api_key attribute on the internal models', function () {
     this.model = new CategoryDataviewModel({
-      source: {id: 'a0'},
+      source: this.source,
       apiKey: 'API_KEY'
     }, {
       map: this.map,
-      vis: this.vis,
-      layer: jasmine.createSpyObj('layer', ['get', 'getDataProvider']),
-      filter: new WindshaftFiltersCategory(),
-      analysisCollection: new Backbone.Collection()
+      engine: engineMock,
+      layer: jasmine.createSpyObj('layer', ['get']),
+      filter: new WindshaftFiltersCategory()
     });
 
     expect(this.model._searchModel.get('apiKey')).toEqual('API_KEY');
@@ -63,17 +72,21 @@ describe('dataviews/category-dataview-model', function () {
   });
 
   describe('.url', function () {
-    it('should include the bbox and own_filter parameters', function () {
+    it('should include the bbox,own_filter and categories parameters', function () {
       expect(this.model.set('url', 'http://example.com'));
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=0');
+      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=0&categories=6');
 
       this.model.set('filterEnabled', true);
 
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=1');
+      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=1&categories=6');
 
       this.model.set('filterEnabled', false);
 
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=0');
+      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=0&categories=6');
+
+      this.model.set('categories', 1);
+
+      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=0&categories=1');
     });
   });
 
@@ -156,6 +169,8 @@ describe('dataviews/category-dataview-model', function () {
     beforeEach(function () {
       // Disable debounce
       spyOn(_, 'debounce').and.callFake(function (func) { return function () { func.apply(this, arguments); }; });
+      this.model._bboxFilter._stopBinds();
+      this.model._bboxFilter._initBinds();
 
       this.model.fetch = function (opts) {
         opts && opts.success();

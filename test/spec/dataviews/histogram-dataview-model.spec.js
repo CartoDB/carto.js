@@ -1,37 +1,41 @@
 var Backbone = require('backbone');
-var Model = require('../../../src/core/model');
-var VisModel = require('../../../src/vis/vis');
-var RangeFilter = require('../../../src/windshaft/filters/range');
+var WindshaftFiltersRange = require('../../../src/windshaft/filters/range');
+var WindshaftFiltersBoundingBox = require('../../../src/windshaft/filters/bounding-box');
 var HistogramDataviewModel = require('../../../src/dataviews/histogram-dataview-model');
+var MapModelBoundingBoxAdapter = require('../../../src/geo/adapters/map-model-bounding-box-adapter');
 var helper = require('../../../src/dataviews/helpers/histogram-helper');
+var MockFactory = require('../../helpers/mockFactory');
+
+function randomString (length, chars) {
+  var result = '';
+  for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
 
 describe('dataviews/histogram-dataview-model', function () {
+  var engineMock;
   beforeEach(function () {
-    this.map = jasmine.createSpyObj('map', ['getViewBounds', 'bind']);
+    this.map = jasmine.createSpyObj('map', ['getViewBounds', 'on']);
     this.map.getViewBounds.and.returnValue([[1, 2], [3, 4]]);
-    this.vis = new VisModel();
-    spyOn(this.vis, 'reload');
+    engineMock = MockFactory.createEngine();
+    spyOn(engineMock, 'reload');
 
-    this.filter = new RangeFilter();
-
-    this.layer = new Model();
-    this.layer.getDataProvider = jasmine.createSpy('layer.getDataProvider');
-
-    this.analysisCollection = new Backbone.Collection();
+    this.filter = new WindshaftFiltersRange();
+    this.bboxFilter = new WindshaftFiltersBoundingBox(new MapModelBoundingBoxAdapter(this.map));
 
     spyOn(HistogramDataviewModel.prototype, 'listenTo').and.callThrough();
     spyOn(HistogramDataviewModel.prototype, 'fetch').and.callThrough();
     spyOn(HistogramDataviewModel.prototype, '_updateBindings');
     spyOn(HistogramDataviewModel.prototype, '_resetFilterAndFetch');
 
+    this.source = MockFactory.createAnalysisModel({ id: 'a0' });
+
     this.model = new HistogramDataviewModel({
-      source: { id: 'a0' }
+      source: this.source
     }, {
-      map: this.map,
-      vis: this.vis,
-      layer: this.layer,
+      engine: engineMock,
       filter: this.filter,
-      analysisCollection: new Backbone.Collection()
+      bboxFilter: this.bboxFilter
     });
   });
 
@@ -39,6 +43,17 @@ describe('dataviews/histogram-dataview-model', function () {
     expect(this.model.get('type')).toBe('histogram');
     expect(this.model.get('totalAmount')).toBe(0);
     expect(this.model.get('filteredAmount')).toBe(0);
+    expect(this.model.get('hasNulls')).toBe(false);
+    expect(this.model.get('localTimezone')).toBe(false);
+  });
+
+  it('after calling _initBinds, we must listen to changes in URL', function () {
+    spyOn(this.model, '_onUrlChanged');
+    this.model._initBinds();
+
+    this.model.set('url', randomString(32, 'abcdefghijk'));
+
+    expect(this.model._onUrlChanged).toHaveBeenCalled();
   });
 
   it('should not listen any url change from the beginning', function () {
@@ -47,24 +62,22 @@ describe('dataviews/histogram-dataview-model', function () {
   });
 
   it('should set unfiltered model url when model has changed it', function () {
-    spyOn(this.model._originalData, 'setUrl');
+    spyOn(this.model._totals, 'setUrl');
     this.model.set('url', 'hey!');
-    expect(this.model._originalData.setUrl).toHaveBeenCalled();
+    expect(this.model._totals.setUrl).toHaveBeenCalled();
   });
 
   it('should set the api_key attribute on the internal models', function () {
     this.model = new HistogramDataviewModel({
       apiKey: 'API_KEY',
-      source: { id: 'a0' }
+      source: this.source
     }, {
-      map: this.map,
-      vis: this.vis,
-      layer: jasmine.createSpyObj('layer', ['get', 'getDataProvider']),
+      engine: engineMock,
       filter: this.filter,
-      analysisCollection: new Backbone.Collection()
+      bboxFilter: this.bboxFilter
     });
 
-    expect(this.model._originalData.get('apiKey')).toEqual('API_KEY');
+    expect(this.model._totals.get('apiKey')).toEqual('API_KEY');
   });
 
   describe('should get the correct histogram shape', function () {
@@ -122,28 +135,30 @@ describe('dataviews/histogram-dataview-model', function () {
 
     xit('when it is clustered', function () {
       this.model.set('data', [
-       { bin: 0, freq: 20 },
-       { bin: 1, freq: 18 },
-       { bin: 2, freq: 5 },
-       { bin: 3, freq: 0 },
-       { bin: 4, freq: 32 },
-       { bin: 5, freq: 16 }
+        { bin: 0, freq: 20 },
+        { bin: 1, freq: 18 },
+        { bin: 2, freq: 5 },
+        { bin: 3, freq: 0 },
+        { bin: 4, freq: 32 },
+        { bin: 5, freq: 16 }
       ]);
       expect(this.model.getDistributionType()).toEqual('C');
     });
   });
 
-  describe('when _originalData changes:data', function () {
+  describe('when _totals changes:data', function () {
     beforeEach(function () {
       var histogramData = {
         bin_width: 10,
         bins_count: 3,
-        bins_start: 1,
         nulls: 0,
         aggregation: 'quarter'
       };
-
-      spyOn(this.model._originalData, 'sync').and.callFake(function (method, model, options) {
+      spyOn(this.model._totals, 'getCurrentStartEnd').and.returnValue({
+        start: 0,
+        end: 57
+      });
+      spyOn(this.model._totals, 'sync').and.callFake(function (method, model, options) {
         options.success(histogramData);
       });
     });
@@ -152,38 +167,68 @@ describe('dataviews/histogram-dataview-model', function () {
       expect(this.model.get('start')).toBeUndefined();
       expect(this.model.get('end')).toBeUndefined();
 
-      this.model._originalData.fetch();
+      this.model._totals.fetch();
 
-      expect(this.model.get('start')).toEqual(1);
-      expect(this.model.get('end')).toEqual(31);
+      expect(this.model.get('start')).toEqual(0);
+      expect(this.model.get('end')).toEqual(57);
       expect(this.model.get('bins')).toEqual(3);
       expect(this.model.get('aggregation')).toEqual('quarter');
     });
 
     it('should call _updateBindings only once', function () {
-      this.model._originalData.fetch();
+      this.model._totals.fetch();
       expect(this.model._updateBindings).toHaveBeenCalled();
 
       this.model._updateBindings.calls.reset();
 
-      this.model._originalData.fetch();
+      this.model._totals.fetch();
       expect(this.model._updateBindings).not.toHaveBeenCalled();
     });
   });
 
-  describe('when column changes', function () {
-    it('should set column_type to original data, set undefined aggregation and reload map and force fetch', function () {
-      this.vis.reload.calls.reset();
+  describe('when totals has an error', function () {
+    it('dataview status is set to error and status error is properly triggered', function () {
+      var ajaxResponse = {
+        readyState: 4,
+        responseText: '{"errors":["column unknown_column does not exist"],"errors_with_context":[{"type":"unknown","message":"column unknown_column does not exist"}]}',
+        responseJSON: {
+          errors: [
+            'column "unknown_column" does not exist'
+          ],
+          errors_with_context: [
+            {
+              type: 'unknown',
+              message: 'column unknown_column does not exist'
+            }
+          ]
+        },
+        status: 404,
+        statusText: 'Not Found'
+      };
+      var capturedError = null;
+      this.model.on('statusError', function (model, error) {
+        capturedError = error;
+      });
 
+      this.model._totals.trigger('error', this.model._totals, ajaxResponse);
+
+      expect(this.model.get('status')).toEqual('error');
+      expect(capturedError.message).toEqual('column unknown_column does not exist');
+    });
+  });
+
+  describe('when column changes', function () {
+    it('should set column_type to original data, set undefined aggregation, reload map and call _onUrlChanged', function () {
+      engineMock.reload.calls.reset();
       this.model.set({
         aggregation: 'quarter',
         column: 'random_col',
         column_type: 'aColumnType'
       });
 
-      expect(this.model._originalData.get('column_type')).toEqual('aColumnType');
+      expect(this.model._totals.get('column_type')).toEqual('aColumnType');
       expect(this.model.get('aggregation')).toBeUndefined();
-      expect(this.vis.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
+      expect(engineMock.reload).toHaveBeenCalledWith({ forceFetch: true, sourceId: 'a0' });
     });
   });
 
@@ -221,21 +266,19 @@ describe('dataviews/histogram-dataview-model', function () {
         ],
         bins_count: 4,
         bins_start: 55611,
-        source: {
-          id: 'a0'
-        },
         nulls: 0,
         type: 'histogram'
       };
 
-      var model = new HistogramDataviewModel(data, {
-        map: this.map,
-        vis: this.vis,
-        layer: this.layer,
+      var model = new HistogramDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
         filter: this.filter,
-        analysisCollection: new Backbone.Collection(),
-        parse: true
+        bboxFilter: this.bboxFilter
       });
+
+      model.set(model.parse(data));
 
       expect(model.hasNulls()).toBe(true);
     });
@@ -250,20 +293,20 @@ describe('dataviews/histogram-dataview-model', function () {
         ],
         bins_count: 4,
         bins_start: 55611,
-        source: {
-          id: 'a0'
-        },
         type: 'histogram'
       };
 
-      var model = new HistogramDataviewModel(data, {
-        map: this.map,
-        vis: this.vis,
-        layer: this.layer,
+      var model = new HistogramDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
         filter: this.filter,
-        analysisCollection: new Backbone.Collection(),
-        parse: true
+        bboxFilter: this.bboxFilter
       });
+
+      model.set(model.parse(data));
+
+      model._totals = new Backbone.Model({ aggregation: 'quarter' });
 
       expect(model.hasNulls()).toBe(false);
     });
@@ -281,7 +324,7 @@ describe('dataviews/histogram-dataview-model', function () {
         nulls: 0,
         type: 'histogram'
       };
-      this.model.filter = new RangeFilter({ min: 1, max: 3 });
+      this.model.filter = new WindshaftFiltersRange({ min: 1, max: 3 });
 
       var parsedData = this.model.parse(data);
 
@@ -374,35 +417,52 @@ describe('dataviews/histogram-dataview-model', function () {
     });
 
     it('should call .fillTimestampBuckets if aggregation is present', function () {
-      spyOn(helper, 'fillTimestampBuckets');
+      spyOn(helper, 'fillTimestampBuckets').and.callThrough();
       this.model._initBinds();
       this.model.set({
-        aggregation: 'month',
+        aggregation: 'minute',
         column_type: 'date'
       }, { silent: true });
+
       var data = {
-        bin_width: 0,
-        bins: [],
-        bins_count: 0,
-        bins_start: 0,
+        aggregation: 'minute',
+        offset: 3600,
+        timestamp_start: 1496690940,
+        bin_width: 59.5833333333333,
+        bins_count: 2,
+        bins_start: 1496690940,
         nulls: 0,
+        bins: [
+          {
+            bin: 0,
+            timestamp: 1496690940,
+            min: 1496690944,
+            max: 1496690999,
+            avg: 1496690971.58824,
+            freq: 17
+          },
+          {
+            bin: 1,
+            timestamp: 1496691000,
+            min: 1496691003,
+            max: 1496691059,
+            avg: 1496691031.22222,
+            freq: 18
+          }
+        ],
         type: 'histogram'
       };
 
-      this.model.parse(data);
-
+      var parsedData = this.model.parse(data);
       expect(helper.fillTimestampBuckets).toHaveBeenCalled();
+      expect(JSON.stringify(parsedData)).toBe('{"data":[{"bin":0,"start":1496690940,"end":1496690999,"next":1496691000,"freq":17,"min":1496690944,"max":1496690999,"avg":1496690971.58824},{"bin":1,"start":1496691000,"end":1496691059,"next":1496691060,"freq":18,"min":1496691003,"max":1496691059,"avg":1496691031.22222}],"filteredAmount":0,"nulls":0,"totalAmount":35,"bins":2,"hasNulls":true}');
     });
   });
 
-  describe('when layer changes meta', function () {
+  describe('when column_type changes', function () {
     beforeEach(function () {
       expect(this.model.filter.get('column_type')).not.toEqual('date');
-      this.model.layer.set({
-        meta: {
-          column_type: 'date'
-        }
-      });
+      this.model.set('column_type', 'date');
     });
 
     it('should change the filter column_type', function () {
@@ -419,52 +479,92 @@ describe('dataviews/histogram-dataview-model', function () {
       expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3');
     });
 
-    it('should include start if present', function () {
-      this.model.set('start', 11);
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&start=11');
-    });
+    describe('column type is number', function () {
+      describe('if bins present', function () {
+        it('should include start and end if present', function () {
+          spyOn(this.model._totals, 'getCurrentStartEnd').and.returnValue({ start: 11, end: 22 });
+          this.model.set({
+            bins: 33,
+            column_type: 'number'
+          });
 
-    it('should include end if present', function () {
-      this.model.set('end', 22);
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&end=22');
-    });
+          expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&bins=33&start=11&end=22');
+        });
 
-    it('should include bins if present and the column type is number', function () {
-      this.model.set({
-        bins: 33,
-        column_type: 'number'
+        it('should include bins', function () {
+          spyOn(this.model._totals, 'getCurrentStartEnd').and.returnValue(null);
+          this.model.set({
+            bins: 33,
+            column_type: 'number'
+          });
+
+          expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&bins=33');
+        });
       });
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&bins=33');
+
+      it('should not include start, end and bins when own_filter is enabled', function () {
+        spyOn(this.model._totals, 'getCurrentStartEnd').and.returnValue({ start: 0, end: 10 });
+        this.model.set({
+          url: 'http://example.com',
+          start: 0,
+          end: 10,
+          bins: 25,
+          column_type: 'number'
+        });
+
+        expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&bins=25&start=0&end=10');
+
+        this.model.enableFilter();
+
+        expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=1&bins=25');
+      });
     });
 
-    it('should only include aggregation if aggregation and bins present and column type is date', function () {
-      this.model.set({
-        aggregation: 'month',
-        bins: 33,
-        column_type: 'date'
-      });
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&aggregation=month');
-    });
+    describe('column type is date', function () {
+      it('should only include aggregation if aggregation and bins present', function () {
+        this.model.set({
+          aggregation: 'month',
+          bins: 33,
+          column_type: 'date'
+        });
 
-    it('should include aggregation auto if column type is date and no aggregation set', function () {
-      this.model.set({
-        aggregation: undefined,
-        column_type: 'date'
+        expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&aggregation=month');
       });
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&aggregation=auto');
-    });
 
-    it('should not include start, end and bins when own_filter is enabled', function () {
-      this.model.set({
-        'url': 'http://example.com',
-        'start': 0,
-        'end': 10,
-        'bins': 25,
-        column_type: 'number'
+      it('should include aggregation auto if column type is date and no aggregation set', function () {
+        this.model.set({
+          aggregation: undefined,
+          column_type: 'date'
+        });
+        expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&aggregation=auto');
       });
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&start=0&end=10&bins=25');
-      this.model.enableFilter();
-      expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&own_filter=1');
+
+      it('should use offset if present', function () {
+        this.model.set({
+          aggregation: 'month',
+          column_type: 'date',
+          offset: 7200,
+          localTimezone: false
+        }, { silent: true });
+
+        var url = this.model.url();
+
+        expect(url).toEqual('http://example.com?bbox=2,1,4,3&aggregation=month&offset=7200');
+      });
+
+      it('should use local offset if localTimezone is true', function () {
+        this.model.set({
+          aggregation: 'month',
+          column_type: 'date',
+          offset: 7200,
+          localTimezone: true
+        }, { silent: true });
+        this.model._localOffset = 43200;
+
+        var url = this.model.url();
+
+        expect(url).toEqual('http://example.com?bbox=2,1,4,3&aggregation=month&offset=43200');
+      });
     });
   });
 
@@ -565,10 +665,82 @@ describe('dataviews/histogram-dataview-model', function () {
     });
   });
 
+  describe('._onColumnChanged', function () {
+    it('should unset aggregation, and call _reloadAndForceFetch', function () {
+      engineMock.reload.calls.reset();
+
+      this.model.set({
+        column: 'time',
+        aggregation: 'week',
+        offset: 3600
+      });
+
+      this.model._onColumnChanged();
+
+      expect(engineMock.reload).toHaveBeenCalled();
+      expect(this.model.get('aggregation')).toBeUndefined();
+    });
+  });
+
+  describe('._calculateTotalAmount', function () {
+    it('should aggregate all bucket frequencies', function () {
+      var buckets = [
+        { freq: 8 },
+        { freq: 7 },
+        { freq: 0 },
+        { freq: 3 }
+      ];
+
+      var result = this.model._calculateTotalAmount(buckets);
+
+      expect(result).toEqual(18);
+    });
+
+    it('should return 0 if no buckets present', function () {
+      var buckets = [];
+
+      var result = this.model._calculateTotalAmount(buckets);
+
+      expect(result).toEqual(0);
+    });
+
+    it('should calculate totals properly even if no bucket is present in the middle', function () {
+      var buckets = [
+        { freq: 8 },
+        null,
+        { freq: 0 },
+        { max: 6 },
+        { freq: 3 }
+      ];
+
+      var result = this.model._calculateTotalAmount(buckets);
+
+      expect(result).toEqual(11);
+    });
+  });
+
   describe('._onDataChanged', function () {
-    it('should call _resetFilterAndFetch if column is data and aggregation changes', function () {
+    beforeEach(function () {
+      spyOn(this.model._totals, 'getCurrentStartEnd').and.returnValue({
+        start: 0,
+        end: 57
+      });
+    });
+
+    it('should call _resetFilterAndFetch if column is date and aggregation', function () {
       var model = new Backbone.Model({
         aggregation: 'week'
+      });
+      this.model.set('column_type', 'date', { silent: true });
+
+      this.model._onDataChanged(model);
+
+      expect(this.model._resetFilterAndFetch).toHaveBeenCalled();
+    });
+
+    it('should call _resetFilterAndFetch if column is date and offset changes', function () {
+      var model = new Backbone.Model({
+        offset: 3600
       });
       this.model.set('column_type', 'date', { silent: true });
 
@@ -601,16 +773,98 @@ describe('dataviews/histogram-dataview-model', function () {
 
     it('should set the data fetched', function () {
       var model = new Backbone.Model({
-        start: 11,
-        end: 22,
         bins: 5
       });
+      model.getCurrentStartEnd = function () {
+        return {
+          start: 11,
+          end: 22
+        };
+      };
 
       this.model._onDataChanged(model);
 
       expect(this.model.get('start')).toEqual(11);
       expect(this.model.get('end')).toEqual(22);
       expect(this.model.get('bins')).toEqual(5);
+    });
+  });
+
+  describe('change local timezone', function () {
+    it('should set the same value to originalData', function () {
+      var originalValue = this.model.get('localTimezone');
+      this.model._totals.set('localTimezone', originalValue, { silent: true });
+
+      this.model.set('localTimezone', !originalValue);
+
+      expect(this.model._totals.get('localTimezone')).toBe(this.model.get('localTimezone'));
+    });
+  });
+
+  describe('.getCurrentOffset', function () {
+    beforeEach(function () {
+      this.model.set('offset', 7200, { silent: true });
+      this.model._localOffset = 43200;
+    });
+
+    it('should return offset if `localTimezone` is not set', function () {
+      this.model.set('localTimezone', false, { silent: true });
+
+      var offset = this.model.getCurrentOffset();
+
+      expect(offset).toBe(7200);
+    });
+
+    it('should return local offset if `localTimezone` is set', function () {
+      this.model.set('localTimezone', true, { silent: true });
+
+      var offset = this.model.getCurrentOffset();
+
+      expect(offset).toBe(43200);
+    });
+  });
+
+  describe('_.onFieldsChanged', function () {
+    it('should set bins of totals if bins are changed in a number column', function () {
+      this.model.set({
+        bins: 808,
+        column_type: 'number'
+      }, { silent: true });
+      this.model._totals.set({ bins: 808 }, { silent: true });
+
+      this.model.set({ bins: 303 });
+
+      expect(this.model._totals.get('bins')).toBe(303);
+    });
+
+    it('should not set bins of totals if bins are changed because of a column change', function () {
+      this.model.set({
+        bins: 808,
+        aggregation: 'week',
+        column_type: 'number'
+      }, { silent: true });
+      this.model._totals.set({ bins: 808 }, { silent: true });
+
+      this.model.set({ bins: 303, aggregation: undefined });
+
+      expect(this.model._totals.get('bins')).toBe(808);
+    });
+
+    it('should set offset and aggregation of totals if bins are changed in a date column', function () {
+      this.model.set({
+        offset: 7200,
+        aggregation: 'week',
+        column_type: 'date'
+      }, { silent: true });
+      this.model._totals.set({
+        offset: 7200,
+        aggregation: 'week'
+      }, { silent: true });
+
+      this.model.set({ aggregation: 'month', offset: 3600 });
+
+      expect(this.model._totals.get('aggregation')).toBe('month');
+      expect(this.model._totals.get('offset')).toBe(3600);
     });
   });
 });

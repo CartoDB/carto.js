@@ -3,6 +3,8 @@ var LayerModelBase = require('./layer-model-base');
 var carto = require('carto');
 var Legends = require('./legends/legends');
 var postcss = require('postcss');
+var AnalysisModel = require('../../analysis/analysis-model');
+
 var ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD = ['sql', 'sql_wrap', 'source', 'cartocss'];
 var TORQUE_LAYER_CARTOCSS_PROPS = [
   '-torque-frame-count',
@@ -49,21 +51,24 @@ var TorqueLayer = LayerModelBase.extend({
 
   initialize: function (attrs, options) {
     options = options || {};
-    if (!options.vis) throw new Error('vis is required');
+    if (!options.engine) throw new Error('engine is required');
 
-    this._vis = options.vis;
-    this.bind('change', this._onAttributeChanged, this);
+    this._engine = options.engine;
 
-    this.legends = new Legends(attrs.legends, {
-      visModel: this._vis
-    });
+    if (attrs.source) {
+      this.setSource(attrs.source);
+    }
+
+    this.legends = new Legends(attrs.legends, { engine: this._engine });
     this.unset('legends');
+
+    this.bind('change', this._onAttributeChanged, this);
 
     LayerModelBase.prototype.initialize.apply(this, arguments);
   },
 
   _onAttributeChanged: function () {
-    var reloadVis = _.any(ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD, function (attr) {
+    var reload = _.any(ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD, function (attr) {
       if (this.hasChanged(attr)) {
         if (attr === 'cartocss') {
           return this.previous('cartocss') && this._torqueCartoCSSPropsChanged();
@@ -72,8 +77,8 @@ var TorqueLayer = LayerModelBase.extend({
       }
     }, this);
 
-    if (reloadVis) {
-      this._reloadVis();
+    if (reload) {
+      this._reload();
     }
   },
 
@@ -102,8 +107,8 @@ var TorqueLayer = LayerModelBase.extend({
     return properties;
   },
 
-  _reloadVis: function () {
-    this._vis.reload({
+  _reload: function () {
+    this._engine.reload({
       sourceId: this.get('id')
     });
   },
@@ -143,15 +148,7 @@ var TorqueLayer = LayerModelBase.extend({
     return this.get('layer_name');
   },
 
-  fetchAttributes: function (layer, featureID, callback) {},
-
-  setDataProvider: function (dataProvider) {
-    this._dataProvider = dataProvider;
-  },
-
-  getDataProvider: function () {
-    return this._dataProvider;
-  },
+  fetchAttributes: function (layer, featureID, callback) { },
 
   // given a timestamp returns a step (float)
   timeToStep: function (timestamp) {
@@ -164,6 +161,51 @@ var TorqueLayer = LayerModelBase.extend({
 
   getTileURLTemplates: function () {
     return this.get('tileURLTemplates');
+  },
+
+  getSourceId: function () {
+    var source = this.getSource();
+    return source && source.id;
+  },
+
+  getSource: function () {
+    return this.get('source');
+  },
+
+  setSource: function (newSource, options) {
+    if (this.getSource()) {
+      this.getSource().unmarkAsSourceOf(this);
+    }
+    newSource.markAsSourceOf(this);
+    this.set('source', newSource, options);
+  },
+
+  /**
+   * Check if an analysis node is the layer's source.
+   * Only torque and cartodb layers have a source otherwise return false.
+   */
+  hasSource: function (analysisModel) {
+    return this.getSource().equals(analysisModel);
+  },
+
+  update: function (attrs) {
+    if (attrs.source) {
+      throw new Error('Use ".setSource" to update a layer\'s source instead of the update method');
+    }
+    LayerModelBase.prototype.update.apply(this, arguments);
+  },
+
+  remove: function () {
+    this.getSource().unmarkAsSourceOf(this);
+    LayerModelBase.prototype.remove.apply(this, arguments);
+  }
+},
+  // Static methods and properties
+{
+  _checkSourceAttribute: function (source) {
+    if (!(source instanceof AnalysisModel)) {
+      throw new Error('Source must be an instance of AnalysisModel');
+    }
   }
 });
 

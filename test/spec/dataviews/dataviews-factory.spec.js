@@ -1,26 +1,34 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var DataviewsFactory = require('../../../src/dataviews/dataviews-factory');
+var MockFactory = require('../../helpers/mockFactory');
+
+var source = MockFactory.createAnalysisModel({ id: 'a0' });
 
 var generateFakeAttributes = function (attrNames) {
   return _.reduce(attrNames, function (object, attributeName) {
-    object[attributeName] = 'something';
+    object[attributeName] = attributeName === 'source'
+      ? source
+      : 'something';
     return object;
   }, {});
 };
 
+var createMapMock = function () {
+  var map = jasmine.createSpyObj('map', ['getViewBounds', 'on']);
+  map.getViewBounds.and.returnValue([[40.6, -3.5], [40.3, -3.8]]);
+
+  return map;
+};
+
 describe('dataviews/dataviews-factory', function () {
   beforeEach(function () {
-    this.analysisCollection = new Backbone.Collection();
     this.dataviewsCollection = new Backbone.Collection();
     this.factory = new DataviewsFactory(null, {
-      map: {},
-      vis: {},
-      analysisCollection: this.analysisCollection,
+      map: createMapMock(),
+      engine: {},
       dataviewsCollection: this.dataviewsCollection
     });
-    this.layer = new Backbone.Model();
-    this.layer.getDataProvider = jasmine.createSpy('getDataProvider');
   });
 
   it('should create the factory as expected', function () {
@@ -28,14 +36,12 @@ describe('dataviews/dataviews-factory', function () {
     expect(this.factory.createCategoryModel).toEqual(jasmine.any(Function));
     expect(this.factory.createFormulaModel).toEqual(jasmine.any(Function));
     expect(this.factory.createHistogramModel).toEqual(jasmine.any(Function));
-    expect(this.factory.createListModel).toEqual(jasmine.any(Function));
   });
 
   var FACTORY_METHODS_AND_REQUIRED_ATTRIBUTES = [
-    ['createCategoryModel', ['column']],
-    ['createFormulaModel', ['column', 'operation']],
-    ['createHistogramModel', ['column']],
-    ['createListModel', ['columns']]
+    ['createCategoryModel', ['source', 'column']],
+    ['createFormulaModel', ['source', 'column', 'operation']],
+    ['createHistogramModel', ['source', 'column']]
   ];
 
   _.each(FACTORY_METHODS_AND_REQUIRED_ATTRIBUTES, function (element) {
@@ -44,7 +50,7 @@ describe('dataviews/dataviews-factory', function () {
 
     it(factoryMethod + ' should throw an error if required attributes are not set', function () {
       expect(function () {
-        this.factory[factoryMethod](this.layer, {});
+        this.factory[factoryMethod]({});
       }.bind(this)).toThrowError(requiredAttributes[0] + ' is required');
     });
 
@@ -52,32 +58,15 @@ describe('dataviews/dataviews-factory', function () {
       this.factory = new DataviewsFactory({
         apiKey: 'THE_API_KEY'
       }, {
-        map: {},
-        vis: {},
-        analysisCollection: this.analysisCollection,
+        map: createMapMock(),
+        engine: {},
         dataviewsCollection: this.dataviewsCollection
       });
 
       var attributes = generateFakeAttributes(requiredAttributes);
-      var model = this.factory[factoryMethod](this.layer, attributes);
+      var model = this.factory[factoryMethod](attributes);
 
       expect(model.get('apiKey')).toEqual('THE_API_KEY');
-    });
-
-    it(factoryMethod + " should set a default source using the layer's id when not given one", function () {
-      this.factory = new DataviewsFactory({
-        apiKey: 'THE_API_KEY'
-      }, {
-        map: {},
-        vis: {},
-        analysisCollection: this.analysisCollection,
-        dataviewsCollection: this.dataviewsCollection
-      });
-
-      var attributes = generateFakeAttributes(requiredAttributes);
-      var model = this.factory[factoryMethod](this.layer, attributes);
-
-      expect(model.get('source')).toEqual({ id: this.layer.id });
     });
 
     it(factoryMethod + ' should set the authToken', function () {
@@ -86,7 +75,7 @@ describe('dataviews/dataviews-factory', function () {
       });
 
       var attributes = generateFakeAttributes(requiredAttributes);
-      var model = this.factory[factoryMethod](this.layer, attributes);
+      var model = this.factory[factoryMethod](attributes);
 
       expect(model.get('authToken')).toEqual('AUTH_TOKEN');
     });
@@ -97,7 +86,7 @@ describe('dataviews/dataviews-factory', function () {
       });
 
       var attributes = generateFakeAttributes(requiredAttributes);
-      var model = this.factory[factoryMethod](this.layer, attributes);
+      var model = this.factory[factoryMethod](attributes);
 
       expect(model.get('apiKey')).toEqual('API_KEY');
     });

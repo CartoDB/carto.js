@@ -17,6 +17,7 @@ module.exports = DataviewModelBase.extend({
     {
       type: 'category',
       filterEnabled: false,
+      categories: 6,
       allCategoryNames: [] // all (new + previously accepted), updated on data fetch (see parse)
     },
     DataviewModelBase.prototype.defaults
@@ -24,7 +25,8 @@ module.exports = DataviewModelBase.extend({
 
   _getDataviewSpecificURLParams: function () {
     var params = [
-      'own_filter=' + (this.get('filterEnabled') ? 1 : 0)
+      'own_filter=' + (this.get('filterEnabled') ? 1 : 0),
+      'categories=' + this.get('categories')
     ];
     return params;
   },
@@ -49,7 +51,8 @@ module.exports = DataviewModelBase.extend({
       aggregationModel: this
     });
 
-    this.on('change:column change:aggregation change:aggregation_column', this._reloadVisAndForceFetch, this);
+    this.on('change:column change:aggregation change:aggregation_column', this._reloadAndForceFetch, this);
+    this.on('change:categories', this.refresh, this);
 
     this.bind('change:url', function () {
       this._searchModel.set({
@@ -80,18 +83,21 @@ module.exports = DataviewModelBase.extend({
   },
 
   _bindSearchModelEvents: function () {
-    this._searchModel.bind('loading', function () {
+    this.listenTo(this._searchModel, 'loading', function () {
       this.trigger('loading', this);
     }, this);
-    this._searchModel.bind('loaded', function () {
+
+    this.listenTo(this._searchModel, 'loaded', function () {
       this.trigger('loaded', this);
     }, this);
-    this._searchModel.bind('error', function (e) {
-      if (!e || (e && e.statusText !== 'abort')) {
-        this.trigger('error', this);
+
+    this.listenTo(this._searchModel, 'error', function (model, response) {
+      if (!response || (response && response.statusText !== 'abort')) {
+        this.trigger('error', model, response);
       }
     }, this);
-    this._searchModel.bind('change:data', this._onSearchDataChange, this);
+
+    this.listenTo(this._searchModel, 'change:data', this._onSearchDataChange, this);
   },
 
   _onSearchDataChange: function () {
@@ -268,6 +274,7 @@ module.exports = DataviewModelBase.extend({
   },
 
   // Backbone toJson function override
+  // This function is used to serialize the server request
   toJSON: function () {
     return {
       type: 'aggregation',
@@ -284,12 +291,13 @@ module.exports = DataviewModelBase.extend({
 },
 
   // Class props
-  {
-    ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
-      'column',
-      'aggregation',
-      'aggregation_column',
-      'acceptedCategories'
-    ])
-  }
+{
+  ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
+    'column',
+    'aggregation',
+    'aggregation_column',
+    'acceptedCategories',
+    'categories'
+  ])
+}
 );

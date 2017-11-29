@@ -2,39 +2,42 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var Map = require('../../../../src/geo/map');
-var VisModel = require('../../../../src/vis/vis');
 var LeafletMapView = require('../../../../src/geo/leaflet/leaflet-map-view');
 var LeafletLayerViewFactory = require('../../../../src/geo/leaflet/leaflet-layer-view-factory');
 var TorqueLayer = require('../../../../src/geo/map/torque-layer');
+var MockFactory = require('../../../helpers/mockFactory');
 var SharedTestsForTorqueLayer = require('../shared-tests-for-torque-layer');
 
 describe('geo/leaflet/leaflet-torque-layer-view', function () {
+  var engineMock;
+
   beforeEach(function () {
     var container = $('<div>').css({
       'height': '200px',
       'width': '200px'
     });
-    this.vis = new VisModel();
+    engineMock = MockFactory.createEngine();
     this.map = new Map(null, {
       layersFactory: {}
     });
+    spyOn(this.map, 'trigger');
     this.mapView = new LeafletMapView({
       el: container,
       mapModel: this.map,
-      visModel: new Backbone.Model(),
+      engine: new Backbone.Model(),
       layerViewFactory: new LeafletLayerViewFactory(),
-      layerGroupModel: new Backbone.Model()
+      layerGroupModel: new Backbone.Model(),
+      showLimitErrors: false
     });
     this.mapView.render();
 
     spyOn(L.TorqueLayer.prototype, 'initialize').and.callThrough();
 
     this.model = new TorqueLayer({
-      type: 'torque',
-      sql: 'select * from table',
+      source: MockFactory.createAnalysisModel({ id: 'a0' }),
       cartocss: 'Map {}',
       dynamic_cdn: 'dynamic-cdn-value'
-    }, { vis: this.vis });
+    }, { engine: engineMock });
     this.map.addLayer(this.model);
     this.view = this.mapView._layerViews[this.model.cid];
   });
@@ -43,11 +46,14 @@ describe('geo/leaflet/leaflet-torque-layer-view', function () {
 
   it('should reuse layer view', function () {
     this.view.check = 'testing';
-    var newLayer = new TorqueLayer(this.view.model.attributes, {
-      vis: this.vis
+    var newLayer = new TorqueLayer({
+      source: MockFactory.createAnalysisModel({ id: 'a0' }),
+      cartocss: 'Map {}',
+      dynamic_cdn: 'dynamic-cdn-value'
+    }, {
+      engine: engineMock
     });
-    newLayer.set({ sql: 'select * from table', cartocss: 'Map {}' });
-    this.map.layers.reset([newLayer]);
+    this.map.layers.reset([ newLayer ]);
 
     expect(this.mapView._layerViews[newLayer.cid].model).toEqual(newLayer);
     expect(this.mapView._layerViews[newLayer.cid].check).toEqual('testing');
@@ -69,5 +75,26 @@ describe('geo/leaflet/leaflet-torque-layer-view', function () {
     ]);
 
     expect(this.view.leafletLayer.provider.templateUrl).toEqual('http://pepe.carto.com/{z}/{x}/{y}.torque');
+  });
+
+  describe('when LeafletTorqueLayer triggers tileError', function () {
+    it('should trigger error:limit in mapModel if showLimitErrors is true', function () {
+      this.view.showLimitErrors = true;
+      this.view.nativeTorqueLayer.fire('tileError');
+      var calls = this.map.trigger.calls.all();
+      var types = calls.map(function (call) {
+        return call.args[0];
+      });
+      expect(types).toContain('error:limit');
+    });
+
+    it('should not trigger error:limit in mapModel if showLimitErrors is false', function () {
+      this.view.nativeTorqueLayer.fire('tileError');
+      var calls = this.map.trigger.calls.all();
+      var types = calls.map(function (call) {
+        return call.args[0];
+      });
+      expect(types).not.toContain('error:limit');
+    });
   });
 });

@@ -113,6 +113,8 @@ var Infowindow = View.extend({
 
       this._setupClasses();
       this._renderScroll();
+      this._renderShadows();
+      this._bindScroll();
     }
 
     return this;
@@ -185,13 +187,61 @@ var Infowindow = View.extend({
       return;
     }
 
+    this._content = this._getContent().get(0);
     this.$('.js-infowindow').addClass('has-scroll');
 
-    Ps.initialize(this._getContent().get(0), {
-      wheelSpeed: 2,
+    Ps.initialize(this._content, {
+      wheelSpeed: 1,
       wheelPropagation: true,
       minScrollbarLength: 20
     });
+  },
+
+  _renderShadows: function () {
+    this.$shadowTop = $('<div>').addClass('CDB-infowindow-canvasShadow CDB-infowindow-canvasShadow--top');
+    this.$shadowBottom = $('<div>').addClass('CDB-infowindow-canvasShadow CDB-infowindow-canvasShadow--bottom');
+    var $inner = this.$('.js-inner');
+    $inner.append(this.$shadowTop);
+    $inner.append(this.$shadowBottom);
+    _.defer(function () {
+      this._showOrHideShadows();
+    }.bind(this));
+  },
+
+  _bindScroll: function () {
+    this.$(this._content)
+      .on('ps-y-reach-start', _.bind(this._onScrollTop, this))
+      .on('ps-y-reach-end', _.bind(this._onScrollBottom, this))
+      .on('ps-scroll-y', _.bind(this._onScroll, this));
+  },
+
+  _onScrollTop: function () {
+    this.$shadowTop.removeClass('is-visible');
+  },
+
+  _onScroll: function () {
+    this._showOrHideShadows();
+  },
+
+  _showOrHideShadows: function () {
+    var $el = $(this._content);
+    if ($el.length) {
+      var currentPos = $el.scrollTop();
+      var max = $el.get(0).scrollHeight;
+      var height = $el.outerHeight();
+      var maxPos = max - height;
+
+      this.$shadowTop.toggleClass('is-visible', currentPos > 0);
+      this.$shadowBottom.toggleClass('is-visible', currentPos < maxPos);
+    }
+  },
+
+  _onScrollBottom: function () {
+    this.$shadowBottom.removeClass('is-visible');
+  },
+
+  _container: function () {
+    return this.el.querySelector('.js-container');
   },
 
   /**
@@ -227,8 +277,8 @@ var Infowindow = View.extend({
     }
 
     // Get the alternative name
-    var alternative_name = this.model.getAlternativeName(attr.name);
-    attr.title = (attr.title && alternative_name) ? alternative_name : attr.title;
+    var alternativeName = this.model.getAlternativeName(attr.name);
+    attr.title = (attr.title && alternativeName) ? alternativeName : attr.title;
 
     // Save new sanitized value
     attr.value = JSON.parse(JSON.stringify(attr.value), this._sanitizeValue);
@@ -563,7 +613,7 @@ var Infowindow = View.extend({
     var pos = this.mapView.latLngToContainerPoint(this.model.get('latlng'));
     var adjustOffset = {x: 0, y: 0};
     var size = this.mapView.getSize();
-    var wait_callback = 0;
+    var waitCallback = 0;
 
     if (pos.x - offset[0] < 0) {
       adjustOffset.x = pos.x - offset[0] - 10;
@@ -583,10 +633,10 @@ var Infowindow = View.extend({
 
     if (adjustOffset.x || adjustOffset.y) {
       this.mapView.panBy(adjustOffset);
-      wait_callback = 300;
+      waitCallback = 300;
     }
 
-    return wait_callback;
+    return waitCallback;
   },
 
   /**

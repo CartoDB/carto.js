@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var L = require('leaflet');
+var C = require('../../constants');
 var LeafletLayerView = require('./leaflet-layer-view');
 var CartoDBLayerGroupViewBase = require('../cartodb-layer-group-view-base');
 var wax = require('wax.cartodb.js');
@@ -7,51 +8,57 @@ var wax = require('wax.cartodb.js');
 var EMPTY_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 var findContainerPoint = function (map, o) {
-    var curleft = 0;
-    var curtop = 0;
-    var obj = map.getContainer();
+  var curleft = 0;
+  var curtop = 0;
+  var obj = map.getContainer();
 
-    var x, y;
-    if (o.e.changedTouches && o.e.changedTouches.length > 0) {
-      x = o.e.changedTouches[0].clientX + window.scrollX;
-      y = o.e.changedTouches[0].clientY + window.scrollY;
-    } else {
-      x = o.e.clientX;
-      y = o.e.clientY;
-    }
+  var x, y;
+  if (o.e.changedTouches && o.e.changedTouches.length > 0) {
+    x = o.e.changedTouches[0].clientX + window.scrollX;
+    y = o.e.changedTouches[0].clientY + window.scrollY;
+  } else {
+    x = o.e.clientX;
+    y = o.e.clientY;
+  }
 
-    // If the map is fixed at the top of the window, we can't use offsetParent
-    // cause there might be some scrolling that we need to take into account.
-    if (obj.offsetParent && obj.offsetTop > 0) {
-      do {
-        curleft += obj.offsetLeft;
-        curtop += obj.offsetTop;
-      } while (obj = obj.offsetParent);
-      var point = new L.Point(
-        x - curleft, y - curtop);
-    } else {
-      var rect = obj.getBoundingClientRect();
-      var scrollX = (window.scrollX || window.pageXOffset);
-      var scrollY = (window.scrollY || window.pageYOffset);
-      var point = new L.Point(
-        (o.e.clientX ? o.e.clientX : x) - rect.left - obj.clientLeft - scrollX,
-        (o.e.clientY ? o.e.clientY : y) - rect.top - obj.clientTop - scrollY);
-    }
+  // If the map is fixed at the top of the window, we can't use offsetParent
+  // cause there might be some scrolling that we need to take into account.
+  var point;
+  if (obj.offsetParent && obj.offsetTop > 0) {
+    do {
+      curleft += obj.offsetLeft;
+      curtop += obj.offsetTop;
+      obj = obj.offsetParent;
+    } while (obj);
+    point = new L.Point(
+      x - curleft, y - curtop);
+  } else {
+    var rect = obj.getBoundingClientRect();
+    var scrollX = (window.scrollX || window.pageXOffset);
+    var scrollY = (window.scrollY || window.pageYOffset);
+    point = new L.Point(
+      (o.e.clientX ? o.e.clientX : x) - rect.left - obj.clientLeft - scrollX,
+      (o.e.clientY ? o.e.clientY : y) - rect.top - obj.clientTop - scrollY);
+  }
 
-    return point;
+  return point;
 };
 
 var LeafletCartoDBLayerGroupView = function (layerModel, leafletMap) {
   var self = this;
   LeafletLayerView.apply(this, arguments);
-  CartoDBLayerGroupViewBase.call(this, layerModel, leafletMap);
+  CartoDBLayerGroupViewBase.apply(this, arguments);
 
-  this.leafletLayer.on('load', function (e) {
+  this.leafletLayer.on('load', function () {
     self.trigger('load');
   });
 
-  this.leafletLayer.on('loading', function (e) {
+  this.leafletLayer.on('loading', function () {
     self.trigger('loading');
+  });
+
+  this.leafletLayer.on('tileerror', function (layer) {
+    self.model.addError({ type: C.WINDSHAFT_ERRORS.TILE });
   });
 };
 
@@ -78,7 +85,7 @@ LeafletCartoDBLayerGroupView.prototype = _.extend(
       }
 
       if (subdomains) {
-        L.Util.setOptions(this.leafletLayer, {subdomains:subdomains});
+        L.Util.setOptions(this.leafletLayer, {subdomains: subdomains});
       }
 
       this.leafletLayer.setUrl(tileURLTemplate);
@@ -145,7 +152,7 @@ LeafletCartoDBLayerGroupView.prototype = _.extend(
           layerIndex: layerIndex
         });
       }
-    },
+    }
   }
 );
 

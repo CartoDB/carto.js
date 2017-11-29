@@ -10,6 +10,7 @@ var defaultOptions = {
     'test/install-source-map-support.js',
     'http://maps.googleapis.com/maps/api/js?key=AIzaSyA4KzmztukvT7C49NSlzWkz75Xg3J_UyFI',
     'node_modules/jasmine-ajax/lib/mock-ajax.js',
+    'node_modules/leaflet/dist/leaflet-src.js',
     'http://cdn.rawgit.com/CartoDB/tangram-1/point-experiment/dist/tangram.min.js'
   ]
 };
@@ -20,15 +21,6 @@ var defaultOptions = {
  * Load order: vendor, helpers, source, specs,
  */
 module.exports = {
-  cartodb: {
-    src: [
-      'dist/cartodb.uncompressed.js'
-    ],
-    options: _.defaults({
-      outfile: 'test/SpecRunner-cartodb.html',
-      specs: '<%= config.tmp %>/cartodb-specs.js'
-    }, defaultOptions)
-  },
   'cartodb-src': {
     src: [], // actual src files are require'd in the *.spec.js files
     options: _.defaults({

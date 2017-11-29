@@ -1,29 +1,26 @@
-var cdb = require('cdb'); // cdb.DEBUG
-
 var Loader = {
-
   queue: [],
   current: undefined,
   _script: null,
   head: null,
 
-  loadScript: function(src) {
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = src;
-      script.async = true;
-      if (!Loader.head) {
-        Loader.head = document.getElementsByTagName('head')[0];
-      }
-      // defer the loading because IE9 loads in the same frame the script
-      // so Loader._script is null
-      setTimeout(function() {
-        Loader.head.appendChild(script);
-      }, 0);
-      return script;
+  loadScript: function (src) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    script.async = true;
+    if (!Loader.head) {
+      Loader.head = document.getElementsByTagName('head')[0];
+    }
+    // defer the loading because IE9 loads in the same frame the script
+    // so Loader._script is null
+    setTimeout(function () {
+      Loader.head.appendChild(script);
+    }, 0);
+    return script;
   },
 
-  get: function(url, callback) {
+  get: function (url, callback) {
     if (!Loader._script) {
       Loader.current = callback;
       Loader._script = Loader.loadScript(url + (~url.indexOf('?') ? '&' : '?') + 'callback=vizjson');
@@ -32,10 +29,10 @@ var Loader = {
     }
   },
 
-  getPath: function(file) {
-    var scripts = document.getElementsByTagName('script'),
-        cartodbJsRe = /\/?cartodb[\-\._]?([\w\-\._]*)\.js\??/;
-    for (i = 0, len = scripts.length; i < len; i++) {
+  getPath: function (file) {
+    var scripts = document.getElementsByTagName('script');
+    var cartodbJsRe = /\/?cartodb[\-\._]?([\w\-\._]*)\.js\??/;
+    for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].src;
       var matches = src.match(cartodbJsRe);
 
@@ -46,20 +43,11 @@ var Loader = {
       }
     }
     return null;
-  },
-
-  loadModule: function(modName) {
-    var file = "cartodb.mod." + modName + (cdb.DEBUG ? ".uncompressed.js" : ".js");
-    var src = this.getPath(file);
-    if (!src) {
-      throw new Error("can't find cartodb.js file (no src path found for '" + file + "')");
-    }
-    Loader.loadScript(src);
   }
 };
 
 // Required for jsonp callback, see Loader.get()
-window.vizjson = function(data) {
+window.vizjson = function (data) {
   Loader.current && Loader.current(data);
   // remove script
   Loader.head.removeChild(Loader._script);

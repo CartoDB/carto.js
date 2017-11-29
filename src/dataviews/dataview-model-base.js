@@ -1,13 +1,18 @@
 var _ = require('underscore');
 var Model = require('../core/model');
 var BackboneAbortSync = require('../util/backbone-abort-sync');
-var WindshaftFiltersBoundingBoxFilter = require('../windshaft/filters/bounding-box');
-var BOUNDING_BOX_FILTER_WAIT = 500;
+var AnalysisModel = require('../analysis/analysis-model');
+var util = require('../core/util');
+var parseWindshaftErrors = require('../windshaft/error-parser');
 
-var UNFETCHED_STATUS = 'unfeteched';
+var UNFETCHED_STATUS = 'unfetched';
 var FETCHING_STATUS = 'fetching';
 var FETCHED_STATUS = 'fetched';
 var FETCH_ERROR_STATUS = 'error';
+
+var REQUIRED_OPTS = [
+  'engine'
+];
 
 /**
  * Default dataview model
@@ -45,24 +50,19 @@ module.exports = Model.extend({
 
   _getBoundingBoxFilterParam: function () {
     var result = '';
-    var boundingBoxFilter;
 
+    this._checkBBoxFilter();
     if (this.syncsOnBoundingBoxChanges()) {
-      boundingBoxFilter = new WindshaftFiltersBoundingBoxFilter(this._getMapViewBounds());
-      result = 'bbox=' + boundingBoxFilter.toString();
+      result = 'bbox=' + this._bboxFilter.serialize();
     }
 
     return result;
   },
 
-  _getMapViewBounds: function () {
-    return this._map.getViewBounds();
-  },
-
   /**
    * Subclasses might override this method to define extra params that will be appended
    * to the dataview's URL.
-   * @return {[Array]} An array of strings in the form of "key=value".
+   * @return {Array} An array of strings in the form of "key=value".
    */
   _getDataviewSpecificURLParams: function () {
     return [];
@@ -71,20 +71,17 @@ module.exports = Model.extend({
   initialize: function (attrs, opts) {
     attrs = attrs || {};
     opts = opts || {};
+    util.checkRequiredOpts(opts, REQUIRED_OPTS, 'DataviewModelBase');
 
-    if (!opts.map) throw new Error('map is required');
-    if (!opts.vis) throw new Error('vis is required');
-    if (!opts.analysisCollection) throw new Error('analysisCollection is required');
+    this._engine = opts.engine;
+
     if (!attrs.source) throw new Error('source is a required attr');
+    this._checkSourceAttribute(this.getSource());
+    this.getSource().markAsSourceOf(this);
 
     if (!attrs.id) {
       this.set('id', this.defaults.type + '-' + this.cid);
     }
-
-    this.layer = opts.layer;
-    this._map = opts.map;
-    this._vis = opts.vis;
-    this._analysisCollection = opts.analysisCollection;
 
     this.sync = BackboneAbortSync.bind(this);
 
@@ -94,39 +91,29 @@ module.exports = Model.extend({
       this.filter.set('dataviewId', this.id);
     }
 
-    this._initBinds();
-    this._setupAnalysisStatusEvents();
-  },
+    if (opts.bboxFilter) {
+      this.addBBoxFilter(opts.bboxFilter);
+    }
 
-  _getLayerDataProvider: function () {
-    return this.layer.getDataProvider();
+    this._initBinds();
   },
 
   _initBinds: function () {
-    this.listenTo(this.layer, 'change:visible', this._onLayerVisibilityChanged);
-    this.listenTo(this.layer, 'change:source', this._setupAnalysisStatusEvents);
-    this.on('change:source', this._setupAnalysisStatusEvents, this);
-
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider) {
-      this.listenToOnce(layerDataProvider, 'dataChanged', this._onChangeBinds, this);
-      this.listenTo(layerDataProvider, 'dataChanged', this.fetch);
-    } else {
-      this.listenToOnce(this, 'change:url', function () {
-        if (this.syncsOnBoundingBoxChanges() && !this._getMapViewBounds()) {
-          // wait until map gets bounds from view
-          this._map.on('change:view_bounds_ne', function () {
-            this._initialFetch();
-          }, this);
-        } else {
-          this._initialFetch();
-        }
-      });
-    }
+    this.listenToOnce(this, 'change:url', function () {
+      this._checkBBoxFilter();
+      if (this.syncsOnBoundingBoxChanges() && !this._bboxFilter.areBoundsAvailable()) {
+        // wait until map gets bounds from view
+        this.listenTo(this._bboxFilter, 'boundsChanged', this._initialFetch);
+      } else {
+        this._initialFetch();
+      }
+    });
 
     if (this.filter) {
       this.listenTo(this.filter, 'change', this._onFilterChanged);
     }
+
+    this.getSource().on('change:status', this._onAnalysisStatusChange, this);
   },
 
   _onChangeBinds: function () {
@@ -134,7 +121,7 @@ module.exports = Model.extend({
       this.refresh();
     }, this);
 
-    this.listenTo(this._map, 'change:center change:zoom', _.debounce(this._onMapBoundsChanged.bind(this), BOUNDING_BOX_FILTER_WAIT));
+    this._listenToBBoxChanges();
 
     this.on('change:url', function (model, value, opts) {
       if (this.syncsOnDataChanges()) {
@@ -169,24 +156,11 @@ module.exports = Model.extend({
     });
   },
 
-  _setupAnalysisStatusEvents: function () {
-    this._removeExistingAnalysisBindings();
-    this._analysis = this.getSource();
-    if (this._analysis) {
-      this._analysis.on('change:status', this._onAnalysisStatusChange, this);
-    }
-  },
-
-  _removeExistingAnalysisBindings: function () {
-    if (!this._analysis) return;
-    this._analysis.off('change:status', this._onAnalysisStatusChange, this);
-  },
-
   _onAnalysisStatusChange: function (analysis, status) {
     if (analysis.isLoading()) {
       this._triggerLoading();
     } else if (analysis.isFailed()) {
-      this._triggerError(analysis.get('error'));
+      this._triggerStatusError(analysis.get('error'));
     }
     // loaded will be triggered through the default behavior, so not necessary to react on that status here
   },
@@ -195,49 +169,29 @@ module.exports = Model.extend({
     this.trigger('loading', this);
   },
 
-  _triggerError: function (error) {
-    this.trigger('error', this, error);
+  _triggerStatusError: function (error) {
+    this.trigger('statusError', this, error); // Backbone already emits an event `error` in failed requests. Avoiding name collision.
   },
 
   /**
    * @protected
    */
-
   _onFilterChanged: function (filter) {
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canApplyFilterTo(this)) {
-      layerDataProvider.applyFilter(this, filter);
-    } else {
-      this._reloadVis();
-    }
+    this._reload({
+      sourceId: this.getSourceId()
+    });
   },
 
-  _reloadVis: function (opts) {
-    opts = opts || {};
-    this._vis.reload(
-      _.extend(
-        opts, {
-          sourceId: this.getSourceId()
-        }
-      )
-    );
-  },
-
-  _reloadVisAndForceFetch: function () {
-    this._reloadVis({
+  _reloadAndForceFetch: function () {
+    this._reload({
+      sourceId: this.getSourceId(),
       forceFetch: true
     });
   },
 
-  /**
-   * Enable/disable the dataview depending on the layer visibility.
-   * @private
-   * @param  {LayerModel} model the layer model which visible property has changed.
-   * @param  {Boolean} value New value for visible.
-   * @returns {void}
-   */
-  _onLayerVisibilityChanged: function (model, value) {
-    this.set({enabled: value});
+  _reload: function (opts) {
+    opts = opts || {};
+    this._engine.reload(opts);
   },
 
   _shouldFetchOnURLChange: function (options) {
@@ -251,7 +205,7 @@ module.exports = Model.extend({
 
     return this.isEnabled() &&
       this.syncsOnDataChanges() &&
-        this._sourceAffectsMyOwnSource(sourceId);
+      this._sourceAffectsMyOwnSource(sourceId);
   },
 
   _sourceAffectsMyOwnSource: function (sourceId) {
@@ -271,8 +225,21 @@ module.exports = Model.extend({
     this.fetch();
   },
 
+  addBBoxFilter: function (bboxFilter) {
+    if (!bboxFilter) {
+      return;
+    }
+    this._stopListeningBBoxChanges();
+    this._bboxFilter = bboxFilter;
+    this._listenToBBoxChanges();
+  },
+
   update: function (attrs) {
+    if (_.has(attrs, 'source')) {
+      throw new Error('Source of dataviews cannot be updated');
+    }
     attrs = _.pick(attrs, this.constructor.ATTRS_NAMES);
+
     this.set(attrs);
   },
 
@@ -287,30 +254,27 @@ module.exports = Model.extend({
   fetch: function (opts) {
     opts = opts || {};
     this.set('status', FETCHING_STATUS);
-    var layerDataProvider = this._getLayerDataProvider();
-    if (layerDataProvider && layerDataProvider.canProvideDataFor(this)) {
-      this.set(this.parse(layerDataProvider.getDataFor(this)));
-    } else {
-      this._triggerLoading();
 
-      if (opts.success) {
-        var successCallback = opts && opts.success;
-      }
+    this._triggerLoading();
 
-      return Model.prototype.fetch.call(this, _.extend(opts, {
-        success: function () {
-          this.set('status', FETCHED_STATUS);
-          successCallback && successCallback(arguments);
-          this.trigger('loaded', this);
-        }.bind(this),
-        error: function (mdl, err) {
-          this.set('status', FETCH_ERROR_STATUS);
-          if (!err || (err && err.statusText !== 'abort')) {
-            this._triggerError(err);
-          }
-        }.bind(this)
-      }));
+    if (opts.success) {
+      var successCallback = opts && opts.success;
     }
+
+    return Model.prototype.fetch.call(this, _.extend(opts, {
+      success: function () {
+        this.set('status', FETCHED_STATUS);
+        successCallback && successCallback(arguments);
+        this.trigger('loaded', this);
+      }.bind(this),
+      error: function (_model, response) {
+        if (!response || (response && response.statusText !== 'abort')) {
+          this.set('status', FETCH_ERROR_STATUS);
+          var error = this._parseAjaxError(response);
+          this._triggerStatusError(error);
+        }
+      }.bind(this)
+    }));
   },
 
   toJSON: function () {
@@ -318,38 +282,16 @@ module.exports = Model.extend({
   },
 
   getSourceType: function () {
-    var sourceAnalysis = this.getSource();
-    return sourceAnalysis && sourceAnalysis.get('type');
-  },
-
-  getLayerName: function () {
-    return this.layer && this.layer.get('layer_name');
-  },
-
-  getSource: function () {
-    var sourceId = this.getSourceId();
-    return sourceId && this._analysisCollection.get(sourceId);
+    return this.getSource().get('type');
   },
 
   getSourceId: function () {
-    // Dataview is pointing to a layer that has a source, so its
-    // source is actually the the layers's source
-    if (this.hasLayerAsSource() && this.layer.has('source')) {
-      return this.layer.get('source');
-    }
-
-    // Dataview is pointing to a layer with `sql` or an analysis
-    // node directly, so just return the id that has been set by
-    // dataviews-factory.js
-    return this._ownSourceId();
+    var source = this.getSource();
+    return source && source.id;
   },
 
-  _ownSourceId: function () {
-    return this.has('source') && this.get('source').id;
-  },
-
-  hasLayerAsSource: function () {
-    return this._ownSourceId() === this.layer.id;
+  getSource: function () {
+    return this.get('source');
   },
 
   isFiltered: function () {
@@ -362,8 +304,13 @@ module.exports = Model.extend({
 
   remove: function () {
     this._removeExistingAnalysisBindings();
+    this.getSource().unmarkAsSourceOf(this);
     this.trigger('destroy', this);
     this.stopListening();
+  },
+
+  _removeExistingAnalysisBindings: function () {
+    this.getSource().off('change:status', this._onAnalysisStatusChange, this);
   },
 
   isFetched: function () {
@@ -378,23 +325,61 @@ module.exports = Model.extend({
     return this.get('enabled');
   },
 
+  setUnavailable: function () {
+    return this.set('status', FETCH_ERROR_STATUS);
+  },
+
   syncsOnDataChanges: function () {
     return this.get('sync_on_data_change');
   },
 
   syncsOnBoundingBoxChanges: function () {
     return this.get('sync_on_bbox_change');
+  },
+
+  _checkSourceAttribute: function (source) {
+    if (!(source instanceof AnalysisModel)) {
+      throw new Error('Source must be an instance of AnalysisModel');
+    }
+  },
+
+  _checkBBoxFilter: function () {
+    if (this.syncsOnBoundingBoxChanges() && !this._bboxFilter) {
+      throw new Error('Cannot sync on bounding box changes. There is no bounding box filter.');
+    }
+  },
+
+  _listenToBBoxChanges: function () {
+    if (this._bboxFilter) {
+      this.listenTo(this._bboxFilter, 'boundsChanged', this._onMapBoundsChanged);
+    }
+  },
+
+  _stopListeningBBoxChanges: function () {
+    if (this._bboxFilter) {
+      this.stopListening(this._bboxFilter, 'boundsChanged');
+    }
+  },
+
+  _parseAjaxError: function (response) {
+    var error = response && response.statusText;
+    if (response && response.responseJSON) {
+      var errors = parseWindshaftErrors(response.responseJSON);
+      if (errors.length > 0) {
+        error = errors[0];
+      }
+    }
+    return error;
   }
 },
 
-  // Class props
-  {
-    ATTRS_NAMES: [
-      'id',
-      'sync_on_data_change',
-      'sync_on_bbox_change',
-      'enabled',
-      'source'
-    ]
-  }
-);
+// Class props
+{
+  ATTRS_NAMES: [
+    'id',
+    'sync_on_data_change',
+    'sync_on_bbox_change',
+    'enabled',
+    'source'
+  ]
+});

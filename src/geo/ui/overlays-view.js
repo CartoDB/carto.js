@@ -1,25 +1,25 @@
 var _ = require('underscore');
-var util = require('cdb.core.util');
 var View = require('../../core/view');
 var OverlaysFactory = require('../../vis/overlays-factory');
 var overlayContainerTemplate = require('./overlays-container.tpl');
+var C = require('../../constants');
+var Engine = require('../../engine');
 
-var CONTAINED_OVERLAYS = ['fullscreen', 'search', 'attribution', 'zoom', 'logo'];
+var CONTAINED_OVERLAYS = ['attribution', 'fullscreen', 'tiles', 'limits', 'logo', 'search', 'zoom'];
 
 var OverlaysView = View.extend({
+  initialize: function (opts) {
+    if (!opts.overlaysCollection) throw new Error('overlaysCollection is required');
+    if (!opts.engine) throw new Error('engine is required');
+    if (!opts.visView) throw new Error('visView is required');
+    if (!opts.mapModel) throw new Error('mapModel is required');
+    if (!opts.mapView) throw new Error('mapView is required');
 
-  initialize: function (deps) {
-    if (!deps.overlaysCollection) throw new Error('overlaysCollection is required');
-    if (!deps.visModel) throw new Error('visModel is required');
-    if (!deps.visView) throw new Error('visView is required');
-    if (!deps.mapModel) throw new Error('mapModel is required');
-    if (!deps.mapView) throw new Error('mapView is required');
-
-    this._overlaysCollection = deps.overlaysCollection;
-    this._visModel = deps.visModel;
-    this._visView = deps.visView;
-    this._mapModel = deps.mapModel;
-    this._mapView = deps.mapView;
+    this._overlaysCollection = opts.overlaysCollection;
+    this._engine = opts.engine;
+    this._visView = opts.visView;
+    this._mapModel = opts.mapModel;
+    this._mapView = opts.mapView;
 
     this._overlayViews = [];
     this._overlaysFactory = new OverlaysFactory({
@@ -28,9 +28,7 @@ var OverlaysView = View.extend({
       visView: this._visView
     });
 
-    this._visModel.on('change:loading', this._toggleLoaderOverlay, this);
-
-    this._overlaysCollection.on('add remove change', this.render, this);
+    this._initBinds();
 
     this.$el.append(overlayContainerTemplate());
   },
@@ -39,6 +37,16 @@ var OverlaysView = View.extend({
     this._clearOverlays();
     this._renderOverlays();
     return this;
+  },
+
+  _initBinds: function () {
+    this._engine.on(Engine.Events.RELOAD_STARTED, this._showLoaderOverlay, this);
+    this._engine.on(Engine.Events.RELOAD_ERROR, this._hideLoaderOverlay, this);
+    this._engine.on(Engine.Events.RELOAD_SUCCESS, this._hideLoaderOverlay, this);
+
+    this.listenTo(this._overlaysCollection, 'add remove change', this.render, this);
+    this.listenTo(this._mapModel, 'error:limit', this._addLimitsOverlay, this);
+    this.listenTo(this._mapModel, 'error:tile', this._addTilesOverlay, this);
   },
 
   _clearOverlays: function () {
@@ -55,27 +63,23 @@ var OverlaysView = View.extend({
       return overlay.order === null ? Number.MAX_VALUE : overlay.order;
     });
 
-    _(overlays).each(function (data) {
+    overlays.forEach(function (data) {
       this._renderOverlay(data);
-    }, this);
+    }.bind(this));
   },
 
   _renderOverlay: function (overlay) {
     var overlayView = this._createOverlayView(overlay);
-    if (overlayView) {
-      overlayView.render();
-      if (this._isGlobalOverlay(overlay)) {
-        this.$el.append(overlayView.el);
-      } else {
-        this._overlayContainer().append(overlayView.el);
-      }
-      this.addView(overlayView);
-      this._overlayViews.push(overlayView);
+    if (!overlayView) return;
 
-      // IE<10 doesn't support the Fullscreen API
-      var type = overlay.type;
-      if (type === 'fullscreen' && util.browser.ie && util.browser.ie.version <= 10) return;
-    }
+    overlayView.render();
+
+    this._isGlobalOverlay(overlay)
+      ? this.$el.append(overlayView.el)
+      : this._overlayContainer().append(overlayView.el);
+
+    this.addView(overlayView);
+    this._overlayViews.push(overlayView);
   },
 
   _createOverlayView: function (overlay) {
@@ -93,15 +97,16 @@ var OverlaysView = View.extend({
     return this.$('.CDB-OverlayContainer');
   },
 
-  _toggleLoaderOverlay: function () {
+  _showLoaderOverlay: function () {
     var loaderOverlay = this._getLoaderOverlay();
-    if (loaderOverlay) {
-      if (this._visModel.get('loading')) {
-        loaderOverlay.show();
-      } else {
-        loaderOverlay.hide();
-      }
-    }
+    if (!loaderOverlay) return;
+    loaderOverlay.show();
+  },
+
+  _hideLoaderOverlay: function () {
+    var loaderOverlay = this._getLoaderOverlay();
+    if (!loaderOverlay) return;
+    loaderOverlay.hide();
   },
 
   _getLoaderOverlay: function () {
@@ -109,9 +114,52 @@ var OverlaysView = View.extend({
   },
 
   _getOverlayViewByType: function (type) {
-    return _(this._overlayViews).find(function (v) {
-      return v.type === type;
+    return _.find(this._overlayViews, function (overlayView) {
+      return overlayView.type === type;
     });
+  },
+
+  _areLimitsErrorsEnabled: function () {
+    return this._visView.model.get('showLimitErrors');
+  },
+
+  _addLimitsOverlay: function () {
+    if (!this._areLimitsErrorsEnabled()) return;
+    this._removeTilesOverlay();
+
+    var limitsOverlay = this._getOverlayViewByType(C.OVERLAY_TYPES.LIMITS);
+
+    limitsOverlay || this._overlaysCollection.add({
+      type: C.OVERLAY_TYPES.LIMITS
+    });
+  },
+
+  _hasLimitsOverlay: function () {
+    return !!this._getOverlayViewByType(C.OVERLAY_TYPES.LIMITS);
+  },
+
+  _addTilesOverlay: function () {
+    if (this._hasLimitsOverlay()) return;
+
+    var tilesOverlay = this._getOverlayViewByType(C.OVERLAY_TYPES.TILES);
+
+    tilesOverlay || this._overlaysCollection.add({
+      type: C.OVERLAY_TYPES.TILES
+    });
+  },
+
+  _removeLimitsOverlay: function () {
+    var overlay = this._overlaysCollection.findWhere({
+      type: C.OVERLAY_TYPES.LIMITS
+    });
+    this._overlaysCollection.remove(overlay);
+  },
+
+  _removeTilesOverlay: function () {
+    var overlay = this._overlaysCollection.findWhere({
+      type: C.OVERLAY_TYPES.TILES
+    });
+    this._overlaysCollection.remove(overlay);
   },
 
   clean: function () {

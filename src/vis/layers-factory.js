@@ -39,48 +39,66 @@ function transformToHTTPS (tilesTemplate) {
   return tilesTemplate;
 }
 
+function checkProperties (obj, requiredProperties) {
+  var missingProperties = _.select(requiredProperties, function (property) {
+    var properties = property.split('|');
+    return _.all(properties, function (property) {
+      return obj[property] === undefined;
+    });
+  });
+  if (missingProperties.length) {
+    throw new Error('The following attributes are missing: ' + missingProperties.join(','));
+  }
+}
+
 var LAYER_CONSTRUCTORS = {
-  tiled: function (data, options) {
-    var visModel = options.vis;
-
-    if (visModel.get('https') === true) {
-      data.urlTemplate = transformToHTTPS(data.urlTemplate);
-    } else if (visModel.get('https') === false) { // Checking for an explicit false value. If it's undefined the url is left as is.
-      data.urlTemplate = transformToHTTP(data.urlTemplate);
-    }
-
-    return new TileLayer(data, {
-      vis: options.vis
-    });
+  tiled: function (attrs, options) {
+    checkProperties(attrs, ['urlTemplate']);
+    attrs.urlTemplate = LayersFactory.isHttps() ? transformToHTTPS(attrs.urlTemplate) : transformToHTTP(attrs.urlTemplate);
+    return new TileLayer(attrs, { engine: options.engine });
   },
 
-  wms: function (data, options) {
-    return new WMSLayer(data);
+  wms: function (attrs, options) {
+    checkProperties(attrs, ['urlTemplate']);
+
+    return new WMSLayer(attrs);
   },
 
-  gmapsbase: function (data, options) {
-    return new GMapsBaseLayer(data);
+  gmapsbase: function (attrs, options) {
+    checkProperties(attrs, ['baseType']);
+
+    return new GMapsBaseLayer(attrs);
   },
 
-  plain: function (data, options) {
-    return new PlainLayer(data, {
-      vis: options.vis
-    });
+  plain: function (attrs, options) {
+    checkProperties(attrs, ['image|color']);
+
+    return new PlainLayer(attrs, { engine: options.engine });
   },
 
   background: function (data, options) {
-    return new PlainLayer(data, {
-      vis: options.vis
-    });
+    return new PlainLayer(data, { engine: options.engine });
   },
 
-  cartodb: function (data, options) {
-    return new CartoDBLayer(data, {
-      vis: options.vis
-    });
+  cartodb: function (attrs, options) {
+    // TODO: Once https://github.com/CartoDB/cartodb/issues/12885 is merged,
+    // we should make 'source' attribute required again and make sure it's
+    // always populated:
+    // checkProperties(attrs, ['source', 'cartocss']);
+    // CartoDBLayer._checkSourceAttribute(attrs.source);
+    checkProperties(attrs, ['cartocss']);
+
+    return new CartoDBLayer(attrs, { engine: options.engine });
   },
 
   torque: function (attrs, options) {
+    // TODO: Once https://github.com/CartoDB/cartodb/issues/12885 is merged,
+    // we should make 'source' attribute required again and make sure it's
+    // populated:
+    // checkProperties(attrs, ['source', 'cartocss']);
+    // CartoDBLayer._checkSourceAttribute(attrs.source);
+    checkProperties(attrs, ['cartocss']);
+
     var windshaftSettings = options.windshaftSettings;
 
     attrs = _.extend(attrs, {
@@ -99,19 +117,17 @@ var LAYER_CONSTRUCTORS = {
       });
     }
 
-    return new TorqueLayer(attrs, {
-      vis: options.vis
-    });
+    return new TorqueLayer(attrs, { engine: options.engine });
   }
 };
 
-var LayersFactory = function (deps) {
-  if (!deps.visModel) throw new Error('visModel is required');
+function LayersFactory (deps) {
+  if (!deps.engine) throw new Error('engine is required');
   if (!deps.windshaftSettings) throw new Error('windshaftSettings is required');
 
-  this._visModel = deps.visModel;
+  this._engine = deps.engine;
   this._windshaftSettings = deps.windshaftSettings;
-};
+}
 
 LayersFactory.prototype.createLayer = function (type, attrs) {
   var LayerConstructor = LAYER_CONSTRUCTORS[type.toLowerCase()];
@@ -119,13 +135,15 @@ LayersFactory.prototype.createLayer = function (type, attrs) {
     log.error("error creating layer of type '" + type + "'");
     return null;
   }
-  // Flatten "options"
-  var layerAttributes = _.extend({}, _.omit(attrs, 'options'), attrs.options);
 
-  return LayerConstructor(layerAttributes, {
+  return LayerConstructor(attrs, {
     windshaftSettings: this._windshaftSettings,
-    vis: this._visModel
+    engine: this._engine
   });
+};
+
+LayersFactory.isHttps = function () {
+  return (window && window.location.protocol && window.location.protocol === 'https:') || false;
 };
 
 module.exports = LayersFactory;

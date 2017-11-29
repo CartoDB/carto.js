@@ -5,8 +5,8 @@ var CartoDBLayer = require('../../../../../src/geo/map/cartodb-layer');
 
 describe('geo/ui/legends/layer-legends-view', function () {
   beforeEach(function () {
-    var vis = new Backbone.Model();
-    vis.reload = jasmine.createSpy('reload');
+    var engineMock = new Backbone.Model();
+    engineMock.reload = jasmine.createSpy('reload');
 
     this.settingsModel = new Backbone.Model({
       showLegends: true,
@@ -20,7 +20,7 @@ describe('geo/ui/legends/layer-legends-view', function () {
         { type: 'bubble', title: 'Bubble Legend' },
         { type: 'category', title: 'Category Legend' }
       ]
-    }, { vis: vis });
+    }, { engine: engineMock });
 
     this.tryContainerVisibility = jasmine.createSpy('tryContainerVisibility');
 
@@ -41,7 +41,7 @@ describe('geo/ui/legends/layer-legends-view', function () {
 
   it('should render all legends', function () {
     // Legends of all types have been rendered
-    expect(this.layerLegendsView.$('.CDB-Legend-item').length).toEqual(5);
+    expect(this.layerLegendsView.$('.CDB-Legend-item').length).toEqual(6);
   });
 
   it('should trigger a "render" event when the view is rendered', function () {

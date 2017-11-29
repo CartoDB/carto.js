@@ -1,9 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var d3 = require('d3-array');
 var DataviewModelBase = require('./dataview-model-base');
 var HistogramDataModel = require('./histogram-dataview/histogram-data-model');
 var helper = require('./helpers/histogram-helper');
-var d3 = require('d3');
+var dateUtils = require('../util/date-utils');
 
 module.exports = DataviewModelBase.extend({
 
@@ -12,7 +13,8 @@ module.exports = DataviewModelBase.extend({
       type: 'histogram',
       totalAmount: 0,
       filteredAmount: 0,
-      hasNulls: false
+      hasNulls: false,
+      localTimezone: false
     },
     DataviewModelBase.prototype.defaults
   ),
@@ -22,37 +24,55 @@ module.exports = DataviewModelBase.extend({
 
     if (_.isNumber(this.get('own_filter'))) {
       params.push('own_filter=' + this.get('own_filter'));
+      if (this.get('column_type') === 'number' && this.get('bins')) {
+        params.push('bins=' + this.get('bins'));
+      }
     } else {
-      if (_.isNumber(this.get('start'))) {
-        params.push('start=' + this.get('start'));
-      }
-      if (_.isNumber(this.get('end'))) {
-        params.push('end=' + this.get('end'));
-      }
+      var offset = this.getCurrentOffset();
+
       if (this.get('column_type') === 'number' && this.get('bins')) {
         params.push('bins=' + this.get('bins'));
       } else if (this.get('column_type') === 'date') {
         params.push('aggregation=' + (this.get('aggregation') || 'auto'));
+        if (_.isFinite(offset)) {
+          params.push('offset=' + offset);
+        }
+      }
+
+      // Start - End
+      var limits = this._totals.getCurrentStartEnd();
+      if (limits !== null) {
+        if (_.isNumber(limits.start)) {
+          params.push('start=' + limits.start);
+        }
+        if (_.isNumber(limits.end)) {
+          params.push('end=' + limits.end);
+        }
       }
     }
     return params;
   },
 
   initialize: function (attrs, opts) {
+    this._localOffset = dateUtils.getLocalOffset();
+
     // Internal model for calculating all the data in the histogram (without filters)
-    this._originalData = new HistogramDataModel({
+    this._totals = new HistogramDataModel({
       bins: this.get('bins'),
       aggregation: this.get('aggregation'),
+      offset: this.get('offset'),
       column_type: this.get('column_type'),
       apiKey: this.get('apiKey'),
-      authToken: this.get('authToken')
+      authToken: this.get('authToken'),
+      localTimezone: this.get('localTimezone'),
+      localOffset: this._localOffset
     });
 
     DataviewModelBase.prototype.initialize.apply(this, arguments);
     this._data = new Backbone.Collection(this.get('data'));
 
     if (attrs && (attrs.min || attrs.max)) {
-      this.filter.setRange(this.get('min'), this.get('max'));
+      this.filter && this.filter.setRange(this.get('min'), this.get('max'));
     }
   },
 
@@ -62,18 +82,22 @@ module.exports = DataviewModelBase.extend({
     this._updateURLBinding();
 
     // When original data gets fetched
-    this._originalData.bind('change:data', this._onDataChanged, this);
-    this._originalData.once('change:data', this._updateBindings, this);
+    this._totals.bind('change:data', this._onDataChanged, this);
+    this._totals.bind('error', this.setUnavailable, this);
+    this._totals.bind('error', this._onTotalsError, this);
+    this._totals.once('change:data', this._updateBindings, this);
 
     this.on('change:column', this._onColumnChanged, this);
+    this.on('change:localTimezone', this._onLocalTimezoneChanged, this);
     this.on('change', this._onFieldsChanged, this);
+    this.on('change:column_type', this._onColumnTypeChanged, this);
+  },
 
-    this.listenTo(this.layer, 'change:meta', this._onChangeLayerMeta);
+  _onLocalTimezoneChanged: function () {
+    this._totals.set('localTimezone', this.get('localTimezone'));
   },
 
   _updateURLBinding: function () {
-    // We shouldn't listen url change for fetching the data (with filter) because
-    // we have to wait until we know all the data available (without any filter).
     this.off('change:url');
     this.on('change:url', this._onUrlChanged, this);
   },
@@ -96,11 +120,11 @@ module.exports = DataviewModelBase.extend({
   },
 
   getUnfilteredData: function () {
-    return this._originalData.get('data');
+    return this._totals.get('data');
   },
 
   getUnfilteredDataModel: function () {
-    return this._originalData;
+    return this._totals;
   },
 
   getSize: function () {
@@ -116,10 +140,12 @@ module.exports = DataviewModelBase.extend({
   },
 
   parse: function (data) {
-    var aggregation = data.aggregation;
-    var numberOfBins = data.bins_count;
+    var aggregation = data.aggregation || (this._totals && this._totals.get('aggregation'));
+    var numberOfBins = _.isFinite(data.bins_count)
+      ? data.bins_count
+      : this.get('bins');
     var width = data.bin_width;
-    var start = this.get('column_type') === 'date' ? helper.calculateStart(data.bins, data.bins_start, aggregation) : data.bins_start;
+    var start = this.get('column_type') === 'date' ? data.timestamp_start : data.bins_start;
 
     var parsedData = {
       data: [],
@@ -138,10 +164,13 @@ module.exports = DataviewModelBase.extend({
       parsedData.data[bin.bin] = bin;
     });
 
-    this.set('aggregation', aggregation, { silent: true });
+    this.set({
+      aggregation: aggregation
+    }, { silent: true });
 
     if (this.get('column_type') === 'date') {
-      helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins);
+      parsedData.data = helper.fillTimestampBuckets(parsedData.data, start, aggregation, numberOfBins, 'filtered', this._totals.get('data').length);
+      numberOfBins = parsedData.data.length;
     } else {
       helper.fillNumericBuckets(parsedData.data, start, width, numberOfBins);
     }
@@ -159,6 +188,7 @@ module.exports = DataviewModelBase.extend({
     parsedData.totalAmount = this._calculateTotalAmount(parsedData.data);
     parsedData.filteredAmount = this._calculateFilteredAmount(this.filter, this._data);
     parsedData.nulls = data.nulls;
+    parsedData.bins = numberOfBins;
 
     if (data.nulls != null) {
       parsedData = _.extend({}, parsedData, {
@@ -177,16 +207,21 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onColumnChanged: function () {
-    this._originalData.set('column_type', this.get('column_type'));
+    this._totals.set({
+      column_type: this.get('column_type'),
+      column: this.get('column')
+    });
     this.set('aggregation', undefined, { silent: true });
 
-    this._resetFilter();
-    this._reloadVisAndForceFetch();
+    this._reloadAndForceFetch();
   },
 
   _calculateTotalAmount: function (buckets) {
     return _.reduce(buckets, function (memo, bucket) {
-      return memo + bucket.freq;
+      var add = bucket && bucket.freq
+        ? bucket.freq
+        : 0;
+      return memo + add;
     }, 0);
   },
 
@@ -262,14 +297,21 @@ module.exports = DataviewModelBase.extend({
   },
 
   toJSON: function (d) {
+    var columnType = this.get('column_type');
+    var offset = this.get('offset');
+
     var options = {
       column: this.get('column')
     };
 
-    if (this.get('column_type') === 'number' && this.get('bins')) {
+    if (columnType === 'number' && this.get('bins')) {
       options.bins = this.get('bins');
-    } else if (this.get('column_type') === 'date') {
+    } else if (columnType === 'date') {
       options.aggregation = this.get('aggregation') || 'auto';
+
+      if (_.isFinite(offset)) {
+        options.offset = offset;
+      }
     }
 
     return {
@@ -279,8 +321,8 @@ module.exports = DataviewModelBase.extend({
     };
   },
 
-  _onChangeLayerMeta: function () {
-    this.filter.set('column_type', this.layer.get('meta').column_type);
+  _onColumnTypeChanged: function () {
+    this.filter && this.filter.set('column_type', this.get('column_type'));
   },
 
   _onChangeBinds: function () {
@@ -288,28 +330,33 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onUrlChanged: function () {
-    this._originalData.set({
-      aggregation: this.get('aggregation'),
+    this._totals.set({
+      offset: this.get('offset'),
       bins: this.get('bins')
     }, { silent: true });
 
-    this._originalData.setUrl(this.get('url'));
+    this._totals.setUrl(this.get('url'));
   },
 
   _onDataChanged: function (model) {
+    var range = model && _.isFunction(model.getCurrentStartEnd) ? model.getCurrentStartEnd() : null;
+    if (range !== null) {
+      this.set({
+        start: range.start,
+        end: range.end
+      });
+    }
+
     this.set({
-      end: model.get('end'),
-      start: model.get('start')
-    });
-    this.set({
-      aggregation: model.get('aggregation'),
+      aggregation: model.get('aggregation') || 'auto',
+      offset: model.get('offset') || 0,
       bins: model.get('bins'),
       error: model.get('error')
     }, { silent: true });
 
     var resetFilter = false;
 
-    if (this.get('column_type') === 'date' && _.has(this.changed, 'aggregation')) {
+    if (this.get('column_type') === 'date' && (_.has(this.changed, 'aggregation') || _.has(this.changed, 'offset'))) {
       resetFilter = true;
     } else if (this.get('column_type') === 'number' && _.has(this.changed, 'bins')) {
       resetFilter = true;
@@ -321,15 +368,26 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onFieldsChanged: function () {
-    if (!helper.hasChangedSomeOf(['bins', 'aggregation'], this.changed)) {
+    if (!helper.hasChangedSomeOf(['offset', 'bins', 'aggregation'], this.changed)) {
       return;
     }
 
-    if (this.get('column_type') === 'number') {
-      this._originalData.set('bins', this.get('bins'));
+    var aggregationChangedToUndefined = _.has(this.changed, 'aggregation') && _.isUndefined(this.changed.aggregation);
+
+    // We should avoid fetching totals when bins has changed and aggregation has
+    // changed to undefined. That means a change in column. If we set the bins
+    // we trigger a fetch while a map instantiation is ongoing. The API returns bad data in that case.
+    if (this.get('column_type') === 'number' && !aggregationChangedToUndefined) {
+      this._totals.set('bins', this.get('bins'));
     }
     if (this.get('column_type') === 'date') {
-      this._originalData.set('aggregation', this.get('aggregation'));
+      if (this.hasChanged('aggregation')) {
+        this._resetFilter();
+      }
+      this._totals.set({
+        offset: this.get('offset'),
+        aggregation: this.get('aggregation')
+      });
     }
   },
 
@@ -340,19 +398,31 @@ module.exports = DataviewModelBase.extend({
 
   _resetFilter: function () {
     this.disableFilter();
-    this.filter.unsetRange();
+    this.filter && this.filter.unsetRange();
+  },
+
+  _onTotalsError: function (model, error) {
+    var parsedError = error && this._parseAjaxError(error);
+    this._triggerStatusError(parsedError);
+  },
+
+  getCurrentOffset: function () {
+    return this.get('localTimezone')
+      ? this._localOffset
+      : this.get('offset');
   }
 },
 
   // Class props
-  {
-    ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
-      'column',
-      'column_type',
-      'bins',
-      'min',
-      'max',
-      'aggregation'
-    ])
-  }
+{
+  ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
+    'column',
+    'column_type',
+    'bins',
+    'min',
+    'max',
+    'aggregation',
+    'offset'
+  ])
+}
 );

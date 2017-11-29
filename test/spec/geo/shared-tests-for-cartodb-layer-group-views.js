@@ -20,8 +20,8 @@ module.exports = function (createLayerGroupView, expectTileURLTemplateToMatch, f
       this.container = $('<div id="map">').css('height', '200px');
       $('body').append(this.container);
 
-      this.cartoDBLayer1 = new CartoDBLayer({}, { vis: { on: function () {} } });
-      this.cartoDBLayer2 = new CartoDBLayer({}, { vis: { on: function () {} } });
+      this.cartoDBLayer1 = new CartoDBLayer({}, { engine: { on: function () {} } });
+      this.cartoDBLayer2 = new CartoDBLayer({}, { engine: { on: function () {} } });
       this.layersCollection = new LayersCollection([
         this.cartoDBLayer1, this.cartoDBLayer2
       ]);
@@ -242,6 +242,21 @@ module.exports = function (createLayerGroupView, expectTileURLTemplateToMatch, f
           layer: this.cartoDBLayer1,
           layerIndex: 0
         });
+      });
+
+      it('should trigger a "featureError" event', function () {
+        var callback = jasmine.createSpy('callback');
+        this.layerGroupView.on('featureError', callback);
+
+        fakeWax.fire('off', {
+          errors: [{
+            message: "You are over platform's limits. Please contact us to know more details",
+            subtype: 'render',
+            type: 'limit'
+          }]
+        });
+
+        expect(callback).toHaveBeenCalled();
       });
 
       it('should NOT trigger a "featureOut" event if the layer has been removed', function () {

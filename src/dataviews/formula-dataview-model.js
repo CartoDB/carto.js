@@ -12,7 +12,7 @@ module.exports = DataviewModelBase.extend({
 
   initialize: function () {
     DataviewModelBase.prototype.initialize.apply(this, arguments);
-    this.on('change:column change:operation', this._reloadVisAndForceFetch, this);
+    this.on('change:column change:operation', this._reloadAndForceFetch, this);
   },
 
   parse: function (r) {
@@ -35,10 +35,10 @@ module.exports = DataviewModelBase.extend({
 },
 
   // Class props
-  {
-    ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
-      'column',
-      'operation'
-    ])
-  }
+{
+  ATTRS_NAMES: DataviewModelBase.ATTRS_NAMES.concat([
+    'column',
+    'operation'
+  ])
+}
 );

@@ -16,7 +16,7 @@ describe('geo/ui/search', function () {
     this.mapView = new LeafletMapView({
       el: this.$el,
       mapModel: this.map,
-      visModel: new Backbone.Model(),
+      engine: new Backbone.Model(),
       layerViewFactory: jasmine.createSpyObj('layerViewFactory', ['createLayerView']),
       layerGroupModel: new Backbone.Model()
     });
@@ -51,7 +51,8 @@ describe('geo/ui/search', function () {
         type: undefined
       };
       MAPZEN.geocode = function (address, callback) {
-        callback([ self.result ]);
+        var result = [ self.result ];
+        callback(result);
       };
 
       this.view.$('.js-textInput').val('Madrid, Spain');

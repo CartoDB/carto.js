@@ -24,6 +24,7 @@ $buttonColor: #636D72;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.24), 0 4px 8px 0 rgba(0, 0, 0, 0.16);
   z-index: 20000;
 }
+
 .CDB-Zoom {
   order: 1;
   margin-right: 8px;
@@ -40,7 +41,7 @@ $buttonColor: #636D72;
   z-index: 10;
 
   &:hover {
-    background: #F9F9F9;
+    background: rgba($cBlue, 0.08);
     cursor: pointer;
   }
 
@@ -54,11 +55,13 @@ $buttonColor: #636D72;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
+
   &:first-child {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
 }
+
 .CDB-Zoom-action--out::before {
   position: absolute;
   top: 50%;
@@ -69,6 +72,7 @@ $buttonColor: #636D72;
   background: $buttonColor;
   content: '';
 }
+
 .CDB-Zoom-action--in {
   &::before {
     position: absolute;
@@ -80,6 +84,7 @@ $buttonColor: #636D72;
     background: $buttonColor;
     content: '';
   }
+
   &::after {
     position: absolute;
     top: 11px;
@@ -106,17 +111,22 @@ $buttonColor: #636D72;
   order: 2;
   height: 32px;
   margin-right: 8px;
+
+  .CDB-Shape-magnify {
+    &::before {
+      top: 11px;
+      left: 10px;
+      border-color: #636D72;
+    }
+
+    &::after {
+      right: 13px;
+      bottom: 10px;
+      background: #636D72;
+    }
+  }
 }
-.CDB-Search .CDB-Shape-magnify::before {
-  top: 11px;
-  left: 10px;
-  border-color: #636D72;
-}
-.CDB-Search .CDB-Shape-magnify::after {
-  right: 13px;
-  bottom: 10px;
-  background: #636D72;
-}
+
 .CDB-Search-inner {
   @include transition(width, 100ms ease-in);
   display: flex;
@@ -125,8 +135,17 @@ $buttonColor: #636D72;
   height: 100%;
   overflow: hidden;
 
+  &:hover {
+    background: rgba($cBlue, 0.08);
+  }
+
   &.is-active {
     width: 152px;
+
+    &:hover {
+      background: transparent;
+    }
+
     .CDB-Search-text {
       display: block;
       opacity: 1;
@@ -160,7 +179,9 @@ $buttonColor: #636D72;
   order: 4;
   width: 32px;
   height: 32px;
+  margin-right: 8px;
   cursor: pointer;
+
   .CDB-Shape-Arrow::after,
   .CDB-Shape-Arrow::before {
     background: #636D72;
@@ -243,25 +264,13 @@ $maxLegendContainerHeight: 300px;
 }
 .CDB-Legends-canvasShadow.is-visible {
   display: block;
-  z-index: 10;
+  z-index: 2;
 }
 .CDB-Legends-canvas .ps-scrollbar-y-rail {
-  width: 2px !important; // Resetting standard scroll track color
-  background: #EEE;
   z-index: 3;
-}
-.CDB-Legends-canvas .ps-scrollbar-y {
-  width: 2px !important; // Resetting standard scroll bar color
-  background: #AAA;
 }
 .CDB-Legends-canvas .ps-scrollbar-x-rail {
-  height: 2px !important; // Resetting standard scroll track color
-  background: #EEE;
   z-index: 3;
-}
-.CDB-Legends-canvas .ps-scrollbar-x {
-  height: 3px !important; // Resetting standard scroll bar color
-  background: #AAA;
 }
 
 .CDB-LayerLegends {
@@ -447,8 +456,10 @@ $maxLegendContainerHeight: 300px;
 }
 .Legend-categoryCircle {
   position: relative;
-  width: 8px;
+  min-width: 8px;
   height: 8px;
+  margin-right: 2px;
+  margin-left: 2px;
   border-radius: 50%;
 }
 .Legend-categoryCircle::before {
@@ -464,11 +475,12 @@ $maxLegendContainerHeight: 300px;
 .Legend-categoryIcon {
   display: block;
   position: relative;
-  width: 10px;
-  height: 10px;
+  min-width: 12px;
+  height: 12px;
 }
 .Legend-categoryTitle {
   max-width: 90%;
+  margin-left: 8px;
 }
 .Legend-placeholder {
   position: relative;
@@ -485,11 +497,9 @@ $maxLegendContainerHeight: 300px;
 }
 .Legend-fillImageAsset {
   position: absolute;
-  top: 0;
-  right: 0;
   width: 18px;
   height: 18px;
-  transform: translateX(4px) translateY(-4px) scale(0.55556); // scale original 18px SVG image => 10px
+  transform: translateX(-3px) translateY(-3px) scale(0.66667); // scale original 18px SVG image => 12px
   vertical-align: bottom;
 }
 

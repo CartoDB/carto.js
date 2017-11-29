@@ -4,6 +4,7 @@ var BubbleLegendModel = require('./bubble-legend-model');
 var ChoroplethLegendModel = require('./choropleth-legend-model');
 var CustomLegendModel = require('./custom-legend-model');
 var CustomChoroplethLegendModel = require('./custom-choropleth-legend-model');
+var TorqueLegendModel = require('./torque-legend-model');
 
 var LEGENDS_METADATA = {
   bubble: {
@@ -32,6 +33,10 @@ var LEGENDS_METADATA = {
   custom_choropleth: {
     modelClass: CustomChoroplethLegendModel,
     definitionAttrs: [ 'prefix', 'suffix', {'leftLabel': 'left_label'}, {'rightLabel': 'right_label'}, 'colors' ]
+  },
+  torque: {
+    modelClass: TorqueLegendModel,
+    definitionAttrs: [ { 'items': 'categories' }, 'html' ]
   }
 };
 
@@ -42,10 +47,10 @@ var SHARED_ATTRS = [
 ];
 
 var Legends = function (legendsData, deps) {
-  if (!deps.visModel) throw new Error('visModel is required');
+  if (!deps.engine) throw new Error('engine is required');
 
   this._legendsData = legendsData || [];
-  this._visModel = deps.visModel;
+  this._engine = deps.engine;
 
   _.each(LEGENDS_METADATA, function (legendMetadata, legendType) {
     this[legendType] = this._createLegendModel(legendType, legendMetadata);
@@ -83,7 +88,7 @@ Legends.prototype._createLegendModel = function (legendType, legendMetadata) {
   });
 
   var legendModel = new ModelClass(modelAttrs, {
-    visModel: this._visModel
+    engine: this._engine
   });
 
   if (data) {

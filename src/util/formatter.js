@@ -1,5 +1,6 @@
 var _ = require('underscore');
-var d3 = require('d3');
+var d3TimeFormat = require('d3-time-format');
+var d3Format = require('d3-format');
 
 var format = {};
 
@@ -22,27 +23,27 @@ format.formatNumber = function (value, unit) {
 
   value = converted;
 
-  var format = d3.format('.2s');
+  var format = d3Format.format('.2s');
 
   var p = 0;
-  var abs_v = Math.abs(value);
+  var absV = Math.abs(value);
 
   if (value > 1000) {
     value = format(value) + (unit ? ' ' + unit : '');
     return value;
   }
 
-  if (abs_v < 0.01) {
+  if (absV < 0.01) {
     value = formatExponential(value) + (unit ? ' ' + unit : '');
     return value;
   }
 
-  if (abs_v > 100) {
+  if (absV > 100) {
     p = 0;
-  } else if (abs_v > 10) {
+  } else if (absV > 10) {
     p = 1;
-  } else if (abs_v > 0.01) {
-    p = Math.min(Math.ceil(Math.abs(Math.log(abs_v) / Math.log(10))) + 2, 2);
+  } else if (absV > 0.01) {
+    p = Math.min(Math.ceil(Math.abs(Math.log(absV) / Math.log(10))) + 2, 2);
   }
 
   value = value.toFixed(p);
@@ -55,7 +56,7 @@ format.formatNumber = function (value, unit) {
 };
 
 format.formatDate = function (value) {
-  return d3.time.format('%Y-%m-%d')(value);
+  return d3TimeFormat.timeFormat('%Y-%m-%d')(value);
 };
 
 format.formatValue = function (value) {

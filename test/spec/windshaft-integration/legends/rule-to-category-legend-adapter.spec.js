@@ -47,17 +47,20 @@ describe('src/windshaft-integration/legends/rule-to-category-legend-adapter', fu
 
   describe('.adapt', function () {
     it('should return attrs', function () {
-      var attrs = adapter.adapt(this.rule);
+      var attrs = adapter.adapt([this.rule]);
       expect(attrs).toEqual({
         categories: [
-          { label: 'Category 1', value: '#AAAAAA' },
-          { label: 'Category 2', value: '#BBBBBB' }
+          { title: 'Category 1', icon: '', color: '#AAAAAA' },
+          { title: 'Category 2', icon: '', color: '#BBBBBB' }
         ],
-        defaultValue: '#CCCCCC'
+        default: {
+          icon: '',
+          color: '#CCCCCC'
+        }
       });
     });
 
-    it('should include and empty defaultValue property if there is no bucket with a default filter', function () {
+    it('should include and empty default property if there is no bucket with a default filter', function () {
       this.rule.buckets = [
         {
           'filter': {
@@ -75,13 +78,16 @@ describe('src/windshaft-integration/legends/rule-to-category-legend-adapter', fu
         }
       ];
 
-      var attrs = adapter.adapt(this.rule);
+      var attrs = adapter.adapt([this.rule]);
       expect(attrs).toEqual({
         categories: [
-          { label: 'Category 1', value: '#AAAAAA' },
-          { label: 'Category 2', value: '#BBBBBB' }
+          { title: 'Category 1', icon: '', color: '#AAAAAA' },
+          { title: 'Category 2', icon: '', color: '#BBBBBB' }
         ],
-        defaultValue: undefined
+        default: {
+          icon: '',
+          color: ''
+        }
       });
     });
   });

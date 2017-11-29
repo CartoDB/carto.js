@@ -35,7 +35,14 @@ module.exports = Backbone.View.extend({
         self.$el.empty().append($svg);
 
         $svg.css('fill', self._color);
+        $svg.find('g').css('fill', 'inherit');
         $svg.find('path').css('fill', 'inherit');
+        $svg.find('rect').each(function (_, rect) {
+          var $rect = $(rect);
+          if ($rect.css('fill') !== 'none') {
+            $rect.css('fill', 'inherit');
+          }
+        });
       });
     } else {
       var $img = $('<img crossorigin="anonymous"/>');
@@ -53,14 +60,14 @@ module.exports = Backbone.View.extend({
       callback && callback(this._lastImage.content);
     } else {
       $.ajax(completeUrl)
-      .done(function (data) {
-        self._lastImage.url = completeUrl;
-        var content = self._lastImage.content = data.getElementsByTagName('svg')[0];
-        callback && callback(content);
-      })
-      .fail(function () {
-        throw new Error("Couldn't get " + completeUrl + ' file.');
-      });
+        .done(function (data) {
+          self._lastImage.url = completeUrl;
+          var content = self._lastImage.content = data.getElementsByTagName('svg')[0];
+          callback && callback(content);
+        })
+        .fail(function () {
+          throw new Error("Couldn't get " + completeUrl + ' file.');
+        });
     }
   },
 

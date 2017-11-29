@@ -1,16 +1,25 @@
 var _ = require('underscore');
 
-// required due to implicit dependency in vis --> map-view
-var cdb = require('cdb');
-_.extend(cdb.geo, require('../../../src/geo/leaflet'));
-_.extend(cdb.geo, require('../../../src/geo/gmaps'));
-
-var VisModel = require('../../../src/vis/vis');
+var AnalysisModel = require('../../../src/analysis/analysis-model');
 var LayersFactory = require('../../../src/vis/layers-factory');
+var MockFactory = require('../../helpers/mockFactory');
+
+var createFakeAnalysis = function (attrs) {
+  return new AnalysisModel(attrs, {
+    engine: {},
+    camshaftReference: {
+      getParamNamesForAnalysisType: function () {}
+    }
+  });
+};
 
 describe('vis/layers-factory', function () {
+  var analysis;
+  var layersFactory;
+  var engineMock;
+
   beforeEach(function () {
-    this.vis = new VisModel();
+    engineMock = MockFactory.createEngine();
 
     this.windshaftSettings = {
       urlTemplate: 'http://{user}.carto.com',
@@ -21,15 +30,62 @@ describe('vis/layers-factory', function () {
       authToken: 'AUTH_TOKEN'
     };
 
-    this.layersFactory = new LayersFactory({
-      visModel: this.vis,
+    layersFactory = new LayersFactory({
+      engine: engineMock,
       windshaftSettings: this.windshaftSettings
+    });
+
+    analysis = createFakeAnalysis();
+  });
+
+  describe('attribute validation', function () {
+    var testCases = [
+      {
+        layerType: 'CartoDB',
+        // TODO: Once https://github.com/CartoDB/cartodb/issues/12885 is merged
+        // source should be required again so we need to add the attribute to this test
+        // expectedErrorMessage: 'The following attributes are missing: source,cartocss'
+        expectedErrorMessage: 'The following attributes are missing: cartocss'
+      },
+      {
+        layerType: 'torque',
+        // TODO: Once https://github.com/CartoDB/cartodb/issues/12885 is merged
+        // source should be required again so we need to add the attribute to this test
+        // expectedErrorMessage: 'The following attributes are missing: source,cartocss'
+        expectedErrorMessage: 'The following attributes are missing: cartocss'
+      },
+      {
+        layerType: 'Tiled',
+        expectedErrorMessage: 'The following attributes are missing: urlTemplate'
+      },
+      {
+        layerType: 'WMS',
+        expectedErrorMessage: 'The following attributes are missing: urlTemplate'
+      },
+      {
+        layerType: 'GMapsBase',
+        expectedErrorMessage: 'The following attributes are missing: baseType'
+      },
+      {
+        layerType: 'Plain',
+        expectedErrorMessage: 'The following attributes are missing: image|color'
+      }
+    ];
+
+    _.each(testCases, function (testCase) {
+      describe(testCase.layerType, function () {
+        it('should throw an error if no properties are given', function () {
+          expect(function () {
+            layersFactory.createLayer(testCase.layerType, {});
+          }).toThrowError(testCase.expectedErrorMessage);
+        });
+      });
     });
   });
 
   describe('tiled', function () {
     it('should create the layer model', function () {
-      var layerModel = this.layersFactory.createLayer('tiled', {
+      var layerModel = layersFactory.createLayer('tiled', {
         urlTemplate: 'http'
       });
 
@@ -45,31 +101,13 @@ describe('vis/layers-factory', function () {
       'https://cartocdn_{s}.global.ssl.fastly.net/': 'http://{s}.api.cartocdn.com/',
       'https://cartodb-basemaps-{s}.global.ssl.fastly.net/': 'http://{s}.basemaps.cartocdn.com/'
     }, function (httpUrlTemplate, httpsUrlTemplate) {
-      describe('when https option is undefined', function () {
-        it("should not convert '" + httpUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
-            urlTemplate: httpUrlTemplate
-          });
-
-          expect(layerModel.get('urlTemplate')).toEqual(httpUrlTemplate);
-        });
-
-        it("should not convert '" + httpsUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
-            urlTemplate: httpsUrlTemplate
-          });
-
-          expect(layerModel.get('urlTemplate')).toEqual(httpsUrlTemplate);
-        });
-      });
-
       describe('when https option is set to true', function () {
         beforeEach(function () {
-          this.vis.set('https', true);
+          spyOn(LayersFactory, 'isHttps').and.returnValue(true);
         });
 
         it("should not convert '" + httpsUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
+          var layerModel = layersFactory.createLayer('tiled', {
             urlTemplate: httpsUrlTemplate
           });
 
@@ -77,7 +115,7 @@ describe('vis/layers-factory', function () {
         });
 
         it("should convert '" + httpUrlTemplate + "' to '" + httpsUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
+          var layerModel = layersFactory.createLayer('tiled', {
             urlTemplate: httpUrlTemplate
           });
 
@@ -87,11 +125,11 @@ describe('vis/layers-factory', function () {
 
       describe('when https option is set to false', function () {
         beforeEach(function () {
-          this.vis.set('https', false);
+          spyOn(LayersFactory, 'isHttps').and.returnValue(false);
         });
 
         it("should not convert '" + httpUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
+          var layerModel = layersFactory.createLayer('tiled', {
             urlTemplate: httpUrlTemplate
           });
 
@@ -99,7 +137,7 @@ describe('vis/layers-factory', function () {
         });
 
         it("should convert '" + httpsUrlTemplate + "' to '" + httpUrlTemplate + "'", function () {
-          var layerModel = this.layersFactory.createLayer('tiled', {
+          var layerModel = layersFactory.createLayer('tiled', {
             urlTemplate: httpsUrlTemplate
           });
 
@@ -111,8 +149,9 @@ describe('vis/layers-factory', function () {
 
   describe('torque', function () {
     it('should create the layer model', function () {
-      var layerModel = this.layersFactory.createLayer('torque', {
-        sql: 'SELECT * FROM wadus'
+      var layerModel = layersFactory.createLayer('torque', {
+        source: analysis,
+        cartocss: '#layer {}'
       });
 
       expect(layerModel).toBeDefined();
@@ -120,7 +159,10 @@ describe('vis/layers-factory', function () {
     });
 
     it('should setup attrs for windshaft provider', function () {
-      var layerModel = this.layersFactory.createLayer('torque', {});
+      var layerModel = layersFactory.createLayer('torque', {
+        source: analysis,
+        cartocss: '#layer {}'
+      });
       expect(layerModel.get('user_name')).toEqual('JUAN');
       expect(layerModel.get('maps_api_template')).toEqual('http://{user}.carto.com');
       expect(layerModel.get('stat_tag')).toEqual('STAT_TAG');
@@ -134,8 +176,24 @@ describe('vis/layers-factory', function () {
     it("should not include a named_map attr if settings don't have one", function () {
       delete this.windshaftSettings.templateName;
 
-      var layerModel = this.layersFactory.createLayer('torque', {});
+      var layerModel = layersFactory.createLayer('torque', {
+        source: analysis,
+        cartocss: '#layer {}'
+      });
       expect(layerModel.get('named_map')).toBeUndefined();
+    });
+  });
+
+  ['cartodb', 'torque'].forEach(function (layerType) {
+    describe(layerType + ' (shared)', function () {
+      it('should set accept an AnalysisMode as a source', function () {
+        var layerModel = layersFactory.createLayer(layerType, {
+          source: analysis,
+          cartocss: '#layer {}'
+        });
+
+        expect(layerModel.getSource()).toEqual(analysis);
+      });
     });
   });
 });

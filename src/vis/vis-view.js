@@ -39,24 +39,20 @@ var Vis = View.extend({
     // We will wait until it is resized and then apply
     // the center provided in the parameters and the
     // correct size.
-    var map_h = this.$el.outerHeight();
-    if (map_h === 0) {
+    var mapH = this.$el.outerHeight();
+    if (mapH === 0) {
       $(window).bind('resize', this._onResize);
     }
   },
 
   _renderMapView: function () {
-    this.mapView = this._getMapViewFactory().createMapView(this.model.map.get('provider'), this.model, this.model.map, this.model.layerGroupModel);
+    this.mapView = MapViewFactory.createMapView(this.model.map.get('provider'), this.model);
     // Add the element to the DOM before the native map is created
     this.$el.html(this.mapView.el);
 
     // Bind events before the view is rendered and layer views are added to the map
     this.mapView.bind('newLayerView', this._bindLayerViewToLoader, this);
     this.mapView.render();
-  },
-
-  _getMapViewFactory: function () {
-    return this.mapViewFactory || new MapViewFactory();
   },
 
   _cleanMapView: function () {
@@ -78,7 +74,7 @@ var Vis = View.extend({
 
   _renderOverlaysView: function () {
     this._overlaysView = new OverlaysView({
-      visModel: this.model,
+      engine: this.model._engine,
       visView: this,
       mapModel: this.model.map,
       mapView: this.mapView,

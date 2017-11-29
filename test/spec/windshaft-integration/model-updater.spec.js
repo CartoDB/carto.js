@@ -5,54 +5,63 @@ var LayersCollection = require('../../../src/geo/map/layers');
 var Backbone = require('backbone');
 var ModelUpdater = require('../../../src/windshaft-integration/model-updater');
 var WindshaftError = require('../../../src/windshaft/error');
+var ResponseWrapper = require('../../../src/windshaft/response');
 var CartoDBLayerGroup = require('../../../src/geo/cartodb-layer-group');
-var WindshaftMap = require('../../../src/windshaft/map-base.js');
+var Dataview = require('../../../src/dataviews/dataview-model-base');
+var AnalysisModel = require('../../../src/analysis/analysis-model');
+var MapModel = require('../../../src/geo/map');
+var MockFactory = require('../../helpers/mockFactory');
+var BoundingBoxFilter = require('../../../src/windshaft/filters/bounding-box');
+var MapModelBoundingBoxAdapter = require('../../../src/geo/adapters/map-model-bounding-box-adapter');
 
-var MyWindshaftMap = WindshaftMap.extend({
-});
+describe('src//model-updater', function () {
+  var boundingBoxFilter;
+  var engineMock;
+  var serverResponse;
+  var windshaftSettings;
 
-describe('src/vis/model-updater', function () {
   beforeEach(function () {
-    this.fakeVis = jasmine.createSpyObj('vis', ['reload']);
+    engineMock = MockFactory.createEngine();
 
-    this.windshaftMap = new MyWindshaftMap({
-      urlTemplate: 'http://{user}.carto.com:80',
-      userName: 'documentation'
-    }, {
-      client: {},
-      layersCollection: {},
-      dataviewsCollection: {},
-      analysisCollection: {},
-      modelUpdater: {},
-      windshaftSettings: {
-        urlTemplate: 'http://{user}.cartodb.com:80',
-        userName: 'rambo'
+    windshaftSettings = {
+      urlTemplate: 'http://{user}.cartodb.com:80',
+      userName: 'cartojs-test'
+    };
+
+    serverResponse = new ResponseWrapper(windshaftSettings, {
+      'layergroupid': '9d7bf465e45113123bf9949c2a4f0395:0',
+      'metadata': {
+        'layers': [],
+        'dataviews': {},
+        'analyses': []
       }
     });
 
-    spyOn(this.windshaftMap, 'getBaseURL').and.callFake(function (subdomain) {
+    spyOn(serverResponse, 'getBaseURL').and.callFake(function (subdomain) {
       return 'http://' + (subdomain ? subdomain + '.' : '') + 'documentation.carto.com';
     });
-    spyOn(this.windshaftMap, 'getLayerIndexesByType').and.returnValue([0]);
-    spyOn(this.windshaftMap, 'getSupportedSubdomains').and.returnValue(['']);
+    spyOn(serverResponse, 'getLayerIndexesByType').and.returnValue([0]);
+    spyOn(serverResponse, 'getSupportedSubdomains').and.returnValue(['']);
 
-    this.visModel = new Backbone.Model();
-    this.visModel.setOk = jasmine.createSpy('setOk');
-    this.visModel.setError = jasmine.createSpy('setError');
     this.layersCollection = new LayersCollection();
 
     this.layerGroupModel = new CartoDBLayerGroup({}, {
       layersCollection: this.layersCollection
     });
-    this.analysisCollection = new Backbone.Collection();
     this.dataviewsCollection = new Backbone.Collection();
 
+    var mapModel = new MapModel({
+      bounds: [[40.2813, -3.90592], [40.5611, -3.47532]]
+    }, {
+      layersFactory: {},
+      layersCollection: this.LayersCollection
+    });
+    boundingBoxFilter = new BoundingBoxFilter(new MapModelBoundingBoxAdapter(mapModel));
+
     this.modelUpdater = new ModelUpdater({
-      visModel: this.visModel,
       layerGroupModel: this.layerGroupModel,
       layersCollection: this.layersCollection,
-      dataviewsCollection: this.dataviewsCollection,
-      analysisCollection: this.analysisCollection
+      dataviewsCollection: this.dataviewsCollection
     });
 
     // _getProtocol uses window.location.protocol internally, and that returns "file:"
@@ -62,22 +71,18 @@ describe('src/vis/model-updater', function () {
 
   describe('.updateModels', function () {
     beforeEach(function () {
-      this.windshaftMap.getBaseURL.and.returnValue('http://{s}.documentation.carto.com/api/v1/map/90e64f1b9145961af7ba36d71b887dd2:0');
-    });
-
-    it('should set vis state to ok', function () {
-      this.modelUpdater.updateModels(this.windshaftMap);
-      expect(this.visModel.setOk).toHaveBeenCalled();
+      serverResponse.getBaseURL.and.returnValue('http://{s}.documentation.carto.com/api/v1/map/90e64f1b9145961af7ba36d71b887dd2:0');
     });
 
     describe('layerGroupModel', function () {
       beforeEach(function () {
-        var layer1 = new CartoDBLayer({}, { vis: this.visModel });
-        var layer2 = new CartoDBLayer({}, { vis: this.visModel });
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var layer1 = new CartoDBLayer({ source: analysis }, { engine: engineMock });
+        var layer2 = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.layersCollection.reset([ layer1, layer2 ]);
+        this.layersCollection.reset([layer1, layer2]);
 
-        this.windshaftMap.getLayerIndexesByType.and.callFake(function (layerType) {
+        serverResponse.getLayerIndexesByType.and.callFake(function (layerType) {
           if (layerType === 'mapnik') {
             return ([1, 2]);
           }
@@ -85,7 +90,7 @@ describe('src/vis/model-updater', function () {
       });
 
       it('should set indexOfLayersInWindshaft', function () {
-        this.modelUpdater.updateModels(this.windshaftMap);
+        this.modelUpdater.updateModels(serverResponse);
         expect(this.layerGroupModel.get('indexOfLayersInWindshaft')).toEqual([1, 2]);
       });
 
@@ -134,9 +139,9 @@ describe('src/vis/model-updater', function () {
       _.each(testCases, function (testCase) {
         describe(testCase.name, function () {
           beforeEach(function () {
-            this.windshaftMap.getBaseURL.and.returnValue(testCase.baseURL);
-            this.windshaftMap.getSupportedSubdomains.and.returnValue(testCase.supportedSubdomains);
-            this.modelUpdater.updateModels(this.windshaftMap);
+            serverResponse.getBaseURL.and.returnValue(testCase.baseURL);
+            serverResponse.getSupportedSubdomains.and.returnValue(testCase.supportedSubdomains);
+            this.modelUpdater.updateModels(serverResponse);
           });
 
           describe('tile urls', function () {
@@ -164,26 +169,31 @@ describe('src/vis/model-updater', function () {
 
     describe('layer models', function () {
       it('should mark CartoDB and torque layer models as ok', function () {
-        var layer0 = new Backbone.Model({ type: 'Tiled' });
-        var layer1 = new CartoDBLayer({}, { vis: this.visModel });
-        spyOn(layer1, 'setOk');
-        var layer2 = new TorqueLayer({}, { vis: this.visModel });
-        spyOn(layer2, 'setOk');
-        this.layersCollection.reset([ layer0, layer1, layer2 ]);
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
 
-        this.modelUpdater.updateModels(this.windshaftMap);
+        var layer0 = new Backbone.Model({ type: 'Tiled' });
+        var layer1 = new CartoDBLayer({ source: analysis }, { engine: engineMock });
+        var layer2 = new TorqueLayer({ source: analysis }, { engine: engineMock });
+
+        spyOn(layer1, 'setOk');
+        spyOn(layer2, 'setOk');
+
+        this.layersCollection.reset([layer0, layer1, layer2]);
+        this.modelUpdater.updateModels(serverResponse);
 
         expect(layer1.setOk).toHaveBeenCalled();
         expect(layer2.setOk).toHaveBeenCalled();
       });
 
       it('should set tileURLTemplates attribute of torque layer models', function () {
-        var layer0 = new Backbone.Model({ type: 'Tiled' });
-        var layer1 = new CartoDBLayer({}, { vis: this.visModel });
-        var layer2 = new TorqueLayer({}, { vis: this.visModel });
-        this.layersCollection.reset([ layer0, layer1, layer2 ]);
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
 
-        this.modelUpdater.updateModels(this.windshaftMap);
+        var layer0 = new Backbone.Model({ type: 'Tiled' });
+        var layer1 = new CartoDBLayer({ source: analysis }, { engine: engineMock });
+        var layer2 = new TorqueLayer({ source: analysis }, { engine: engineMock });
+        this.layersCollection.reset([layer0, layer1, layer2]);
+
+        this.modelUpdater.updateModels(serverResponse);
 
         expect(layer2.get('tileURLTemplates')).toEqual([
           'http://{s}.documentation.carto.com/api/v1/map/90e64f1b9145961af7ba36d71b887dd2:0/0/{z}/{x}/{y}.json.torque'
@@ -193,10 +203,11 @@ describe('src/vis/model-updater', function () {
 
     describe('legend models', function () {
       it('should "mark" all legend models as success', function () {
-        var layer = new CartoDBLayer({}, { vis: this.visModel });
-        this.layersCollection.reset([ layer ]);
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var layer = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.layersCollection.reset([layer]);
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(layer.legends.choropleth.isSuccess()).toBeTruthy();
         expect(layer.legends.bubble.isSuccess()).toBeTruthy();
@@ -204,62 +215,67 @@ describe('src/vis/model-updater', function () {
       });
 
       it('should update model for choropleth legends', function () {
-        this.windshaftMap.set('metadata', {
-          layers: [
-            {
-              type: 'mapnik',
-              id: '923b7812-2d56-41c6-ac15-3ce430db090f',
-              meta: {
-                stats: [],
-                cartocss: 'cartocss',
-                'cartocss_meta': {
-                  rules: [
-                    {
-                      'selector': '#layer',
-                      'prop': 'polygon-fill',
-                      'mapping': '>',
-                      'buckets': [
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 0,
-                            'end': 1000
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+
+        serverResponse = new ResponseWrapper(windshaftSettings, {
+          'layergroupid': '9d7bf465e45113123bf9949c2a4f0395:0',
+          'metadata': {
+            layers: [
+              {
+                type: 'mapnik',
+                id: '923b7812-2d56-41c6-ac15-3ce430db090f',
+                meta: {
+                  stats: [],
+                  cartocss: 'cartocss',
+                  'cartocss_meta': {
+                    rules: [
+                      {
+                        'selector': '#layer',
+                        'prop': 'polygon-fill',
+                        'mapping': '>',
+                        'buckets': [
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 0,
+                              'end': 1000
+                            },
+                            'value': '#AAAAAA'
                           },
-                          'value': '#AAAAAA'
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 1000,
-                            'end': 2000
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 1000,
+                              'end': 2000
+                            },
+                            'value': '#BBBBBB'
                           },
-                          'value': '#BBBBBB'
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 2000,
-                            'end': 3000
-                          },
-                          'value': '#CCCCCC'
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 2000,
+                              'end': 3000
+                            },
+                            'value': '#CCCCCC'
+                          }
+                        ],
+                        'stats': {
+                          'filter_avg': 1975
                         }
-                      ],
-                      'stats': {
-                        'filter_avg': 1975
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         });
 
-        var layer = new CartoDBLayer({}, { vis: this.visModel });
+        var layer = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.layersCollection.reset([ layer ]);
+        this.layersCollection.reset([layer]);
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(layer.legends.choropleth.get('colors')).toEqual([
           { label: '0', value: '#AAAAAA' },
@@ -270,139 +286,149 @@ describe('src/vis/model-updater', function () {
       });
 
       it('should update model for category legends', function () {
-        this.windshaftMap.set('metadata', {
-          layers: [
-            {
-              'type': 'mapnik',
-              'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
-              'meta': {
-                'stats': [],
-                'cartocss': 'cartocss',
-                'cartocss_meta': {
-                  'rules': [
-                    {
-                      'selector': '#layer',
-                      'prop': 'marker-fill',
-                      'mapping': '=',
-                      'buckets': [
-                        {
-                          'filter': {
-                            'type': 'category',
-                            'name': 'Category 1'
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+
+        serverResponse = new ResponseWrapper(windshaftSettings, {
+          'layergroupid': '9d7bf465e45113123bf9949c2a4f0395:0',
+          'metadata': {
+            layers: [
+              {
+                'type': 'mapnik',
+                'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
+                'meta': {
+                  'stats': [],
+                  'cartocss': 'cartocss',
+                  'cartocss_meta': {
+                    'rules': [
+                      {
+                        'selector': '#layer',
+                        'prop': 'marker-fill',
+                        'mapping': '=',
+                        'buckets': [
+                          {
+                            'filter': {
+                              'type': 'category',
+                              'name': 'Category 1'
+                            },
+                            'value': '#AAAAAA'
                           },
-                          'value': '#AAAAAA'
-                        },
-                        {
-                          'filter': {
-                            'type': 'category',
-                            'name': 'Category 2'
+                          {
+                            'filter': {
+                              'type': 'category',
+                              'name': 'Category 2'
+                            },
+                            'value': '#BBBBBB'
                           },
-                          'value': '#BBBBBB'
-                        },
-                        {
-                          'filter': {
-                            'type': 'default'
-                          },
-                          'value': '#CCCCCC'
+                          {
+                            'filter': {
+                              'type': 'default'
+                            },
+                            'value': '#CCCCCC'
+                          }
+                        ],
+                        'stats': {
+                          'filter_avg': 3500
                         }
-                      ],
-                      'stats': {
-                        'filter_avg': 3500
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         });
 
-        var layer = new CartoDBLayer({}, { vis: this.visModel });
+        var layer = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.layersCollection.reset([ layer ]);
+        this.layersCollection.reset([layer]);
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(layer.legends.category.get('categories')).toEqual([
-          { label: 'Category 1', value: '#AAAAAA' },
-          { label: 'Category 2', value: '#BBBBBB' }
+          { title: 'Category 1', icon: '', color: '#AAAAAA' },
+          { title: 'Category 2', icon: '', color: '#BBBBBB' }
         ]);
         expect(layer.legends.choropleth.isSuccess()).toBeTruthy();
       });
 
       it('should update model for bubble legends', function () {
-        this.windshaftMap.set('metadata', {
-          layers: [
-            {
-              'type': 'mapnik',
-              'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
-              'meta': {
-                'stats': [],
-                'cartocss': 'cartocss',
-                'cartocss_meta': {
-                  'rules': [
-                    {
-                      'selector': '#layer',
-                      'prop': 'marker-width',
-                      'mapping': '>',
-                      'buckets': [
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 10,
-                            'end': 1000
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+
+        serverResponse = new ResponseWrapper(windshaftSettings, {
+          'layergroupid': '9d7bf465e45113123bf9949c2a4f0395:0',
+          'metadata': {
+            layers: [
+              {
+                'type': 'mapnik',
+                'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
+                'meta': {
+                  'stats': [],
+                  'cartocss': 'cartocss',
+                  'cartocss_meta': {
+                    'rules': [
+                      {
+                        'selector': '#layer',
+                        'prop': 'marker-width',
+                        'mapping': '>',
+                        'buckets': [
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 10,
+                              'end': 1000
+                            },
+                            'value': 10
                           },
-                          'value': 10
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 1000,
-                            'end': 2000
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 1000,
+                              'end': 2000
+                            },
+                            'value': 14
                           },
-                          'value': 14
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 2000,
-                            'end': 3000
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 2000,
+                              'end': 3000
+                            },
+                            'value': 20
                           },
-                          'value': 20
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 3000,
-                            'end': 4000
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 3000,
+                              'end': 4000
+                            },
+                            'value': 26
                           },
-                          'value': 26
-                        },
-                        {
-                          'filter': {
-                            'type': 'range',
-                            'start': 4000,
-                            'end': 5000
-                          },
-                          'value': 32
+                          {
+                            'filter': {
+                              'type': 'range',
+                              'start': 4000,
+                              'end': 5000
+                            },
+                            'value': 32
+                          }
+                        ],
+                        'stats': {
+                          'filter_avg': 3500
                         }
-                      ],
-                      'stats': {
-                        'filter_avg': 3500
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         });
 
-        var layer = new CartoDBLayer({}, { vis: this.visModel });
+        var layer = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.layersCollection.reset([ layer ]);
+        this.layersCollection.reset([layer]);
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(layer.legends.bubble.get('values')).toEqual([
           10, 1000, 2000, 3000, 4000, 5000
@@ -415,32 +441,37 @@ describe('src/vis/model-updater', function () {
       });
 
       it('should set legend state to "error" if adapter fails to generate attrs from rule', function () {
-        this.windshaftMap.set('metadata', {
-          layers: [
-            {
-              'type': 'mapnik',
-              'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
-              'meta': {
-                'stats': [],
-                'cartocss': 'cartocss',
-                'cartocss_meta': {
-                  'rules': [
-                    {
-                      'prop': 'marker-width',
-                      'mapping': '>'
-                    }
-                  ]
+        var analysis = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+
+        serverResponse = new ResponseWrapper(windshaftSettings, {
+          'layergroupid': '9d7bf465e45113123bf9949c2a4f0395:0',
+          'metadata': {
+            layers: [
+              {
+                'type': 'mapnik',
+                'id': '923b7812-2d56-41c6-ac15-b090f3ce430d',
+                'meta': {
+                  'stats': [],
+                  'cartocss': 'cartocss',
+                  'cartocss_meta': {
+                    'rules': [
+                      {
+                        'prop': 'marker-width',
+                        'mapping': '>'
+                      }
+                    ]
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         });
 
-        var layer = new CartoDBLayer({}, { vis: this.visModel });
+        var layer = new CartoDBLayer({ source: analysis }, { engine: engineMock });
 
-        this.layersCollection.reset([ layer ]);
+        this.layersCollection.reset([layer]);
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(layer.legends.bubble.isError()).toBeTruthy();
       });
@@ -448,11 +479,23 @@ describe('src/vis/model-updater', function () {
 
     describe('dataview models', function () {
       it('should update dataview models', function () {
-        var dataview1 = new Backbone.Model({ id: 'a1' });
-        var dataview2 = new Backbone.Model({ id: 'a2' });
-        this.dataviewsCollection.reset([ dataview1, dataview2 ]);
+        var dataview1 = new Dataview({
+          id: 'a1',
+          source: new AnalysisModel({}, { engine: engineMock, camshaftReference: camshaftReferenceMock })
+        }, {
+          bboxFilter: boundingBoxFilter,
+          engine: engineMock
+        });
+        var dataview2 = new Dataview({
+          id: 'a2',
+          source: new AnalysisModel({}, { engine: engineMock, camshaftReference: camshaftReferenceMock })
+        }, {
+          bboxFilter: boundingBoxFilter,
+          engine: engineMock
+        });
+        this.dataviewsCollection.reset([dataview1, dataview2]);
 
-        this.windshaftMap.getDataviewMetadata = function (dataviewId) {
+        serverResponse.getDataviewMetadata = function (dataviewId) {
           if (dataviewId === 'a1') {
             return {
               url: {
@@ -473,7 +516,7 @@ describe('src/vis/model-updater', function () {
 
         spyOn(dataview1, 'set').and.callThrough();
 
-        this.modelUpdater.updateModels(this.windshaftMap, 'sourceId', 'forceFetch');
+        this.modelUpdater.updateModels(serverResponse, 'sourceId', 'forceFetch');
 
         expect(dataview1.set).toHaveBeenCalledWith({
           url: 'http://example1.com'
@@ -489,36 +532,20 @@ describe('src/vis/model-updater', function () {
 
     describe('analysis models', function () {
       it('should update analysis models and set analysis state to "ok"', function () {
-        var getParamNames = function () { return []; };
-        var analysis1 = new Backbone.Model({ id: 'a1' });
-        analysis1.setOk = jasmine.createSpy('setOk');
-        var analysis2 = new Backbone.Model({ id: 'a2' });
-        analysis2.setOk = jasmine.createSpy('setOk');
-        this.analysisCollection.reset([ analysis1, analysis2 ]);
-        analysis1.getParamNames = analysis2.getParamNames = getParamNames;
+        var analysis1 = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var analysis2 = new AnalysisModel({ id: 'a2', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var layer = new CartoDBLayer({ source: analysis1 }, { engine: engineMock });
+        var dataview = new Dataview({ id: 'a1', source: analysis2 }, { bboxFilter: boundingBoxFilter, engine: engineMock });
 
-        this.windshaftMap.getAnalysisNodeMetadata = function (analysisId) {
-          if (analysisId === 'a1') {
-            return {
-              status: 'status_a1',
-              query: 'query_a1',
-              url: {
-                http: 'url_a1'
-              }
-            };
-          }
-          if (analysisId === 'a2') {
-            return {
-              status: 'status_a2',
-              query: 'query_a2',
-              url: {
-                http: 'url_a2'
-              }
-            };
-          }
-        };
+        spyOn(analysis1, 'setOk');
+        spyOn(analysis2, 'setOk');
+        spyOn(serverResponse, 'getAnalysisNodeMetadata').and.callFake(function (analysisId) {
+          return { status: 'status_' + analysisId, query: 'query_' + analysisId, url: { http: 'url_' + analysisId } };
+        });
 
-        this.modelUpdater.updateModels(this.windshaftMap);
+        this.layersCollection.reset([layer]);
+        this.dataviewsCollection.reset([dataview]);
+        this.modelUpdater.updateModels(serverResponse);
 
         expect(analysis1.get('status')).toEqual('status_a1');
         expect(analysis1.get('query')).toEqual('query_a1');
@@ -531,49 +558,37 @@ describe('src/vis/model-updater', function () {
       });
 
       it('should update analysis models and set status to "failed"', function () {
-        var getParamNames = function () { return []; };
-        var analysis1 = new Backbone.Model({ id: 'a1' });
-        this.analysisCollection.reset([ analysis1 ]);
-        analysis1.getParamNames = getParamNames;
+        var analysis1 = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var analysis2 = new AnalysisModel({ id: 'a2', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var layer = new CartoDBLayer({ source: analysis1 }, { engine: engineMock });
+        var dataview = new Dataview({ id: 'a1', source: analysis2 }, { bboxFilter: boundingBoxFilter, engine: engineMock });
 
-        this.windshaftMap.getAnalysisNodeMetadata = function (analysisId) {
-          if (analysisId === 'a1') {
-            return {
-              error_message: 'wadus',
-              status: 'failed',
-              query: 'query_a1',
-              url: {
-                http: 'url_a1'
-              }
-            };
-          }
-        };
+        spyOn(serverResponse, 'getAnalysisNodeMetadata').and.callFake(function (analysisId) {
+          return { error_message: 'fake_error_message', status: 'failed', query: 'query_' + analysisId, url: { http: 'url_' + analysisId } };
+        });
 
-        this.modelUpdater.updateModels(this.windshaftMap);
+        this.layersCollection.reset([layer]);
+        this.dataviewsCollection.reset([dataview]);
+        this.modelUpdater.updateModels(serverResponse);
 
         expect(analysis1.get('status')).toEqual('failed');
-        expect(analysis1.get('error')).toEqual({message: 'wadus'});
+        expect(analysis1.get('error')).toEqual({ message: 'fake_error_message' });
+        expect(analysis2.get('status')).toEqual('failed');
+        expect(analysis2.get('error')).toEqual({ message: 'fake_error_message' });
       });
 
       it('should not update attributes that are original params (eg: query)', function () {
-        var analysis1 = new Backbone.Model({ id: 'a1', query: 'original_query' });
-        analysis1.getParamNames = function () { return ['query']; };
-        analysis1.setOk = jasmine.createSpy('setOk');
-        this.analysisCollection.reset([ analysis1 ]);
+        var analysis1 = new AnalysisModel({ id: 'a1', type: 'source', query: 'original_query' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+        var layer = new CartoDBLayer({ source: analysis1 }, { engine: engineMock });
 
-        this.windshaftMap.getAnalysisNodeMetadata = function (analysisId) {
-          if (analysisId === 'a1') {
-            return {
-              status: 'new_status',
-              query: 'new_query',
-              url: {
-                http: 'new_url'
-              }
-            };
-          }
-        };
+        spyOn(analysis1, 'getParamNames').and.returnValue(['query']);
+        spyOn(serverResponse, 'getAnalysisNodeMetadata').and.callFake(function (analysisId) {
+          return { status: 'new_status', query: 'query_' + analysisId, url: { http: 'new_url' } };
+        });
 
-        this.modelUpdater.updateModels(this.windshaftMap);
+        this.layersCollection.reset([layer]);
+        this.dataviewsCollection.reset([]);
+        this.modelUpdater.updateModels(serverResponse);
 
         expect(analysis1.get('status')).toEqual('new_status');
         expect(analysis1.get('query')).toEqual('original_query');
@@ -583,53 +598,35 @@ describe('src/vis/model-updater', function () {
   });
 
   describe('.setErrors', function () {
-    it('should set vis state to error', function () {
-      this.modelUpdater.setErrors([
-        new WindshaftError({
-          type: 'unknown',
-          message: 'something went wrong!'
-        })
-      ]);
-
-      expect(this.visModel.setError).toHaveBeenCalled();
-      var error = this.visModel.setError.calls.argsFor(0)[0];
-
-      expect(error.type).toBeUndefined();
-      expect(error.message).toEqual('something went wrong!');
-      expect(error.context).toBeUndefined();
-    });
-
     it('should set analysis status to "error"', function () {
-      var analysis = new Backbone.Model({
-        id: 'ANALYSIS_NODE_ID'
-      });
-      analysis.setError = jasmine.createSpy('setError');
+      var analysisModel = new AnalysisModel({ id: 'a1', type: 'source', query: 'SELECT * FROM table' }, { engine: engineMock, camshaftReference: camshaftReferenceMock });
+      var layer = new CartoDBLayer({ source: analysisModel }, { engine: engineMock });
 
-      this.analysisCollection.reset([ analysis ]);
+      spyOn(analysisModel, 'setError');
+
+      this.layersCollection.reset([layer]);
+      this.dataviewsCollection.reset([]);
 
       this.modelUpdater.setErrors([
         new WindshaftError({
           type: 'analysis',
-          message: 'Missing required param "radius"',
+          message: 'fake_error_mesagge"',
           analysis: {
-            id: 'ANALYSIS_ID',
-            node_id: 'ANALYSIS_NODE_ID',
+            id: 'fake_analysis_id',
+            node_id: 'a1',
             context: {
-              something: 'else'
+              something: 'fake_error_context'
             }
           }
         })
       ]);
 
-      expect(analysis.setError).toHaveBeenCalled();
-      var error = analysis.setError.calls.argsFor(0)[0];
-
+      expect(analysisModel.setError).toHaveBeenCalled();
+      var error = analysisModel.setError.calls.argsFor(0)[0];
       expect(error.type).toBeUndefined();
-      expect(error.analysisId).toEqual('ANALYSIS_NODE_ID');
-      expect(error.message).toEqual('Missing required param "radius"');
-      expect(error.context).toEqual({
-        something: 'else'
-      });
+      expect(error.analysisId).toEqual('a1');
+      expect(error.message).toEqual('fake_error_mesagge"');
+      expect(error.context).toEqual({ something: 'fake_error_context' });
     });
 
     it('should "mark" layer as erroroneus', function () {
@@ -638,7 +635,7 @@ describe('src/vis/model-updater', function () {
       });
       layer.setError = jasmine.createSpy('setError');
 
-      this.layersCollection.reset([ layer ]);
+      this.layersCollection.reset([layer]);
 
       this.modelUpdater.setErrors([
         new WindshaftError({
@@ -688,8 +685,8 @@ describe('src/vis/model-updater', function () {
     });
 
     it('should "mark" legend models as erroroneus', function () {
-      var layer1 = new CartoDBLayer({}, { vis: this.visModel });
-      var layer2 = new CartoDBLayer({}, { vis: this.visModel });
+      var layer1 = new CartoDBLayer({}, { engine: engineMock });
+      var layer2 = new CartoDBLayer({}, { engine: engineMock });
 
       expect(layer1.legends.bubble.isError()).toBeFalsy();
       expect(layer1.legends.category.isError()).toBeFalsy();
@@ -699,7 +696,7 @@ describe('src/vis/model-updater', function () {
       expect(layer2.legends.category.isError()).toBeFalsy();
       expect(layer2.legends.choropleth.isError()).toBeFalsy();
 
-      this.layersCollection.reset([ layer1, layer2 ]);
+      this.layersCollection.reset([layer1, layer2]);
 
       this.modelUpdater.setErrors();
 
@@ -713,3 +710,24 @@ describe('src/vis/model-updater', function () {
     });
   });
 });
+
+var camshaftReferenceMock = {
+  getSourceNamesForAnalysisType: function (analysisType) {
+    var map = {
+      'analysis-type-1': ['source1', 'source2'],
+      'trade-area': ['source'],
+      'estimated-population': ['source'],
+      'sql-function': ['source', 'target']
+    };
+    return map[analysisType];
+  },
+  getParamNamesForAnalysisType: function (analysisType) {
+    var map = {
+      'analysis-type-1': ['attribute1', 'attribute2'],
+      'trade-area': ['kind', 'time'],
+      'estimated-population': ['columnName']
+    };
+
+    return map[analysisType];
+  }
+};
