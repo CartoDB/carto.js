@@ -1,11 +1,7 @@
 var _ = require('underscore');
 var Rule = require('./rule');
 
-<<<<<<< HEAD
-var VALID_PROPS = ['line-color', 'marker-fill', 'polygon-fill', 'dot-fill'];
-=======
-var VALID_PROPS = ['line-color', 'marker-fill', 'polygon-fill', 'marker-file'];
->>>>>>> v4
+var VALID_PROPS = ['line-color', 'marker-fill', 'polygon-fill', 'marker-file', 'dot-fill'];
 var VALID_MAPPINGS = ['='];
 
 var isEveryBucketValid = function (rule) {
