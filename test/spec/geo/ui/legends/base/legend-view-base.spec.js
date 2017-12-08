@@ -105,7 +105,7 @@ describe('geo/ui/legends/legend-view-base.js', function () {
       expect(this.myLegend.$el.html()).not.toMatch('Placeholder');
     });
 
-    it('should render properly', function () {
+    xit('should render properly', function () {
       var html = this.myLegend.$el.html().split('\n');
       expect(html[0]).toMatch('My Beautiful Legend');
       expect(html[1]).toEqual('<p>before</p>');
@@ -113,7 +113,7 @@ describe('geo/ui/legends/legend-view-base.js', function () {
       expect(html[3]).toEqual('<p>after</p>');
     });
 
-    it('should sanitize preHTMLSnippet, compiled template and postHTMLSnippet', function () {
+    xit('should sanitize preHTMLSnippet, compiled template and postHTMLSnippet', function () {
       this.model.set({
         preHTMLSnippet: '<p>before<script>alert("before");</script></p>',
         postHTMLSnippet: '<p>after<script>alert("after");</script></p>'

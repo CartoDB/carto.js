@@ -1,4 +1,4 @@
-var htmlCssSanitizer = require('html-css-sanitizer');
+var htmlCssSanitizer = require('../../vendor/html-css-sanitizer-bundle.js');
 
 /**
  * Sanitize inputHtml of unsafe HTML tags & attributes

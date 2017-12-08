@@ -4839,7 +4839,6 @@ var html = (function(html4) {
   html.unescapeEntities = html['unescapeEntities'] = unescapeEntities;
   return html;
 })(html4);
-
 var html_sanitize = html['sanitize'];
 
 // Exports for Closure compiler.  Note this file is also cajoled
@@ -4848,3 +4847,6 @@ if (typeof window !== 'undefined') {
   window['html'] = html;
   window['html_sanitize'] = html_sanitize;
 }
+
+
+module.exports = html;

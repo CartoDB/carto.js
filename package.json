@@ -88,13 +88,20 @@
     "jasmine-ajax": "git://github.com/nobuti/jasmine-ajax.git#master",
     "jsdoc": "~3.5.5",
     "jstify": "0.12.0",
-    "leaflet": "1.2.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-jasmine-ajax": "^0.1.13",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^2.0.6",
+    "leaflet": "1.0.3",
     "load-grunt-tasks": "~0.6.0",
     "npm-watch": "^0.3.0",
     "semver": "~5.4.0",
     "source-map-support": "CartoDB/node-source-map-support#0.4.6-cdb1",
     "time-grunt": "~0.3.1",
     "uglifyjs-webpack-plugin": "^1.1.2",
+    "underscore-template-loader": "^0.8.0",
     "watchify": "3.4.0",
     "webpack": "^3.8.1"
   },
@@ -114,12 +121,14 @@
     "cdb.templates": "./src/cdb.templates.js",
     "geojson": "./vendor/GeoJSON.js",
     "html-css-sanitizer": "./vendor/html-css-sanitizer-bundle.js",
+    "lzma": "./vendor/lzma.js",
     "mousewheel": "./vendor/mousewheel.js",
     "mwheelIntent": "./vendor/mwheelIntent.js"
   },
   "browserify-shim": {
     "geojson": "GeoJSON",
     "html-css-sanitizer": "html",
+    "lzma": "LZMA",
     "mousewheel": {
       "depends": [
         "jquery:jQuery"
@@ -143,7 +152,8 @@
     "root": "."
   },
   "scripts": {
-    "test": "grunt test",
+    "test": "karma start karma.config.js --single-run ",
+    "test:watch": "karma start karma.config.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "rm -rf dist/public; webpack --config webpack/webpack.config.js && webpack --config webpack/webpack.min.config.js",
