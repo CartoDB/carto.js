@@ -1,4 +1,1198 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"./versions/0.59.4/reference.json":[function(require,module,exports){
+module.exports={
+    "version": "0.59.4",
+    "analyses": {
+        "aggregate-intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "aggregate_function": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ]
+                },
+                "aggregate_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-box": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "bounding-circle": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "buffer": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "radius": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number",
+                    "optional": true
+                },
+                "dissolved": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "closest": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "responses": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 1
+                },
+                "category": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "concave-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target_percent": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.7
+                },
+                "allow_holes": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "contour": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "buffer": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0.2
+                },
+                "method": {
+                    "type": "enum",
+                    "values": [
+                        "nearest_neighbor",
+                        "barymetric",
+                        "IDW"
+                    ],
+                    "optional": true,
+                    "default-value": "barymetric"
+                },
+                "class_method": {
+                    "type": "enum",
+                    "values": [
+                        "equals",
+                        "headstails",
+                        "jenks",
+                        "quantiles"
+                    ],
+                    "optional": true,
+                    "default-value": "quantiles"
+                },
+                "steps": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 7
+                },
+                "resolution": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -90
+                }
+            }
+        },
+        "convex-hull": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "enum",
+                    "values": [
+                        "avg",
+                        "count",
+                        "max",
+                        "min",
+                        "sum"
+                    ],
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-measure": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                },
+                "segment_name": {
+                    "type": "string"
+                },
+                "percent": {
+                    "type": "boolean",
+                    "optional": true
+                }
+            }
+        },
+        "data-observatory-multiple-measures": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point",
+                        "polygon"
+                    ]
+                },
+                "numerators": {
+                    "type": "array"
+                },
+                "normalizations": {
+                    "type": "array"
+                },
+                "denominators": {
+                    "type": "array"
+                },
+                "geom_ids": {
+                    "type": "array"
+                },
+                "numerator_timespans": {
+                    "type": "array"
+                },
+                "column_names": {
+                    "type": "array"
+                }
+            }
+        },
+        "deprecated-sql-function": {
+            "params": {
+                "function_name": {
+                    "type": "string"
+                },
+                "primary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "secondary_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ],
+                    "optional": true
+                },
+                "function_args": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-by-node-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "filter_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "filter_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "filter-category": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "accept": {
+                    "type": "array",
+                    "optional": true
+                },
+                "reject": {
+                    "type": "array",
+                    "optional": true
+                }
+            }
+        },
+        "filter-grouped-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "group": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-range": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "min": {
+                    "type": "number",
+                    "optional": true
+                },
+                "max": {
+                    "type": "number",
+                    "optional": true
+                },
+                "greater_than": {
+                    "type": "number",
+                    "optional": true
+                },
+                "greater_than_or_equal": {
+                    "type": "number",
+                    "optional": true
+                },
+                "less_than": {
+                    "type": "number",
+                    "optional": true
+                },
+                "less_than_or_equal": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "filter-rank": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "column": {
+                    "type": "string"
+                },
+                "rank": {
+                    "type": "enum",
+                    "values": [
+                        "top",
+                        "bottom"
+                    ]
+                },
+                "limit": {
+                    "type": "number"
+                },
+                "action": {
+                    "type": "enum",
+                    "values": [
+                        "show",
+                        "hide"
+                    ],
+                    "optional": true,
+                    "default-value": "show"
+                }
+            }
+        },
+        "georeference-admin-region": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "admin_region_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-city": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "city_column": {
+                    "type": "string"
+                },
+                "admin_region": {
+                    "type": "string",
+                    "optional": true
+                },
+                "admin_region_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-country": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "country_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-ip-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "ip_address": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-long-lat": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "longitude": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "string"
+                }
+            }
+        },
+        "georeference-postal-code": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "output_geometry_type": {
+                    "type": "enum",
+                    "values": [
+                        "point",
+                        "polygon"
+                    ],
+                    "optional": true,
+                    "default-value": "point"
+                },
+                "postal_code_column": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "georeference-street-address": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "street_address_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "street_address_template": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city": {
+                    "type": "string",
+                    "optional": true
+                },
+                "city_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state": {
+                    "type": "string",
+                    "optional": true
+                },
+                "state_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country": {
+                    "type": "string",
+                    "optional": true
+                },
+                "country_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "gravity": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "weight_threshold": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": -1e+308
+                },
+                "pop_column": {
+                    "type": "string"
+                },
+                "max_distance": {
+                    "type": "number"
+                },
+                "target_id": {
+                    "type": "number"
+                }
+            }
+        },
+        "intersection": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                }
+            }
+        },
+        "kmeans": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "clusters": {
+                    "type": "number"
+                }
+            }
+        },
+        "line-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "order_column": {
+                    "type": "string"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ]
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        },
+        "line-source-to-target": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "line-to-column": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "line-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                }
+            }
+        },
+        "link-by-line": {
+            "params": {
+                "source_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "destination_points": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "destination_column": {
+                    "type": "string"
+                },
+                "use_great_circle": {
+                    "type": "boolean",
+                    "optional": true,
+                    "default-value": false
+                }
+            }
+        },
+        "merge": {
+            "params": {
+                "left_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "right_source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "left_source_column": {
+                    "type": "string"
+                },
+                "right_source_column": {
+                    "type": "string"
+                },
+                "join_operator": {
+                    "type": "enum",
+                    "values": [
+                        "inner",
+                        "left",
+                        "right"
+                    ],
+                    "optional": true,
+                    "default-value": "inner"
+                },
+                "source_geometry": {
+                    "type": "enum",
+                    "values": [
+                        "left_source",
+                        "right_source"
+                    ],
+                    "optional": true,
+                    "default-value": "left_source"
+                },
+                "left_source_columns": {
+                    "type": "array",
+                    "optional": true
+                },
+                "right_source_columns": {
+                    "type": "array",
+                    "optional": true,
+                    "default-value": []
+                }
+            }
+        },
+        "moran": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon",
+                        "point"
+                    ]
+                },
+                "numerator_column": {
+                    "type": "string"
+                },
+                "denominator_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "significance": {
+                    "type": "number"
+                },
+                "neighbours": {
+                    "type": "number",
+                    "optional": true
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true
+                },
+                "w_type": {
+                    "type": "enum",
+                    "values": [
+                        "knn",
+                        "queen"
+                    ],
+                    "optional": true,
+                    "default-value": "knn"
+                }
+            }
+        },
+        "point-in-polygon": {
+            "params": {
+                "points_source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "polygons_source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                }
+            }
+        },
+        "population-in-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "polygon"
+                    ]
+                },
+                "final_column": {
+                    "type": "string"
+                }
+            }
+        },
+        "routing-sequential": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "order_column": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                },
+                "order_type": {
+                    "type": "enum",
+                    "values": [
+                        "asc",
+                        "desc"
+                    ],
+                    "optional": true,
+                    "default-value": "asc"
+                }
+            }
+        },
+        "routing-to-layer-all-to-all": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "source_column": {
+                    "type": "string"
+                },
+                "target": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "target_column": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                },
+                "closest": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "routing-to-single-point": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "mode": {
+                    "type": "enum",
+                    "values": [
+                        "car",
+                        "walk",
+                        "bicycle",
+                        "public_transport"
+                    ]
+                },
+                "destination_longitude": {
+                    "type": "number"
+                },
+                "destination_latitude": {
+                    "type": "number"
+                },
+                "units": {
+                    "type": "enum",
+                    "values": [
+                        "kilometers",
+                        "miles"
+                    ],
+                    "optional": true,
+                    "default-value": "kilometers"
+                }
+            }
+        },
+        "sampling": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "sampling": {
+                    "type": "number"
+                },
+                "seed": {
+                    "type": "number",
+                    "optional": true
+                }
+            }
+        },
+        "source": {
+            "params": {
+                "query": {
+                    "type": "string"
+                }
+            }
+        },
+        "spatial-markov-trend": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "time_columns": {
+                    "type": "array"
+                },
+                "num_classes": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "weight_type": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "knn"
+                },
+                "num_ngbrs": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 5
+                },
+                "permutations": {
+                    "type": "number",
+                    "optional": true,
+                    "default-value": 0
+                },
+                "geom_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "the_geom"
+                },
+                "id_col": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "cartodb_id"
+                }
+            }
+        },
+        "trade-area": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "point"
+                    ]
+                },
+                "kind": {
+                    "type": "enum",
+                    "values": [
+                        "walk",
+                        "car"
+                    ]
+                },
+                "time": {
+                    "type": "number"
+                },
+                "isolines": {
+                    "type": "number"
+                },
+                "dissolved": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "weighted-centroid": {
+            "params": {
+                "source": {
+                    "type": "node",
+                    "geometry": [
+                        "*"
+                    ]
+                },
+                "weight_column": {
+                    "type": "string"
+                },
+                "category_column": {
+                    "type": "string",
+                    "optional": true
+                },
+                "aggregation": {
+                    "type": "string",
+                    "optional": true,
+                    "default-value": "count"
+                },
+                "aggregation_column": {
+                    "type": "string",
+                    "optional": true
+                }
+            }
+        }
+    }
+}
+},{}],1:[function(require,module,exports){
 /*!
 (c) 2012 Uzi Kilon, Splunk Inc.
 Backbone Poller 1.1.4
@@ -241,7 +1435,7 @@ Backbone Poller may be freely distributed under the MIT license.
   return PollingManager;
 }));
 
-},{"backbone":2,"underscore":52}],2:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],2:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2140,7 +3334,7 @@ Backbone Poller may be freely distributed under the MIT license.
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"jquery":47,"underscore":52}],3:[function(require,module,exports){
+},{"jquery":8,"underscore":13}],3:[function(require,module,exports){
 'use strict';
 
 var version = require('./version');
@@ -2251,25404 +3445,70 @@ module.exports.AnalysisGraph = AnalysisGraph;
 },{"./analysis-graph":3,"./version":5}],5:[function(require,module,exports){
 'use strict';
 
-var versions = require('./versions');
-var availableVersions = Object.keys(versions).filter(function(version) {
-    return version !== 'latest';
-});
+var v = require('./versions');
 
 module.exports.getVersion = function (version) {
-    if (!versions.hasOwnProperty(version)) {
+    if (version === 'latest') {
+        version = v.target;
+    }
+    else if (!v.versions.includes(version)) {
         throw new Error(
                 'Invalid camshaft-reference version: "' + version + '". ' +
-                'Valid versions are: ' + availableVersions.join(', ') + '.'
+                'Valid versions are: ' + v.versions.join(', ') + '.'
         );
     }
 
-    return versions[version];
+    return require('./versions/' + version + '/reference.json');
 };
 
-module.exports.versions = availableVersions;
+module.exports.versions = v.versions;
 
-},{"./versions":45}],6:[function(require,module,exports){
-module.exports={
-    "version": "0.1.0",
-    "analyses": {
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radio": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "drive",
-                        "bike"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                }
-            }
-        }
-    }
-}
+},{"./versions":6}],6:[function(require,module,exports){
+module.exports.versions = [
+  '0.1.0',
+  '0.2.0',
+  '0.3.0',
+  '0.4.0',
+  '0.6.0',
+  '0.7.0',
+  '0.9.0',
+  '0.10.0',
+  '0.14.0',
+  '0.15.0',
+  '0.16.0',
+  '0.17.0',
+  '0.18.0',
+  '0.19.0',
+  '0.20.0',
+  '0.21.0',
+  '0.22.0',
+  '0.23.0',
+  '0.26.0',
+  '0.27.0',
+  '0.29.0',
+  '0.33.0',
+  '0.34.0',
+  '0.37.0',
+  '0.37.1',
+  '0.38.0',
+  '0.40.0',
+  '0.41.0',
+  '0.43.0',
+  '0.44.0',
+  '0.47.0',
+  '0.51.0',
+  '0.52.0',
+  '0.54.0',
+  '0.55.0',
+  '0.55.1',
+  '0.58.1',
+  '0.59.3',
+  '0.59.4'
+];
+
+module.exports.target = '0.59.4';
+
 },{}],7:[function(require,module,exports){
-module.exports={
-    "version": "0.10.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        }
-    }
-}
-},{}],8:[function(require,module,exports){
-module.exports={
-    "version": "0.14.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                }
-            }
-        }
-    }
-}
-},{}],9:[function(require,module,exports){
-module.exports={
-    "version": "0.15.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                }
-            }
-        }
-    }
-}
-},{}],10:[function(require,module,exports){
-module.exports={
-    "version": "0.16.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                }
-            }
-        }
-    }
-}
-},{}],11:[function(require,module,exports){
-module.exports={
-    "version": "0.17.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],12:[function(require,module,exports){
-module.exports={
-    "version": "0.18.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],13:[function(require,module,exports){
-module.exports={
-    "version": "0.19.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],14:[function(require,module,exports){
-module.exports={
-    "version": "0.2.0",
-    "analyses": {
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radio": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "drive",
-                        "bike"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                }
-            }
-        }
-    }
-}
-},{}],15:[function(require,module,exports){
-module.exports={
-    "version": "0.20.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],16:[function(require,module,exports){
-module.exports={
-    "version": "0.21.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string"
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],17:[function(require,module,exports){
-module.exports={
-    "version": "0.22.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],18:[function(require,module,exports){
-module.exports={
-    "version": "0.23.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],19:[function(require,module,exports){
-module.exports={
-    "version": "0.26.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],20:[function(require,module,exports){
-module.exports={
-    "version": "0.27.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],21:[function(require,module,exports){
-module.exports={
-    "version": "0.29.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],22:[function(require,module,exports){
-module.exports={
-    "version": "0.3.0",
-    "analyses": {
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radio": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "drive",
-                        "bike"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                }
-            }
-        }
-    }
-}
-},{}],23:[function(require,module,exports){
-module.exports={
-    "version": "0.33.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "google",
-                        "mapzen",
-                        "user_default"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],24:[function(require,module,exports){
-module.exports={
-    "version": "0.34.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "postal_code": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "google",
-                        "mapzen",
-                        "user_default"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "mapzen"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],25:[function(require,module,exports){
-module.exports={
-    "version": "0.37.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "google",
-                        "mapzen",
-                        "user_default"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "mapzen"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],26:[function(require,module,exports){
-module.exports={
-    "version": "0.37.1",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "google",
-                        "mapzen",
-                        "user_default"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "mapzen"
-                    ],
-                    "optional": true,
-                    "default-value": "heremaps"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-
-},{}],27:[function(require,module,exports){
-module.exports={
-    "version": "0.38.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "google",
-                        "mapzen",
-                        "user_default"
-                    ],
-                    "optional": true,
-                    "default-value": "mapzen"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                },
-                "provider": {
-                    "type": "enum",
-                    "values": [
-                        "heremaps",
-                        "mapzen"
-                    ],
-                    "optional": true,
-                    "default-value": "heremaps"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],28:[function(require,module,exports){
-module.exports={
-    "version": "0.4.0",
-    "analyses": {
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radius": {
-                    "type": "number"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "drive",
-                        "bike"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                }
-            }
-        }
-    }
-}
-},{}],29:[function(require,module,exports){
-module.exports={
-    "version": "0.40.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],30:[function(require,module,exports){
-module.exports={
-    "version": "0.41.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],31:[function(require,module,exports){
-module.exports={
-    "version": "0.43.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],32:[function(require,module,exports){
-module.exports={
-    "version": "0.44.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],33:[function(require,module,exports){
-module.exports={
-    "version": "0.47.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string"
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],34:[function(require,module,exports){
-module.exports={
-    "version": "0.51.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],35:[function(require,module,exports){
-module.exports={
-    "version": "0.52.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],36:[function(require,module,exports){
-module.exports={
-    "version": "0.54.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],37:[function(require,module,exports){
-module.exports={
-    "version": "0.55.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-multiple-measures": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "numerators": {
-                    "type": "array"
-                },
-                "normalizations": {
-                    "type": "array"
-                },
-                "denominators": {
-                    "type": "array"
-                },
-                "geom_ids": {
-                    "type": "array"
-                },
-                "numerator_timespans": {
-                    "type": "array"
-                },
-                "column_names": {
-                    "type": "array"
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "column_target": {
-                    "type": "string"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],38:[function(require,module,exports){
-module.exports={
-    "version": "0.55.1",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-multiple-measures": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "numerators": {
-                    "type": "array"
-                },
-                "normalizations": {
-                    "type": "array"
-                },
-                "denominators": {
-                    "type": "array"
-                },
-                "geom_ids": {
-                    "type": "array"
-                },
-                "numerator_timespans": {
-                    "type": "array"
-                },
-                "column_names": {
-                    "type": "array"
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "polygon"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],39:[function(require,module,exports){
-module.exports={
-    "version": "0.58.1",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-multiple-measures": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "numerators": {
-                    "type": "array"
-                },
-                "normalizations": {
-                    "type": "array"
-                },
-                "denominators": {
-                    "type": "array"
-                },
-                "geom_ids": {
-                    "type": "array"
-                },
-                "numerator_timespans": {
-                    "type": "array"
-                },
-                "column_names": {
-                    "type": "array"
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "point"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],40:[function(require,module,exports){
-module.exports={
-    "version": "0.59.3",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-multiple-measures": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "numerators": {
-                    "type": "array"
-                },
-                "normalizations": {
-                    "type": "array"
-                },
-                "denominators": {
-                    "type": "array"
-                },
-                "geom_ids": {
-                    "type": "array"
-                },
-                "numerator_timespans": {
-                    "type": "array"
-                },
-                "column_names": {
-                    "type": "array"
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min_or_equal": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max_or_equal": {
-                    "type": "number",
-                    "optional": true
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "point"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],41:[function(require,module,exports){
-module.exports={
-    "version": "0.59.4",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-box": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "bounding-circle": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number",
-                    "optional": true
-                },
-                "dissolved": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "closest": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "responses": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 1
-                },
-                "category": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "concave-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target_percent": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.7
-                },
-                "allow_holes": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "contour": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "buffer": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0.2
-                },
-                "method": {
-                    "type": "enum",
-                    "values": [
-                        "nearest_neighbor",
-                        "barymetric",
-                        "IDW"
-                    ],
-                    "optional": true,
-                    "default-value": "barymetric"
-                },
-                "class_method": {
-                    "type": "enum",
-                    "values": [
-                        "equals",
-                        "headstails",
-                        "jenks",
-                        "quantiles"
-                    ],
-                    "optional": true,
-                    "default-value": "quantiles"
-                },
-                "steps": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 7
-                },
-                "resolution": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -90
-                }
-            }
-        },
-        "convex-hull": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ],
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-measure": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                },
-                "segment_name": {
-                    "type": "string"
-                },
-                "percent": {
-                    "type": "boolean",
-                    "optional": true
-                }
-            }
-        },
-        "data-observatory-multiple-measures": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point",
-                        "polygon"
-                    ]
-                },
-                "numerators": {
-                    "type": "array"
-                },
-                "normalizations": {
-                    "type": "array"
-                },
-                "denominators": {
-                    "type": "array"
-                },
-                "geom_ids": {
-                    "type": "array"
-                },
-                "numerator_timespans": {
-                    "type": "array"
-                },
-                "column_names": {
-                    "type": "array"
-                }
-            }
-        },
-        "deprecated-sql-function": {
-            "params": {
-                "function_name": {
-                    "type": "string"
-                },
-                "primary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "secondary_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ],
-                    "optional": true
-                },
-                "function_args": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-by-node-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "filter_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "filter_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-grouped-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "group": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                },
-                "greater_than": {
-                    "type": "number",
-                    "optional": true
-                },
-                "greater_than_or_equal": {
-                    "type": "number",
-                    "optional": true
-                },
-                "less_than": {
-                    "type": "number",
-                    "optional": true
-                },
-                "less_than_or_equal": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "filter-rank": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "rank": {
-                    "type": "enum",
-                    "values": [
-                        "top",
-                        "bottom"
-                    ]
-                },
-                "limit": {
-                    "type": "number"
-                },
-                "action": {
-                    "type": "enum",
-                    "values": [
-                        "show",
-                        "hide"
-                    ],
-                    "optional": true,
-                    "default-value": "show"
-                }
-            }
-        },
-        "georeference-admin-region": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "admin_region_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-city": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "city_column": {
-                    "type": "string"
-                },
-                "admin_region": {
-                    "type": "string",
-                    "optional": true
-                },
-                "admin_region_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-country": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "country_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-ip-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "ip_address": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-long-lat": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "longitude": {
-                    "type": "string"
-                },
-                "latitude": {
-                    "type": "string"
-                }
-            }
-        },
-        "georeference-postal-code": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "output_geometry_type": {
-                    "type": "enum",
-                    "values": [
-                        "point",
-                        "polygon"
-                    ],
-                    "optional": true,
-                    "default-value": "point"
-                },
-                "postal_code_column": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "georeference-street-address": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "street_address_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "street_address_template": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city": {
-                    "type": "string",
-                    "optional": true
-                },
-                "city_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state": {
-                    "type": "string",
-                    "optional": true
-                },
-                "state_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country": {
-                    "type": "string",
-                    "optional": true
-                },
-                "country_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "gravity": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "weight_threshold": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": -1e+308
-                },
-                "pop_column": {
-                    "type": "string"
-                },
-                "max_distance": {
-                    "type": "number"
-                },
-                "target_id": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "kmeans": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "clusters": {
-                    "type": "number"
-                }
-            }
-        },
-        "line-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "order_column": {
-                    "type": "string"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ]
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        },
-        "line-source-to-target": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "line-to-column": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "line-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                }
-            }
-        },
-        "link-by-line": {
-            "params": {
-                "source_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "destination_points": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "destination_column": {
-                    "type": "string"
-                },
-                "use_great_circle": {
-                    "type": "boolean",
-                    "optional": true,
-                    "default-value": false
-                }
-            }
-        },
-        "merge": {
-            "params": {
-                "left_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "right_source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "left_source_column": {
-                    "type": "string"
-                },
-                "right_source_column": {
-                    "type": "string"
-                },
-                "join_operator": {
-                    "type": "enum",
-                    "values": [
-                        "inner",
-                        "left",
-                        "right"
-                    ],
-                    "optional": true,
-                    "default-value": "inner"
-                },
-                "source_geometry": {
-                    "type": "enum",
-                    "values": [
-                        "left_source",
-                        "right_source"
-                    ],
-                    "optional": true,
-                    "default-value": "left_source"
-                },
-                "left_source_columns": {
-                    "type": "array",
-                    "optional": true
-                },
-                "right_source_columns": {
-                    "type": "array",
-                    "optional": true,
-                    "default-value": []
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon",
-                        "point"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number",
-                    "optional": true
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ],
-                    "optional": true,
-                    "default-value": "knn"
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "routing-sequential": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "order_column": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                },
-                "order_type": {
-                    "type": "enum",
-                    "values": [
-                        "asc",
-                        "desc"
-                    ],
-                    "optional": true,
-                    "default-value": "asc"
-                }
-            }
-        },
-        "routing-to-layer-all-to-all": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "source_column": {
-                    "type": "string"
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "target_column": {
-                    "type": "string"
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                },
-                "closest": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "routing-to-single-point": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "mode": {
-                    "type": "enum",
-                    "values": [
-                        "car",
-                        "walk",
-                        "bicycle",
-                        "public_transport"
-                    ]
-                },
-                "destination_longitude": {
-                    "type": "number"
-                },
-                "destination_latitude": {
-                    "type": "number"
-                },
-                "units": {
-                    "type": "enum",
-                    "values": [
-                        "kilometers",
-                        "miles"
-                    ],
-                    "optional": true,
-                    "default-value": "kilometers"
-                }
-            }
-        },
-        "sampling": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "sampling": {
-                    "type": "number"
-                },
-                "seed": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "spatial-markov-trend": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "time_columns": {
-                    "type": "array"
-                },
-                "num_classes": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "weight_type": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "knn"
-                },
-                "num_ngbrs": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 5
-                },
-                "permutations": {
-                    "type": "number",
-                    "optional": true,
-                    "default-value": 0
-                },
-                "geom_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "the_geom"
-                },
-                "id_col": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "cartodb_id"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "weighted-centroid": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "weight_column": {
-                    "type": "string"
-                },
-                "category_column": {
-                    "type": "string",
-                    "optional": true
-                },
-                "aggregation": {
-                    "type": "string",
-                    "optional": true,
-                    "default-value": "count"
-                },
-                "aggregation_column": {
-                    "type": "string",
-                    "optional": true
-                }
-            }
-        }
-    }
-}
-},{}],42:[function(require,module,exports){
-module.exports={
-    "version": "0.6.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "target": {
-                    "type": "node"
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radius": {
-                    "type": "number"
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "target": {
-                    "type": "node"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        }
-    }
-}
-},{}],43:[function(require,module,exports){
-module.exports={
-    "version": "0.7.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "target": {
-                    "type": "node"
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "radius": {
-                    "type": "number"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "target": {
-                    "type": "node"
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node"
-                },
-                "polygons_source": {
-                    "type": "node"
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node"
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        }
-    }
-}
-},{}],44:[function(require,module,exports){
-module.exports={
-    "version": "0.9.0",
-    "analyses": {
-        "aggregate-intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "aggregate_function": {
-                    "type": "enum",
-                    "values": [
-                        "avg",
-                        "count",
-                        "max",
-                        "min",
-                        "sum"
-                    ]
-                },
-                "aggregate_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "buffer": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "radius": {
-                    "type": "number"
-                }
-            }
-        },
-        "filter-category": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "accept": {
-                    "type": "array",
-                    "optional": true
-                },
-                "reject": {
-                    "type": "array",
-                    "optional": true
-                }
-            }
-        },
-        "filter-range": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "column": {
-                    "type": "string"
-                },
-                "min": {
-                    "type": "number",
-                    "optional": true
-                },
-                "max": {
-                    "type": "number",
-                    "optional": true
-                }
-            }
-        },
-        "intersection": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                },
-                "target": {
-                    "type": "node",
-                    "geometry": [
-                        "*"
-                    ]
-                }
-            }
-        },
-        "moran": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "numerator_column": {
-                    "type": "string"
-                },
-                "denominator_column": {
-                    "type": "string"
-                },
-                "significance": {
-                    "type": "number"
-                },
-                "neighbours": {
-                    "type": "number"
-                },
-                "permutations": {
-                    "type": "number"
-                },
-                "w_type": {
-                    "type": "enum",
-                    "values": [
-                        "knn",
-                        "queen"
-                    ]
-                }
-            }
-        },
-        "point-in-polygon": {
-            "params": {
-                "points_source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "polygons_source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                }
-            }
-        },
-        "population-in-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "polygon"
-                    ]
-                },
-                "final_column": {
-                    "type": "string"
-                }
-            }
-        },
-        "source": {
-            "params": {
-                "query": {
-                    "type": "string"
-                }
-            }
-        },
-        "trade-area": {
-            "params": {
-                "source": {
-                    "type": "node",
-                    "geometry": [
-                        "point"
-                    ]
-                },
-                "kind": {
-                    "type": "enum",
-                    "values": [
-                        "walk",
-                        "car"
-                    ]
-                },
-                "time": {
-                    "type": "number"
-                },
-                "isolines": {
-                    "type": "number"
-                },
-                "dissolved": {
-                    "type": "boolean"
-                }
-            }
-        }
-    }
-}
-},{}],45:[function(require,module,exports){
-var versions = {
-    "0.1.0": require("./0.1.0/reference.json"),
-    "0.2.0": require("./0.2.0/reference.json"),
-    "0.3.0": require("./0.3.0/reference.json"),
-    "0.4.0": require("./0.4.0/reference.json"),
-    "0.6.0": require("./0.6.0/reference.json"),
-    "0.7.0": require("./0.7.0/reference.json"),
-    "0.9.0": require("./0.9.0/reference.json"),
-    "0.10.0": require("./0.10.0/reference.json"),
-    "0.14.0": require("./0.14.0/reference.json"),
-    "0.15.0": require("./0.15.0/reference.json"),
-    "0.16.0": require("./0.16.0/reference.json"),
-    "0.17.0": require("./0.17.0/reference.json"),
-    "0.18.0": require("./0.18.0/reference.json"),
-    "0.19.0": require("./0.19.0/reference.json"),
-    "0.20.0": require("./0.20.0/reference.json"),
-    "0.21.0": require("./0.21.0/reference.json"),
-    "0.22.0": require("./0.22.0/reference.json"),
-    "0.23.0": require("./0.23.0/reference.json"),
-    "0.26.0": require("./0.26.0/reference.json"),
-    "0.27.0": require("./0.27.0/reference.json"),
-    "0.29.0": require("./0.29.0/reference.json"),
-    "0.33.0": require("./0.33.0/reference.json"),
-    "0.34.0": require("./0.34.0/reference.json"),
-    "0.37.0": require("./0.37.0/reference.json"),
-    "0.37.1": require("./0.37.1/reference.json"),
-    "0.38.0": require("./0.38.0/reference.json"),
-    "0.40.0": require("./0.40.0/reference.json"),
-    "0.41.0": require("./0.41.0/reference.json"),
-    "0.43.0": require("./0.43.0/reference.json"),
-    "0.44.0": require("./0.44.0/reference.json"),
-    "0.47.0": require("./0.47.0/reference.json"),
-    "0.51.0": require("./0.51.0/reference.json"),
-    "0.52.0": require("./0.52.0/reference.json"),
-    "0.54.0": require("./0.54.0/reference.json"),
-    "0.55.0": require("./0.55.0/reference.json"),
-    "0.55.1": require("./0.55.1/reference.json"),
-    "0.58.1": require("./0.58.1/reference.json"),
-    "0.59.3": require("./0.59.3/reference.json"),
-    "0.59.4": require("./0.59.4/reference.json")
-};
-
-versions.latest = versions["0.59.4"];
-module.exports = versions;
-
-},{"./0.1.0/reference.json":6,"./0.10.0/reference.json":7,"./0.14.0/reference.json":8,"./0.15.0/reference.json":9,"./0.16.0/reference.json":10,"./0.17.0/reference.json":11,"./0.18.0/reference.json":12,"./0.19.0/reference.json":13,"./0.2.0/reference.json":14,"./0.20.0/reference.json":15,"./0.21.0/reference.json":16,"./0.22.0/reference.json":17,"./0.23.0/reference.json":18,"./0.26.0/reference.json":19,"./0.27.0/reference.json":20,"./0.29.0/reference.json":21,"./0.3.0/reference.json":22,"./0.33.0/reference.json":23,"./0.34.0/reference.json":24,"./0.37.0/reference.json":25,"./0.37.1/reference.json":26,"./0.38.0/reference.json":27,"./0.4.0/reference.json":28,"./0.40.0/reference.json":29,"./0.41.0/reference.json":30,"./0.43.0/reference.json":31,"./0.44.0/reference.json":32,"./0.47.0/reference.json":33,"./0.51.0/reference.json":34,"./0.52.0/reference.json":35,"./0.54.0/reference.json":36,"./0.55.0/reference.json":37,"./0.55.1/reference.json":38,"./0.58.1/reference.json":39,"./0.59.3/reference.json":40,"./0.59.4/reference.json":41,"./0.6.0/reference.json":42,"./0.7.0/reference.json":43,"./0.9.0/reference.json":44}],46:[function(require,module,exports){
 // https://d3js.org/d3-array/ Version 1.2.1. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -28240,7 +4100,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],47:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -37452,7 +13312,7 @@ return jQuery;
 
 }));
 
-},{}],48:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports={
 	"version": "2017c",
 	"zones": [
@@ -38052,11 +13912,11 @@ module.exports={
 		"Pacific/Tarawa|Pacific/Wallis"
 	]
 }
-},{}],49:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var moment = module.exports = require("./moment-timezone");
 moment.tz.load(require('./data/packed/latest.json'));
 
-},{"./data/packed/latest.json":48,"./moment-timezone":50}],50:[function(require,module,exports){
+},{"./data/packed/latest.json":9,"./moment-timezone":11}],11:[function(require,module,exports){
 //! moment-timezone.js
 //! version : 0.5.14
 //! Copyright (c) JS Foundation and other contributors
@@ -38663,9 +14523,9 @@ moment.tz.load(require('./data/packed/latest.json'));
 	return moment;
 }));
 
-},{"moment":51}],51:[function(require,module,exports){
+},{"moment":12}],12:[function(require,module,exports){
 //! moment.js
-//! version : 2.19.3
+//! version : 2.19.4
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -40695,7 +16555,7 @@ function currentDateArray(config) {
 // note: all values past the year are optional and will default to the lowest possible value.
 // [year, month, day , hour, minute, second, millisecond]
 function configFromArray (config) {
-    var i, date, input = [], currentDate, yearToUse;
+    var i, date, input = [], currentDate, expectedWeekday, yearToUse;
 
     if (config._d) {
         return;
@@ -40745,6 +16605,8 @@ function configFromArray (config) {
     }
 
     config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    expectedWeekday = config._useUTC ? config._d.getUTCDay() : config._d.getDay();
+
     // Apply timezone offset from input. The actual utcOffset can be changed
     // with parseZone.
     if (config._tzm != null) {
@@ -40756,7 +16618,7 @@ function configFromArray (config) {
     }
 
     // check for mismatching day of week
-    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== config._d.getDay()) {
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== expectedWeekday) {
         getParsingFlags(config).weekdayMismatch = true;
     }
 }
@@ -42332,7 +18194,7 @@ addRegexToken('Do', function (isStrict, locale) {
 
 addParseToken(['D', 'DD'], DATE);
 addParseToken('Do', function (input, array) {
-    array[DATE] = toInt(input.match(match1to2)[0], 10);
+    array[DATE] = toInt(input.match(match1to2)[0]);
 });
 
 // MOMENTS
@@ -43144,7 +19006,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.19.3';
+hooks.version = '2.19.4';
 
 setHookCallback(createLocal);
 
@@ -43180,7 +19042,7 @@ return hooks;
 
 })));
 
-},{}],52:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -44730,10 +20592,10 @@ return hooks;
   }
 }.call(this));
 
-},{}],53:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports={
   "name": "cartodb.js",
-  "version": "4.0.0-alpha.28",
+  "version": "4.0.0-alpha.32",
   "description": "CARTO javascript library",
   "repository": {
     "type": "git",
@@ -44761,7 +20623,7 @@ module.exports={
     "backbone": "1.2.3",
     "backbone-poller": "^1.1.3",
     "browserify-shim": "3.8.12",
-    "camshaft-reference": "0.33.4",
+    "camshaft-reference": "0.34.0",
     "carto": "cartodb/carto#master",
     "clip-path-polygon": "0.1.12",
     "d3-array": "1.2.1",
@@ -44891,7 +20753,7 @@ module.exports={
   }
 }
 
-},{}],54:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Model = require('../core/model');
@@ -45122,7 +20984,7 @@ var AnalysisModel = Model.extend({
 
 module.exports = AnalysisModel;
 
-},{"../core/model":98,"../core/util":100,"backbone":2,"underscore":52}],55:[function(require,module,exports){
+},{"../core/model":70,"../core/util":72,"backbone":2,"underscore":13}],16:[function(require,module,exports){
 var _ = require('underscore');
 var BackbonePoller = require('backbone-poller');
 
@@ -45184,7 +21046,7 @@ AnalysisPoller.prototype.reset = function () {
 
 module.exports = AnalysisPoller;
 
-},{"backbone-poller":1,"underscore":52}],56:[function(require,module,exports){
+},{"backbone-poller":1,"underscore":13}],17:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Analysis = require('./analysis-model');
@@ -45341,7 +21203,7 @@ function _getCartoDBAndTorqueLayers (layersCollection) {
 
 module.exports = AnalysisService;
 
-},{"../geo/map/layer-types.js":126,"./analysis-model":54,"./camshaft-reference":57,"backbone":2,"underscore":52}],57:[function(require,module,exports){
+},{"../geo/map/layer-types.js":98,"./analysis-model":15,"./camshaft-reference":18,"backbone":2,"underscore":13}],18:[function(require,module,exports){
 var camshaftReference = require('camshaft-reference').getVersion('latest');
 var PARAM_TYPES = {
   NODE: 'node',
@@ -45394,15 +21256,20 @@ module.exports = {
   }
 };
 
-},{"camshaft-reference":4}],58:[function(require,module,exports){
+},{"camshaft-reference":4}],19:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
-var CartoError = require('./error');
+var CartoError = require('./error-handling/carto-error');
 var Engine = require('../../engine');
 var Events = require('./events');
 var LayerBase = require('./layer/base');
 var Layers = require('./layers');
 var VERSION = require('../../../package.json').version;
+var CartoValidationError = require('./error-handling/carto-validation-error');
+
+function getValidationError (code) {
+  return new CartoValidationError('client', code);
+}
 
 /**
  * This is the entry point for a Carto.js application.
@@ -45463,9 +21330,9 @@ Client.prototype.addLayer = function (layer, opts) {
 };
 
 /**
- * Add multiple layers to the client.
+ * Add multiple layers to the client. Note the hierarchal order of layers.
  *
- * @param {carto.layer.Base[]} - An array with the layers to be added
+ * @param {carto.layer.Base[]} - An array with the layers to be added. Note that ([A, B]) displays B as the first layer. Alternatively, client.addLayer(A); client.addLayer(B);
  * @param {object} opts
  * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
@@ -45698,6 +21565,10 @@ Client.prototype._bindEngine = function (engine) {
   }.bind(this));
 
   engine.on(Engine.Events.RELOAD_ERROR, function (err) {
+    this.trigger(Events.ERROR, new CartoError(err, { layers: this._layers }));
+  }.bind(this));
+
+  engine.on(Engine.Events.LAYER_ERROR, function (err) {
     this.trigger(Events.ERROR, new CartoError(err));
   }.bind(this));
 };
@@ -45708,7 +21579,7 @@ Client.prototype._bindEngine = function (engine) {
  */
 function _checkLayer (object) {
   if (!(object instanceof LayerBase)) {
-    throw new TypeError('The given object is not a layer');
+    throw getValidationError('badLayerType');
   }
 }
 
@@ -45722,29 +21593,29 @@ function _checkSettings (settings) {
 
 function _checkApiKey (apiKey) {
   if (!apiKey) {
-    throw new TypeError('apiKey property is required.');
+    throw getValidationError('apiKeyRequired');
   }
   if (!_.isString(apiKey)) {
-    throw new TypeError('apiKey property must be a string.');
+    throw getValidationError('apiKeyString');
   }
 }
 
 function _checkUsername (username) {
   if (!username) {
-    throw new TypeError('username property is required.');
+    throw getValidationError('usernameRequired');
   }
   if (!_.isString(username)) {
-    throw new TypeError('username property must be a string.');
+    throw getValidationError('usernameString');
   }
 }
 
 function _checkServerUrl (serverUrl, username) {
   var urlregex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   if (!serverUrl.match(urlregex)) {
-    throw new TypeError('serverUrl is not a valid URL.');
+    throw getValidationError('nonValidServerURL');
   }
   if (serverUrl.indexOf(username) < 0) {
-    throw new TypeError('serverUrl doesn\'t match the username.');
+    throw getValidationError('serverURLDoesntMatchUsername');
   }
 }
 
@@ -45771,7 +21642,7 @@ function _isGoogleMapsLoaded () {
 
 module.exports = Client;
 
-},{"../../../package.json":53,"../../engine":112,"./error":70,"./events":71,"./layer/base":78,"./layers":82,"./native/google-maps-map-type":83,"./native/leaflet-layer":84,"backbone":2,"underscore":52}],59:[function(require,module,exports){
+},{"../../../package.json":14,"../../engine":84,"./error-handling/carto-error":32,"./error-handling/carto-validation-error":33,"./events":39,"./layer/base":46,"./layers":54,"./native/google-maps-map-type":55,"./native/leaflet-layer":56,"backbone":2,"underscore":13}],20:[function(require,module,exports){
 var _ = require('underscore');
 /**
  * Constants module for dataviews
@@ -45865,13 +21736,14 @@ module.exports = {
   ATTRIBUTION: ATTRIBUTION
 };
 
-},{"underscore":52}],60:[function(require,module,exports){
+},{"underscore":13}],21:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var status = require('../constants').status;
 var SourceBase = require('../source/base');
 var FilterBase = require('../filter/base');
-var CartoError = require('../error');
+var CartoError = require('../error-handling/carto-error');
+var CartoValidationError = require('../error-handling/carto-validation-error');
 
 /**
  * Base class for dataview objects.
@@ -46082,19 +21954,19 @@ Base.prototype._initialize = function (source, column, options) {
 
 Base.prototype._checkSource = function (source) {
   if (!(source instanceof SourceBase)) {
-    throw new TypeError('Source property is required.');
+    throw this._getValidationError('sourceRequired');
   }
 };
 
 Base.prototype._checkColumn = function (column) {
   if (_.isUndefined(column)) {
-    throw new TypeError('Column property is required.');
+    throw this._getValidationError('columnRequired');
   }
   if (!_.isString(column)) {
-    throw new TypeError('Column property must be a string.');
+    throw this._getValidationError('columnString');
   }
   if (_.isEmpty(column)) {
-    throw new TypeError('Column property must be not empty.');
+    throw this._getValidationError('emptyColumn');
   }
 };
 
@@ -46104,7 +21976,7 @@ Base.prototype._checkOptions = function (options) {
 
 Base.prototype._checkFilter = function (filter) {
   if (!(filter instanceof FilterBase)) {
-    throw new TypeError('Filter property is required.');
+    throw this._getValidationError('filterRequired');
   }
 };
 
@@ -46195,6 +22067,10 @@ Base.prototype._removeBoundingBoxFilter = function () {
   }
 };
 
+Base.prototype._getValidationError = function (code) {
+  return new CartoValidationError('dataview', code);
+};
+
 // Internal public methods
 
 Base.prototype.$setEngine = function (engine) {
@@ -46231,7 +22107,7 @@ module.exports = Base;
  * @api
  */
 
-},{"../constants":59,"../error":70,"../filter/base":72,"../source/base":86,"backbone":2,"underscore":52}],61:[function(require,module,exports){
+},{"../constants":20,"../error-handling/carto-error":32,"../error-handling/carto-validation-error":33,"../filter/base":40,"../source/base":58,"backbone":2,"underscore":13}],22:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var constants = require('../../constants');
@@ -46291,7 +22167,7 @@ var parseCategoryData = require('./parse-data.js');
  * // Data and status are fired by all dataviews.
  * categoryDataview.on('dataChanged', newData => { });
  * categoryDataview.on('statusChanged', (newData, error) => { });
- * categoryDataview.on('error', cartoError => { });
+ * categoryDataview.on(carto.events.ERROR, cartoError => { });
  *
  * // Listen to specific category-dataview events.
  * categoryDataview.on('columnChanged', newData => { });
@@ -46409,7 +22285,7 @@ Category.prototype.DEFAULTS = {
 
 Category.prototype._checkOptions = function (options) {
   if (_.isUndefined(options)) {
-    throw new TypeError('Category dataview options are not defined.');
+    throw this._getValidationError('categoryOptionsRequired');
   }
   this._checkLimit(options.limit);
   this._checkOperation(options.operation);
@@ -46418,31 +22294,31 @@ Category.prototype._checkOptions = function (options) {
 
 Category.prototype._checkLimit = function (limit) {
   if (_.isUndefined(limit)) {
-    throw new TypeError('Limit for category dataview is required.');
+    throw this._getValidationError('categoryLimitRequired');
   }
   if (!_.isNumber(limit)) {
-    throw new TypeError('Limit for category dataview must be a number.');
+    throw this._getValidationError('categoryLimitNumber');
   }
   if (limit <= 0) {
-    throw new TypeError('Limit for category dataview must be greater than 0.');
+    throw this._getValidationError('categoryLimitPositive');
   }
 };
 
 Category.prototype._checkOperation = function (operation) {
   if (_.isUndefined(operation) || !constants.isValidOperation(operation)) {
-    throw new TypeError('Operation for category dataview is not valid. Use carto.operation');
+    throw this._getValidationError('categoryInvalidOperation');
   }
 };
 
 Category.prototype._checkOperationColumn = function (operationColumn) {
   if (_.isUndefined(operationColumn)) {
-    throw new TypeError('Operation column for category dataview is required.');
+    throw this._getValidationError('categoryOperationRequired');
   }
   if (!_.isString(operationColumn)) {
-    throw new TypeError('Operation column for category dataview must be a string.');
+    throw this._getValidationError('categoryOperationString');
   }
   if (_.isEmpty(operationColumn)) {
-    throw new TypeError('Operation column for category dataview must be not empty.');
+    throw this._getValidationError('categoryOperationEmpty');
   }
 };
 
@@ -46505,7 +22381,7 @@ module.exports = Category;
  * @api
  */
 
-},{"../../../../dataviews/category-dataview-model":101,"../../../../windshaft/filters/category":153,"../../constants":59,"../base":60,"./parse-data.js":62,"underscore":52}],62:[function(require,module,exports){
+},{"../../../../dataviews/category-dataview-model":73,"../../../../windshaft/filters/category":125,"../../constants":20,"../base":21,"./parse-data.js":23,"underscore":13}],23:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -46567,7 +22443,7 @@ function _createCategories (data) {
 
 module.exports = parseCategoryData;
 
-},{"underscore":52}],63:[function(require,module,exports){
+},{"underscore":13}],24:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var constants = require('../../constants');
@@ -46661,14 +22537,14 @@ Formula.prototype.DEFAULTS = {
 
 Formula.prototype._checkOptions = function (options) {
   if (_.isUndefined(options)) {
-    throw new TypeError('Formula dataview options are not defined.');
+    throw this._getValidationError('formulaOptionsRequired');
   }
   this._checkOperation(options.operation);
 };
 
 Formula.prototype._checkOperation = function (operation) {
   if (_.isUndefined(operation) || !constants.isValidOperation(operation)) {
-    throw new TypeError('Operation for formula dataview is not valid. Use carto.operation');
+    throw this._getValidationError('formulaInvalidOperation');
   }
 };
 
@@ -46708,7 +22584,7 @@ module.exports = Formula;
  * @api
  */
 
-},{"../../../../dataviews/formula-dataview-model":108,"../../constants":59,"../base":60,"./parse-data.js":64,"underscore":52}],64:[function(require,module,exports){
+},{"../../../../dataviews/formula-dataview-model":80,"../../constants":20,"../base":21,"./parse-data.js":25,"underscore":13}],25:[function(require,module,exports){
 /**
  * Transform the data obtained from an internal formula dataview into a
  * public object.
@@ -46739,7 +22615,7 @@ function parseFormulaData (nulls, operation, result) {
 
 module.exports = parseFormulaData;
 
-},{}],65:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
@@ -46853,13 +22729,13 @@ Histogram.prototype.getDistributionType = function () {
 
 Histogram.prototype._validateBins = function (bins) {
   if (!_.isFinite(bins) || bins < 1 || Math.floor(bins) !== bins) {
-    throw new TypeError('Bins must be a positive integer value.');
+    throw this._getValidationError('histogramInvalidBins');
   }
 };
 
 Histogram.prototype._checkOptions = function (options) {
   if (_.isUndefined(options)) {
-    throw new TypeError('Options object to create a histogram dataview is required.');
+    throw this._getValidationError('histogramOptionsRequired');
   }
   this._validateBins(options.bins);
 };
@@ -46901,7 +22777,7 @@ module.exports = Histogram;
  * @api
  */
 
-},{"../../../../dataviews/histogram-dataview-model":110,"../base":60,"./parse-data.js":66,"underscore":52}],66:[function(require,module,exports){
+},{"../../../../dataviews/histogram-dataview-model":82,"../base":21,"./parse-data.js":27,"underscore":13}],27:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -46965,7 +22841,7 @@ function _createBins (data, maxFreq) {
 
 module.exports = parseHistogramData;
 
-},{"underscore":52}],67:[function(require,module,exports){
+},{"underscore":13}],28:[function(require,module,exports){
 var Category = require('./category');
 var Formula = require('./formula');
 var Histogram = require('./histogram');
@@ -46986,7 +22862,7 @@ module.exports = {
   timeAggregation: timeAggregation
 };
 
-},{"../constants":59,"./category":61,"./formula":63,"./histogram":65,"./time-series":68}],68:[function(require,module,exports){
+},{"../constants":20,"./category":22,"./formula":24,"./histogram":26,"./time-series":29}],29:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('../base');
 var HistogramDataviewModel = require('../../../../dataviews/histogram-dataview-model');
@@ -47132,7 +23008,7 @@ TimeSeries.prototype.isUsingLocalTimezone = function () {
 
 TimeSeries.prototype._checkOptions = function (options) {
   if (_.isUndefined(options)) {
-    throw new TypeError('Options object to create a histogram dataview is required.');
+    throw this._getValidationError('timeSeriesOptionsRequired');
   }
   this._validateAggregation(options.aggregation);
   this._validateOffset(options.offset);
@@ -47141,19 +23017,19 @@ TimeSeries.prototype._checkOptions = function (options) {
 
 TimeSeries.prototype._validateAggregation = function (aggregation) {
   if (!isValidTimeAggregation(aggregation)) {
-    throw new TypeError('Time aggregation must be a valid value. Use carto.dataview.timeAggregation.');
+    throw this._getValidationError('timeSeriesInvalidAggregation');
   }
 };
 
 TimeSeries.prototype._validateOffset = function (offset) {
   if (!_.isFinite(offset) || Math.floor(offset) !== offset || offset < -12 || offset > 14) {
-    throw new TypeError('Offset must an integer value between -12 and 14.');
+    throw this._getValidationError('timeSeriesInvalidOffset');
   }
 };
 
 TimeSeries.prototype._validateLocalTimezone = function (localTimezone) {
   if (!_.isBoolean(localTimezone)) {
-    throw new TypeError('LocalTimezone must be a boolean value.');
+    throw this._getValidationError('timeSeriesInvalidUselocaltimezone');
   }
 };
 
@@ -47225,7 +23101,7 @@ module.exports = TimeSeries;
  * @api
  */
 
-},{"../../../../dataviews/histogram-dataview-model":110,"../../constants":59,"../base":60,"./parse-data":69,"underscore":52}],69:[function(require,module,exports){
+},{"../../../../dataviews/histogram-dataview-model":82,"../../constants":20,"../base":21,"./parse-data":30,"underscore":13}],30:[function(require,module,exports){
 var _ = require('underscore');
 
 function secondsToHours (seconds) {
@@ -47300,8 +23176,102 @@ function _createBins (data, maxFreq) {
 
 module.exports = parseTimeSeriesData;
 
-},{"underscore":52}],70:[function(require,module,exports){
+},{"underscore":13}],31:[function(require,module,exports){
+var _ = require('underscore');
+var ERROR_LIST = require('./error-list');
+
+/**
+ * Returns two parameters to enrich a CartoError.
+ * - friendlyMessage: A easy to understand error description.
+ * - errorCode: Am unique error code
+ * 
+ * @param {CartoError} cartoError
+ * 
+ * @returns {object} - An object containing a friendly message and a errorCode
+ */
+function getExtraFields (cartoError) {
+  var errorlist = _getErrorList(cartoError);
+  var listedError = _getListedError(cartoError, errorlist);
+
+  return {
+    friendlyMessage: listedError.friendlyMessage,
+    errorCode: listedError.errorCode
+  };
+}
+
+/**
+ * 
+ * @param {CartoError} cartoError 
+ */
+function _getErrorList (cartoError) {
+  return ERROR_LIST[cartoError.origin] && ERROR_LIST[cartoError.origin][cartoError.type];
+}
+
+/**
+ * Get the listed error from a cartoError, if no listedError is found return a generic
+ * unknown error.
+ * @param {CartoError} cartoError 
+ */
+function _getListedError (cartoError, errorList) {
+  var errorListkeys = _.keys(errorList);
+  var key;
+  for (var i = 0; i < errorListkeys.length; i++) {
+    key = errorListkeys[i];
+    if (!(errorList[key].messageRegex instanceof RegExp)) {
+      throw new Error('MessageRegex on ' + key + ' is not a RegExp.');
+    }
+    if (errorList[key].messageRegex.test(cartoError.message)) {
+      return {
+        friendlyMessage: _replaceRegex(cartoError, errorList[key]),
+        errorCode: _buildErrorCode(cartoError, key)
+      };
+    }
+  }
+
+  // When cartoError not found return generic values
+  return {
+    friendlyMessage: cartoError.message || '',
+    errorCode: _buildErrorCode(cartoError, 'unknown-error')
+  };
+}
+
+/**
+ * Replace $0 with the proper paramter in the listedError regex to build a friendly message
+ */
+function _replaceRegex (cartoError, listedError) {
+  if (!listedError.friendlyMessage) {
+    return cartoError.message;
+  }
+  var match = cartoError.message && cartoError.message.match(listedError.messageRegex);
+  if (match && match.length > 1) {
+    return listedError.friendlyMessage.replace('$0', match[1]);
+  }
+  return listedError.friendlyMessage;
+}
+
+/**
+ * Generate an unique string that represents a cartoError
+ * @param {cartoError} cartoError 
+ * @param {string} key 
+ */
+function _buildErrorCode (cartoError, key) {
+  var fragments = [];
+  fragments.push(cartoError && cartoError.origin);
+  fragments.push(cartoError && cartoError.type);
+  fragments.push(key);
+  fragments = _.compact(fragments);
+
+  return fragments.join(':');
+}
+
+module.exports = { getExtraFields: getExtraFields };
+
+},{"./error-list":35,"underscore":13}],32:[function(require,module,exports){
+var errorExtender = require('./carto-error-extender');
+var errorTracker = require('./error-tracker');
+
 var UNEXPECTED_ERROR = 'unexpected error';
+var GENERIC_ORIGIN = 'generic';
 
 /**
  * Build a cartoError from a generic error.
@@ -47311,25 +23281,68 @@ var UNEXPECTED_ERROR = 'unexpected error';
  *
  * @api
  */
-function CartoError (error) {
+function CartoError (error, opts) {
+  opts = opts || {};
+  var cartoError = Object.create(Error.prototype);
+  cartoError.message = (error && error.message) || UNEXPECTED_ERROR;
+  cartoError.origin = (error && error.origin) || GENERIC_ORIGIN;
+  cartoError.type = (error && error.type) || '';
+
   if (_isWindshaftError(error)) {
-    this.message = error.errors[0];
-    return this;
-  }
-  if (error && error.message) {
-    this.message = error.message;
-    return this;
-  }
-  if (error && error.responseText) {
-    this.message = _handleAjaxResponse(error);
-    return this;
+    cartoError = _transformWindshaftError(error, opts.layers, opts.analysis);
   }
 
-  this.message = UNEXPECTED_ERROR;
+  if (_isAjaxError(error)) {
+    cartoError = _transformAjaxError(error);
+  }
+
+  // Add extra fields
+  var extraFields = errorExtender.getExtraFields(cartoError);
+  cartoError.message = extraFields.friendlyMessage;
+  cartoError.errorCode = extraFields.errorCode;
+
+  // Final properties
+  cartoError.name = 'CartoError';
+  cartoError.stack = (new Error()).stack;
+  cartoError.originalError = error;
+
+  errorTracker.track(cartoError);
+
+  return cartoError;
 }
 
+// Windshaft should have been parsed already 
 function _isWindshaftError (error) {
-  return error && error.errors_with_context;
+  return error && error.origin === 'windshaft';
+}
+
+function _isAjaxError (error) {
+  return error && error.responseText;
+}
+
+function _transformWindshaftError (error, layers, analysis) {
+  var cartoError = Object.create(Error.prototype);
+  cartoError.message = error.message;
+  cartoError.origin = error.origin;
+  cartoError.type = error.type;
+
+  if (error.type === 'layer' && layers) {
+    cartoError.layer = layers.findById(error.layerId);
+  }
+  if (error.type === 'analysis' && analysis) {
+    cartoError.source = analysis;
+  }
+
+  return cartoError;
+}
+
+function _transformAjaxError (error) {
+  var cartoError = Object.create(Error.prototype);
+  cartoError.message = _handleAjaxResponse(error);
+  cartoError.origin = 'ajax';
+  cartoError.type = error.statusText;
+
+  return cartoError;
 }
 
 function _handleAjaxResponse (error) {
@@ -47354,7 +23367,7 @@ module.exports = CartoError;
  * `CartoError`.
  * 
  * The cartoErrors can be obtained listening to the client {@link carto.events|error events} `client.on(carto.events.ERROR, callback);` 
- * or through any async action events.
+ * , through any async action events or listening to the dataviews {@link carto.events|error events} `dataview.on(carto.events.ERROR, callback);`.
  * 
  * Promises are also rejected with a cartoError.
  * @example
@@ -47371,13 +23384,318 @@ module.exports = CartoError;
  * client.on(carto.events.ERROR, function (clientError) {
  *  console.error(clientError.message);
  * });
- * @event CartoError
- * @type {object}
- * @property {string} message - A short error description.
+ * @example
+ * // Listen when there is an error in a dataview
+ * dataview.on(carto.events.ERROR, function (error) {
+ *   console.error(error.message);
+ * });
+ * 
+ * @typedef CartoError
+ * @property {string} message - A short error description
+ * @property {string} name - The name of the error "CartoError"
+ * @property {string} origin - Where the error was originated: 'windshaft' | 'ajax' | 'validation'
+ * @property {object} originalError - An object containing the internal/original error
+ * @property {object} stack - Error stack trace
+ * @property {string} type - Error type
  * @api
  */
 
-},{}],71:[function(require,module,exports){
+},{"./carto-error-extender":31,"./error-tracker":38}],33:[function(require,module,exports){
+var CartoError = require('./carto-error');
+
+/**
+ * Utility to build a cartoError related to validation errors.
+ * @constructor
+ * 
+ * @return {CartoError} A well formed object representing the error.
+ *
+ * @api
+ */
+function CartoValidationError (type, message, opts) {
+  return new CartoError({
+    origin: 'validation',
+    type: type,
+    message: message
+  }, opts);
+}
+
+module.exports = CartoValidationError;
+
+},{"./carto-error":32}],34:[function(require,module,exports){
+module.exports = {
+
+};
+
+},{}],35:[function(require,module,exports){
+var windshaft = require('./windshaft-errors');
+var ajax = require('./ajax-errors');
+var validation = require('./validation-errors');
+
+module.exports = {
+  ajax: ajax,
+  windshaft: windshaft,
+  validation: validation
+};
+
+},{"./ajax-errors":34,"./validation-errors":36,"./windshaft-errors":37}],36:[function(require,module,exports){
+module.exports = {
+  layer: {
+    'non-valid-source': {
+      messageRegex: /nonValidSource/,
+      friendlyMessage: 'The given object is not a valid source. See "carto.source.Base".'
+    },
+    'non-valid-style': {
+      messageRegex: /nonValidStyle/,
+      friendlyMessage: 'The given object is not a valid style. See "carto.style.Base".'
+    },
+    'source-with-different-client': {
+      messageRegex: /differentSourceClient/,
+      friendlyMessage: "A layer can't have a source which belongs to a different client."
+    },
+    'style-with-different-client': {
+      messageRegex: /differentStyleClient/,
+      friendlyMessage: "A layer can't have a style which belongs to a different client."
+    }
+  },
+  source: {
+    'query-required': {
+      messageRegex: /requiredQuery/,
+      friendlyMessage: 'SQL Source must have a SQL query.'
+    },
+    'query-string': {
+      messageRegex: /requiredString/,
+      friendlyMessage: 'SQL Query must be a string.'
+    },
+    'no-dataset-name': {
+      messageRegex: /noDatasetName/,
+      friendlyMessage: 'Table name is required.'
+    },
+    'dataset-string': {
+      messageRegex: /requiredDatasetString$/,
+      friendlyMessage: 'Table name must be a string.'
+    },
+    'dataset-required': {
+      messageRegex: /requiredDataset$/,
+      friendlyMessage: 'Table name must be not empty.'
+    }
+  },
+  style: {
+    'required-css': {
+      messageRegex: /requiredCSS$/,
+      friendlyMessage: 'CartoCSS is required.'
+    },
+    'css-string': {
+      messageRegex: /requiredCSSString$/,
+      friendlyMessage: 'CartoCSS must be a string.'
+    }
+  },
+  client: {
+    'bad-layer-type': {
+      messageRegex: /badLayerType/,
+      friendlyMessage: 'The given object is not a layer.'
+    },
+    'api-key-required': {
+      messageRegex: /apiKeyRequired/,
+      friendlyMessage: 'apiKey property is required.'
+    },
+    'api-key-string': {
+      messageRegex: /apiKeyString/,
+      friendlyMessage: 'apiKey property must be a string.'
+    },
+    'username-required': {
+      messageRegex: /usernameRequired/,
+      friendlyMessage: 'username property is required.'
+    },
+    'username-string': {
+      messageRegex: /usernameString/,
+      friendlyMessage: 'username property must be a string.'
+    },
+    'non-valid-server-url': {
+      messageRegex: /nonValidServerURL/,
+      friendlyMessage: 'serverUrl is not a valid URL.'
+    },
+    'non-matching-server-url': {
+      messageRegex: /serverURLDoesntMatchUsername/,
+      friendlyMessage: "serverUrl doesn't match the username."
+    }
+  },
+  dataview: {
+    'source-required': {
+      messageRegex: /sourceRequired/,
+      friendlyMessage: 'Source property is required.'
+    },
+    'column-required': {
+      messageRegex: /columnRequired/,
+      friendlyMessage: 'Column property is required.'
+    },
+    'column-string': {
+      messageRegex: /columnString/,
+      friendlyMessage: 'Column property must be a string.'
+    },
+    'empty-column': {
+      messageRegex: /emptyColumn/,
+      friendlyMessage: 'Column property must be not empty.'
+    },
+    'filter-required': {
+      messageRegex: /filterRequired/,
+      friendlyMessage: 'Filter property is required.'
+    },
+    'time-series-options-required': {
+      messageRegex: /timeSeriesOptionsRequired/,
+      friendlyMessage: 'Options object to create a time series dataview is required.'
+    },
+    'time-series-invalid-aggregation': {
+      messageRegex: /timeSeriesInvalidAggregation/,
+      friendlyMessage: 'Time aggregation must be a valid value. Use carto.dataview.timeAggregation.'
+    },
+    'time-series-invalid-offset': {
+      messageRegex: /timeSeriesInvalidOffset/,
+      friendlyMessage: 'Offset must an integer value between -12 and 14.'
+    },
+    'time-series-invalid-uselocaltimezone': {
+      messageRegex: /timeSeriesInvalidUselocaltimezone/,
+      friendlyMessage: 'useLocalTimezone must be a boolean value.'
+    },
+    'histogram-options-required': {
+      messageRegex: /histogramOptionsRequired/,
+      friendlyMessage: 'Options object to create a histogram dataview is required.'
+    },
+    'histogram-invalid-bins': {
+      messageRegex: /histogramInvalidBins/,
+      friendlyMessage: 'Bins must be a positive integer value.'
+    },
+    'formula-options-required': {
+      messageRegex: /formulaOptionsRequired/,
+      friendlyMessage: 'Formula dataview options are not defined.'
+    },
+    'formula-invalid-operation': {
+      messageRegex: /formulaInvalidOperation/,
+      friendlyMessage: 'Operation for formula dataview is not valid. Use carto.operation'
+    },
+    'category-options-required': {
+      messageRegex: /categoryOptionsRequired/,
+      friendlyMessage: 'Category dataview options are not defined.'
+    },
+    'category-limit-required': {
+      messageRegex: /categoryLimitRequired/,
+      friendlyMessage: 'Limit for category dataview is required.'
+    },
+    'category-limit-number': {
+      messageRegex: /categoryLimitNumber/,
+      friendlyMessage: 'Limit for category dataview must be a number.'
+    },
+    'category-limit-positive': {
+      messageRegex: /categoryLimitPositive/,
+      friendlyMessage: 'Limit for category dataview must be greater than 0.'
+    },
+    'category-invalid-operation': {
+      messageRegex: /categoryInvalidOperation/,
+      friendlyMessage: 'Operation for category dataview is not valid. Use carto.operation'
+    },
+    'category-operation-required': {
+      messageRegex: /categoryOperationRequired/,
+      friendlyMessage: 'Operation column for category dataview is required.'
+    },
+    'category-operation-string': {
+      messageRegex: /categoryOperationString/,
+      friendlyMessage: 'Operation column for category dataview must be a string.'
+    },
+    'category-operation-empty': {
+      messageRegex: /categoryOperationEmpty/,
+      friendlyMessage: 'Operation column for category dataview must be not empty.'
+    }
+  },
+  filter: {
+    'invalid-bounds-object': {
+      messageRegex: /invalidBoundsObject/,
+      friendlyMessage: 'Bounds object is not valid. Use a carto.filter.Bounds object'
+    }
+  }
+};
+
+},{}],37:[function(require,module,exports){
+module.exports = {
+  analysis: {
+    'sql-syntax-error': {
+      messageRegex: /^syntax error/
+    },
+    'invalid-dataset': {
+      messageRegex: /relation (.+) does not exist/,
+      friendlyMessage: 'Invalid dataset name used. Dataset $0 does not exist.'
+    },
+    'column-does-not-exist': {
+      messageRegex: /column (.+) does not exist/,
+      friendlyMessage: 'Invalid column name. Column $0 does not exist.'
+    }
+  },
+  generic: {
+  },
+  limit: {
+    'over-platform-limits': {
+      messageRegex: /^You are over platform's limits/
+    },
+    'generic-limit-error': {
+      messageRegex: /.*/,
+      friendlyMessage: 'The server is taking too long to respond, due to poor conectivity or a temporary error with our servers. Please try again soon.'
+    }
+  },
+  tile: {
+    'generic-tile-error': {
+      messageRegex: /.*/,
+      friendlyMessage: 'Some tiles might not be rendering correctly.'
+    }
+  },
+  layer: {
+    'column-does-not-exist': {
+      messageRegex: /column (.+) does not exist/,
+      friendlyMessage: 'Invalid column name. Column $0 does not exist.'
+    },
+    'unrecognized-rule': {
+      messageRegex: /Unrecognized rule: (.+)/,
+      friendlyMessage: 'Unrecognized rule "$0"'
+    },
+    'generic-layer-error': {
+      messageRegex: /.*/
+    }
+  },
+  dataview: {
+    'formula-does-not-support-operation': {
+      messageRegex: /Formula does not support (.+) operation/
+    },
+    'column-does-not-exist': {
+      messageRegex: /column (.+) does not exist/
+    },
+    'permission-denied': {
+      messageRegex: /permission denied for (.+)/
+    },
+    'wrong-type-column-used-in-time-series': {
+      messageRegex: /function date_part\(unknown, (.+)\) does not exist/,
+      friendlyMessage: 'Your time series column type is $0. Please use a date type.'
+    },
+    'invalid-aggregation-value': {
+      messageRegex: /Invalid aggregation value. Valid ones: auto, minute, hour, day, week, month, quarter, year/
+    }
+  }
+};
+
+},{}],38:[function(require,module,exports){
+/**
+ * Use {@link http://docs.trackjs.com/tracker/top-level-api} for error logging.
+ */
+function track (error) {
+  if (window.trackJs) {
+    try {
+      var message = error ? error.message + ' - code: ' + error.errorCode : JSON.stringify(error);
+      window.trackJs.track(new Error(message));
+    } catch (exc) {
+      // Swallow
+    }
+  }
+}
+
+module.exports = {track: track};
+
+},{}],39:[function(require,module,exports){
 /**
  * @namespace carto.events
  * @api
@@ -47406,7 +23724,7 @@ module.exports = {
   ERROR: ERROR
 };
 
-},{}],72:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -47424,7 +23742,7 @@ _.extend(Base.prototype, Backbone.Events);
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":52}],73:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],41:[function(require,module,exports){
 var Base = require('./base');
 var GoogleMapsBoundingBoxAdapter = require('../../../geo/adapters/gmaps-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -47484,7 +23802,7 @@ module.exports = BoundingBoxGoogleMaps;
  * @api
  */
 
-},{"../../../geo/adapters/gmaps-bounding-box-adapter":113,"../../../windshaft/filters/bounding-box":152,"./base":72}],74:[function(require,module,exports){
+},{"../../../geo/adapters/gmaps-bounding-box-adapter":85,"../../../windshaft/filters/bounding-box":124,"./base":40}],42:[function(require,module,exports){
 var Base = require('./base');
 var LeafletBoundingBoxAdapter = require('../../../geo/adapters/leaflet-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
@@ -47544,10 +23862,11 @@ module.exports = BoundingBoxLeaflet;
  * @api
  */
 
-},{"../../../geo/adapters/leaflet-bounding-box-adapter":114,"../../../windshaft/filters/bounding-box":152,"./base":72}],75:[function(require,module,exports){
+},{"../../../geo/adapters/leaflet-bounding-box-adapter":86,"../../../windshaft/filters/bounding-box":124,"./base":40}],43:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
+var CartoValidationError = require('../error-handling/carto-validation-error');
 
 /**
  * Generic bounding box filter.
@@ -47620,7 +23939,7 @@ BoundingBox.prototype._checkBounds = function (bounds) {
       !_.isNumber(bounds.south) ||
       !_.isNumber(bounds.east) ||
       !_.isNumber(bounds.north)) {
-    throw new TypeError('Bounds object is not valid. Use a carto.filter.Bounds object');
+    throw new CartoValidationError('filter', 'invalidBoundsObject');
   }
 };
 
@@ -47640,7 +23959,7 @@ module.exports = BoundingBox;
  * @api
  */
 
-},{"../../../windshaft/filters/bounding-box":152,"./base":72,"underscore":52}],76:[function(require,module,exports){
+},{"../../../windshaft/filters/bounding-box":124,"../error-handling/carto-validation-error":33,"./base":40,"underscore":13}],44:[function(require,module,exports){
 var BoundingBox = require('./bounding-box');
 var BoundingBoxLeaflet = require('./bounding-box-leaflet');
 var BoundingBoxGoogleMaps = require('./bounding-box-gmaps');
@@ -47655,7 +23974,7 @@ module.exports = {
   BoundingBoxGoogleMaps: BoundingBoxGoogleMaps
 };
 
-},{"./bounding-box":75,"./bounding-box-gmaps":73,"./bounding-box-leaflet":74}],77:[function(require,module,exports){
+},{"./bounding-box":43,"./bounding-box-gmaps":41,"./bounding-box-leaflet":42}],45:[function(require,module,exports){
 /**
  *  @api
  *  @namespace carto
@@ -47699,7 +24018,7 @@ var carto = window.carto = {
 
 module.exports = carto;
 
-},{"../../../package.json":53,"./client":58,"./constants":59,"./dataview":67,"./events":71,"./filter":76,"./layer":80,"./source":88,"./style":92}],78:[function(require,module,exports){
+},{"../../../package.json":14,"./client":19,"./constants":20,"./dataview":28,"./events":39,"./filter":44,"./layer":48,"./source":60,"./style":64}],46:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -47748,9 +24067,9 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":52}],79:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],47:[function(require,module,exports){
 /**
- * Enum for event types.
+ * Events fired by a layer
  *
  * @enum {string}
  * @readonly
@@ -47758,14 +24077,27 @@ module.exports = Base;
  * @api
  */
 var events = {
+  /**
+   * A feature has been clicked, fired every time the user clicks on a feature.
+   */
   FEATURE_CLICKED: 'featureClicked',
+  /**
+   * The mouse is over a feature, fired every time the user moves over a feature.
+   */
   FEATURE_OVER: 'featureOver',
-  FEATURE_OUT: 'featureOut'
+  /**
+   * The mouse exits a feature, fired every time the user moves out of a feature.
+   */
+  FEATURE_OUT: 'featureOut',
+  /**
+   * There has been an error related to tiles, fired every time the features are not rendered due to an error.
+   */
+  TILE_ERROR: 'featureError'
 };
 
 module.exports = events;
 
-},{}],80:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var Layer = require('./layer');
 var EventTypes = require('./event-types');
 
@@ -47778,28 +24110,33 @@ module.exports = {
   events: EventTypes
 };
 
-},{"./event-types":79,"./layer":81}],81:[function(require,module,exports){
+},{"./event-types":47,"./layer":49}],49:[function(require,module,exports){
 var Base = require('./base');
 var CartoDBLayer = require('../../../geo/map/cartodb-layer');
 var SourceBase = require('../source/base');
 var StyleBase = require('../style/base');
-var CartoError = require('../error');
+var CartoError = require('../error-handling/carto-error');
+var CartoValidationError = require('../error-handling/carto-validation-error');
+var EVENTS = require('../events');
+var metadataParser = require('./metadata/parser');
+
 /**
  * Represent a layer Object.
- * 
- * 
+ *
+ *
  * /...
  *
  * The `styleChanged` event is triggered **only** when the style object is changed. Mutations in the style itself are ignored by this event.
- * 
+ *
  * @param {object} source - The source where the layer will fetch the data
  * @param {carto.style.CartoCSS} style - A CartoCSS object with the layer styling
  * @param {object} [options]
  * @param {Array<string>} [options.featureClickColumns=[]] - Columns that will be available for `featureClick` events
  * @param {Array<string>} [options.featureOverColumns=[]] - Columns that will be available for `featureOver` events
- * @fires carto.layer.Layer.FeatureEvent
- * @fires carto.layer.Layer.sourceChanged
- * @fires carto.layer.Layer.styleChanged
+ * @fires carto.layer.FeatureEvent
+ * @fires carto.layer.sourceChanged
+ * @fires carto.layer.styleChanged
+ * @fires carto.layer.MetadataEvent
  * @example
  * // no options
  * new carto.layer.Layer(citiesSource, citiesStyle);
@@ -47857,7 +24194,7 @@ Layer.prototype.setStyle = function (style, opts) {
   }
   // If style has an engine and is different from the layer`s engine throw an error
   if (style.$getEngine() && style.$getEngine() !== this._internalModel._engine) {
-    throw new Error('A layer can\'t have a style which belongs to a different client');
+    throw new CartoValidationError('layer', 'differentStyleClient');
   }
   // If style has no engine, set the layer engine in the style.
   if (!style.$getEngine()) {
@@ -47872,7 +24209,7 @@ Layer.prototype.setStyle = function (style, opts) {
     }.bind(this))
     .catch(function (err) {
       var error = new CartoError(err);
-      this.trigger('error', error);
+      this.trigger(EVENTS.ERROR, error);
       return Promise.reject(error);
     }.bind(this));
 };
@@ -47893,7 +24230,7 @@ Layer.prototype.getStyle = function () {
  * A source and a layer must belong to the same client so you can't
  * add a source belonging to a different client.
  *
- * @param {carto.source.Dataset|carto.source.SQL} source New source
+ * @param {carto.source.Base} source New source
  * @fires carto.layer.Layer.sourceChanged
  * @return {Promise} A promise that will be fulfilled when the style is applied to the layer or rejected with a
  * {@link CartoError} if something goes bad
@@ -47911,10 +24248,10 @@ Layer.prototype.setSource = function (source) {
     this.trigger('sourceChanged', this);
     return Promise.resolve();
   }
-  // If layer has been instantiated 
+  // If layer has been instantiated
   // If the source already has an engine and is different from the layer's engine throw an error.
   if (source.$getEngine() && source.$getEngine() !== this._internalModel._engine) {
-    throw new Error('A layer can\'t have a source which belongs to a different client');
+    throw new CartoValidationError('layer', 'differentSourceClient');
   }
   // If source has no engine use the layer engine.
   if (!source.$getEngine()) {
@@ -47929,7 +24266,7 @@ Layer.prototype.setSource = function (source) {
     }.bind(this))
     .catch(function (err) {
       var error = new CartoError(err);
-      this.trigger('error', error);
+      this.trigger(EVENTS.ERROR, error);
       return Promise.reject(error);
     }.bind(this));
 };
@@ -47937,7 +24274,7 @@ Layer.prototype.setSource = function (source) {
 /**
  * Get the current source for this layer.
  *
- * @return {carto.source.Dataset|carto.source.SQL} Current source
+ * @return {carto.source.Base} Current source
  * @api
  */
 Layer.prototype.getSource = function () {
@@ -48077,9 +24414,27 @@ Layer.prototype._createInternalModel = function (engine) {
     tooltip: _getInteractivityFields(this._featureOverColumns)
   }, { engine: engine });
 
+  internalModel.on('change:meta', function (layer, data) {
+    var rules = data.cartocss_meta.rules;
+    var styleMetadataList = metadataParser.getMetadataFromRules(rules);
+    /**
+     *
+     * Events triggered by {@link carto.layer.Layer} when the style contains Turbocarto ramps
+     *
+     * @event carto.layer.MetadataEvent
+     * @property {carto.layer.metadata.Base[]} styles - List of style metadata objects
+     *
+     * @api
+     */
+    var metadata = { styles: styleMetadataList };
+    this.trigger('metadataChanged', metadata);
+  }, this);
+
   internalModel.on('change:error', function (model, value) {
     if (value && _isStyleError(value)) {
       this._style.$setError(new CartoError(value));
+    } else if (value) {
+      this.trigger(EVENTS.ERROR, new CartoError(value));
     }
   }, this);
 
@@ -48124,13 +24479,13 @@ function _getInteractivityFields (columns) {
 
 function _checkStyle (style) {
   if (!(style instanceof StyleBase)) {
-    throw new TypeError('The given object is not a valid style. See "carto.style.Base"');
+    throw new CartoValidationError('layer', 'nonValidStyle');
   }
 }
 
 function _checkSource (source) {
   if (!(source instanceof SourceBase)) {
-    throw new TypeError('The given object is not a valid source. See "carto.source.Base"');
+    throw new CartoValidationError('layer', 'nonValidSource');
   }
 }
 
@@ -48138,7 +24493,7 @@ function _checkSource (source) {
  * Return true when a windshaft error is because a styling error.
  */
 function _isStyleError (windshaftError) {
-  return windshaftError.message && windshaftError.message.indexOf('style') === 0;
+  return windshaftError.message && windshaftError.message.indexOf('style') >= 0;
 }
 
 /**
@@ -48154,7 +24509,7 @@ function _isStyleError (windshaftError) {
  *
  * Contains a single argument with the Layer where the source has changed.
  *
- * @event carto.layer.Layer.sourceChanged
+ * @event carto.layer.sourceChanged
  * @type {carto.layer.Layer}
  * @api
  */
@@ -48164,14 +24519,288 @@ function _isStyleError (windshaftError) {
  *
  * Contains a single argument with the Layer where the style has changed.
  *
- * @event carto.layer.Layer.styleChanged
+ * @event carto.layer.styleChanged
  * @type {carto.layer.Layer}
+ * @api
+ */
+
+/**
+ * Event triggered when the style metadata of the layer changes.
+ *
+ * Contains a list of metadata objects.
+ *
+ * @event carto.layer.metadataChanged
+ * @type {carto.layer.MetadataEvent}
  * @api
  */
 
 module.exports = Layer;
 
-},{"../../../geo/map/cartodb-layer":123,"../error":70,"../source/base":86,"../style/base":90,"./base":78}],82:[function(require,module,exports){
+},{"../../../geo/map/cartodb-layer":95,"../error-handling/carto-error":32,"../error-handling/carto-validation-error":33,"../events":39,"../source/base":58,"../style/base":62,"./base":46,"./metadata/parser":53}],50:[function(require,module,exports){
+/**
+ * Base metadata object
+ *
+ * @constructor
+ * @abstract
+ * @memberof carto.layer.metadata
+ * @api
+ */
+function Base (type, rule) {
+  this._type = type || '';
+  this._column = rule.getColumn();
+  this._mapping = rule.getMapping();
+  this._property = rule.getProperty();
+}
+
+/**
+ * Return the type of the metadata
+ *
+ * @return {string}
+ * @api
+ */
+Base.prototype.getType = function () {
+  return this._type;
+};
+
+/**
+ * Return the column of the metadata
+ *
+ * @return {string}
+ * @api
+ */
+Base.prototype.getColumn = function () {
+  return this._column;
+};
+
+/**
+ * Return the property of the metadata
+ *
+ * @return {string}
+ * @api
+ */
+Base.prototype.getMapping = function () {
+  return this._mapping;
+};
+
+/**
+ * Return the property of the metadata
+ *
+ * @return {string}
+ * @api
+ */
+Base.prototype.getProperty = function () {
+  return this._property;
+};
+
+module.exports = Base;
+
+},{}],51:[function(require,module,exports){
+var Base = require('./base');
+
+/**
+ * Metadata type buckets
+ *
+ * Adding a Turbocarto ramp (with ranges) in the style generates a response
+ * from the server with the resulting information after computing the ramp.
+ * This information is wrapped in a metadata object of type 'buckets', that
+ * contains a list of buckets with the range (min, max) and the value. And
+ * also the total min, max range and the average of the total values.
+ *
+ * For example, the following ramp will generate a metadata of type 'buckets'
+ * with numeric values (the size) in its buckets:
+ *
+ *   marker-width: ramp([scalerank], range(5, 20), quantiles(5));
+ *
+ * Another example, this ramp will generate a metadata of type 'buckets'
+ * with string values (the color) in its buckets:
+ *
+ *   marker-fill: ramp([scalerank], (#FFC6C4, #EE919B, #CC607D), quantiles);
+ *
+ * @param {object} rule - Rule with the cartocss metadata
+ * @constructor
+ * @hideconstructor
+ * @extends carto.layer.metadata.Base
+ * @memberof carto.layer.metadata
+ * @api
+ */
+function Buckets (rule) {
+  var rangeBuckets = rule.getBucketsWithRangeFilter();
+
+  /**
+   * @typedef {object} carto.layer.metadata.Bucket
+   * @property {number} min - The minimum range value
+   * @property {number} max - The maximum range value
+   * @property {number|string} value - The value of the bucket
+   * @api
+   */
+  this._buckets = rangeBuckets.map(function (bucket) {
+    return {
+      min: bucket.filter.start,
+      max: bucket.filter.end,
+      value: bucket.value
+    };
+  });
+  this._avg = rule.getFilterAvg();
+  this._min = rangeBuckets.length > 0 ? rangeBuckets[0].filter.start : undefined;
+  this._max = rangeBuckets.length > 0 ? rangeBuckets[rangeBuckets.length - 1].filter.end : undefined;
+
+  Base.call(this, 'buckets', rule);
+}
+
+Buckets.prototype = Object.create(Base.prototype);
+
+/**
+ * Return the buckets
+ *
+ * @return {carto.layer.metadata.Bucket[]}
+ * @api
+ */
+Buckets.prototype.getBuckets = function () {
+  return this._buckets;
+};
+
+/**
+ * Return the average of the column
+ *
+ * @return {number}
+ * @api
+ */
+Buckets.prototype.getAverage = function () {
+  return this._avg;
+};
+
+/**
+ * Return the minimum value in the ranges
+ *
+ * @return {number}
+ * @api
+ */
+Buckets.prototype.getMin = function () {
+  return this._min;
+};
+
+/**
+ * Return the maximum value in the ranges
+ *
+ * @return {number}
+ * @api
+ */
+Buckets.prototype.getMax = function () {
+  return this._max;
+};
+
+module.exports = Buckets;
+
+},{"./base":50}],52:[function(require,module,exports){
+var Base = require('./base');
+
+/**
+ * Metadata type categories
+ *
+ * Adding a Turbocarto ramp (with categories) in the style generates a response
+ * from the server with the resulting information after computing the ramp.
+ * This information is wrapped in a metadata object of type 'categories', that
+ * contains a list of categories with the name of the category and the value. And
+ * also the default value if it has been defined in the ramp.
+ *
+ * For example, the following ramp will generate a metadata of type 'categories'
+ * with string values (the color) in its categories. The #CCCCCC is the default
+ * value in this case:
+ *
+ *   marker-fill: ramp([scalerank], (#F54690, #D16996, #CCCCCC), (1, 2), "=", category);
+ *
+ * @param {object} rule - Rule with the cartocss metadata
+ * @constructor
+ * @hideconstructor
+ * @extends carto.layer.metadata.Base
+ * @memberof carto.layer.metadata
+ * @api
+ */
+function Categories (rule) {
+  var categoryBuckets = rule.getBucketsWithCategoryFilter();
+  var defaultBuckets = rule.getBucketsWithDefaultFilter();
+
+  /**
+   * @typedef {object} carto.layer.metadata.Category
+   * @property {number|string} name - The name of the category
+   * @property {string} value - The value of the category
+   * @api
+   */
+  this._categories = categoryBuckets.map(function (bucket) {
+    return {
+      name: bucket.filter.name,
+      value: bucket.value
+    };
+  });
+  this._defaultValue = defaultBuckets.length > 0 ? defaultBuckets[0].value : undefined;
+
+  Base.call(this, 'categories', rule);
+}
+
+Categories.prototype = Object.create(Base.prototype);
+
+/**
+ * Return the buckets
+ *
+ * @return {carto.layer.metadata.Category[]}
+ * @api
+ */
+Categories.prototype.getCategories = function () {
+  return this._categories;
+};
+
+/**
+ * Return the default value
+ *
+ * @return {string}
+ * @api
+ */
+Categories.prototype.getDefaultValue = function () {
+  return this._defaultValue;
+};
+
+module.exports = Categories;
+
+},{"./base":50}],53:[function(require,module,exports){
+var BucketsMetadata = require('./buckets');
+var CategoriesMetadata = require('./categories');
+var Rule = require('../../../../windshaft-integration/legends/rule.js');
+
+/**
+ * Generates a list of Metadata objects from the original cartocss_meta rules
+ *
+ * @param  {Rules} rulesData
+ * @return {metadata.Base[]}
+ */
+function getMetadataFromRules (rulesData) {
+  var metadata = [];
+
+  rulesData.forEach(function (ruleData) {
+    var rule = new Rule(ruleData);
+
+    if (_isBucketsMetadata(rule)) {
+      metadata.push(new BucketsMetadata(rule));
+    } else if (_isCategoriesMetadata(rule)) {
+      metadata.push(new CategoriesMetadata(rule));
+    }
+  });
+
+  return metadata;
+}
+
+function _isBucketsMetadata (rule) {
+  return rule.getBucketsWithRangeFilter().length > 0;
+}
+
+function _isCategoriesMetadata (rule) {
+  return rule.getBucketsWithCategoryFilter().length > 0;
+}
+
+module.exports = {
+  getMetadataFromRules: getMetadataFromRules
+};
+
+},{"../../../../windshaft-integration/legends/rule.js":117,"./buckets":51,"./categories":52}],54:[function(require,module,exports){
 var _ = require('underscore');
 
 function Layers (layers) {
@@ -48203,12 +24832,13 @@ Layers.prototype.toArray = function () {
 
 module.exports = Layers;
 
-},{"underscore":52}],83:[function(require,module,exports){
+},{"underscore":13}],55:[function(require,module,exports){
 /* global google */
 var _ = require('underscore');
 var Layer = require('../layer');
 var triggerLayerFeatureEvent = require('./trigger-layer-feature-event');
 var GMapsCartoDBLayerGroupView = require('../../../geo/gmaps/gmaps-cartodb-layer-group-view');
+var CartoError = require('../error-handling/carto-error');
 
 /**
  * This object is a custom Google Maps MapType to enable feature interactivity
@@ -48231,6 +24861,7 @@ function GoogleMapsMapType (layers, engine, map) {
   this._internalView.on('featureClick', this._onFeatureClick, this);
   this._internalView.on('featureOver', this._onFeatureOver, this);
   this._internalView.on('featureOut', this._onFeatureOut, this);
+  this._internalView.on('featureError', this._onFeatureError, this);
 }
 
 GoogleMapsMapType.prototype.getTile = function (coord, zoom, ownerDocument) {
@@ -48260,9 +24891,18 @@ GoogleMapsMapType.prototype._onFeatureOut = function (internalEvent) {
   triggerLayerFeatureEvent(Layer.events.FEATURE_OUT, internalEvent, this._layers);
 };
 
+GoogleMapsMapType.prototype._onFeatureError = function (error) {
+  var cartoError = new CartoError(error);
+  _.each(this._layers.toArray(), function (layer) {
+    if (layer.isInteractive()) {
+      layer.trigger(Layer.events.TILE_ERROR, cartoError);
+    }
+  });
+};
+
 module.exports = GoogleMapsMapType;
 
-},{"../../../geo/gmaps/gmaps-cartodb-layer-group-view":118,"../layer":80,"./trigger-layer-feature-event":85,"underscore":52}],84:[function(require,module,exports){
+},{"../../../geo/gmaps/gmaps-cartodb-layer-group-view":90,"../error-handling/carto-error":32,"../layer":48,"./trigger-layer-feature-event":57,"underscore":13}],56:[function(require,module,exports){
 (function (global){
 var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
 var _ = require('underscore');
@@ -48270,6 +24910,7 @@ var Layer = require('../layer');
 var constants = require('../constants');
 var triggerLayerFeatureEvent = require('./trigger-layer-feature-event');
 var LeafletCartoLayerGroupView = require('../../../geo/leaflet/leaflet-cartodb-layer-group-view');
+var CartoError = require('../error-handling/carto-error');
 
 /**
  * This object is a custom Leaflet layer to enable feature interactivity
@@ -48308,6 +24949,7 @@ var LeafletLayer = L.TileLayer.extend({
       this._internalView.on('featureClick', this._onFeatureClick, this);
       this._internalView.on('featureOver', this._onFeatureOver, this);
       this._internalView.on('featureOut', this._onFeatureOut, this);
+      this._internalView.on('featureError', this._onFeatureError, this);
     }
 
     return L.TileLayer.prototype.addTo.call(this, map);
@@ -48318,6 +24960,7 @@ var LeafletLayer = L.TileLayer.extend({
       this._internalView.off('featureClick');
       this._internalView.off('featureOver');
       this._internalView.off('featureOut');
+      this._internalView.off('featureError');
       this._internalView.notifyRemove();
     }
     this._internalView = null;
@@ -48352,6 +24995,15 @@ var LeafletLayer = L.TileLayer.extend({
       this._map.getContainer().style.cursor = 'auto';
     }
     triggerLayerFeatureEvent(Layer.events.FEATURE_OUT, internalEvent, this._layers);
+  },
+
+  _onFeatureError: function (error) {
+    var cartoError = new CartoError(error);
+    _.each(this._layers.toArray(), function (layer) {
+      if (layer.isInteractive()) {
+        layer.trigger(Layer.events.TILE_ERROR, cartoError);
+      }
+    });
   }
 });
 
@@ -48359,7 +25011,7 @@ module.exports = LeafletLayer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":121,"../constants":59,"../layer":80,"./trigger-layer-feature-event":85,"underscore":52}],85:[function(require,module,exports){
+},{"../../../geo/leaflet/leaflet-cartodb-layer-group-view":93,"../constants":20,"../error-handling/carto-error":32,"../layer":48,"./trigger-layer-feature-event":57,"underscore":13}],57:[function(require,module,exports){
 module.exports = function (eventName, internalEvent, layers) {
   var layer = layers.findById(internalEvent.layer.id);
   if (layer) {
@@ -48387,7 +25039,7 @@ module.exports = function (eventName, internalEvent, layers) {
      *
      * Events triggered by {@link carto.layer.Layer} when users interact with a feature.
      *
-     * @event carto.layer.Layer.FeatureEvent
+     * @event carto.layer.FeatureEvent
      * @property {LatLng} latLng - Object with coordinates where interaction took place
      * @property {object} data - Object with feature data (one attribute for each specified column)
      *
@@ -48397,10 +25049,11 @@ module.exports = function (eventName, internalEvent, layers) {
   }
 };
 
-},{}],86:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
-var CartoError = require('../error');
+var CartoError = require('../error-handling/carto-error');
+var EVENTS = require('../events');
 
 /**
  * Base data source object.
@@ -48445,7 +25098,7 @@ Base.prototype._createInternalModel = function (engine) {
  * Fire a CartoError event from a internalError
  */
 Base.prototype._triggerError = function (model, internalError) {
-  this.trigger('error', new CartoError(internalError));
+  this.trigger(EVENTS.ERROR, new CartoError(internalError, { analysis: this }));
 };
 
 Base.prototype.$setEngine = function (engine) {
@@ -48473,11 +25126,12 @@ Base.prototype.$getInternalModel = function () {
 
 module.exports = Base;
 
-},{"../error":70,"backbone":2,"underscore":52}],87:[function(require,module,exports){
+},{"../error-handling/carto-error":32,"../events":39,"backbone":2,"underscore":13}],59:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
 var CamshaftReference = require('../../../analysis/camshaft-reference');
+var CartoValidationError = require('../error-handling/carto-validation-error');
 
 /**
  * A Dataset that can be used as the data source for layers and dataviews.
@@ -48528,19 +25182,19 @@ Dataset.prototype._createInternalModel = function (engine) {
 
 function _checkTableName (tableName) {
   if (_.isUndefined(tableName)) {
-    throw new TypeError('Table name is required.');
+    throw new CartoValidationError('source', 'noDatasetName');
   }
   if (!_.isString(tableName)) {
-    throw new TypeError('Table name must be a string.');
+    throw new CartoValidationError('source', 'requiredDatasetString');
   }
   if (_.isEmpty(tableName)) {
-    throw new TypeError('Table name must be not empty.');
+    throw new CartoValidationError('source', 'requiredDataset');
   }
 }
 
 module.exports = Dataset;
 
-},{"../../../analysis/analysis-model":54,"../../../analysis/camshaft-reference":57,"./base":86,"underscore":52}],88:[function(require,module,exports){
+},{"../../../analysis/analysis-model":15,"../../../analysis/camshaft-reference":18,"../error-handling/carto-validation-error":33,"./base":58,"underscore":13}],60:[function(require,module,exports){
 var Dataset = require('./dataset');
 var SQL = require('./sql');
 
@@ -48553,12 +25207,13 @@ module.exports = {
   SQL: SQL
 };
 
-},{"./dataset":87,"./sql":89}],89:[function(require,module,exports){
+},{"./dataset":59,"./sql":61}],61:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
 var AnalysisModel = require('../../../analysis/analysis-model');
 var CamshaftReference = require('../../../analysis/camshaft-reference');
-var CartoError = require('../error');
+var CartoValidationError = require('../error-handling/carto-validation-error');
+var CartoError = require('../error-handling/carto-error');
 
 /**
  * A SQL Query that can be used as the data source for layers and dataviews.
@@ -48643,11 +25298,11 @@ SQL.prototype._triggerQueryChanged = function (model, value) {
 
 function _checkQuery (query) {
   if (!query) {
-    throw new TypeError('query is required.');
+    throw new CartoValidationError('source', 'requiredQuery');
   }
 
   if (!_.isString(query)) {
-    throw new Error('query must be a string.');
+    throw new CartoValidationError('source', 'requiredString');
   }
 }
 
@@ -48662,7 +25317,7 @@ module.exports = SQL;
  * @api
  */
 
-},{"../../../analysis/analysis-model":54,"../../../analysis/camshaft-reference":57,"../error":70,"./base":86,"underscore":52}],90:[function(require,module,exports){
+},{"../../../analysis/analysis-model":15,"../../../analysis/camshaft-reference":18,"../error-handling/carto-error":32,"../error-handling/carto-validation-error":33,"./base":58,"underscore":13}],62:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -48696,10 +25351,11 @@ Base.prototype.$getEngine = function () {
 
 module.exports = Base;
 
-},{"backbone":2,"underscore":52}],91:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],63:[function(require,module,exports){
 var _ = require('underscore');
 var Base = require('./base');
-var CartoError = require('../error');
+var CartoValidationError = require('../error-handling/carto-validation-error');
+var CartoError = require('../error-handling/carto-error');
 
 // Event constants
 var CONTENT_CHANGED = 'contentChanged';
@@ -48769,17 +25425,17 @@ function _onContentChanged (newContent) {
 
 function _checkContent (content) {
   if (!content) {
-    throw new TypeError('cartoCSS is required.');
+    throw new CartoValidationError('style', 'requiredCSS');
   }
 
   if (!_.isString(content)) {
-    throw new Error('cartoCSS must be a string.');
+    throw new CartoValidationError('style', 'requiredCSSString');
   }
 }
 
 module.exports = CartoCSS;
 
-},{"../error":70,"./base":90,"underscore":52}],92:[function(require,module,exports){
+},{"../error-handling/carto-error":32,"../error-handling/carto-validation-error":33,"./base":62,"underscore":13}],64:[function(require,module,exports){
 var CartoCSS = require('./cartocss');
 
 /**
@@ -48790,7 +25446,7 @@ module.exports = {
   CartoCSS: CartoCSS
 };
 
-},{"./cartocss":91}],93:[function(require,module,exports){
+},{"./cartocss":63}],65:[function(require,module,exports){
 var Config = require('./core/config');
 
 var config = new Config();
@@ -48801,7 +25457,7 @@ config.set({
 
 module.exports = config;
 
-},{"./core/config":97}],94:[function(require,module,exports){
+},{"./core/config":69}],66:[function(require,module,exports){
 // Creates cdb object, mutated in the entry file cartodb.js
 // Used to avoid circular dependencies
 var cdb = {};
@@ -48813,7 +25469,7 @@ cdb.helpers = {};
 
 module.exports = cdb;
 
-},{"../package.json":53}],95:[function(require,module,exports){
+},{"../package.json":14}],67:[function(require,module,exports){
 var cdb = require('cdb');
 
 module.exports = {
@@ -48834,7 +25490,7 @@ module.exports = {
   }
 };
 
-},{"cdb":94}],96:[function(require,module,exports){
+},{"cdb":66}],68:[function(require,module,exports){
 module.exports = {
   OVERLAY_TYPES: {
     ATTRIBUTION: 'attribution',
@@ -48858,11 +25514,13 @@ module.exports = {
     ANALYSIS: 'analysis',
     LAYER: 'layer',
     LIMIT: 'limit',
-    TILE: 'tile' // Generic error for tiles
+    TILE: 'tile', // Generic error for tiles
+    GENERIC: 'generic',
+    UNKNOWN: 'unknown'
   }
 };
 
-},{}],97:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -48880,7 +25538,7 @@ var Config = Backbone.Model.extend({
 
 module.exports = Config;
 
-},{"backbone":2}],98:[function(require,module,exports){
+},{"backbone":2}],70:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
@@ -48963,7 +25621,7 @@ var Model = Backbone.Model.extend({
 
 module.exports = Model;
 
-},{"backbone":2,"jquery":47,"underscore":52}],99:[function(require,module,exports){
+},{"backbone":2,"jquery":8,"underscore":13}],71:[function(require,module,exports){
 /*
 # metrics profiler
 
@@ -49125,7 +25783,7 @@ Profiler.metric = function (name) {
 
 module.exports = Profiler;
 
-},{}],100:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 var _ = require('underscore');
 
 var util = {};
@@ -49287,7 +25945,7 @@ util.checkRequiredOpts = function (actualOpts, requiredOpts, from) {
 
 module.exports = util;
 
-},{"underscore":52}],101:[function(require,module,exports){
+},{"underscore":13}],73:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 var SearchModel = require('./category-dataview/search-model');
@@ -49592,7 +26250,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./category-dataview/categories-collection":102,"./category-dataview/category-model-range":104,"./category-dataview/search-model":105,"./dataview-model-base":106,"underscore":52}],102:[function(require,module,exports){
+},{"./category-dataview/categories-collection":74,"./category-dataview/category-model-range":76,"./category-dataview/search-model":77,"./dataview-model-base":78,"underscore":13}],74:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var CategoryItemModel = require('./category-item-model');
@@ -49644,7 +26302,7 @@ module.exports = Backbone.Collection.extend({
 
 });
 
-},{"./category-item-model":103,"backbone":2,"underscore":52}],103:[function(require,module,exports){
+},{"./category-item-model":75,"backbone":2,"underscore":13}],75:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -49660,7 +26318,7 @@ module.exports = Model.extend({
 
 });
 
-},{"../../core/model":98}],104:[function(require,module,exports){
+},{"../../core/model":70}],76:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 
@@ -49722,7 +26380,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98,"underscore":52}],105:[function(require,module,exports){
+},{"../../core/model":70,"underscore":13}],77:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
@@ -49851,7 +26509,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98,"../../util/backbone-abort-sync":139,"./categories-collection":102,"underscore":52}],106:[function(require,module,exports){
+},{"../../core/model":70,"../../util/backbone-abort-sync":111,"./categories-collection":74,"underscore":13}],78:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../core/model');
 var BackboneAbortSync = require('../util/backbone-abort-sync');
@@ -50124,7 +26782,7 @@ module.exports = Model.extend({
       error: function (_model, response) {
         if (!response || (response && response.statusText !== 'abort')) {
           this.set('status', FETCH_ERROR_STATUS);
-          var error = this._parseAjaxError(response);
+          var error = this._parseError(response);
           this._triggerStatusError(error);
         }
       }.bind(this)
@@ -50215,10 +26873,10 @@ module.exports = Model.extend({
     }
   },
 
-  _parseAjaxError: function (response) {
+  _parseError: function (response) {
     var error = response && response.statusText;
     if (response && response.responseJSON) {
-      var errors = parseWindshaftErrors(response.responseJSON);
+      var errors = parseWindshaftErrors(response.responseJSON, 'dataview');
       if (errors.length > 0) {
         error = errors[0];
       }
@@ -50238,7 +26896,7 @@ module.exports = Model.extend({
   ]
 });
 
-},{"../analysis/analysis-model":54,"../core/model":98,"../core/util":100,"../util/backbone-abort-sync":139,"../windshaft/error-parser":149,"underscore":52}],107:[function(require,module,exports){
+},{"../analysis/analysis-model":15,"../core/model":70,"../core/util":72,"../util/backbone-abort-sync":111,"../windshaft/error-parser":121,"underscore":13}],79:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -50264,7 +26922,7 @@ var DataviewsCollection = Backbone.Collection.extend({
 
 module.exports = DataviewsCollection;
 
-},{"backbone":2,"underscore":52}],108:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],80:[function(require,module,exports){
 var _ = require('underscore');
 var DataviewModelBase = require('./dataview-model-base');
 
@@ -50310,7 +26968,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"./dataview-model-base":106,"underscore":52}],109:[function(require,module,exports){
+},{"./dataview-model-base":78,"underscore":13}],81:[function(require,module,exports){
 var moment = require('moment');
 var _ = require('underscore');
 
@@ -50441,7 +27099,7 @@ helper.formatUTCTimestamp = function (timestamp) {
 
 module.exports = helper;
 
-},{"moment":51,"underscore":52}],110:[function(require,module,exports){
+},{"moment":12,"underscore":13}],82:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var d3 = require('d3-array');
@@ -50846,7 +27504,7 @@ module.exports = DataviewModelBase.extend({
   },
 
   _onTotalsError: function (model, error) {
-    var parsedError = error && this._parseAjaxError(error);
+    var parsedError = error && this._parseError(error);
     this._triggerStatusError(parsedError);
   },
 
@@ -50871,7 +27529,7 @@ module.exports = DataviewModelBase.extend({
 }
 );
 
-},{"../util/date-utils":140,"./dataview-model-base":106,"./helpers/histogram-helper":109,"./histogram-dataview/histogram-data-model":111,"backbone":2,"d3-array":46,"underscore":52}],111:[function(require,module,exports){
+},{"../util/date-utils":112,"./dataview-model-base":78,"./helpers/histogram-helper":81,"./histogram-dataview/histogram-data-model":83,"backbone":2,"d3-array":7,"underscore":13}],83:[function(require,module,exports){
 var _ = require('underscore');
 var BackboneAbortSync = require('../../util/backbone-abort-sync');
 var Model = require('../../core/model');
@@ -51079,7 +27737,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98,"../../util/backbone-abort-sync":139,"../helpers/histogram-helper":109,"underscore":52}],112:[function(require,module,exports){
+},{"../../core/model":70,"../../util/backbone-abort-sync":111,"../helpers/histogram-helper":81,"underscore":13}],84:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisPoller = require('./analysis/analysis-poller');
 var AnonymousMapSerializer = require('./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer');
@@ -51093,7 +27751,6 @@ var Request = require('./windshaft/request');
 var Response = require('./windshaft/response');
 var WindshaftClient = require('./windshaft/client');
 var AnalysisService = require('./analysis/analysis-service');
-var parseWindshaftErrors = require('./windshaft/error-parser');
 var log = require('./cdb.log');
 var WindshaftError = require('./windshaft/error');
 
@@ -51144,6 +27801,7 @@ function Engine (params) {
     { apiKey: params.apiKey, authToken: params.authToken },
     { layersCollection: this._layersCollection }
   );
+  this._bindCartoLayerGroupError();
 
   this._modelUpdater = new ModelUpdater({
     dataviewsCollection: this._dataviewsCollection,
@@ -51213,16 +27871,18 @@ Engine.prototype.off = function (event, callback, context) {
  */
 Engine.prototype.reload = function (options) {
   return new Promise(function (resolve, reject) {
+    var self = this;
     options = this._buildOptions(options);
-    var oldSuccess = options.success;
-    var oldError = options.error;
+    var successCb = options.success;
+    var errorCb = options.error;
     options.success = function (serverResponse) {
-      oldSuccess(serverResponse);
+      successCb(serverResponse);
       resolve();
     };
-    options.error = function (serverResponse) {
-      oldError(serverResponse);
-      reject(serverResponse);
+    options.error = function (errors) {
+      errorCb(errors);
+      var error = self._getSimpleWindshaftError(errors);
+      reject(error);
     };
     try {
       var params = this._buildParams(options.includeFilters);
@@ -51232,8 +27892,11 @@ Engine.prototype.reload = function (options) {
       this._eventEmmitter.trigger(Engine.Events.RELOAD_STARTED);
       this._windshaftClient.instantiateMap(request);
     } catch (error) {
-      this._manageClientError(error, options);
-      reject(error);
+      var windshaftError = new WindshaftError({
+        message: error.message
+      });
+      this._manageClientError(windshaftError, options);
+      reject(windshaftError);
     }
   }.bind(this));
 };
@@ -51304,12 +27967,13 @@ Engine.prototype._onReloadSuccess = function (serverResponse, options) {
  * Update internal models setting errores and trigger a reload_error event.
  * @private
  */
-Engine.prototype._onReloadError = function (serverResponse, options) {
-  var windshaftErrors = parseWindshaftErrors(serverResponse);
-  var error = _.find(windshaftErrors, function (error) { return error.isGlobalError(); });
-  this._modelUpdater.setErrors(windshaftErrors);
+Engine.prototype._onReloadError = function (errors, options) {
+  var error = this._getSimpleWindshaftError(errors);
+  this._modelUpdater.setErrors(errors);
   this._eventEmmitter.trigger(Engine.Events.RELOAD_ERROR, error);
-  options.error && options.error();
+  options.error && options.error(error);
+
+  return error;
 };
 
 /**
@@ -51323,8 +27987,8 @@ Engine.prototype._buildOptions = function (options) {
     success: function (serverResponse) {
       this._onReloadSuccess(serverResponse, options);
     }.bind(this),
-    error: function (serverResponse) {
-      this._onReloadError(serverResponse, options);
+    error: function (errors) {
+      return this._onReloadError(errors, options);
     }.bind(this)
   }, _.pick(options, 'sourceId', 'forceFetch', 'includeFilters'));
 };
@@ -51374,13 +28038,29 @@ Engine.prototype._getSerializer = function () {
  * @private
  */
 Engine.prototype._manageClientError = function (error, options) {
-  var windshaftError = new WindshaftError({
-    message: error.message
-  });
-  this._modelUpdater.setErrors([windshaftError]);
-
+  this._modelUpdater.setErrors([error]);
   log.error(error.message);
-  options.error && options.error();
+  options.error && options.error([error]);
+};
+
+/**
+ * Listen to errors in cartoLayerGroup
+ */
+Engine.prototype._bindCartoLayerGroupError = function () {
+  this._cartoLayerGroup.on('all', function (change, error) {
+    if (change.lastIndexOf('error:', 0) === 0) {
+      error = new WindshaftError(error);
+      this._eventEmmitter.trigger(Engine.Events.LAYER_ERROR, error);
+    }
+  }, this);
+};
+
+Engine.prototype._getSimpleWindshaftError = function (errors) {
+  var error = _.find(errors, function (error) { return error.isGlobalError(); });
+  if (!error && errors && errors.length > 0) {
+    error = errors[0];
+  }
+  return error;
 };
 
 /**
@@ -51399,9 +28079,13 @@ Engine.Events = {
    */
   RELOAD_SUCCESS: 'reload-success',
   /**
-   * Reload success event, fired every time the reload function fails.
+   * Reload error event, fired every time the reload function fails.
    */
-  RELOAD_ERROR: 'reload-error'
+  RELOAD_ERROR: 'reload-error',
+  /**
+   * Error event, fired every time a tile or limit error happens.
+   */
+  LAYER_ERROR: 'layer-error'
 };
 
 module.exports = Engine;
@@ -51427,7 +28111,14 @@ module.exports = Engine;
   * @type {string}
   */
 
-},{"./analysis/analysis-poller":55,"./analysis/analysis-service":56,"./cdb.log":95,"./dataviews/dataviews-collection":107,"./geo/cartodb-layer-group":116,"./geo/map/layers":127,"./windshaft-integration/model-updater":146,"./windshaft/client":147,"./windshaft/error":150,"./windshaft/error-parser":149,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":155,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":158,"./windshaft/request":160,"./windshaft/response":161,"backbone":2,"underscore":52}],113:[function(require,module,exports){
+/**
+  * Layer group error event, fired every time an error with layer group happends (tile or limit).
+  *
+  * @event Engine#Engine:LAYER_ERROR
+  * @type {string}
+  */
+
+},{"./analysis/analysis-poller":16,"./analysis/analysis-service":17,"./cdb.log":67,"./dataviews/dataviews-collection":79,"./geo/cartodb-layer-group":88,"./geo/map/layers":99,"./windshaft-integration/model-updater":118,"./windshaft/client":119,"./windshaft/error":122,"./windshaft/map-serializer/anonymous-map-serializer/anonymous-map-serializer":127,"./windshaft/map-serializer/named-map-serializer/named-map-serializer":130,"./windshaft/request":132,"./windshaft/response":133,"backbone":2,"underscore":13}],85:[function(require,module,exports){
 /* global google */
 var Model = require('../../core/model');
 
@@ -51473,7 +28164,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98}],114:[function(require,module,exports){
+},{"../../core/model":70}],86:[function(require,module,exports){
 var Model = require('../../core/model');
 
 /**
@@ -51507,7 +28198,9 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98}],115:[function(require,module,exports){
+},{"../../core/model":70}],87:[function(require,module,exports){
+var parseWindshaftErrors = require('../windshaft/error-parser');
+
 function CartoDBLayerGroupViewBase (layerGroupModel, opts) {
   opts = opts || {};
   this.interaction = [];
@@ -51574,7 +28267,10 @@ CartoDBLayerGroupViewBase.prototype = {
   },
 
   _manageInteractivityErrors: function (payload) {
-    this.trigger('featureError', payload);
+    var errors = parseWindshaftErrors(payload);
+    if (errors.length > 0) {
+      this.trigger('featureError', errors[0]);
+    }
   },
 
   _generateTileJSON: function (layerIndexInLayerGroup) {
@@ -51596,7 +28292,7 @@ CartoDBLayerGroupViewBase.prototype = {
 
 module.exports = CartoDBLayerGroupViewBase;
 
-},{}],116:[function(require,module,exports){
+},{"../windshaft/error-parser":121}],88:[function(require,module,exports){
 var _ = require('underscore');
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -51841,7 +28537,7 @@ var CartoDBLayerGroup = Backbone.Model.extend({
 
 module.exports = CartoDBLayerGroup;
 
-},{"../core/util":100,"./map/layer-types":126,"backbone":2,"jquery":47,"underscore":52}],117:[function(require,module,exports){
+},{"../core/util":72,"./map/layer-types":98,"backbone":2,"jquery":8,"underscore":13}],89:[function(require,module,exports){
 var config = require('cdb.config');
 
 var CartoDBDefaultOptions = {
@@ -51864,7 +28560,7 @@ var CartoDBDefaultOptions = {
 
 module.exports = CartoDBDefaultOptions;
 
-},{"cdb.config":93}],118:[function(require,module,exports){
+},{"cdb.config":65}],90:[function(require,module,exports){
 (function (global){
 /* global Image, google */
 var _ = require('underscore');
@@ -52215,7 +28911,7 @@ module.exports = GMapsCartoDBLayerGroupView;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../constants":96,"../cartodb-layer-group-view-base":115,"./cartodb-default-options":117,"./gmaps-layer-view":119,"./projector":120,"cdb.core.Profiler":99,"underscore":52,"wax.cartodb.js":163}],119:[function(require,module,exports){
+},{"../../constants":68,"../cartodb-layer-group-view-base":87,"./cartodb-default-options":89,"./gmaps-layer-view":91,"./projector":92,"cdb.core.Profiler":71,"underscore":13,"wax.cartodb.js":135}],91:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -52246,7 +28942,7 @@ _.extend(GMapsLayerView.prototype, {
 
 module.exports = GMapsLayerView;
 
-},{"backbone":2,"underscore":52}],120:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],92:[function(require,module,exports){
 /* global google */
 // helper to get pixel position from latlon
 
@@ -52275,7 +28971,7 @@ Projector.prototype.pixelToLatLng = function (point) {
 
 module.exports = Projector;
 
-},{}],121:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 (function (global){
 var _ = require('underscore');
 var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null);
@@ -52444,7 +29140,7 @@ module.exports = LeafletCartoDBLayerGroupView;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../constants":96,"../cartodb-layer-group-view-base":115,"./leaflet-layer-view":122,"underscore":52,"wax.cartodb.js":163}],122:[function(require,module,exports){
+},{"../../constants":68,"../cartodb-layer-group-view-base":87,"./leaflet-layer-view":94,"underscore":13,"wax.cartodb.js":135}],94:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -52499,7 +29195,7 @@ _.extend(LeafletLayerView.prototype, {
 
 module.exports = LeafletLayerView;
 
-},{"backbone":2,"underscore":52}],123:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],95:[function(require,module,exports){
 var _ = require('underscore');
 var config = require('../../cdb.config');
 var LayerModelBase = require('./layer-model-base');
@@ -52655,7 +29351,7 @@ var CartoDBLayer = LayerModelBase.extend({
 
 module.exports = CartoDBLayer;
 
-},{"../../analysis/analysis-model":54,"../../cdb.config":93,"./infowindow-template":124,"./layer-model-base":125,"./legends/legends":134,"./tooltip-template":138,"underscore":52}],124:[function(require,module,exports){
+},{"../../analysis/analysis-model":15,"../../cdb.config":65,"./infowindow-template":96,"./layer-model-base":97,"./legends/legends":106,"./tooltip-template":110,"underscore":13}],96:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -52704,7 +29400,7 @@ var InfowindowTemplate = Backbone.Model.extend({
 
 module.exports = InfowindowTemplate;
 
-},{"./popup-fields":137,"backbone":2,"underscore":52}],125:[function(require,module,exports){
+},{"./popup-fields":109,"backbone":2,"underscore":13}],97:[function(require,module,exports){
 var log = require('../../cdb.log');
 var Model = require('../../core/model');
 
@@ -52783,7 +29479,7 @@ var MapLayer = Model.extend({
 
 module.exports = MapLayer;
 
-},{"../../cdb.log":95,"../../core/model":98}],126:[function(require,module,exports){
+},{"../../cdb.log":67,"../../core/model":70}],98:[function(require,module,exports){
 var TILED_LAYER_TYPE = 'Tiled';
 var PLAIN_LAYER_TYPE = 'Plain';
 var WMS_LAYER_TYPE = 'WMS';
@@ -52821,7 +29517,7 @@ module.exports = {
   }
 };
 
-},{}],127:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -52921,7 +29617,7 @@ var Layers = Backbone.Collection.extend({
 
 module.exports = Layers;
 
-},{"backbone":2,"underscore":52}],128:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],100:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -52950,7 +29646,7 @@ var BubbleLegendModel = LegendModelBase.extend({
 
 module.exports = BubbleLegendModel;
 
-},{"./legend-model-base":133,"underscore":52}],129:[function(require,module,exports){
+},{"./legend-model-base":105,"underscore":13}],101:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -52976,7 +29672,7 @@ var CategoryLegendModel = LegendModelBase.extend({
 
 module.exports = CategoryLegendModel;
 
-},{"./legend-model-base":133,"underscore":52}],130:[function(require,module,exports){
+},{"./legend-model-base":105,"underscore":13}],102:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -53006,7 +29702,7 @@ var ChoroplethLegendModel = LegendModelBase.extend({
 
 module.exports = ChoroplethLegendModel;
 
-},{"./legend-model-base":133,"underscore":52}],131:[function(require,module,exports){
+},{"./legend-model-base":105,"underscore":13}],103:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -53025,7 +29721,7 @@ var CustomChoroplethLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomChoroplethLegendModel;
 
-},{"./static-legend-model-base":135,"underscore":52}],132:[function(require,module,exports){
+},{"./static-legend-model-base":107,"underscore":13}],104:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -53041,7 +29737,7 @@ var CustomLegendModel = StaticLegendModelBase.extend({
 
 module.exports = CustomLegendModel;
 
-},{"./static-legend-model-base":135,"underscore":52}],133:[function(require,module,exports){
+},{"./static-legend-model-base":107,"underscore":13}],105:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var Engine = require('../../../engine');
@@ -53119,7 +29815,7 @@ var LegendModelBase = Backbone.Model.extend({
 
 module.exports = LegendModelBase;
 
-},{"../../../engine":112,"backbone":2,"underscore":52}],134:[function(require,module,exports){
+},{"../../../engine":84,"backbone":2,"underscore":13}],106:[function(require,module,exports){
 var _ = require('underscore');
 var CategoryLegendModel = require('./category-legend-model');
 var BubbleLegendModel = require('./bubble-legend-model');
@@ -53233,7 +29929,7 @@ Legends.prototype.hasAnyLegend = function () {
 
 module.exports = Legends;
 
-},{"./bubble-legend-model":128,"./category-legend-model":129,"./choropleth-legend-model":130,"./custom-choropleth-legend-model":131,"./custom-legend-model":132,"./torque-legend-model":136,"underscore":52}],135:[function(require,module,exports){
+},{"./bubble-legend-model":100,"./category-legend-model":101,"./choropleth-legend-model":102,"./custom-choropleth-legend-model":103,"./custom-legend-model":104,"./torque-legend-model":108,"underscore":13}],107:[function(require,module,exports){
 var _ = require('underscore');
 var LegendModelBase = require('./legend-model-base');
 
@@ -53251,7 +29947,7 @@ var StaticLegendModelBase = LegendModelBase.extend({
 
 module.exports = StaticLegendModelBase;
 
-},{"./legend-model-base":133,"underscore":52}],136:[function(require,module,exports){
+},{"./legend-model-base":105,"underscore":13}],108:[function(require,module,exports){
 var _ = require('underscore');
 var StaticLegendModelBase = require('./static-legend-model-base');
 
@@ -53267,7 +29963,7 @@ var TorqueLegendModel = StaticLegendModelBase.extend({
 
 module.exports = TorqueLegendModel;
 
-},{"./static-legend-model-base":135,"underscore":52}],137:[function(require,module,exports){
+},{"./static-legend-model-base":107,"underscore":13}],109:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -53288,7 +29984,7 @@ var PopupFields = Backbone.Collection.extend({
 
 module.exports = PopupFields;
 
-},{"backbone":2,"underscore":52}],138:[function(require,module,exports){
+},{"backbone":2,"underscore":13}],110:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var PopupFields = require('./popup-fields');
@@ -53338,7 +30034,7 @@ var TooltipTemplate = Backbone.Model.extend({
 
 module.exports = TooltipTemplate;
 
-},{"./popup-fields":137,"backbone":2,"underscore":52}],139:[function(require,module,exports){
+},{"./popup-fields":109,"backbone":2,"underscore":13}],111:[function(require,module,exports){
 var Backbone = require('backbone');
 
 /**
@@ -53357,7 +30053,7 @@ module.exports = function (method, model, options) {
   return this._xhr;
 };
 
-},{"backbone":2}],140:[function(require,module,exports){
+},{"backbone":2}],112:[function(require,module,exports){
 var moment = require('moment');
 require('moment-timezone');
 
@@ -53369,7 +30065,7 @@ dateUtils.getLocalOffset = function () {
 
 module.exports = dateUtils;
 
-},{"moment":51,"moment-timezone":49}],141:[function(require,module,exports){
+},{"moment":12,"moment-timezone":10}],113:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -53409,7 +30105,7 @@ module.exports = {
   }
 };
 
-},{"./rule":145,"underscore":52}],142:[function(require,module,exports){
+},{"./rule":117,"underscore":13}],114:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -53473,7 +30169,7 @@ module.exports = {
   }
 };
 
-},{"./rule":145,"underscore":52}],143:[function(require,module,exports){
+},{"./rule":117,"underscore":13}],115:[function(require,module,exports){
 var _ = require('underscore');
 var Rule = require('./rule');
 
@@ -53488,6 +30184,12 @@ var isEveryBucketValid = function (rule) {
 };
 
 var generateColors = function (buckets) {
+  if (buckets.length === 1) {
+    var bucket = buckets[0];
+    var labelStart = bucket.filter.start;
+    var labelEnd = bucket.filter.end;
+    return [{ value: bucket.value, label: labelStart.toString() }, { value: bucket.value, label: labelEnd.toString() }];
+  }
   return _.map(buckets, function (bucket, i) {
     var label = '';
     if (i === 0) {
@@ -53523,7 +30225,7 @@ module.exports = {
   }
 };
 
-},{"./rule":145,"underscore":52}],144:[function(require,module,exports){
+},{"./rule":117,"underscore":13}],116:[function(require,module,exports){
 var ADAPTERS = {
   bubble: require('./rule-to-bubble-legend-adapter'),
   choropleth: require('./rule-to-choropleth-legend-adapter'),
@@ -53536,7 +30238,7 @@ module.exports = {
   }
 };
 
-},{"./rule-to-bubble-legend-adapter":141,"./rule-to-category-legend-adapter":142,"./rule-to-choropleth-legend-adapter":143}],145:[function(require,module,exports){
+},{"./rule-to-bubble-legend-adapter":113,"./rule-to-category-legend-adapter":114,"./rule-to-choropleth-legend-adapter":115}],117:[function(require,module,exports){
 var _ = require('underscore');
 
 var PROPERTY_KEY = 'prop';
@@ -53586,13 +30288,25 @@ Rule.prototype._getBucketsByFilterType = function (filterType) {
   return [];
 };
 
+Rule.prototype.getColumn = function () {
+  return this._rule.column;
+};
+
+Rule.prototype.getMapping = function () {
+  return this._rule.mapping;
+};
+
+Rule.prototype.getProperty = function () {
+  return this._rule.prop;
+};
+
 Rule.prototype.getFilterAvg = function () {
   return this._rule.stats.filter_avg;
 };
 
 module.exports = Rule;
 
-},{"underscore":52}],146:[function(require,module,exports){
+},{"underscore":13}],118:[function(require,module,exports){
 var _ = require('underscore');
 var log = require('../cdb.log');
 var util = require('../core/util.js');
@@ -53860,7 +30574,7 @@ ModelUpdater.prototype._getUniqueAnalysisNodesCollection = function () {
 
 module.exports = ModelUpdater;
 
-},{"../analysis/analysis-service":56,"../cdb.log":95,"../core/util.js":100,"./legends/rule-to-legend-model-adapters":144,"backbone":2,"underscore":52}],147:[function(require,module,exports){
+},{"../analysis/analysis-service":17,"../cdb.log":67,"../core/util.js":72,"./legends/rule-to-legend-model-adapters":116,"backbone":2,"underscore":13}],119:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var LZMA = require('lzma');
@@ -53868,6 +30582,7 @@ var util = require('../core/util');
 var WindshaftConfig = require('./config');
 var RequestTracker = require('./request-tracker');
 var log = require('../cdb.log');
+var parseWindshaftErrors = require('./error-parser');
 
 var validatePresenceOfOptions = function (options, requiredOptions) {
   var missingOptions = _.filter(requiredOptions, function (option) {
@@ -53913,7 +30628,8 @@ WindshaftClient.prototype.instantiateMap = function (request) {
       success: function (response) {
         this._requestTracker.track(request, response);
         if (response.errors) {
-          request.options.error && request.options.error(response);
+          var parsedErrors = parseWindshaftErrors(response);
+          request.options.error && request.options.error(parsedErrors);
         } else {
           request.options.success && request.options.success(response);
         }
@@ -53922,11 +30638,13 @@ WindshaftClient.prototype.instantiateMap = function (request) {
         // Ignore error if request was explicitly aborted
         if (textStatus === 'abort') return;
         var errors = {};
+        var parsedErrors = {};
         try {
           errors = JSON.parse(xhr.responseText);
+          parsedErrors = parseWindshaftErrors(errors);
         } catch (e) { }
         this._requestTracker.track(request, errors);
-        request.options.error && request.options.error(errors);
+        request.options.error && request.options.error(parsedErrors);
       }.bind(this)
     });
   } else {
@@ -54042,25 +30760,29 @@ WindshaftClient.prototype._jsonpCallbackName = function (payload) {
 
 module.exports = WindshaftClient;
 
-},{"../cdb.log":95,"../core/util":100,"./config":148,"./request-tracker":159,"jquery":47,"lzma":162,"underscore":52}],148:[function(require,module,exports){
+},{"../cdb.log":67,"../core/util":72,"./config":120,"./error-parser":121,"./request-tracker":131,"jquery":8,"lzma":134,"underscore":13}],120:[function(require,module,exports){
 module.exports = {
   MAPS_API_BASE_URL: 'api/v1/map'
 };
 
-},{}],149:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftError = require('./error');
 
-var parseWindshaftErrors = function (response) {
+var parseWindshaftErrors = function (response, type) {
   response = response || {};
   if (response.errors_with_context) {
     return _.map(response.errors_with_context, function (error) {
-      return new WindshaftError(error);
+      return new WindshaftError(error, type);
     });
   }
   if (response.errors) {
+    var content = typeof response.errors[0] === 'string'
+      ? { message: response.errors[0] }
+      : response.errors[0];
+
     return [
-      new WindshaftError({ message: response.errors[0] })
+      new WindshaftError(content, type)
     ];
   }
   return [];
@@ -54068,14 +30790,16 @@ var parseWindshaftErrors = function (response) {
 
 module.exports = parseWindshaftErrors;
 
-},{"./error":150,"underscore":52}],150:[function(require,module,exports){
+},{"./error":122,"underscore":13}],122:[function(require,module,exports){
 var WINDSHAFT_ERRORS = require('../constants').WINDSHAFT_ERRORS;
 
-var WindshaftError = function (error) {
+var WindshaftError = function (error, type) {
   this._error = error;
 
-  this.type = error.subtype;
-  this.message = error.message;
+  this.origin = 'windshaft';
+  this.type = getType(error.type, type, WINDSHAFT_ERRORS.GENERIC);
+  this.subtype = error.subtype;
+  this.message = truncateMessage(error.message);
   this.context = error.context;
 
   if (this.isLayerError(error.type)) {
@@ -54103,9 +30827,33 @@ WindshaftError.prototype.isAnalysisError = function (errorType) {
   return errorType === WINDSHAFT_ERRORS.ANALYSIS;
 };
 
+// Helper functions
+
+function truncateMessage (message) {
+  var MAX_SIZE = 256;
+
+  return message && message.length > MAX_SIZE
+    ? message.substring(0, MAX_SIZE)
+    : message;
+}
+
+function getType (originalType, forcedType, genericType) {
+  if (!originalType || originalType === WINDSHAFT_ERRORS.UNKNOWN) {
+    if (forcedType) {
+      return forcedType;
+    } else if (originalType !== WINDSHAFT_ERRORS.UNKNOWN) {
+      return genericType;
+    } else {
+      return WINDSHAFT_ERRORS.UNKNOWN;
+    }
+  } else {
+    return originalType;
+  }
+}
+
 module.exports = WindshaftError;
 
-},{"../constants":96}],151:[function(require,module,exports){
+},{"../constants":68}],123:[function(require,module,exports){
 var Model = require('../../core/model');
 
 module.exports = Model.extend({
@@ -54124,7 +30872,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98}],152:[function(require,module,exports){
+},{"../../core/model":70}],124:[function(require,module,exports){
 var _ = require('underscore');
 var Model = require('../../core/model');
 var BOUNDING_BOX_FILTER_WAIT = 300;
@@ -54181,7 +30929,7 @@ module.exports = Model.extend({
   }
 });
 
-},{"../../core/model":98,"underscore":52}],153:[function(require,module,exports){
+},{"../../core/model":70,"underscore":13}],125:[function(require,module,exports){
 var _ = require('underscore');
 var Backbone = require('backbone');
 var WindshaftFilterBase = require('./base');
@@ -54327,7 +31075,7 @@ module.exports = WindshaftFilterBase.extend({
   }
 });
 
-},{"./base":151,"backbone":2,"underscore":52}],154:[function(require,module,exports){
+},{"./base":123,"backbone":2,"underscore":13}],126:[function(require,module,exports){
 var _ = require('underscore');
 var AnalysisService = require('../../../analysis/analysis-service');
 
@@ -54371,7 +31119,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../analysis/analysis-service":56,"underscore":52}],155:[function(require,module,exports){
+},{"../../../analysis/analysis-service":17,"underscore":13}],127:[function(require,module,exports){
 var AnalisysSerializer = require('./analysis-serializer');
 var DataviewSerializer = require('./dataviews-serializer');
 var LayerSerializer = require('./layers-serializer');
@@ -54392,7 +31140,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"./analysis-serializer":154,"./dataviews-serializer":156,"./layers-serializer":157}],156:[function(require,module,exports){
+},{"./analysis-serializer":126,"./dataviews-serializer":128,"./layers-serializer":129}],128:[function(require,module,exports){
 function serialize (dataviewsCollection) {
   return dataviewsCollection.reduce(function (dataviews, dataviewModel) {
     dataviews[dataviewModel.get('id')] = dataviewModel.toJSON();
@@ -54404,7 +31152,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{}],157:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 var LayerTypes = require('../../../geo/map/layer-types.js');
 
 var DEFAULT_CARTOCSS_VERSION = '2.1.0';
@@ -54516,7 +31264,7 @@ function sharedOptionsForMapnikAndTorqueLayers (layerModel) {
 }
 module.exports = { serialize: serialize };
 
-},{"../../../geo/map/layer-types.js":126}],158:[function(require,module,exports){
+},{"../../../geo/map/layer-types.js":98}],130:[function(require,module,exports){
 var _ = require('underscore');
 var LayerTypes = require('../../../geo/map/layer-types');
 
@@ -54553,7 +31301,7 @@ module.exports = {
   serialize: serialize
 };
 
-},{"../../../geo/map/layer-types":126,"underscore":52}],159:[function(require,module,exports){
+},{"../../../geo/map/layer-types":98,"underscore":13}],131:[function(require,module,exports){
 var _ = require('underscore');
 
 /**
@@ -54602,7 +31350,7 @@ RequestTracker.prototype.lastResponseEquals = function (response) {
 
 module.exports = RequestTracker;
 
-},{"underscore":52}],160:[function(require,module,exports){
+},{"underscore":13}],132:[function(require,module,exports){
 /**
  * Simple value object that holds everything need to instantiate a map using the Maps API
  */
@@ -54622,7 +31370,7 @@ Request.prototype.equals = function (request) {
 
 module.exports = Request;
 
-},{}],161:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 var _ = require('underscore');
 var WindshaftConfig = require('./config');
 
@@ -54771,7 +31519,7 @@ Response.prototype._getAnalyses = function _getAnalyses () {
 
 module.exports = Response;
 
-},{"./config":148,"underscore":52}],162:[function(require,module,exports){
+},{"./config":120,"underscore":13}],134:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 var LZMA = (function () {
@@ -58663,7 +35411,7 @@ this.LZMA = LZMA;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],163:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /* wax - 7.0.1 - v6.0.4-193-g0530212 */
@@ -62047,5 +38795,5 @@ wax.g.connector.prototype.getTileUrl = function(coord, z) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[77])
+},{}]},{},[45])
 //# sourceMappingURL=carto.uncompressed.map
