@@ -63,7 +63,7 @@ _.extend(Client.prototype, Backbone.Events);
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} - A promise that will be fulfilled when the layer is added.
  * @api
  */
 Client.prototype.addLayer = function (layer, opts) {
@@ -79,7 +79,7 @@ Client.prototype.addLayer = function (layer, opts) {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} A promise that will be fulfilled when the layers are added.
  * @api
  */
 Client.prototype.addLayers = function (layers, opts) {
@@ -100,7 +100,7 @@ Client.prototype.addLayers = function (layers, opts) {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} A promise that will be fulfilled when the layer is removed.
  * @api
  */
 Client.prototype.removeLayer = function (layer, opts) {
@@ -116,7 +116,7 @@ Client.prototype.removeLayer = function (layer, opts) {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} A promise that will be fulfilled when the layers are removed.
  * @api
  */
 Client.prototype.removeLayers = function (layers, opts) {
@@ -146,7 +146,7 @@ Client.prototype.getLayers = function () {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} - A promise that will be fulfilled when the dataview is added.
  * @api
  */
 Client.prototype.addDataview = function (dataview, opts) {
@@ -162,7 +162,7 @@ Client.prototype.addDataview = function (dataview, opts) {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} A promise that will be fulfilled when the dataviews are added.
  * @api
  */
 Client.prototype.addDataviews = function (dataviews, opts) {
@@ -183,7 +183,7 @@ Client.prototype.addDataviews = function (dataviews, opts) {
  * @fires CartoError
  * @fires carto.events.SUCCESS
  *
- * @returns {Promise} A promise that will be fulfilled when the reload cycle is completed
+ * @returns {Promise} A promise that will be fulfilled when the dataview is removed.
  * @api
  */
 Client.prototype.removeDataview = function (dataview, opts) {
