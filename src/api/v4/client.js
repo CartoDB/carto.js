@@ -59,7 +59,6 @@ _.extend(Client.prototype, Backbone.Events);
  *
  * @param {carto.layer.Base} - The layer to be added
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -76,7 +75,6 @@ Client.prototype.addLayer = function (layer, opts) {
  *
  * @param {carto.layer.Base[]} - An array with the layers to be added. Note that ([A, B]) displays B as the first layer. Alternatively, client.addLayer(A); client.addLayer(B);
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -98,7 +96,6 @@ Client.prototype.addLayers = function (layers, opts) {
  *
  * @param {carto.layer.Base} - The layer to be removed
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -115,7 +112,6 @@ Client.prototype.removeLayer = function (layer, opts) {
  *
  * @param {carto.layer.Base[]} - An array with the layers to be removed
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -146,7 +142,6 @@ Client.prototype.getLayers = function () {
  * Add a dataview to the client.
  *
  * @param {carto.dataview.Base} - The dataview to be added
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -163,7 +158,6 @@ Client.prototype.addDataview = function (dataview, opts) {
  *
  * @param {carto.dataview.Base[]} - An array with the dataviews to be added
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
@@ -185,7 +179,6 @@ Client.prototype.addDataviews = function (dataviews, opts) {
  *
  * @param {carto.dataview.Base} - The dataview array to be removed
  * @param {object} opts
- * @param {boolean} opts.reload - Default: true. A boolean flag controlling if the client should be reloaded
  *
  * @fires CartoError
  * @fires carto.events.SUCCESS
