@@ -45,7 +45,7 @@ var metadataParser = require('./metadata/parser');
  * });
  * @example
  * // Listen to the event thrown when the mouse is over a feature
- * layer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
+ * layer.on('featureOver', featureEvent => {
  *   console.log(`Mouse over city with name: ${featureEvent.data.name}`);
  * });
  * @constructor
