@@ -15,11 +15,8 @@ function getValidationError (code) {
 /**
  * This is the entry point for a CARTO.js application.
  *
- * A CARTO client allows managing layers and dataviews. Once you add a layer or a dataview, the client 
- * handles the communication against the server in order to process those data.
- * 
- * This means the client is an asynchronous object: When any change occurs, it will send a request to the server
- * and act accordingly by updating the views or throwing an error when appropriate. This whole process is known as the `reload cycle`.
+ * A CARTO client allows managing layers and dataviews. Some operations like addding a layer or a dataview are asynchronous.
+ * The client takes care of the communication between CARTO.js and the server for you.
  *
  * To create a new client you need a CARTO account, where you will be able to get
  * your API key and username.

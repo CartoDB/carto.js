@@ -15,7 +15,7 @@ var metadataParser = require('./metadata/parser');
  * To create a layer a {@link carto.source.Base|source} and {@link carto.style.Base|styles}
  * are required:
  * 
- * - The {@link carto.source.Base|source} is used to know which **what** data will be displayed in the Layer.
+ * - The {@link carto.source.Base|source} is used to know **what** data will be displayed in the Layer.
  * - The {@link carto.style.Base|style} is used to know **how** to draw the data in the Layer.
  * 
  * A layer alone won't do too much. In order to get data from the CARTO server you must add the Layer to a {@link carto.Client|client}.
@@ -39,7 +39,7 @@ var metadataParser = require('./metadata/parser');
  * // Create a layer with no options
  * new carto.layer.Layer(citiesSource, citiesStyle);
  * @example
- * // Create a layer indicating which columns in the data will throw events on mouse over
+ * // Create a layer indicating what columns will be included in the featureOver event.
  * new carto.layer.Layer(citiesSource, citiesStyle, {
  *   featureOverColumns: [ 'name' ]
  * });
