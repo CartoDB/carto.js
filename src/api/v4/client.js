@@ -15,8 +15,12 @@ function getValidationError (code) {
 /**
  * This is the entry point for a CARTO.js application.
  *
- * A CARTO client allows managing layers and dataviews. It also takes care
- * of the communication between a CARTO.js application and the services in CARTO.
+ * A CARTO client allows managing layers and dataviews. Once you add a layer or a dataview, the client 
+ * handles the communication against the server in order to process those data.
+ * 
+ * This means the client is an asynchronous object: When any change occurs, it will send a request to the server
+ * and act accordingly by updating the views or throwing an error when appropriate. This whole process is known as the `reload cycle`.
+ *
  * To create a new client you need a CARTO account, where you will be able to get
  * your API key and username.
  *
@@ -132,7 +136,7 @@ Client.prototype.removeLayers = function (layers, opts) {
 };
 
 /**
- * Get all the layers from the client
+ * Get all the {@link carto.layer.Base|layers} from the client
  *
  * @returns {carto.layer.Base[]} An array with all the Layers from the client
  * @api
@@ -213,7 +217,7 @@ Client.prototype.getDataviews = function () {
 };
 
 /**
- * Return a Leaflet layer that groups all the layers that have been
+ * Return a {@link http://leafletjs.com/reference-1.2.0.html#tilelayer|leaflet layer} that groups all the layers that have been
  * added to this client.
  *
  * @returns {L.TileLayer} A Leaflet layer that groups all the layers:
@@ -231,10 +235,10 @@ Client.prototype.getLeafletLayer = function () {
 };
 
 /**
- * Return a Google Maps mapType that groups all the layers that have been
+ * Return a {@link https://developers.google.com/maps/documentation/javascript/maptypes|google.maps.MapType} that groups all the layers that have been
  * added to this client.
  *
- * @param {google.maps.Map}
+ * @param {google.maps.Map} The native google map where the carto layer is going to be added.
  *
  * @return {google.maps.MapType} A Google Maps mapType that groups all the layers:
  * {@link https://developers.google.com/maps/documentation/javascript/maptypes|google.maps.MapType}
