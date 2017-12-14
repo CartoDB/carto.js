@@ -465,7 +465,7 @@ your API key and username.</p>
         
 <div class="param-desc">
     <ul>
-<li>A promise that will be fulfilled when the dataview is added.</li>
+<li>A promise that will be fulfilled when the dataview is added</li>
 </ul>
 </div>
 
@@ -486,6 +486,18 @@ your API key and username.</p>
     
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Add a dataview to the client
+client.addDataview(dataview)
+ .then(() => {
+   console.log('Dataview added');
+ })
+ .catch(cartoError => {
+   console.error(cartoError.message);
+ }):</code></pre>
 
 
 
@@ -648,7 +660,7 @@ your API key and username.</p>
 
         
 <div class="param-desc">
-    <p>A promise that will be fulfilled when the dataviews are added.</p>
+    <p>A promise that will be fulfilled when the dataviews are added</p>
 </div>
 
 
@@ -668,6 +680,18 @@ your API key and username.</p>
     
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Add several dataviews to the client
+client.addDataview([dataview0, dataview1])
+ .then(() => {
+   console.log('Dataviews added');
+ })
+ .catch(cartoError => {
+   console.error(cartoError.message);
+ }):</code></pre>
 
 
 
@@ -831,7 +855,7 @@ your API key and username.</p>
         
 <div class="param-desc">
     <ul>
-<li>A promise that will be fulfilled when the layer is added.</li>
+<li>A promise that will be fulfilled when the layer is added</li>
 </ul>
 </div>
 
@@ -854,6 +878,18 @@ your API key and username.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Add a layer to the client
+client.addLayer(layer)
+ .then(() => { 
+   console.log('Layer added');
+ })
+ .catch(cartoError => {
+   console.error(cartoError.message);
+ });</code></pre>
+
+
 
         
             
@@ -869,7 +905,8 @@ your API key and username.</p>
 
 
 <div class="description">
-    <p>Add multiple layers to the client. Note the hierarchal order of layers.</p>
+    <p>Add multiple layers to the client. Note the hierarchal order of layers.
+Use this method instead multiple calls to <strong>addLayer</strong> to improve performance.</p>
 </div>
 
 
@@ -1014,7 +1051,7 @@ your API key and username.</p>
 
         
 <div class="param-desc">
-    <p>A promise that will be fulfilled when the layers are added.</p>
+    <p>A promise that will be fulfilled when the layers are added</p>
 </div>
 
 
@@ -1034,6 +1071,18 @@ your API key and username.</p>
     
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Add multiple layers ad once layer to the client
+client.addLayers([layer0, layer1])
+ .then(() => { 
+   console.log('Layers added');
+ })
+ .catch(cartoError => {
+   console.error(cartoError.message);
+ });</code></pre>
 
 
 
@@ -1139,6 +1188,12 @@ your API key and username.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Get all the dataviews from the client
+const dataviews = client.getDataviews();</code></pre>
+
+
 
         
             
@@ -1146,7 +1201,7 @@ your API key and username.</p>
     
 
     
-    <h4 class="name" id="getGoogleMapsMapType"><span class="type-signature"></span>getGoogleMapsMapType<span class="signature">(The)</span><span class="type-signature"> &rarr; {google.maps.MapType}</span></h4>
+    <h4 class="name" id="getGoogleMapsMapType"><span class="type-signature"></span>getGoogleMapsMapType<span class="signature">(map)</span><span class="type-signature"> &rarr; {google.maps.MapType}</span></h4>
     
 
     
@@ -1191,7 +1246,7 @@ added to this client.</p>
 
         <tr>
             
-                <td class="name"><code>The</code></td>
+                <td class="name"><code>map</code></td>
             
 
             <td class="type">
@@ -1207,7 +1262,7 @@ added to this client.</p>
 
             
 
-            <td class="description last"><p>native google map where the carto layer is going to be added.</p></td>
+            <td class="description last"><p>The native google map where the carto layer is going to be added</p></td>
         </tr>
 
     
@@ -1291,6 +1346,15 @@ added to this client.</p>
     
 
 
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Get googlemaps MapType from client
+const gmapsMapType = client.getGoogleMapsMapType();</code></pre>
+
+    <pre class="prettyprint"><code>// Add googlemaps MapType to a google map
+googleMap.overlayMapTypes.push(client.getGoogleMapsMapType(googleMap));</code></pre>
 
 
 
@@ -1396,6 +1460,15 @@ added to this client.</p>
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Get all layers from the client
+const layers = client.getLayers();</code></pre>
+
+    <pre class="prettyprint"><code>// Hide all layers from the client
+client.getLayers().forEach(layer => layer.hide());</code></pre>
+
+
 
         
             
@@ -1499,6 +1572,16 @@ added to this client.</p>
     
 
 
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Get the leafletlayer from the client
+const cartoLeafletLayer = client.getLeafletLayer();</code></pre>
+
+    <pre class="prettyprint"><code>// Add the leafletLayer to a leafletMap
+client.getLeafletLayer().addTo(map);
+ </code></pre>
 
 
 
@@ -1661,7 +1744,7 @@ added to this client.</p>
 
         
 <div class="param-desc">
-    <p>A promise that will be fulfilled when the dataview is removed.</p>
+    <p>A promise that will be fulfilled when the dataview is removed</p>
 </div>
 
 
@@ -1683,6 +1766,18 @@ added to this client.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Remove a dataview from the client
+client.removeDataview(dataview)
+.then(() => {
+   console.log('Dataviews removed');
+ })
+ .catch(cartoError => {
+   console.error(cartoError.message);
+ }):</code></pre>
+
+
 
         
             
@@ -1698,7 +1793,7 @@ added to this client.</p>
 
 
 <div class="description">
-    <p>Remove a layer from the client</p>
+    <p>Remove a layer from the client.</p>
 </div>
 
 
@@ -1843,7 +1938,7 @@ added to this client.</p>
 
         
 <div class="param-desc">
-    <p>A promise that will be fulfilled when the layer is removed.</p>
+    <p>A promise that will be fulfilled when the layer is removed</p>
 </div>
 
 
@@ -1865,6 +1960,18 @@ added to this client.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Remove a layer from the client
+client.removeLayer(layer)
+.then(() => {
+ console.log('Layer removed');
+})
+.catch(cartoError => {
+ console.error(cartoError.message);
+});</code></pre>
+
+
 
         
             
@@ -1880,7 +1987,8 @@ added to this client.</p>
 
 
 <div class="description">
-    <p>Remove multiple layer from the client</p>
+    <p>Remove multiple layer from the client.
+Use this method instead multiple calls to <strong>removeLayer</strong> to improve performance.</p>
 </div>
 
 
@@ -2025,7 +2133,7 @@ added to this client.</p>
 
         
 <div class="param-desc">
-    <p>A promise that will be fulfilled when the layers are removed.</p>
+    <p>A promise that will be fulfilled when the layers are removed</p>
 </div>
 
 
@@ -2047,6 +2155,18 @@ added to this client.</p>
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Remove multiple layers from the client
+client.removeLayers([layer1, layer2])
+.then(() => {
+ console.log('Layers removed');
+})
+.catch(cartoError => {
+ console.error(cartoError.message);
+});</code></pre>
+
+
 
         
     
@@ -2064,13 +2184,13 @@ added to this client.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxGoogleMaps.html">carto.filter.BoundingBoxGoogleMaps</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.layer.Layer.html">carto.layer.Layer</a></li><li><a href="carto.layer.metadata.Base.html">carto.layer.metadata.Base</a></li><li><a href="carto.layer.metadata.Buckets.html">carto.layer.metadata.Buckets</a></li><li><a href="carto.layer.metadata.Categories.html">carto.layer.metadata.Categories</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li><li><a href="global.html#CartoError">CartoError</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:aggregationChanged">aggregationChanged</a></li><li><a href="global.html#event:binsChanged">binsChanged</a></li><li><a href="global.html#event:boundsChanged">boundsChanged</a></li><li><a href="global.html#event:columnChanged">columnChanged</a></li><li><a href="global.html#event:dataChanged">dataChanged</a></li><li><a href="global.html#event:featureClicked">featureClicked</a></li><li><a href="global.html#event:featureOut">featureOut</a></li><li><a href="global.html#event:featureOver">featureOver</a></li><li><a href="global.html#event:limitChanged">limitChanged</a></li><li><a href="global.html#event:localTimezoneChanged">localTimezoneChanged</a></li><li><a href="global.html#event:metadataChanged">metadataChanged</a></li><li><a href="global.html#event:offsetChanged">offsetChanged</a></li><li><a href="global.html#event:operationChanged">operationChanged</a></li><li><a href="global.html#event:operationColumnChanged">operationColumnChanged</a></li><li><a href="global.html#event:queryChanged">queryChanged</a></li><li><a href="global.html#event:sourceChanged">sourceChanged</a></li><li><a href="global.html#event:statusChanged">statusChanged</a></li><li><a href="global.html#event:styleChanged">styleChanged</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxGoogleMaps.html">carto.filter.BoundingBoxGoogleMaps</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.layer.Layer.html">carto.layer.Layer</a></li><li><a href="carto.layer.metadata.Base.html">carto.layer.metadata.Base</a></li><li><a href="carto.layer.metadata.Buckets.html">carto.layer.metadata.Buckets</a></li><li><a href="carto.layer.metadata.Categories.html">carto.layer.metadata.Categories</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:aggregationChanged">aggregationChanged</a></li><li><a href="global.html#event:binsChanged">binsChanged</a></li><li><a href="global.html#event:boundsChanged">boundsChanged</a></li><li><a href="global.html#event:columnChanged">columnChanged</a></li><li><a href="global.html#event:dataChanged">dataChanged</a></li><li><a href="global.html#event:featureClicked">featureClicked</a></li><li><a href="global.html#event:featureOut">featureOut</a></li><li><a href="global.html#event:featureOver">featureOver</a></li><li><a href="global.html#event:limitChanged">limitChanged</a></li><li><a href="global.html#event:localTimezoneChanged">localTimezoneChanged</a></li><li><a href="global.html#event:metadataChanged">metadataChanged</a></li><li><a href="global.html#event:offsetChanged">offsetChanged</a></li><li><a href="global.html#event:operationChanged">operationChanged</a></li><li><a href="global.html#event:operationColumnChanged">operationColumnChanged</a></li><li><a href="global.html#event:queryChanged">queryChanged</a></li><li><a href="global.html#event:sourceChanged">sourceChanged</a></li><li><a href="global.html#event:statusChanged">statusChanged</a></li><li><a href="global.html#event:styleChanged">styleChanged</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.layer.metadata.html">carto.layer.metadata</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 17:43:11 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 14 2017 17:41:05 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>

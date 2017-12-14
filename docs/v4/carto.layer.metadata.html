@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Base</title>
+    <title>JSDoc: Namespace: metadata</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Base</h1>
+    <h1 class="page-title">Namespace: metadata</h1>
 
     
 
@@ -28,8 +28,8 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature">(abstract) </span></span>
-            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.layer.html">.layer</a>.</span>Base<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.layer.html">.layer</a>.</span>metadata</h2>
         
     
 </header>
@@ -39,29 +39,201 @@
     
         
 
+        
+
+
+<dl class="details">
+
+    
+
     
 
     
-    <h4 class="name" id="Base"><span class="type-signature">(abstract) </span>new Base<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
     
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
 
 
-<div class="description">
-    <p>Base layer object.</p>
-<p>This object should not be used directly! use <a href="carto.layer.Layer.html">carto.layer.Layer</a> instead.</p>
-</div>
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="carto.layer.metadata.Base.html">Base</a></dt>
+            <dd></dd>
+        
+            <dt><a href="carto.layer.metadata.Buckets.html">Buckets</a></dt>
+            <dd></dd>
+        
+            <dt><a href="carto.layer.metadata.Categories.html">Categories</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".Bucket">Bucket</h4>
 
 
 
 
 
 
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
 
 
 
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>min</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The minimum range value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>max</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The maximum range value</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value of the bucket</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -105,43 +277,149 @@
 
 
 
-<h5>Fires:</h5>
-<ul>
-    <li>event:error</li>
-</ul>
+
+            
+                
+<h4 class="name" id=".Category">Category</h4>
 
 
 
 
 
 
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
 
 
 
 
 
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the category</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The value of the category</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
     
 
     
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
     
 
     
