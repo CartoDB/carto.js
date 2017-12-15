@@ -5,7 +5,6 @@ module.exports = function (config) {
       'test/vendor/underscore.js',
       'vendor/backbone.js',
       'vendor/jquery.min.js',
-      'vendor/lzma.js',
       'test/vendor/gmaps.js',
       'test/vendor/tangram.js',
       'node_modules/jasmine-ajax/lib/mock-ajax.js',
