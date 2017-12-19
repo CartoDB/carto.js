@@ -507,7 +507,7 @@ client.addDataview(dataview)
     
 
     
-    <h4 class="name" id="addDataviews"><span class="type-signature"></span>addDataviews<span class="signature">(dataviews, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="addDataviews"><span class="type-signature"></span>addDataviews<span class="signature">(dataviews)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -568,29 +568,6 @@ client.addDataview(dataview)
             
 
             <td class="description last"><p>An array with the dataviews to be added</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
         </tr>
 
     
@@ -897,7 +874,7 @@ client.addLayer(layer)
     
 
     
-    <h4 class="name" id="addLayers"><span class="type-signature"></span>addLayers<span class="signature">(layers, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="addLayers"><span class="type-signature"></span>addLayers<span class="signature">(layers)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -905,8 +882,7 @@ client.addLayer(layer)
 
 
 <div class="description">
-    <p>Add multiple layers to the client. Note the hierarchal order of layers.
-Use this method instead multiple calls to <strong>addLayer</strong> to improve performance.</p>
+    <p>Add multiple layers to the client at once.</p>
 </div>
 
 
@@ -958,30 +934,7 @@ Use this method instead multiple calls to <strong>addLayer</strong> to improve p
 
             
 
-            <td class="description last"><p>An array with the layers to be added. Note that ([A, B]) displays B as the first layer. Alternatively, client.addLayer(A); client.addLayer(B);</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
+            <td class="description last"><p>An array with the layers to be added. Note that ([A, B]) displays B as the top layer.</p></td>
         </tr>
 
     
@@ -1100,7 +1053,7 @@ client.addLayers([layer0, layer1])
 
 
 <div class="description">
-    <p>Get all the dataviews from the client</p>
+    <p>Get all the dataviews from the client.</p>
 </div>
 
 
@@ -1262,7 +1215,7 @@ added to this client.</p>
 
             
 
-            <td class="description last"><p>The native google map where the carto layer is going to be added</p></td>
+            <td class="description last"><p>The native Google Maps map where the CARTO layers will be displayed.</p></td>
         </tr>
 
     
@@ -1372,7 +1325,7 @@ googleMap.overlayMapTypes.push(client.getGoogleMapsMapType(googleMap));</code></
 
 
 <div class="description">
-    <p>Get all the <a href="carto.layer.Base.html">layers</a> from the client</p>
+    <p>Get all the <a href="carto.layer.Base.html">layers</a> from the client.</p>
 </div>
 
 
@@ -1476,7 +1429,7 @@ client.getLayers().forEach(layer => layer.hide());</code></pre>
     
 
     
-    <h4 class="name" id="getLeafletLayer"><span class="type-signature"></span>getLeafletLayer<span class="signature">()</span><span class="type-signature"> &rarr; {L.TileLayer}</span></h4>
+    <h4 class="name" id="getLeafletLayer"><span class="type-signature"></span>getLeafletLayer<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1551,23 +1504,10 @@ added to this client.</p>
 
         
 <div class="param-desc">
-    <p>A Leaflet layer that groups all the layers:
-<a href="http://leafletjs.com/reference-1.2.0.html#tilelayer">L.TileLayer</a></p>
+    <p>A <a href="http://leafletjs.com/reference-1.2.0.html#tilelayer">L.TileLayer</a> layer that groups all the layers.</p>
 </div>
 
 
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">L.TileLayer</span>
-
-
-    </dd>
-</dl>
 
     
 
@@ -1591,7 +1531,7 @@ client.getLeafletLayer().addTo(map);
     
 
     
-    <h4 class="name" id="removeDataview"><span class="type-signature"></span>removeDataview<span class="signature">(dataview, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="removeDataview"><span class="type-signature"></span>removeDataview<span class="signature">(dataview)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1652,29 +1592,6 @@ client.getLeafletLayer().addTo(map);
             
 
             <td class="description last"><p>The dataview array to be removed</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
         </tr>
 
     
@@ -1979,7 +1896,7 @@ client.removeLayer(layer)
     
 
     
-    <h4 class="name" id="removeLayers"><span class="type-signature"></span>removeLayers<span class="signature">(layers, opts)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="removeLayers"><span class="type-signature"></span>removeLayers<span class="signature">(layers)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1987,8 +1904,7 @@ client.removeLayer(layer)
 
 
 <div class="description">
-    <p>Remove multiple layer from the client.
-Use this method instead multiple calls to <strong>removeLayer</strong> to improve performance.</p>
+    <p>Remove multiple layers from the client.</p>
 </div>
 
 
@@ -2041,29 +1957,6 @@ Use this method instead multiple calls to <strong>removeLayer</strong> to improv
             
 
             <td class="description last"><p>An array with the layers to be removed</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>opts</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
         </tr>
 
     
@@ -2190,7 +2083,7 @@ client.removeLayers([layer1, layer2])
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 09:12:47 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 14:42:26 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
