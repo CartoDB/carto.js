@@ -37,6 +37,7 @@ map.on('load', function() {
 
         const layerAgg = new carto.layer.Layer(source, {
             id: 'clustered',
+            maxzoom: 8,
             aggregation: {
                 threshold: 1,
                 resolution: 16,
@@ -51,6 +52,7 @@ map.on('load', function() {
         });
         const layer = new carto.layer.Layer(source, {
             id: 'unclustered',
+            minzoom: 7,
             aggregation: false
         });
 
