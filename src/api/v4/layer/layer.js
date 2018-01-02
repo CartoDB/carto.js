@@ -71,6 +71,8 @@ function Layer (source, style, options) {
   this._internalModel = undefined;
 
   this._layerId = options.id;
+  this._minzoom = options.minzoom;
+  this._maxzoom = options.maxzoom;
   this._aggregation = options.aggregation;
   this._source = source;
   this._style = style;
@@ -322,6 +324,8 @@ Layer.prototype._createInternalModel = function (engine) {
     source: this._source.$getInternalModel(),
     cartocss: this._style.getContent(),
     cartocss_version: this._style.getVersion(),
+    minzoom: this._minzoom,
+    maxzoom: this._maxzoom,
     aggregation: this._aggregation,
     visible: this._visible,
     infowindow: _getInteractivityFields(this._featureClickColumns),

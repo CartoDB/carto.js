@@ -77,6 +77,15 @@ function optionsForMapnikLayer (layerModel) {
     options.aggregation = aggregation;
   }
 
+  var minzoom = layerModel.get('minzoom');
+  if (Number.isFinite(minzoom)) {
+    options.minzoom = minzoom;
+  }
+  var maxzoom = layerModel.get('maxzoom');
+  if (Number.isFinite(maxzoom)) {
+    options.maxzoom = maxzoom;
+  }
+
   if (layerModel.infowindow && layerModel.infowindow.hasFields()) {
     options.attributes = {
       id: 'cartodb_id',
