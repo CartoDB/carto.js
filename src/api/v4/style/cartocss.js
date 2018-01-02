@@ -66,7 +66,7 @@ CartoCSS.prototype.setContent = function (newContent) {
 /**
  * Get the current CartoCSS style version.
  *
- * @return {string} - The TurboCarto style for this CartoCSS object
+ * @return {string} - The CartoCSS version for this CartoCSS object
  * @api
  */
 CartoCSS.prototype.getVersion = function () {
