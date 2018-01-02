@@ -68,7 +68,14 @@ function optionsForPlainLayer (layerModel) {
 
 function optionsForMapnikLayer (layerModel) {
   var options = sharedOptionsForMapnikAndTorqueLayers(layerModel);
-  options.interactivity = layerModel.getInteractiveColumnNames();
+  if (layerModel.isInteractive()) {
+    options.interactivity = layerModel.getInteractiveColumnNames();
+  }
+
+  var aggregation = layerModel.get('aggregation');
+  if (aggregation) {
+    options.aggregation = aggregation;
+  }
 
   if (layerModel.infowindow && layerModel.infowindow.hasFields()) {
     options.attributes = {
@@ -94,10 +101,13 @@ function optionsForTorqueLayer (layerModel) {
 }
 
 function sharedOptionsForMapnikAndTorqueLayers (layerModel) {
-  var options = {
-    cartocss: layerModel.get('cartocss'),
-    cartocss_version: layerModel.get('cartocss_version') || DEFAULT_CARTOCSS_VERSION
-  };
+  var options = {};
+
+  var cartocss = layerModel.get('cartocss');
+  if (cartocss) {
+    options.cartocss = layerModel.get('cartocss');
+    options.cartocss_version = layerModel.get('cartocss_version') || DEFAULT_CARTOCSS_VERSION;
+  }
 
   options.source = { id: layerModel.getSourceId() };
 

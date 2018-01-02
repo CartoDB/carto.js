@@ -63,6 +63,16 @@ CartoCSS.prototype.setContent = function (newContent) {
     });
 };
 
+/**
+ * Get the current CartoCSS style version.
+ *
+ * @return {string} - The TurboCarto style for this CartoCSS object
+ * @api
+ */
+CartoCSS.prototype.getVersion = function () {
+  return '2.3.0';
+};
+
 // Once the reload cycle is completed trigger a contentChanged event.
 function _onContentChanged (newContent) {
   this.trigger(CONTENT_CHANGED, this._content);

@@ -326,6 +326,53 @@ Client.prototype.getGoogleMapsMapType = function (map) {
 };
 
 /**
+ * Return a {@link https://github.com/mapbox/tilejson-spec|TileJSON} for the map tileset.
+ *
+ * @example
+ * // Get the tilejson from the client
+ * const tilejson = client.getTilejson();
+ *
+ * @param {string} - The tileset format: vector or raster.
+ *
+ * @returns A {@link https://github.com/mapbox/tilejson-spec|L.TileJSON} for the raster or vector tileset.
+ *
+ * @api
+ */
+Client.prototype.getTilejson = function (format, layerFilters) {
+  var layergroup = this._engine._cartoLayerGroup.get('urls');
+  return (format === 'vector') ? vectorTilejson(layergroup, layerFilters) : rasterTilejson(layergroup, layerFilters);
+};
+
+function tileUrls(layergroup, format, layerFilters) {
+  layerFilters = layerFilters || 'mapnik';
+  layerFilters = Array.isArray(layerFilters) ? layerFilters : [layerFilters];
+  var rasterTilesUrl = layergroup.tiles
+    .replace('{format}', format)
+    .replace('{layerIndexes}', layerFilters.join(','));
+  if (layergroup.subdomains.length === 0) {
+    return [rasterTilesUrl];
+  }
+  return layergroup.subdomains.map(function(subdomain) {
+    return rasterTilesUrl.replace('{s}', subdomain);
+  });
+}
+
+function rasterTilejson(layergroup, layerFilters) {
+  return {
+    tilejson: "2.2.0",
+    tiles: tileUrls(layergroup, 'png', layerFilters),
+    grids: layergroup.grids,
+  };
+}
+
+function vectorTilejson(layergroup, layerFilters) {
+  return {
+    tilejson: "2.2.0",
+    tiles: tileUrls(layergroup, 'mvt', layerFilters),
+  };
+}
+
+/**
  * Call engine.reload wrapping the native cartojs errors
  * into public CartoErrors.
  */

@@ -2,6 +2,7 @@ var Base = require('./base');
 var CartoDBLayer = require('../../../geo/map/cartodb-layer');
 var SourceBase = require('../source/base');
 var StyleBase = require('../style/base');
+var EmptyStyle = require('../style/empty');
 var CartoError = require('../error-handling/carto-error');
 var CartoValidationError = require('../error-handling/carto-validation-error');
 var EVENTS = require('../events');
@@ -54,6 +55,13 @@ var metadataParser = require('./metadata/parser');
  * @api
  */
 function Layer (source, style, options) {
+  if (!options) {
+    if (!(style instanceof StyleBase)) {
+      options = style;
+      style = new EmptyStyle();
+    }
+  }
+
   options = options || {};
 
   _checkSource(source);
@@ -62,6 +70,8 @@ function Layer (source, style, options) {
   this._engine = undefined;
   this._internalModel = undefined;
 
+  this._layerId = options.id;
+  this._aggregation = options.aggregation;
   this._source = source;
   this._style = style;
   this._visible = true;
@@ -308,15 +318,21 @@ Layer.prototype.isInteractive = function () {
 
 Layer.prototype._createInternalModel = function (engine) {
   var internalModel = new CartoDBLayer({
-    id: this._id,
+    id: this._layerId || this._id,
     source: this._source.$getInternalModel(),
     cartocss: this._style.getContent(),
+    cartocss_version: this._style.getVersion(),
+    aggregation: this._aggregation,
     visible: this._visible,
     infowindow: _getInteractivityFields(this._featureClickColumns),
     tooltip: _getInteractivityFields(this._featureOverColumns)
   }, { engine: engine });
 
   internalModel.on('change:meta', function (layer, data) {
+    if (!data.cartocss_meta) {
+      return;
+    }
+
     var rules = data.cartocss_meta.rules;
     var styleMetadataList = metadataParser.getMetadataFromRules(rules);
 
