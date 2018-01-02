@@ -343,7 +343,7 @@ Client.prototype.getTilejson = function (format, layerFilters) {
   return (format === 'vector') ? vectorTilejson(layergroup, layerFilters) : rasterTilejson(layergroup, layerFilters);
 };
 
-function tileUrls(layergroup, format, layerFilters) {
+function tileUrls (layergroup, format, layerFilters) {
   layerFilters = layerFilters || 'mapnik';
   layerFilters = Array.isArray(layerFilters) ? layerFilters : [layerFilters];
   var rasterTilesUrl = layergroup.tiles
@@ -352,23 +352,23 @@ function tileUrls(layergroup, format, layerFilters) {
   if (layergroup.subdomains.length === 0) {
     return [rasterTilesUrl];
   }
-  return layergroup.subdomains.map(function(subdomain) {
+  return layergroup.subdomains.map(function (subdomain) {
     return rasterTilesUrl.replace('{s}', subdomain);
   });
 }
 
-function rasterTilejson(layergroup, layerFilters) {
+function rasterTilejson (layergroup, layerFilters) {
   return {
-    tilejson: "2.2.0",
+    tilejson: '2.2.0',
     tiles: tileUrls(layergroup, 'png', layerFilters),
-    grids: layergroup.grids,
+    grids: layergroup.grids
   };
 }
 
-function vectorTilejson(layergroup, layerFilters) {
+function vectorTilejson (layergroup, layerFilters) {
   return {
-    tilejson: "2.2.0",
-    tiles: tileUrls(layergroup, 'mvt', layerFilters),
+    tilejson: '2.2.0',
+    tiles: tileUrls(layergroup, 'mvt', layerFilters)
   };
 }
 

@@ -7,5 +7,5 @@ var Empty = require('./empty');
  */
 module.exports = {
   CartoCSS: CartoCSS,
-  Empty: Empty,
+  Empty: Empty
 };
