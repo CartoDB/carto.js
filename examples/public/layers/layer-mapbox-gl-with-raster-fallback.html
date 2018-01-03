@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Fallback to raster</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="../../../dist/public/carto.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+
+<div id='map'></div>
+
+<script>
+(async () => {
+    function isVectorSupported() {
+        return location.hash.indexOf('vector=true') > -1;
+    }
+
+    const client = new carto.Client({
+        apiKey: 'YOUR_API_KEY',
+        username: 'cartojs-test'
+    });
+
+    const source = new carto.source.Dataset("earthquakes");
+    const style = new carto.style.CartoCSS(`
+    #layer {
+        marker-width: 8;
+        marker-fill: rgb(178,24,43);
+        marker-line-color: #FFFFFF;
+        marker-line-width: 1;
+        marker-allow-overlap: true;
+    }
+    `);
+
+    const layer = new carto.layer.Layer(source, style, {
+        id: "earthquakes"
+    });
+    await client.addLayers([layer]);
+
+    if (isVectorSupported()) {
+        mapboxgl.accessToken = 'pk.eyJ1Ijoicm9jaG9hIiwiYSI6IlUtOVdzLW8ifQ.aF6UbX1O-otpss1ZIwSQWw';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [-120, 50],
+            zoom: 2
+        });
+        var tilejson = client.getTilejson('vector');
+        map.on('load', function() {
+            map.addSource("earthquakes", {
+                type: "vector",
+                tiles: tilejson.tiles
+            });
+            map.addLayer({
+                "id": "earthquakes-point",
+                "type": "circle",
+                "source": "earthquakes",
+                "source-layer": "earthquakes",
+                "paint": {
+                    "circle-radius": 4,
+                    "circle-color": "rgb(178,24,43)",
+                    "circle-stroke-color": "white",
+                    "circle-stroke-width": 1
+                }
+            }, 'waterway-label');
+        });
+    } else {
+        const map = L.map('map').setView([50, -120], 3);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+            maxZoom: 18
+        }).addTo(map);
+        client.getLeafletLayer().addTo(map);
+    }
+
+})();
+</script>
+
+</body>
+</html>
