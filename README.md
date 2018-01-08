@@ -1,6 +1,8 @@
 CartoDB.js (v3.15)
 ===========
-** **This version is no longer being actively developed.  Major bugs will be addressed as needed.** **
+**⚠️ CartoDB.js v3.15 is no longer being actively developed. Major bugs will be addressed as needed. ⚠️** 
+
+**🎉 You can check out the Beta release of CARTO.js v4 [here](https://carto.com/documentation/cartojs/)! 🎉**
 
 This library allows to embed visualizations created with CartoDB in your map or website in a simple way.
 
