@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Categories</title>
+    <title>JSDoc: Class: Aggregation</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Categories</h1>
+    <h1 class="page-title">Class: Aggregation</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.layer.html">.layer</a><a href="carto.layer.metadata.html">.metadata</a>.</span>Categories</h2>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.layer.html">.layer</a>.</span>Aggregation<span class="signature">(opts)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -39,6 +39,21 @@
     
         
 
+    
+
+    
+    <h4 class="name" id="Aggregation"><span class="type-signature"></span>new Aggregation<span class="signature">(opts)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>An aggregation can be passed to a <a href="carto.layer.Layer.html">carto.layer.Layer</a> to reduce the number of visible points 
+increasing the performance.</p>
+<p>See <a href="https://carto.com/docs/carto-engine/maps-api/tile-aggregation">https://carto.com/docs/carto-engine/maps-api/tile-aggregation</a> for more info.</p>
+</div>
 
 
 
@@ -47,6 +62,244 @@
 
 
 
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The minimum number of rows in the dataset for aggregation to be applied</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resolution</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The cell-size of the spatial aggregation grid <a href="https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#resolution">more info</a></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>placement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The kind of <a href="https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#placement">aggregated geometry</a> generated</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>columns</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new columns are computed by a applying an aggregate function to all the points in each group</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>aggregatedFunction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Function used to aggregate the points: avg (average), sum, min (minimum), max (maximum) and mode (the most frequent value in the group)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>aggregatedColumn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the original column to be aggregated.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -102,6 +355,34 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Create a layer with aggregated data.
+const aggregationOptions = {
+  // CARTO applies aggregation if your dataset has more than threshold rows. In this case, more than 1 row.
+  threshold: 1,
+  // Defines the cell-size of the aggregation grid. In this case, 1x1 pixel. 
+  resolution: 1,
+  // Where the new point will be placed. In this case, at the center of the grid.
+  placement: carto.layer.Aggregation.placement.GRID,
+  // Here we define the aggregated columns that we want to obtain.
+  columns: {
+    // Each property key is the name of the new generated column
+    avg_population: {
+      // The aggregated column will contain the average of the original data.
+      aggregateFunction: carto.layer.Aggregation.operation.AVG,
+      // The column to be aggregated
+      aggregatedColumn: 'population'
+    }, {
+    min_population: {
+      aggregateFunction: carto.layer.Aggregation.operation.MIN,
+      aggregatedColumn: 'population'
+  }
+};
+const aggregation = new Aggregation(options);
+const layer = new carto.layer.Layer(source, style, { aggregation: aggregation });</code></pre>
 
 
 
@@ -109,261 +390,188 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
 
         
+            
+<h4 class="name" id=".OPERATIONS"><span class="type-signature">(static) </span>OPERATIONS<span class="type-signature"> :string</span></h4>
 
 
+
+
+<div class="description">
+    <p>List of possible aggregation operations.
+See <a href="https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#columns">https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#columns</a> for more info.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
     <ul>
-        <li><a href="carto.layer.metadata.Base.html">carto.layer.metadata.Base</a></li>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
     </ul>
 
 
-    
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
 
     
 
-    
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>AVG</code></td>
             
 
-    
-
-    
-    <h4 class="name" id="getCategories"><span class="type-signature"></span>getCategories<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;<a href="carto.layer.metadata.html#.Category">carto.layer.metadata.Category</a>>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the buckets</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;<a href="carto.layer.metadata.html#.Category">carto.layer.metadata.Category</a>></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
+            <td class="type">
             
-
-    
-
-    
-    <h4 class="name" id="getColumn"><span class="type-signature"></span>getColumn<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the column of the metadata</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="carto.layer.metadata.Base.html#getColumn">carto.layer.metadata.Base#getColumn</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
+                
 <span class="param-type">string</span>
 
 
-    </dd>
-</dl>
+            
+            </td>
 
-    
-
-
-
-
-
-        
             
 
-    
+            
+
+            <td class="description last"><p>The new point will contain the average value of the or the aggregated ones</p></td>
+        </tr>
 
     
-    <h4 class="name" id="getDefaultValue"><span class="type-signature"></span>getDefaultValue<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
+
+        <tr>
+            
+                <td class="name"><code>SUM</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will contain the sum of the aggregated values</p></td>
+        </tr>
 
     
 
+        <tr>
+            
+                <td class="name"><code>MIN</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
-<div class="description">
-    <p>Return the default value</p>
-</div>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will contain the minimal value existing the aggregated features</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MAX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will contain the maximun value existing the aggregated features</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MODE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
+            
+            </td>
 
+            
 
+            
 
+            <td class="description last"><p>The new point will contain the mode of the aggregated values</p></td>
+        </tr>
 
-
+    
+    </tbody>
+</table>
 
 
 
@@ -408,61 +616,128 @@
 
 
 
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
         
             
+<h4 class="name" id=".PLACEMENTS"><span class="type-signature">(static) </span>PLACEMENTS<span class="type-signature"> :string</span></h4>
 
-    
-
-    
-    <h4 class="name" id="getMapping"><span class="type-signature"></span>getMapping<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
 
 
 
 <div class="description">
-    <p>Return the property of the metadata</p>
+    <p>List of possible aggregation feature placements.
+See <a href="https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#placement">https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#placement</a> for more info.</p>
 </div>
 
 
 
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
 
 
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>SAMPLE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will be placed at a random sample of the aggregated points</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>GRID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will be placed at the center of the aggregation grid cells</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CENTROID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new point will be placed at averaged coordinated of the grouped points</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -474,11 +749,6 @@
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="carto.layer.metadata.Base.html#getMapping">carto.layer.metadata.Base#getMapping</a>
-    </li></ul></dd>
-    
 
     
 
@@ -512,245 +782,9 @@
 
 
 
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
         
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
     
 
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getProperty"><span class="type-signature"></span>getProperty<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the property of the metadata</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="carto.layer.metadata.Base.html#getProperty">carto.layer.metadata.Base#getProperty</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getType"><span class="type-signature"></span>getType<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Return the type of the metadata</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="carto.layer.metadata.Base.html#getType">carto.layer.metadata.Base#getType</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
     
 
     
