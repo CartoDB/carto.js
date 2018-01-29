@@ -223,6 +223,6 @@ cdb.geo.geocoder.MAPBOX = {
         type: this.TYPES[rawResponse.features[0].type] || 'default',
         title: rawResponse.features[0].text,
       }
-    ]
+    ];
   }
 };
