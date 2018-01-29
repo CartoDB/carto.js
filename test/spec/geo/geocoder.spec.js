@@ -140,8 +140,4 @@ describe('Geocoder', function() {
       });
     });
   });
-
-  describe('MAPBOX', function(){
-    
-  });
 });
