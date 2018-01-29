@@ -51,7 +51,7 @@ describe('cdb.geo.ui.Search', function() {
         },
         type: undefined
       };
-      cdb.geo.geocoder.MAPZEN.geocode = function(address, callback) {
+      cdb.geo.geocoder.MAPBOX.geocode = function(address, callback) {
         callback([ self.result ]);
       };
 
@@ -59,9 +59,9 @@ describe('cdb.geo.ui.Search', function() {
     });
 
     it('should search with geocoder when form is submit', function() {
-      spyOn(cdb.geo.geocoder.MAPZEN, 'geocode');
+      spyOn(cdb.geo.geocoder.MAPBOX, 'geocode');
       this.view.$('form').submit();
-      expect(cdb.geo.geocoder.MAPZEN.geocode).toHaveBeenCalled();
+      expect(cdb.geo.geocoder.MAPBOX.geocode).toHaveBeenCalled();
     });
 
     it('should change map center when geocoder returns any result', function() {
