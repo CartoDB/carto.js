@@ -554,6 +554,204 @@ layer.on('featureOver', featureEvent => {
     
 
     
+    <h4 class="name" id="bringToBack"><span class="type-signature"></span>bringToBack<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Move the layer to the back.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="bringToFront"><span class="type-signature"></span>bringToFront<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Move the layer to the front.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getFeatureClickColumns"><span class="type-signature"></span>getFeatureClickColumns<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
     
 
@@ -1136,6 +1334,11 @@ layer.on('featureOver', featureEvent => {
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li>event:visibilityChanged</li>
+</ul>
+
 
 
 
@@ -1185,7 +1388,7 @@ layer.on('featureOver', featureEvent => {
 
 
 <div class="description">
-    <p>Return <code>true</code> if the layer is not visible and false when visible.</p>
+    <p>Return true if the layer is not visible and false when visible.</p>
 </div>
 
 
@@ -1253,6 +1456,111 @@ layer.on('featureOver', featureEvent => {
 <div class="param-desc">
     <ul>
 <li>A boolean value indicating the layer's visibility</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isInteractive"><span class="type-signature"></span>isInteractive<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return true if the layer has interactivity.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A boolean value indicating the layer's interactivity</li>
 </ul>
 </div>
 
@@ -1387,7 +1695,7 @@ layer.on('featureOver', featureEvent => {
     
 
     
-    <h4 class="name" id="setFeatureClickColumns"><span class="type-signature"></span>setFeatureClickColumns<span class="signature">(columns)</span><span class="type-signature"> &rarr; {<a href="carto.layer.Layer.html">carto.layer.Layer</a>}</span></h4>
+    <h4 class="name" id="setFeatureClickColumns"><span class="type-signature"></span>setFeatureClickColumns<span class="signature">(columns)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1498,6 +1806,11 @@ layer.on('featureOver', featureEvent => {
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="global.html#event:error">event:error</a></li>
+</ul>
+
 
 
 
@@ -1509,10 +1822,6 @@ layer.on('featureOver', featureEvent => {
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>this</p>
-</div>
-
 
 
 <dl>
@@ -1521,7 +1830,7 @@ layer.on('featureOver', featureEvent => {
     </dt>
     <dd>
         
-<span class="param-type"><a href="carto.layer.Layer.html">carto.layer.Layer</a></span>
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -1539,7 +1848,7 @@ layer.on('featureOver', featureEvent => {
     
 
     
-    <h4 class="name" id="setFeatureOverColumns"><span class="type-signature"></span>setFeatureOverColumns<span class="signature">(columns)</span><span class="type-signature"> &rarr; {<a href="carto.layer.Layer.html">carto.layer.Layer</a>}</span></h4>
+    <h4 class="name" id="setFeatureOverColumns"><span class="type-signature"></span>setFeatureOverColumns<span class="signature">(columns)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1650,6 +1959,11 @@ layer.on('featureOver', featureEvent => {
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li><a href="global.html#event:error">event:error</a></li>
+</ul>
+
 
 
 
@@ -1661,10 +1975,6 @@ layer.on('featureOver', featureEvent => {
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>this</p>
-</div>
-
 
 
 <dl>
@@ -1673,7 +1983,155 @@ layer.on('featureOver', featureEvent => {
     </dt>
     <dd>
         
-<span class="param-type"><a href="carto.layer.Layer.html">carto.layer.Layer</a></span>
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setOrder"><span class="type-signature"></span>setOrder<span class="signature">(index)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set the layer's order.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>new order index for the layer.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
 
 
     </dd>
@@ -1853,7 +2311,7 @@ add a source belonging to a different client.</p>
     
 
     
-    <h4 class="name" id="setStyle"><span class="type-signature"></span>setStyle<span class="signature">(New)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id="setStyle"><span class="type-signature"></span>setStyle<span class="signature">(style)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
@@ -1897,7 +2355,7 @@ add a source belonging to a different client.</p>
 
         <tr>
             
-                <td class="name"><code>New</code></td>
+                <td class="name"><code>style</code></td>
             
 
             <td class="type">
@@ -1913,7 +2371,7 @@ add a source belonging to a different client.</p>
 
             
 
-            <td class="description last"><p>style</p></td>
+            <td class="description last"><p>New style</p></td>
         </tr>
 
     
@@ -2075,6 +2533,11 @@ add a source belonging to a different client.</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li>event:visibilityChanged</li>
+</ul>
+
 
 
 
@@ -2178,6 +2641,11 @@ add a source belonging to a different client.</p>
 
 
 
+<h5>Fires:</h5>
+<ul>
+    <li>event:visibilityChanged</li>
+</ul>
+
 
 
 
@@ -2235,7 +2703,7 @@ add a source belonging to a different client.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Feb 01 2018 14:35:31 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Feb 01 2018 16:12:33 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
