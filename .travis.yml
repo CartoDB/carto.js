@@ -1,15 +1,12 @@
 sudo: false
-cache: false
+cache: yarn
 language: node_js
 node_js:
   - 6.9.2
-install:
-  - npm install
-before_script:
-  - cp secrets.example.json secrets.json
-  - npm install -g grunt-cli
+before_install:
+  - npm install -g yarn@0.27.5
 script:
-  - npm test
+  - yarn test
 after_success:
   - bash scripts/deploy-docs-examples.sh
 notifications:

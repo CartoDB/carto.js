@@ -8,6 +8,7 @@
   "globals": {
   },
   "rules": {
-    "no-useless-escape": "off"
+    "no-useless-escape": "off",
+    "no-trailing-spaces": "off"
   }
 }
