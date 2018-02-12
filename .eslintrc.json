@@ -8,10 +8,6 @@
   "globals": {
   },
   "rules": {
-    "no-useless-escape": "off",
-    "no-trailing-spaces": [
-      "error",
-      { "ignoreComments": true }
-    ]
+    "no-useless-escape": "off"
   }
 }

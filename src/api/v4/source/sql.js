@@ -29,7 +29,7 @@ SQL.prototype = Object.create(Base.prototype);
 /**
  * Update the query. This method is asyncronous and returns a promise which is resolved when the style
  * is changed succesfully. It also fires a 'queryChanged' event.
- * 
+ *
  * @param {string} query - The sql query that will be the source of the data
  * @fires queryChanged
  * @returns {Promise} - A promise that will be fulfilled when the reload cycle is completed

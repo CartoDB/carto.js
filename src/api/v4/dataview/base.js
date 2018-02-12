@@ -11,14 +11,14 @@ var CartoValidationError = require('../error-handling/carto-validation-error');
  *
  * Dataviews are a way to extract data from a CARTO account in predefined ways
  * (eg: a list of categories, the result of a formula operation, etc.).
- * 
+ *
  * **This object should not be used direclty**
  *
  * The data used in a dataviews cames from a {@link carto.source.Base|source} that might change
  * due to different reasons (eg: SQL query changed).
- * 
+ *
  * When dataview data changes the dataview will trigger events to notify subscribers when new data is available.
- * 
+ *
  * @example
  * // Keep your widget data sync. Remember each dataview has his own data format.
  * dataview.on('dataChanged', newData => {
