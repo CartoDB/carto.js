@@ -25,38 +25,50 @@ This project is licensed under the BSD 3-clause "New" or "Revised" License - see
 
 ## Development
 
+### Install the dependencies
+
+```
+yarn
+```
+
 ### Run the tests
 
 ```
-npm test
+yarn test
+```
+
+To launch the tests in the browser
+
+```
+yarn test:browser
 ```
 
 ### Build the library
 
 ```
-npm run build
+yarn build
 ```
 
 To watch the files
 
 ```
-npm run build:watch
+yarn build:watch
 ```
 
 ### Generate the docs
 
 ```
-npm run docs
+yarn docs
 ```
 
 ### Release version
 
 ```
-npm run bump
+yarn bump
 ```
 
 To publish a release to the `CDN` and `npm`
 
 ```
-npm run release
+yarn release
 ```
