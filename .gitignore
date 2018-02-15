@@ -17,3 +17,4 @@ test/SpecRunner.html
 .idea/
 themes/css/cartodb.css
 cartodb.js-bower/
+docs

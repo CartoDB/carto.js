@@ -1,3 +1,11 @@
+3.15.14
+-------
+* Update all Google Maps script references to v3.3.0
+
+3.15.13 (30/01/2018)
+-------
+* Replace Mapzen geocoding search to Mapbox
+
 3.15.12 (12/06/2017)
 -------
 * New Mapzen API key.
