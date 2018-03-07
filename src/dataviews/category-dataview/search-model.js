@@ -81,13 +81,13 @@ module.exports = Model.extend({
 
   _parseData: function (categories) {
     var newData = [];
-    _.each(categories, function (d) {
-      if (!d.agg) {
+    _.each(categories, function (data) {
+      if (!data.agg) {
         newData.push({
           selected: false,
-          name: (d.category || d.name).toString(),
-          agg: d.agg,
-          value: d.value
+          name: data.category || data.name || '',
+          agg: data.agg,
+          value: data.value
         });
       }
     }, this);
