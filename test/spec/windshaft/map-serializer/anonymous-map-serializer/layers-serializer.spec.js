@@ -51,9 +51,7 @@ describe('layers-serializer', function () {
           id: 'l1',
           source: sourceMock,
           cartocss: 'cartoCSS1',
-          cartocss_version: '2.0'
-        }, {
-          engine: engineMock,
+          cartocss_version: '2.0',
           aggregation: {
             threshold: 1000,
             resolution: 4,
@@ -69,6 +67,8 @@ describe('layers-serializer', function () {
               }
             }
           }
+        }, {
+          engine: engineMock
         });
         layersCollection.reset([cartoDBLayer]);
 
@@ -99,6 +99,7 @@ describe('layers-serializer', function () {
             }
           }
         }];
+
         expect(actual).toEqual(expected);
       });
 
