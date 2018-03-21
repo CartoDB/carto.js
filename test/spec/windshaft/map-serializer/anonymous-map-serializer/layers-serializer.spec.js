@@ -51,7 +51,8 @@ describe('layers-serializer', function () {
           id: 'l1',
           source: sourceMock,
           cartocss: 'cartoCSS1',
-          cartocss_version: '2.0',
+          cartocss_version: '2.0'
+        }, {
           aggregation: {
             threshold: 1000,
             resolution: 4,
@@ -66,8 +67,7 @@ describe('layers-serializer', function () {
                 aggregated_column: 'states'
               }
             }
-          }
-        }, {
+          },
           engine: engineMock
         });
         layersCollection.reset([cartoDBLayer]);

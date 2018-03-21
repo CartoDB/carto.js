@@ -96,7 +96,16 @@ var LAYER_CONSTRUCTORS = {
     // CartoDBLayer._checkSourceAttribute(attrs.source);
     checkProperties(attrs, ['cartocss']);
 
-    return new CartoDBLayer(attrs, { engine: options.engine });
+    var layerOptions = {
+      engine: options.engine
+    };
+
+    if (attrs.aggregation) {
+      _.extend(layerOptions, { aggregation: attrs.aggregation });
+      delete attrs.aggregation;
+    }
+
+    return new CartoDBLayer(attrs, layerOptions);
   },
 
   torque: function (attrs, options) {
@@ -139,6 +148,7 @@ function LayersFactory (deps) {
 
 LayersFactory.prototype.createLayer = function (type, attrs) {
   var LayerConstructor = LAYER_CONSTRUCTORS[type.toLowerCase()];
+
   if (!LayerConstructor) {
     log.error("error creating layer of type '" + type + "'");
     return null;
