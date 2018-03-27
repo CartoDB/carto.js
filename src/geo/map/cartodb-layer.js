@@ -49,10 +49,11 @@ var CartoDBLayer = LayerModelBase.extend({
     this.infowindow.fields.bind('reset add remove', this._reload, this);
     this.tooltip.fields.bind('reset add remove', this._reload, this);
 
-    this.aggregation = options.aggregation
+    options.aggregation = options.aggregation
       ? options.aggregation
       : DEFAULT_AGGREGATION;
 
+    this.aggregation = options.aggregation;
     LayerModelBase.prototype.initialize.apply(this, arguments);
   },
 
