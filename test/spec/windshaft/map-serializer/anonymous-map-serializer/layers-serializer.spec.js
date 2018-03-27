@@ -40,6 +40,11 @@ describe('layers-serializer', function () {
             'cartocss': 'cartoCSS1',
             'cartocss_version': '2.0',
             'interactivity': ['cartodb_id'],
+            'aggregation': {
+              threshold: 100000,
+              resolution: 1,
+              placement: 'point-sample'
+            },
             'source': { id: 'a1' }
           }
         }];
@@ -126,6 +131,11 @@ describe('layers-serializer', function () {
             'cartocss_version': '2.0',
             'interactivity': ['cartodb_id'],
             'source': { id: 'a1' },
+            'aggregation': {
+              threshold: 100000,
+              resolution: 1,
+              placement: 'point-sample'
+            },
             'minzoom': 5,
             'maxzoom': 9
           }
