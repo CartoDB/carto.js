@@ -5,14 +5,12 @@ var InfowindowTemplate = require('./infowindow-template');
 var TooltipTemplate = require('./tooltip-template');
 var Legends = require('./legends/legends');
 var AnalysisModel = require('../../analysis/analysis-model');
-var Aggregation = require('../../api/v4/layer/aggregation');
 
 var ATTRIBUTES_THAT_TRIGGER_VIS_RELOAD = ['sql', 'source', 'sql_wrap', 'cartocss'];
 
 var DEFAULT_AGGREGATION = {
   threshold: 100000,
-  resolution: 1,
-  placement: Aggregation.placement.SAMPLE
+  resolution: 1
 };
 
 var CartoDBLayer = LayerModelBase.extend({
