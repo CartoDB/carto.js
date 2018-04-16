@@ -313,6 +313,11 @@ var Infowindow = View.extend({
   },
 
   _loadImageHook: function (imageDimensions, coverDimensions, url) {
+    var cssClipPathNotSupported = util.ie || util.browser.ie || util.browser.edge;
+    if (cssClipPathNotSupported) {
+      return;
+    }
+
     var $hook = this.$('.CDB-hook');
 
     if (!$hook) {
