@@ -1,10 +1,12 @@
 var _ = require('underscore');
 var CartoValidationError = require('../error-handling/carto-validation-error');
 
+
 /**
  * List of possible aggregation operations.
  * See {@link https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#columns } for more info.
  * @enum {string} carto.layer.Aggregation.operation
+ * @readonly
  * @memberof carto.layer.Aggregation
  * @api
  */
@@ -25,6 +27,7 @@ var OPERATIONS = {
  * List of possible aggregation feature placements.
  * See {@link https://carto.com/docs/carto-engine/maps-api/tile-aggregation/#placement } for more info.
  * @enum {string} carto.layer.Aggregation.placement
+ * @readonly
  * @memberof carto.layer.Aggregation
  * @api
  */
@@ -175,4 +178,8 @@ function _checkValidPlacement (placement) {
   }
 }
 
+/**
+ * @namespace carto.layer.Aggregation
+ * @api
+ */
 module.exports = Aggregation;
