@@ -37,9 +37,9 @@ Once the task is done, you can visit `docs/public/index.html` to check the refer
 
 ### General documentation
 
-You can read the general documentation that is published at [https://carto.com/documentation/cartojs/](https://carto.com/documentation/cartojs/) also in this repo. They are written in Markdown.
+You can read the general documentation that is published at [https://carto.com/developers/carto-js/](https://carto.com/developers/carto-js/) also in this repo. They are written in Markdown.
 
-Warning: internal links in these documents don't work. They are replaced when the documentation is published in [https://carto.com/](https://carto.com/documentation/cartojs/)
+Warning: internal links in these documents don't work. They are replaced when the documentation is published in [https://carto.com/](https://carto.com/developers/carto-js/)
 
 
 #### Guides
