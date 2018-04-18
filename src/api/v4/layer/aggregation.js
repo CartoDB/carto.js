@@ -6,6 +6,7 @@ var CartoValidationError = require('../error-handling/carto-validation-error');
  * See {@link https://carto.com/developers/maps-api/tile-aggregation#columns } for more info.
  * @enum {string} carto.layer.Aggregation.operation
  * @memberof carto.layer.Aggregation
+ * @static
  * @api
  */
 var OPERATIONS = {
@@ -26,6 +27,7 @@ var OPERATIONS = {
  * See {@link https://carto.com/developers/maps-api/tile-aggregation#placement } for more info.
  * @enum {string} carto.layer.Aggregation.placement
  * @memberof carto.layer.Aggregation
+ * @static
  * @api
  */
 var PLACEMENTS = {
