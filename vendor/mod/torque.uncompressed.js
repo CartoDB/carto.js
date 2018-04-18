@@ -4274,7 +4274,7 @@ var Profiler = require('../profiler');
 
     _tilerHost: function() {
       var opts = this.options;
-      var user = opts.user_name || opts.user;
+      var user = opts.visualization_user_name || opts.user_name || opts.user;
       return opts.maps_api_template.replace('{user}', user);
     },
 
@@ -4298,7 +4298,7 @@ var Profiler = require('../profiler');
         if (!this._isUserTemplateUrl(cdn_url)) {
           cdn_url = cdn_url  + "/{user}";
         }
-        var user = opts.user_name || opts.user;
+        var user = opts.visualization_user_name || opts.user_name || opts.user;
         h += cdn_url.replace('{user}', user)
         return h;
       }
