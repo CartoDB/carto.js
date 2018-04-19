@@ -28,7 +28,7 @@ If you want more detailed information, this [GitHub guide](https://guides.github
 
 ## Completing documentation
 
-CARTO.js documentation is located in ```docs/```. That folder is the content that appears in the [Developer Center](http://carto.com/developer-center/carto-js/). 
+CARTO.js documentation is located in ```docs/```. That folder is the content that appears in the [Developer Center](http://carto.com/developers/carto-js/). 
 Just follow the instructions described in [contributing code](#contributing-code) and after accepting your pull request, we will make it appear online :).
 
 ## Submitting contributions
