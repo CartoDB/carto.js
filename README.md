@@ -75,5 +75,5 @@ Build CartoDB.js library:
   
 ## Submitting Contributions
 
-You will need to sign a Contributor License Agreement (CLA) before making a submission. [Learn more here.](https://cartodb.com/contributing)
+You will need to sign a Contributor License Agreement (CLA) before making a submission. [Learn more here.](https://cartodb.com/contributions)
 
