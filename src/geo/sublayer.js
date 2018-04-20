@@ -230,7 +230,7 @@ CartoDBSubLayer.prototype = _.extend({}, SubLayerBase.prototype, {
     var columns = [];
     if (this.get('attributes')) {
       columns = this.get('attributes');
-    } else {
+    } else if(this.infowindow) {
       columns = _.map(this.infowindow.get('fields'), function(field){
         return field.name;
       });
@@ -307,4 +307,3 @@ HttpSubLayer.prototype = _.extend({}, SubLayerBase.prototype, {
     return this.get('tms');
   }
 });
-
