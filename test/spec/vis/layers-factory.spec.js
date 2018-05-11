@@ -2,7 +2,7 @@ var _ = require('underscore');
 
 var AnalysisModel = require('../../../src/analysis/analysis-model');
 var LayersFactory = require('../../../src/vis/layers-factory');
-var MockFactory = require('../../helpers/mockFactory');
+var createEngine = require('../fixtures/engine.fixture.js');
 
 var createFakeAnalysis = function (attrs) {
   return new AnalysisModel(attrs, {
@@ -19,7 +19,7 @@ describe('vis/layers-factory', function () {
   var engineMock;
 
   beforeEach(function () {
-    engineMock = MockFactory.createEngine();
+    engineMock = createEngine();
 
     this.windshaftSettings = {
       urlTemplate: 'http://{user}.carto.com',
@@ -93,9 +93,6 @@ describe('vis/layers-factory', function () {
       expect(layerModel.get('type')).toEqual('Tiled');
     });
 
-    var urlTemplate = 'http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png';
-    var urlTemplateRetina = 'http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png';
-
     _.each({
       'https://dnv9my2eseobd.cloudfront.net/': 'http://a.tiles.mapbox.com/',
       'https://maps.nlp.nokia.com/': 'http://maps.nlp.nokia.com/',
@@ -146,44 +143,6 @@ describe('vis/layers-factory', function () {
 
           expect(layerModel.get('urlTemplate')).toEqual(httpUrlTemplate);
         });
-      });
-    });
-
-    describe('Is high resolution screen', function () {
-      beforeEach(function () {
-        spyOn(LayersFactory, 'isRetina').and.returnValue(true);
-      });
-
-      it('should not convert to ' + urlTemplateRetina + ' if urlTemplateRetina is not defined', function () {
-        var layerModel = layersFactory.createLayer('tiled', {
-          urlTemplate: urlTemplate
-        });
-
-        expect(layerModel.get('urlTemplate')).toEqual(urlTemplate);
-      });
-
-      it('should convert to ' + urlTemplateRetina + ' if urlTemplateRetina is defined', function () {
-        var layerModel = layersFactory.createLayer('tiled', {
-          urlTemplate: urlTemplate,
-          urlTemplateRetina: urlTemplateRetina
-        });
-
-        expect(layerModel.get('urlTemplate')).toEqual(urlTemplateRetina);
-      });
-    });
-
-    describe('Is not high resolution screen', function () {
-      beforeEach(function () {
-        spyOn(LayersFactory, 'isRetina').and.returnValue(false);
-      });
-
-      it('should not convert to ' + urlTemplateRetina + '', function () {
-        var layerModel = layersFactory.createLayer('tiled', {
-          urlTemplate: urlTemplate,
-          urlTemplateRetina: urlTemplateRetina
-        });
-
-        expect(layerModel.get('urlTemplate')).toEqual(urlTemplate);
       });
     });
   });

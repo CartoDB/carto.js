@@ -3,14 +3,14 @@ var PlainLayer = require('../../../../src/geo/map/plain-layer');
 var TileLayer = require('../../../../src/geo/map/tile-layer');
 var TorqueLayer = require('../../../../src/geo/map/torque-layer');
 var CartoDBLayer = require('../../../../src/geo/map/cartodb-layer');
-var MockFactory = require('../../../helpers/mockFactory');
+var createEngine = require('../../fixtures/engine.fixture.js');
 
 describe('geo/map/layers', function () {
   var layers;
   var engineMock;
 
   beforeEach(function () {
-    engineMock = MockFactory.createEngine();
+    engineMock = createEngine();
     layers = new Layers();
   });
 
@@ -139,6 +139,14 @@ describe('geo/map/layers', function () {
       movedLayer = layers.moveCartoDBLayer(2, 1);
       expect(layers.indexOf(movedLayer)).toBe(1);
       expect(movedLayer.get('title')).toBe('CARTO 2');
+    });
+
+    it('should move a layer from one position to other', function () {
+      spyOn(layers, 'trigger');
+
+      var movedLayer = layers.moveCartoDBLayer(1, 0);
+
+      expect(layers.trigger).toHaveBeenCalledWith('layerMoved', movedLayer);
     });
 
     it('should not move anything if the position is the same', function () {

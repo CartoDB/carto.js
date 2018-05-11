@@ -227,13 +227,16 @@ $buttonColor: #636D72;
 
 $maxLegendContainerHeight: 300px;
 
+.CDB-LayerLegends {
+  margin-bottom: 12px;
+}
+
 .CDB-Legends-canvas {
   position: absolute;
   top: 16px;
   left: 16px;
   width: 240px;
   height: auto;
-  //max-height: $maxLegendContainerHeight;
   max-height: calc(100vh - 120px);
   border-radius: 4px;
   background: #FFF;
@@ -286,28 +289,11 @@ $maxLegendContainerHeight: 300px;
   z-index: 3;
 }
 
-.CDB-LayerLegends {
-  margin-bottom: 24px;
-}
-
-.CDB-LayerLegends:empty {
-  margin-bottom: 0;
-}
-
-.CDB-Legend-item {
-  margin-bottom: 16px;
-}
-
-
 .CDB-Legend-item div.cartodb-legend {
   position: static;
   padding: 0;
   border: 0;
   box-shadow: 0 0 0;
-}
-
-.CDB-LayerLegends:last-child .CDB-Legend-item:last-child {
-  margin-bottom: 0;
 }
 
 .CDB-Legend-item.is-disabled {
@@ -332,7 +318,7 @@ $maxLegendContainerHeight: 300px;
   right: 0;
   width: 100%;
   height: 100px;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .Bubble-circle {
@@ -422,10 +408,11 @@ $maxLegendContainerHeight: 300px;
 .Bubble-average--custom::after {
   display: none;
 }
+
 .Legend-choropleth {
   position: relative;
   height: $baseSize;
-  margin-bottom: 38px;
+  margin-bottom: 16px;
   box-sizing: border-box;
   border-radius: $halfBaseSize;
 }
@@ -517,7 +504,7 @@ $maxLegendContainerHeight: 300px;
   vertical-align: bottom;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 599px) {
   .CDB-Legends-canvas {
     display: none !important;
   }

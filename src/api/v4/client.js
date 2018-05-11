@@ -22,15 +22,23 @@ function getValidationError (code) {
  * To create a new client you need a CARTO account, where you will be able to get
  * your API key and username.
  *
+ * If you want to learn more about authorization and authentication, please read the authorization fundamentals section of our Developer Center.
+ *
  * @param {object} settings
  * @param {string} settings.apiKey - API key used to authenticate against CARTO
  * @param {string} settings.username - Name of the user
- * @param {string} [settings.serverUrl] - URL of the windshaft server
+ * @param {string} [settings.serverUrl] - URL of the windshaft server. Only needed in custom installations. Pattern: `https:\\{username}.yourinstance.com` or `https://your.carto.instance/user/{username}`, depending on your environment.
  *
  * @example
  * var client = new carto.Client({
  *   apiKey: 'YOUR_API_KEY_HERE',
  *   username: 'YOUR_USERNAME_HERE'
+ * });
+ *
+ * var client = new carto.Client({
+ *   apiKey: 'YOUR_API_KEY_HERE',
+ *   username: 'YOUR_USERNAME_HERE',
+ *   serverUrl: 'https://YOUR.CARTO.INSTANCE/user/YOUR_USERNAME_HERE'
  * });
  *
  * @constructor
@@ -155,7 +163,9 @@ Client.prototype.removeLayer = function (layer) {
  * @api
  */
 Client.prototype.removeLayers = function (layers) {
-  layers.forEach(this._removeLayer, this);
+  var layersToRemove = layers.slice(0);
+  layersToRemove.forEach(this._removeLayer, this);
+
   return this._reload();
 };
 
