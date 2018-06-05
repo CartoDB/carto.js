@@ -3329,20 +3329,27 @@ wax.g.connector = function(options) {
 // Get a tile element from a coordinate, zoom level, and an ownerDocument.
 wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
     var key = zoom + '/' + coord.x + '/' + coord.y;
+    var img = null;
     if (!this.cache[key]) {
-      this.cache[key] = {
-        img: new Image(256, 256),
-        calls: 1
-      };
-      this.cache[key].img.src = this.getTileUrl(coord, zoom);
-      this.cache[key].img.setAttribute('gTileKey', key);
-      this.cache[key].img.setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
-      this.cache[key].img.onerror = function() { alert('mierdon'); img.style.display = 'none'; };
+      this.cache[key] = new Image(256, 256);
+      this.cache[key].src = this.getTileUrl(coord, zoom);
+      this.cache[key].setAttribute('gTileKey', key);
+      this.cache[key].setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
+      this.cache[key].onerror = function() { img.style.display = 'none'; };
+      this.cache[key].setAttribute('calls', '1');
     } else {
-      ++this.cache[key].calls;
+      try {
+        var calls = parseInt(this.cache[key].getAttribute('calls'), 10);
+        calls++;
+        this.cache[key].setAttribute('calls', calls.toString());
+      } catch (exc) {
+        // Swallow
+      }
+      
     }
+    img = this.cache[key];
 
-    return this.cache[key].img;
+    return img;
 };
 
 // Remove a tile that has fallen out of the map's viewport.
@@ -3353,10 +3360,18 @@ wax.g.connector.prototype.releaseTile = function(tile) {
     var removeTile = false;
 
     if (this.cache[key]) {
-      var currentCalls = --this.cache[key].calls;
+      var currentCalls = 2; // To avoid removing an element in case we can't get the calls. Ultradefensive.
+      try {
+        currentCalls = parseInt(this.cache[key].getAttribute('calls'), 10);
+      } catch (exc) {
+        // Swallow
+      }
+      currentCalls--;
       if (currentCalls <= 0) {
         delete this.cache[key];
         removeTile = true;
+      } else {
+        this.cache[key].setAttribute('calls', currentCalls.toString());
       }
     } else {
       removeTile = true;
