@@ -1,3 +1,7 @@
+3.15.15
+-------
+* Fix wax to get along with new Google Maps renderer released on v3.32
+
 3.15.14
 -------
 * Update all Google Maps script references to v3.3.0
