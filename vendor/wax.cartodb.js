@@ -3330,13 +3330,19 @@ wax.g.connector = function(options) {
 wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
     var key = zoom + '/' + coord.x + '/' + coord.y;
     if (!this.cache[key]) {
-        var img = this.cache[key] = new Image(256, 256);
-        this.cache[key].src = this.getTileUrl(coord, zoom);
-        this.cache[key].setAttribute('gTileKey', key);
-        this.cache[key].setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
-        this.cache[key].onerror = function() { img.style.display = 'none'; };
+      this.cache[key] = {
+        img: new Image(256, 256),
+        calls: 1
+      };
+      this.cache[key].img.src = this.getTileUrl(coord, zoom);
+      this.cache[key].img.setAttribute('gTileKey', key);
+      this.cache[key].img.setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
+      this.cache[key].img.onerror = function() { alert('mierdon'); img.style.display = 'none'; };
+    } else {
+      ++this.cache[key].calls;
     }
-    return this.cache[key];
+
+    return this.cache[key].img;
 };
 
 // Remove a tile that has fallen out of the map's viewport.
@@ -3344,8 +3350,21 @@ wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
 // TODO: expire cache data in the gridmanager.
 wax.g.connector.prototype.releaseTile = function(tile) {
     var key = tile.getAttribute('gTileKey');
-    if (this.cache[key]) delete this.cache[key];
-    if (tile.parentNode) tile.parentNode.removeChild(tile);
+    var removeTile = false;
+
+    if (this.cache[key]) {
+      var currentCalls = --this.cache[key].calls;
+      if (currentCalls <= 0) {
+        delete this.cache[key];
+        removeTile = true;
+      }
+    } else {
+      removeTile = true;
+    }
+
+    if (removeTile && tile.parentNode) {
+      tile.parentNode.removeChild(tile);
+    }
 };
 
 // Get a tile url, based on x, y coordinates and a z value.
