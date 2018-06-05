@@ -3332,6 +3332,7 @@ wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
     var img = null;
     if (!this.cache[key]) {
       this.cache[key] = new Image(256, 256);
+      img = this.cache[key];
       this.cache[key].src = this.getTileUrl(coord, zoom);
       this.cache[key].setAttribute('gTileKey', key);
       this.cache[key].setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
