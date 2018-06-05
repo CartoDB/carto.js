@@ -51,7 +51,7 @@ var mapzenResponse = {
 };
 
 describe('Geocoder', function() {
-  describe('NOKIA', function() {
+  xdescribe('NOKIA', function() {
     it("don't remove the spaces in the user-submitted addresses [NOKIA]", function(done) {
       var regexp = new RegExp(/http:\/\/places.nlp.nokia.com\/places\/v1\/discover\/search\/\?q\=bn20%208qt/);
 
