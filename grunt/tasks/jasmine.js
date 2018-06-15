@@ -90,7 +90,7 @@ module.exports = {
           outfile: 'test/SpecRunner.html',
           specs: 'test/spec/**/*.js',
           helpers: 'test/spec/SpecHelper.js',
-          vendor: [ "http://maps.googleapis.com/maps/api/js?sensor=false&v=3.30" ],
+          vendor: [ "http://maps.googleapis.com/maps/api/js?sensor=false&v=3.32" ],
           summary: true,
           display: 'short'
         }

@@ -351,7 +351,7 @@ var Vis = cdb.core.View.extend({
       return overlay.type == "zoom"
     }));
 
-    var allowDragging = isMobileDevice || hasZoomOverlay || scrollwheel;
+    var allowDragging = isMobileDevice || hasZoomOverlay || scrollwheel;
 
     // map
     data.maxZoom || (data.maxZoom = 20);
