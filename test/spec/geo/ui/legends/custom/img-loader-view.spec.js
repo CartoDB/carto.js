@@ -5,13 +5,12 @@ describe('geo/ui/legends/custom/img-loader-view', function () {
   var svgResponse = {
     status: 200,
     contentType: 'image/svg+xml',
-    responseText: '<svg xmlns:a="genius.com" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"><path></path></svg>'
+    response: '<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"><path d=""></path></svg>'
   };
 
   beforeEach(function () {
     jasmine.Ajax.install();
-    jasmine.Ajax.stubRequest(new RegExp('^http(s)?.*/logo.svg.*'))
-      .andReturn(svgResponse);
+    jasmine.Ajax.stubRequest(new RegExp('^http(s)?.*/logo.svg.*')).andReturn(svgResponse);
 
     this.svgUrl = 'http://image.io/logo.svg';
     this.color = '#cebada';

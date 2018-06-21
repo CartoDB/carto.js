@@ -340,13 +340,11 @@ var Infowindow = View.extend({
       display: 'none'
     });
 
-    $hookImage.load(
-      function () {
-        $hook.parent().addClass('has-image');
-        $hookImage.clipPath(this._getHookPoints(imageDimensions.height - this.options.hookHeight));
-        $hookImage.show();
-      }.bind(this)
-    );
+    $hookImage.on('load', function () {
+      $hook.parent().addClass('has-image');
+      $hookImage.clipPath(this._getHookPoints(imageDimensions.height - this.options.hookHeight));
+      $hookImage.show();
+    }.bind(this));
   },
 
   _getHookPoints: function (imageHeight) {
@@ -372,8 +370,8 @@ var Infowindow = View.extend({
     $cover.append($img);
 
     $img
-      .load(this._onLoadImageSuccess)
-      .error(this._onLoadImageError)
+      .on('load', this._onLoadImageSuccess)
+      .on('error', this._onLoadImageError)
       .attr('src', url);
   },
 
