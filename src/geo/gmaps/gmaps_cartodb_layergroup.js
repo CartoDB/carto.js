@@ -138,9 +138,17 @@ CartoDBLayerGroupBase.prototype.getTile = function(coord, zoom, ownerDocument) {
       ielt9 = ie && !document.addEventListener;
 
   this.options.added = true;
+  var key = zoom + '/' + coord.x + '/' + coord.y;
 
-  if(this.tilejson === null) {
-    var key = zoom + '/' + coord.x + '/' + coord.y;
+  if (!this.cache[key]) {
+    if (this.tiles === 0) {
+      this.loading && this.loading();
+    }
+
+    this.tiles++;
+  }
+
+  if (this.tilejson === null) {
     var i = this.cache[key] = new Image(256, 256);
     i.src = EMPTY_GIF;
     i.setAttribute('gTileKey', key);
@@ -155,11 +163,6 @@ CartoDBLayerGroupBase.prototype.getTile = function(coord, zoom, ownerDocument) {
     setImageOpacityIE8(im, this.options.opacity);
   }
   im.style.opacity = this.options.opacity;
-  if (this.tiles === 0) {
-    this.loading && this.loading();
-  }
-
-  this.tiles++;
 
   var loadTime = cartodb.core.Profiler.metric('cartodb-js.tile.png.load.time').start();
 
