@@ -73,7 +73,8 @@ var Template = Backbone.Model.extend({
     'mustache': typeof (Mustache) === 'undefined'
       ? null
       // Replacement for Mustache.compile, which was removed in version 0.8.0
-      : function compile (template) {
+      : function compile (tpl) {
+        var template = tpl || '';
         Mustache.parse(template);
         return function (view, partials) {
           return Mustache.render(template, view, partials);
