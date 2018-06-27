@@ -6,6 +6,7 @@ var TooltipModel = Model.extend({
   defaults: {
     template: '<p>{{text}}</p>',
     fields: [],
+    content: { text: '' },
     alternative_names: {},
     placement: 'bottom|right',
     position: { x: 0, y: 0 },
