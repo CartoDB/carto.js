@@ -10,6 +10,14 @@ var Loader = cdb.vis.Loader = cdb.core.Loader = {
       script.type = 'text/javascript';
       script.src = src;
       script.async = true;
+      script.onerror = function () {
+        window.vizjson();
+      };
+      script.onload = function () {
+        if (Loader._script == script) {
+          window.vizjson();
+        }
+      };
       if (!Loader.head) {
         Loader.head = document.getElementsByTagName('head')[0];
       }
