@@ -178,50 +178,50 @@ Engine.prototype.reload = function (options) {
       this._performReload(batchOptions, stackCalls);
     }.bind(this);
     clearTimeout(this._timeout);
-    this._timeout = setTimeout(later, RELOAD_DEBOUNCE_TIME_IN_MILIS);
+    if (this.DISABLE_DEBOUNCE) {
+      later();
+    } else {
+      this._timeout = setTimeout(later, RELOAD_DEBOUNCE_TIME_IN_MILIS);
+    }
   }.bind(this));
 };
 
 Engine.prototype._performReload = function (options, stackCalls) {
-  return new Promise(function (resolve, reject) {
-    // Build Windshaft options callbacks
-    var windshaftOptions = this._buildWindshaftOptions(options,
-      // Windshaft success callback
-      function (serverResponse) {
-        this._onReloadSuccess(serverResponse, options.sourceId, options.forceFetch);
-        // Resolve stacked callbacks and promises
-        stackCalls.forEach(function (call) {
-          call.success && call.success();
-          call.resolve();
-        });
-        resolve();
-      }.bind(this),
-      // Windshaft error callback
-      function (errors) {
-        var windshaftError = this._onReloadError(errors);
-        // Reject stacked callbacks and promises
-        stackCalls.forEach(function (call) {
-          call.error && call.error(windshaftError);
-          call.reject(windshaftError);
-        });
-        reject(windshaftError);
-      }.bind(this)
-    );
-    try {
-      var params = this._buildParams(windshaftOptions.includeFilters);
-      var payload = this._getSerializer().serialize(this._layersCollection, this._dataviewsCollection);
-      var request = new Request(payload, params, windshaftOptions);
+  // Build Windshaft options callbacks
+  var windshaftOptions = this._buildWindshaftOptions(options,
+    // Windshaft success callback
+    function (serverResponse) {
+      this._onReloadSuccess(serverResponse, options.sourceId, options.forceFetch);
+      // Resolve stacked callbacks and promises
+      stackCalls.forEach(function (call) {
+        call.success && call.success();
+        call.resolve();
+      });
+    }.bind(this),
+    // Windshaft error callback
+    function (errors) {
+      var windshaftError = this._onReloadError(errors);
+      // Reject stacked callbacks and promises
+      stackCalls.forEach(function (call) {
+        call.error && call.error(windshaftError);
+        call.reject(windshaftError);
+      });
+    }.bind(this)
+  );
+  try {
+    var params = this._buildParams(windshaftOptions.includeFilters);
+    var payload = this._getSerializer().serialize(this._layersCollection, this._dataviewsCollection);
+    var request = new Request(payload, params, windshaftOptions);
 
-      // Trigger STARTED event
-      this._eventEmmitter.trigger(Engine.Events.RELOAD_STARTED);
-      // Perform the request
-      this._windshaftClient.instantiateMap(request);
-    } catch (error) {
-      // Convert error in a windshaftError
-      var windshaftError = new WindshaftError({ message: error.message });
-      this._manageClientError(windshaftError, windshaftOptions);
-    }
-  }.bind(this));
+    // Trigger STARTED event
+    this._eventEmmitter.trigger(Engine.Events.RELOAD_STARTED);
+    // Perform the request
+    this._windshaftClient.instantiateMap(request);
+  } catch (error) {
+    // Convert error in a windshaftError
+    var windshaftError = new WindshaftError({ message: error.message });
+    this._manageClientError(windshaftError, windshaftOptions);
+  }
 };
 
 /**

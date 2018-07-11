@@ -229,47 +229,5 @@ describe('windshaft/client', function () {
         }.bind(this));
       });
     });
-
-    describe('cancelling previous requests', function () {
-      beforeEach(function () {
-        this.fakeXHR = jasmine.createSpyObj('fakeXHR', ['abort']);
-        $.ajax.and.returnValues(this.fakeXHR, undefined);
-      });
-
-      it('should cancel previous requests when using GET requests', function () {
-        var errorCallback = jasmine.createSpy('errorCallback');
-        var request = new Request({ some: 'json that must be encoded' }, {}, { error: errorCallback });
-        this.client.instantiateMap(request);
-
-        expect($.ajax.calls.argsFor(0)[0].method).toEqual('GET');
-        expect(this.fakeXHR.abort).not.toHaveBeenCalled();
-
-        this.client.instantiateMap(request);
-
-        expect(this.fakeXHR.abort).toHaveBeenCalled();
-
-        expect(errorCallback).not.toHaveBeenCalled();
-      });
-
-      it('should cancel previous requests when using POST requests', function (done) {
-        // simulate a compression that generates something BIG
-        spyOn(LZMA, 'compress').and.callFake(function (data, level, callback) {
-          callback(new Array(2500).join('x'));
-        });
-        var request = new Request({ something: new Array(3000).join('x') }, {}, {});
-        this.client.instantiateMap(request);
-
-        _.defer(function () {
-          expect($.ajax.calls.argsFor(0)[0].method).toEqual('POST');
-          expect(this.fakeXHR.abort).not.toHaveBeenCalled();
-
-          this.client.instantiateMap(request);
-
-          expect(this.fakeXHR.abort).toHaveBeenCalled();
-
-          done();
-        }.bind(this));
-      });
-    });
   });
 });
