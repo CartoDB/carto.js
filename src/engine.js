@@ -168,45 +168,42 @@ Engine.prototype.reload = function (options) {
     });
     var later = function () {
       this._timeout = null;
-      this._performReload(this._batchOptions)
-        .then(function () {
-          // Resolve stacked callbacks and promises
-          this._stackCalls.forEach(function (call) {
-            call.success && call.success();
-            call.resolve();
-          });
-          // Reset stack
-          this._stackCalls = [];
-          this._batchOptions = {};
-        }.bind(this))
-        .catch(function (windshaftError) {
-          // Reject stacked callbacks and promises
-          this._stackCalls.forEach(function (call) {
-            call.error && call.error(windshaftError);
-            call.reject(windshaftError);
-          });
-          // Reset stack
-          this._stackCalls = [];
-          this._batchOptions = {};
-        }.bind(this));
+
+      var batchOptions = _.clone(this._batchOptions);
+      var stackCalls = _.clone(this._stackCalls);
+      // Reset stack
+      this._stackCalls = [];
+      this._batchOptions = {};
+
+      this._performReload(batchOptions, stackCalls);
     }.bind(this);
     clearTimeout(this._timeout);
     this._timeout = setTimeout(later, RELOAD_DEBOUNCE_TIME_IN_MILIS);
   }.bind(this));
 };
 
-Engine.prototype._performReload = function (options) {
+Engine.prototype._performReload = function (options, stackCalls) {
   return new Promise(function (resolve, reject) {
     // Build Windshaft options callbacks
     var windshaftOptions = this._buildWindshaftOptions(options,
       // Windshaft success callback
       function (serverResponse) {
         this._onReloadSuccess(serverResponse, options.sourceId, options.forceFetch);
+        // Resolve stacked callbacks and promises
+        stackCalls.forEach(function (call) {
+          call.success && call.success();
+          call.resolve();
+        });
         resolve();
       }.bind(this),
       // Windshaft error callback
       function (errors) {
         var windshaftError = this._onReloadError(errors);
+        // Reject stacked callbacks and promises
+        stackCalls.forEach(function (call) {
+          call.error && call.error(windshaftError);
+          call.reject(windshaftError);
+        });
         reject(windshaftError);
       }.bind(this)
     );

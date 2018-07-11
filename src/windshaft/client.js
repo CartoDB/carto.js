@@ -122,8 +122,7 @@ WindshaftClient.prototype._isURLValid = function (url) {
 };
 
 WindshaftClient.prototype._post = function (url, payload, options) {
-  this._abortPreviousRequest();
-  this._previousRequest = $.ajax({
+  $.ajax({
     url: url,
     crossOrigin: true,
     method: 'POST',
@@ -136,8 +135,7 @@ WindshaftClient.prototype._post = function (url, payload, options) {
 };
 
 WindshaftClient.prototype._get = function (url, options) {
-  this._abortPreviousRequest();
-  this._previousRequest = $.ajax({
+  $.ajax({
     url: url,
     method: 'GET',
     dataType: 'jsonp',
@@ -146,12 +144,6 @@ WindshaftClient.prototype._get = function (url, options) {
     success: options.success,
     error: options.error
   });
-};
-
-WindshaftClient.prototype._abortPreviousRequest = function () {
-  if (this._previousRequest) {
-    this._previousRequest.abort();
-  }
 };
 
 WindshaftClient.prototype._getURL = function (params, method) {
