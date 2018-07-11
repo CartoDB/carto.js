@@ -1272,7 +1272,7 @@ var Vis = cdb.core.View.extend({
     });
 
     layerView.bind('mouseout', function(m, layer) {
-      mapView.setCursor('auto');
+      mapView.setCursor();
     });
 
     layerView.infowindow = infowindow.model;
@@ -1513,7 +1513,7 @@ var Vis = cdb.core.View.extend({
     });
 
     layer.bind('mouseout', function(m, layer) {
-      mapView.setCursor('auto');
+      mapView.setCursor();
     });
   },
 
