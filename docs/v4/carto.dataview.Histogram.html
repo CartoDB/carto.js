@@ -243,6 +243,80 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Lower limit of the data range, if not present, the lower limit of the actual data will be used. Start and end values must be used together.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Upper limit of the data range, if not present, the upper limit of the actual data will be used. Start and end values must be used together.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -335,6 +409,15 @@ client.addDataview(histogram);</code></pre>
 var histogram = new carto.dataview.Histogram(citiesSource, 'population', {bins: 4});
 // Add a bounding box filter, so the data will change when the map is moved.
 var bboxFilter = new carto.filter.BoundingBoxLeaflet(map);
+// Set up a callback to render the histogram data every time new data is obtained.
+ histogram.on('dataChanged', histogramData => {
+   console.log(histogramData);
+ });
+// Add the histogram to the client
+client.addDataview(histogram);</code></pre>
+
+    <pre class="prettyprint"><code>// Create a cities population histogram with a range
+var histogram = new carto.dataview.Histogram(citiesSource, 'population', { start: 100000, end: 5000000 });
 // Set up a callback to render the histogram data every time new data is obtained.
  histogram.on('dataChanged', histogramData => {
    console.log(histogramData);
@@ -1177,6 +1260,109 @@ bounding box).</p>
     
 
     
+    <h4 class="name" id="getEnd"><span class="type-signature"></span>getEnd<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the upper limit of the bins' range</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Current value of end</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getSource"><span class="type-signature"></span>getSource<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.source.Base.html">carto.source.Base</a>}</span></h4>
     
 
@@ -1268,6 +1454,109 @@ bounding box).</p>
     <dd>
         
 <span class="param-type"><a href="carto.source.Base.html">carto.source.Base</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getStart"><span class="type-signature"></span>getStart<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the lower limit of the bins' range</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Current value of start</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
 
 
     </dd>
@@ -2359,12 +2648,12 @@ bounding box).</p>
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
+
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
         <a href="carto.dataview.Base.html#setColumn">carto.dataview.Base#setColumn</a>
     </li></ul></dd>
-    
-
     
 
     
@@ -2437,6 +2726,181 @@ bounding box).</p>
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="setStartEnd"><span class="type-signature"></span>setStartEnd<span class="signature">(start, end)</span><span class="type-signature"> &rarr; {<a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set the lower and upper limit of the bins range</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -2458,7 +2922,7 @@ bounding box).</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 11:13:06 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jul 12 2018 13:27:12 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
