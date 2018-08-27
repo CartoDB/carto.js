@@ -32,12 +32,11 @@ describe("Image", function() {
   });
 
   it("should generate the URL for a torque layer", function(done) {
-
     var vizjson = "http://documentation.carto.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
 
     var image = cartodb.Image(vizjson);
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)/-138\.6474609375,27\.761329874505233,-83\.408203125,51\.26191485308451/320/240\.pn");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)/-138\.6474609375,27\.761329874505233,-83\.408203125,51\.26191485308451/320/240\.pn");
 
     image.getUrl(function(err, url) {
       expect(image.options.layers.layers.length).toEqual(2);
@@ -168,8 +167,8 @@ describe("Image", function() {
     var image = cartodb.Image(vizjson);
 
     image.getUrl(function(err, url) {
-      expect(image.options.cdn_url.http).toEqual("ashbu.cartocdn.com");
-      expect(image.options.cdn_url.https).toEqual("cartocdn-ashbu.global.ssl.fastly.net");
+      expect(image.options.cdn_url.http).toEqual("gusc.cartocdn.com");
+      expect(image.options.cdn_url.https).toEqual("cartocdn-gusc.global.ssl.fastly.net");
       done();
     });
 
@@ -205,7 +204,7 @@ describe("Image", function() {
 
     var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)/-31\.05,-155\.74,82\.58,261\.21/400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)/-31\.05,-155\.74,82\.58,261\.21/400/300\.png");
 
     cartodb.Image(vizjson).bbox([-31.05, -155.74, 82.58, 261.21]).size(400,300).getUrl(function(error, url) {
       expect(error).toEqual(null);
@@ -220,7 +219,7 @@ describe("Image", function() {
 
     var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
 
     cartodb.Image(vizjson, { override_bbox: true }).size(400,300).getUrl(function(error, url) {
       expect(error).toEqual(null);
@@ -235,7 +234,7 @@ describe("Image", function() {
 
     var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/52\.5897007687178/52\.734375/400/300\.png");
 
     cartodb.Image(vizjson).bbox([]).size(400,300).getUrl(function(error, url) {
       expect(error).toEqual(null);
@@ -252,7 +251,7 @@ describe("Image", function() {
 
     var image = cartodb.Image(vizjson);
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/40/10/320/240\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/40/10/320/240\.png");
 
     image.center([40,10]).getUrl(function(err, url) {
       expect(image.imageOptions.zoom).toEqual(2);
@@ -293,7 +292,7 @@ describe("Image", function() {
 
     var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)320/240\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)320/240\.png");
 
     cartodb.Image(vizjson).getUrl(function(error, url) {
       expect(error).toEqual(null);
@@ -308,7 +307,7 @@ describe("Image", function() {
 
     var vizjson = "http://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json"
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/7/40/10/400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/7/40/10/400/300\.png");
 
     cartodb.Image(vizjson).center([40, 10]).zoom(7).size(400, 300).getUrl(function(error, url) {
       expect(error).toEqual(null);
@@ -327,7 +326,7 @@ describe("Image", function() {
 
     cartodb.Image(vizjson).center([40, 10]).zoom(7).size(400, 300).into(img);
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/7/40/10/400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/7/40/10/400/300\.png");
 
     setTimeout(function() {
       expect($("#image").attr("src")).toMatch(regexp);
@@ -359,7 +358,7 @@ describe("Image", function() {
       }]
     };
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/0/0/250/250\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/0/0/250/250\.png");
 
     cartodb.Image(layer_definition).size(250, 250).zoom(2).getUrl(function(error, url) {
       expect(url.match(regexp).length).toEqual(2);
@@ -419,7 +418,7 @@ describe("Image", function() {
       }]
     };
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/0/0/250/250\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/center/(.*?)/2/0/0/250/250\.png");
 
     cartodb.Image(layer_definition).size(250, 250).zoom(2).getUrl(function(error, url) {
       expect(url.match(regexp).length).toEqual(2);
@@ -435,7 +434,7 @@ describe("Image", function() {
 
     var image = cartodb.Image(vizjson).size(400, 300);
 
-    var regexp = new RegExp("https://cartocdn-ashbu.global.ssl.fastly.net/documentation/api/v1/map/static/bbox/(.*?)400/300\.png");
+    var regexp = new RegExp("https://cartocdn-gusc.global.ssl.fastly.net/documentation/api/v1/map/static/bbox/(.*?)400/300\.png");
 
     image.getUrl(function(err, url) {
       expect(url.match(regexp).length).toEqual(2);
@@ -451,7 +450,7 @@ describe("Image", function() {
 
     var image = cartodb.Image(vizjson).size(400, 300);
 
-    var regexp = new RegExp("http://a.ashbu.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)400/300\.png");
+    var regexp = new RegExp("http://a.gusc.cartocdn.com/documentation/api/v1/map/static/bbox/(.*?)400/300\.png");
 
     image.getUrl(function(err, url) {
       expect(url.match(regexp).length).toEqual(2);
