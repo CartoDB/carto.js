@@ -181,6 +181,9 @@
 |
 
 <span class="param-type">Date</span>
+|
+
+<span class="param-type">object</span>
 
 
             
@@ -190,7 +193,56 @@
 
             
 
-            <td class="description last"><p>Return rows whose column value is less than the provided value</p></td>
+            <td class="description last"><p>Return rows whose column value is less than the provided value</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Return rows whose column value is less than the value returned by query</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -207,6 +259,9 @@
 |
 
 <span class="param-type">Date</span>
+|
+
+<span class="param-type">object</span>
 
 
             
@@ -216,7 +271,56 @@
 
             
 
-            <td class="description last"><p>Return rows whose column value is less than or equal to the provided value</p></td>
+            <td class="description last"><p>Return rows whose column value is less than or equal to the provided value</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Return rows whose column value is less than or equal to the value returned by query</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -233,6 +337,9 @@
 |
 
 <span class="param-type">Date</span>
+|
+
+<span class="param-type">object</span>
 
 
             
@@ -242,7 +349,56 @@
 
             
 
-            <td class="description last"><p>Return rows whose column value is greater than to the provided value</p></td>
+            <td class="description last"><p>Return rows whose column value is greater than the provided value</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Return rows whose column value is greater than the value returned by query</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -259,6 +415,9 @@
 |
 
 <span class="param-type">Date</span>
+|
+
+<span class="param-type">object</span>
 
 
             
@@ -268,7 +427,56 @@
 
             
 
-            <td class="description last"><p>Return rows whose column value is greater than or equal to the provided value</p></td>
+            <td class="description last"><p>Return rows whose column value is greater than or equal to the provided value</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Return rows whose column value is greater than or equal to the value returned by query</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -848,10 +1056,16 @@
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// Create a filter by price, showing only listings lower than or equal to 50€, and higher than 100€
 const priceFilter = new carto.filter.Range('price', { lte: 50, gt: 100 });
+
+// Add filter to the existing source
+airbnbDataset.addFilter(priceFilter);</code></pre>
+
+    <pre class="prettyprint"><code>// Create a filter by price, showing only listings greater than or equal to the average price
+const priceFilter = new carto.filter.Range('price', { gte: { query: 'SELECT avg(price) FROM listings' } });
 
 // Add filter to the existing source
 airbnbDataset.addFilter(priceFilter);</code></pre>
@@ -907,7 +1121,7 @@ airbnbDataset.addFilter(priceFilter);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Sep 03 2018 10:24:51 GMT+0000 (UTC)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Sep 05 2018 11:27:56 GMT+0000 (UTC)
 </footer>
 
 <script> prettyPrint(); </script>
