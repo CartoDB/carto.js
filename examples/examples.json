@@ -56,6 +56,14 @@
             "leaflet": "public/layers/layer-with-aggregation-leaflet.html",
             "gmaps": "public/layers/layer-with-aggregation-gmaps.html"
           }
+        },
+        {
+          "title": "Server tile aggregation with cluster of points",
+          "desc": "Apply smart backend aggregation to create a cluster of points",
+          "file": {
+            "leaflet": "public/layers/layer-with-aggregation-cluster-leaflet.html",
+            "gmaps": "public/layers/layer-with-aggregation-cluster-gmaps.html"
+          }
         }
       ]
     },
