@@ -10,11 +10,11 @@
           margin: 0;
         }
       </style>
-      <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.core.js"></script>
-      <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+      <script src="https://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.core.js"></script>
+      <script type="text/javascript" src="https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
       <script type="text/javascript">
       var map = null;
-            
+
       function getMap()
       {
           map = new Microsoft.Maps.Map(document.getElementById('myMap'), {credentials: 'Your Bing Maps Key'});
@@ -37,16 +37,16 @@
               },
               width: 256,
               height: 256
-            };  
-            var tileSource = new Microsoft.Maps.TileSource(options); 
-            var tilelayer= new Microsoft.Maps.TileLayer({ mercator: tileSource}); 
-            map.entities.push(tilelayer);  
+            };
+            var tileSource = new Microsoft.Maps.TileSource(options);
+            var tilelayer= new Microsoft.Maps.TileLayer({ mercator: tileSource});
+            map.entities.push(tilelayer);
           });
-      }   
+      }
       </script>
    </head>
    <body onload="getMap();">
       <div id='myMap' style="position:relative; width:100%; height:100%;"></div>
    </body>
 </html>
-      
+

@@ -32,7 +32,6 @@ describe("Image", function() {
   });
 
   it("should generate the URL for a torque layer", function(done) {
-
     var vizjson = "http://documentation.carto.com/api/v2/viz/3ec995a8-b6ae-11e4-849e-0e4fddd5de28/viz.json"
 
     var image = cartodb.Image(vizjson);
