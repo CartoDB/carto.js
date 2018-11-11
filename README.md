@@ -1,5 +1,7 @@
 # CARTO.js 4
 
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+
 CARTO.js is a JavaScript library to create custom location intelligence applications that leverage the power of [CARTO](https://carto.com/). It is the library that powers [Builder](https://carto.com/builder/) and it is part of the [Engine](https://carto.com/pricing/engine/) ecosystem.
 
 ## Getting Started
