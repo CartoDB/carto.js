@@ -1,6 +1,6 @@
 cdb.geo.geocoder.TOMTOM = {
   keys: {
-    api_key: secrets.GEOCODER_KEY_TOMTOM || 'vrZphqNRlSCiU0J0ky0tFQGd0Pfbjxhr'
+    api_key: 'vrZphqNRlSCiU0J0ky0tFQGd0Pfbjxhr'
   },
 
   TYPES: {

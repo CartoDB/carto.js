@@ -1,6 +1,6 @@
 cdb.geo.geocoder.YAHOO = {
   keys: {
-    app_id: secrets.GEOCODER_ID_YAHOO || 'nLQPTdTV34FB9L3yK2dCXydWXRv3ZKzyu_BdCSrmCBAM1HgGErsCyCbBbVP2Yg--'
+    app_id: 'nLQPTdTV34FB9L3yK2dCXydWXRv3ZKzyu_BdCSrmCBAM1HgGErsCyCbBbVP2Yg--'
   },
 
   geocode: function (address, callback) {
