@@ -50,7 +50,8 @@ cdb.geo.geocoder.TOMTOM = {
       return [];
     }
 
-    const bestCandidate = rawResponse.results[0];
+    var bestCandidate = rawResponse.results[0];
+
     return [{
       boundingbox: _getBoundingBox(bestCandidate),
       center: _getCenter(bestCandidate),
@@ -88,8 +89,8 @@ function _getBoundingBox(result) {
   if (!result.viewport) {
     return;
   }
-  const upperLeft = result.viewport.topLeftPoint;
-  const bottomRight = result.viewport.btmRightPoint;
+  var upperLeft = result.viewport.topLeftPoint;
+  var bottomRight = result.viewport.btmRightPoint;
 
   return {
     south: bottomRight.lat,
