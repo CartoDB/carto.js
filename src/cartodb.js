@@ -60,7 +60,12 @@
         'core/loader.js',
         'core/util.js',
 
-        'geo/geocoder.js',
+        'geo/geocoders/mapbox_geocoder.js',
+        'geo/geocoders/mapzen_geocoder.js',
+        'geo/geocoders/nokia_geocoder.js',
+        'geo/geocoders/tomtom_geocoder.js',
+        'geo/geocoders/yahoo_geocoder.js',
+
         'geo/geometry.js',
         'geo/map.js',
         'geo/ui/text.js',
