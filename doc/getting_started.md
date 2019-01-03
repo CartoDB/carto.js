@@ -22,7 +22,7 @@ window.onload = function() {
 </script>
 ```
 
-[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/easy.html)
 
 ## Using the CARTO.js Library
 
@@ -108,7 +108,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 </script>
 ```
 
-[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/leaflet.html)
 
 ## Creating Visualizations at Runtime
 
@@ -219,7 +219,7 @@ cartodb.createLayer(map, 'http://examples.carto.com/api/v1/viz/0001/viz.json')
 
 The best way to start learning about the library is by taking a look at some of the examples below:
 
-+ An easy example using the library - ([view live](http://cartodb.github.com/cartodb.js/examples/easy.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)).
-+ Leaflet integration - ([view live](http://cartodb.github.com/cartodb.js/examples/leaflet.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)).
-+ Customizing infowindow data - ([view live](http://cartodb.github.com/cartodb.js/examples/custom_infowindow.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/custom_infowindow.html)).
-+ An example using a layer selector - ([view live](http://cartodb.github.com/cartodb.js/examples/layer_selector.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/layer_selector.html)).
++ An easy example using the library - ([view live](http://cartodb.github.com/cartodb.js/examples/easy.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/easy.html)).
++ Leaflet integration - ([view live](http://cartodb.github.com/cartodb.js/examples/leaflet.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/leaflet.html)).
++ Customizing infowindow data - ([view live](http://cartodb.github.com/cartodb.js/examples/custom_infowindow.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/custom_infowindow.html)).
++ An example using a layer selector - ([view live](http://cartodb.github.com/cartodb.js/examples/layer_selector.html) / [source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/layer_selector.html)).
