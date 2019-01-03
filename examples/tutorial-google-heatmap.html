@@ -13,14 +13,14 @@
       }
     </style>
 
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="https://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
 
   </head>
   <body>
     <div id="map"></div>
 
     <!-- include google maps library -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=INSERTYOURAPIKEYHERE"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=INSERTYOURAPIKEYHERE&v=3.32"></script>
 
     <!-- include google visualization library -->
     <script type="text/javascript"
@@ -28,7 +28,7 @@
 </script>
 
     <!-- include cartodb.js library -->
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script src="https://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
     <script>
       var map, pointarray, heatmap;
@@ -39,7 +39,7 @@
 
         var myOptions = {
           zoom: 14,
-          center: myLatlng, 
+          center: myLatlng,
           disableDefaultUI: true,
           mapTypeId: google.maps.MapTypeId.SATELLITE
         }
@@ -52,7 +52,7 @@
         sql.execute("SELECT cartodb_id, the_geom FROM cleveland_spring_points_281_29").done(function(data) {
 
           data = data.features.map(function(r) {
-              return new google.maps.LatLng(r.geometry.coordinates[1], r.geometry.coordinates[0]) 
+              return new google.maps.LatLng(r.geometry.coordinates[1], r.geometry.coordinates[0])
             });
 
           var pointArray = new google.maps.MVCArray(data);

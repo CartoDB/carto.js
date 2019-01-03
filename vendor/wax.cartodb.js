@@ -3330,11 +3330,11 @@ wax.g.connector = function(options) {
 wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
     var key = zoom + '/' + coord.x + '/' + coord.y;
     if (!this.cache[key]) {
-        var img = this.cache[key] = new Image(256, 256);
-        this.cache[key].src = this.getTileUrl(coord, zoom);
-        this.cache[key].setAttribute('gTileKey', key);
-        this.cache[key].setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
-        this.cache[key].onerror = function() { img.style.display = 'none'; };
+      var img = this.cache[key] = new Image(256, 256);
+      this.cache[key].src = this.getTileUrl(coord, zoom);
+      this.cache[key].setAttribute('gTileKey', key);
+      this.cache[key].setAttribute("style","opacity: "+this.opacity+"; filter: alpha(opacity="+(this.opacity*100)+");");
+      this.cache[key].onerror = function() { img.style.display = 'none'; };
     }
     return this.cache[key];
 };
@@ -3343,9 +3343,9 @@ wax.g.connector.prototype.getTile = function(coord, zoom, ownerDocument) {
 //
 // TODO: expire cache data in the gridmanager.
 wax.g.connector.prototype.releaseTile = function(tile) {
-    var key = tile.getAttribute('gTileKey');
-    if (this.cache[key]) delete this.cache[key];
-    if (tile.parentNode) tile.parentNode.removeChild(tile);
+  // var key = tile.getAttribute('gTileKey');
+  // if (this.cache[key]) delete this.cache[key];
+  // if (tile.parentNode) tile.parentNode.removeChild(tile);
 };
 
 // Get a tile url, based on x, y coordinates and a z value.

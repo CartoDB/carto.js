@@ -4,7 +4,7 @@
     <title>Custom infowindow example | CartoDB.js</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <link rel="shortcut icon" href="https://carto.com/favicon.ico" />
     <style>
       html, body, #map {
         height: 100%;
@@ -13,7 +13,7 @@
       }
     </style>
 
-    <link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="stylesheet" href="https://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
   </head>
   <body>
     <div id="map"></div>
@@ -34,22 +34,22 @@
       </div>
     </script>
 
-    <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script src="https://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
     <script>
       function main() {
-        var map = L.map('map', { 
+        var map = L.map('map', {
           zoomControl: false,
           center: [0, 0],
           zoom: 3
         });
 
-        // add a nice baselayer from Stamen 
+        // add a nice baselayer from Stamen
         L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
           attribution: 'Stamen'
         }).addTo(map);
 
-        cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+        cartodb.createLayer(map, 'https://documentation.carto.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
          .addTo(map)
          .on('done', function(layer) {
            // get sublayer 0 and set the infowindow template

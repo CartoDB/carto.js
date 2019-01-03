@@ -1,6 +1,19 @@
+=======
 3.15.19 (02/01/2019)
 ------
 * Use TomTom as default geocoder.
+
+3.15.15
+-------
+* Fix wax to get along with new Google Maps renderer released on v3.32
+
+3.15.14
+-------
+* Update all Google Maps script references to v3.3.0
+
+3.15.13 (30/01/2018)
+-------
+* Replace Mapzen geocoding search to Mapbox
 
 3.15.12 (12/06/2017)
 -------

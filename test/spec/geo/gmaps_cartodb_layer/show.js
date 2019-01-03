@@ -61,7 +61,6 @@ describe('Show functionality', function() {
   });
 
   it('toggle layer from hidden state should work', function(done) {
-
     setTimeout(function () {
       cdb_layer.show();
       visibility = cdb_layer.toggle();

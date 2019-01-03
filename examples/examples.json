@@ -1,0 +1,33 @@
+{
+    "main": {
+        "file": "easy.html"
+    },
+    "categories": [
+      {
+        "title": "Basics",
+        "samples": [
+            {
+                "title": "Easy implementation",
+                "desc": "An easy example using the library",
+                "file": "easy.html"
+            },{
+                "title": "Leaflet integration",
+                "desc": "An example of leaflet integration",
+                "file": "leaflet.html"
+            }
+        ]},
+        {
+        "title": "More than basics",
+        "samples": [
+            {
+                "title": "Infowindow",
+                "desc": "Customizing infowindow data",
+                "file": "custom_infowindow.html"
+            },{
+                "title": "Layer selector",
+                "desc": "An example using a layer selector",
+                "file": "layer_selector.html"
+            }
+        ]}
+    ]
+  }
