@@ -1,6 +1,6 @@
 cdb.geo.geocoder.MAPBOX = {
   keys: {
-    access_token: secrets.GEOCODER_KEY_MAPBOX
+    access_token: secrets.GEOCODER_KEY_MAPBOX || 'pk.eyJ1IjoiY2FydG8tdGVhbSIsImEiOiJjamNseTl3ZzQwZnFkMndudnIydnJoMXZxIn0.HycQBkaaV7ZwLkHm5hEmfg'
   },
 
   TYPES: {

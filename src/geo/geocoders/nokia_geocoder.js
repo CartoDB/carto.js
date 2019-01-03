@@ -1,8 +1,8 @@
 cdb.geo.geocoder.NOKIA = {
 
   keys: {
-    app_id: secrets.GEOCODER_ID_NOKIA,
-    app_code: secrets.GEOCODER_CODE_NOKIA
+    app_id: secrets.GEOCODER_ID_NOKIA || 'KuYppsdXZznpffJsKT24',
+    app_code: secrets.GEOCODER_CODE_NOKIA || 'A7tBPacePg9Mj_zghvKt9Q'
   },
 
   geocode: function (address, callback) {

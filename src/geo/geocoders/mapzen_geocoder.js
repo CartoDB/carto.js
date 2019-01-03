@@ -2,7 +2,7 @@
 
 cdb.geo.geocoder.MAPZEN = {
   keys: {
-    app_id: secrets.GEOCODER_ID_MAPZEN
+    app_id: secrets.GEOCODER_ID_MAPZEN || 'mapzen-YfBeDWS'
   },
 
   geocode: function (address, callback) {
