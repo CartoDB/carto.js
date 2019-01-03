@@ -71,7 +71,8 @@ function _getCenter(result) {
  * Transform the feature type into a well known enum.
  */
 function _getType(result) {
-  let type = result.type;
+  var type = result.type;
+
   if (TYPES[type]) {
     if (type === 'Geography' && result.entityType) {
       type = type + ':' + result.entityType;
