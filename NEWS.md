@@ -1,3 +1,8 @@
+=======
+3.15.19 (02/01/2019)
+------
+* Use TomTom as default geocoder.
+
 3.15.15
 -------
 * Fix wax to get along with new Google Maps renderer released on v3.32
@@ -116,7 +121,7 @@
 * Fixed enabling or disabling the torque loop property not working from cartodb.js
 * Allows to specify a step when generating a static map of a Torque layer
 * Deprecation warning:
-    - tiler_host, tiler_prototol, tiler_port, sql_api_domain, sql_api_protocol are deprecated, use sql_api_template and maps_api_template instead. https://github.com/CartoDB/cartodb.js/blob/develop/doc/API.md#how-to-set-a-different-host-than-cartodbcom
+    - tiler_host, tiler_prototol, tiler_port, sql_api_domain, sql_api_protocol are deprecated, use sql_api_template and maps_api_template instead. https://github.com/CartoDB/cartodb.js/blob/v3/doc/API.md#how-to-set-a-different-host-than-cartodbcom
 
 3.13.3 (09/04/2015)
 ------

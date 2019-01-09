@@ -36,7 +36,12 @@
 //= require cdb/vendor/mod/jquery-ui/jquery.ui.mouse
 //= require cdb/vendor/mod/jquery-ui/jquery.ui.slider
 //
-//= require cdb/src/geo/geocoder
+//= require cdb/src/geo/geocoders/mapbox_geocoder
+//= require cdb/src/geo/geocoders/mapzen_geocoder
+//= require cdb/src/geo/geocoders/nokia_geocoder
+//= require cdb/src/geo/geocoders/tomtom_geocoder
+//= require cdb/src/geo/geocoders/yahoo_geocoder
+
 //= require cdb/src/geo/geometry
 //= require cdb/src/geo/map
 //
