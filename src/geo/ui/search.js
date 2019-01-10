@@ -8,6 +8,8 @@ cdb.geo.ui.Search = cdb.core.View.extend({
 
   className: 'cartodb-searchbox',
 
+  GEOCODER_SERVICE: 'TOMTOM',
+
   _ZOOM_BY_CATEGORY: {
     'building': 18,
     'postal-area': 15,
@@ -90,7 +92,7 @@ cdb.geo.ui.Search = cdb.core.View.extend({
     this._showLoader();
     // Remove previous pin
     this._destroySearchPin();
-    cdb.geo.geocoder.MAPBOX.geocode(address, function(places) {
+    cdb.geo.geocoder[this.GEOCODER_SERVICE].geocode(address, function(places) {
       self._onResult(places);
       // Hide loader
       self._hideLoader();

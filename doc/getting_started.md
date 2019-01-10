@@ -22,7 +22,7 @@ window.onload = function() {
 </script>
 ```
 
-[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/easy.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/easy.html)
 
 ## Using the CARTO.js Library
 
@@ -108,7 +108,7 @@ Below, you have an example using a previously instantiated Leaflet map.
 </script>
 ```
 
-[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/develop/examples/leaflet.html)
+[Here is the complete example source code](https://github.com/CartoDB/cartodb.js/blob/v3/examples/leaflet.html)
 
 ## Creating Visualizations at Runtime
 
