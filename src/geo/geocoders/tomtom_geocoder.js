@@ -73,11 +73,11 @@ function _getCenter(result) {
 function _getType(result) {
   var type = result.type;
 
-  if (TYPES[type]) {
+  if (this.TYPES[type]) {
     if (type === 'Geography' && result.entityType) {
       type = type + ':' + result.entityType;
     }
-    return TYPES[type];
+    return this.TYPES[type];
   }
 
   return 'default';
