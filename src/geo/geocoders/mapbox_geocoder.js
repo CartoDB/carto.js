@@ -29,7 +29,9 @@ cdb.geo.geocoder.MAPBOX = {
       protocol = 'http:';
     }
 
-    $.getJSON(protocol + '//api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(address) + '.json?access_token=' + this.keys.access_token, function (response) {
+    var requestUrl = protocol + '//api.mapbox.com/geocoding/v5/mapbox.places-permanent/' + encodeURIComponent(address) + '.json?access_token=' + this.keys.access_token;
+
+    $.getJSON(requestUrl, function (response) {
       callback(this._formatResponse(response));
     }.bind(this));
   },
