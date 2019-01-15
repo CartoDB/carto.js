@@ -1,4 +1,9 @@
 =======
+3.15.20 (15/01/2019)
+------
+* Use geocoder permanent URL as default Mapbox URL.
+
+=======
 3.15.19 (02/01/2019)
 ------
 * Use TomTom as default geocoder.
