@@ -15,11 +15,6 @@ var GEOCODERS = {
   'mapbox': mapboxGeocoder
 };
 
-var GEOCODERS_WINDOW_API_KEYS = {
-  'tomtom': 'tomtomApiKey',
-  'mapbox': 'mapboxApiKey'
-};
-
 /**
  *  UI component to place the map in the
  *  location found by the geocoder.
@@ -67,11 +62,11 @@ var Search = View.extend({
   },
 
   _initializeGeocoder: function () {
-    this.geocoderService = this.options.geocoderService || DEFAULT_GEOCODER;
-    this.geocoder = GEOCODERS[this.geocoderService];
+    const injectedGeocoderConfig = this._getGeocodingInfoFromConfig();
 
-    const windowApiKey = GEOCODERS_WINDOW_API_KEYS[this.geocoderService];
-    this.token = this.options.token || window[windowApiKey];
+    this.geocoderService = this.options.geocoderService || injectedGeocoderConfig.provider || DEFAULT_GEOCODER;
+    this.geocoder = GEOCODERS[this.geocoderService];
+    this.token = this.options.token || injectedGeocoderConfig.token;
   },
 
   render: function () {
@@ -207,6 +202,21 @@ var Search = View.extend({
   _unbindEvents: function () {
     this._searchPin && this._searchPin.unbind('click', this._toggleSearchInfowindow, this);
     this.mapView.unbind('click', this._destroySearchPin, this);
+  },
+
+  _getGeocodingInfoFromConfig () {
+    if (!window.geocoderConfiguration) {
+      return {};
+    }
+
+    const provider = window.geocoderConfiguration.provider;
+    let token;
+
+    if (provider) {
+      token = window.geocoderConfiguration[provider].search_bar_api_key;
+    }
+
+    return { provider, token };
   },
 
   clean: function () {
