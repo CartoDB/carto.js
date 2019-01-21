@@ -15,6 +15,11 @@ var GEOCODERS = {
   'mapbox': mapboxGeocoder
 };
 
+var GEOCODERS_WINDOW_API_KEYS = {
+  'tomtom': 'tomtomApiKey',
+  'mapbox': 'mapboxApiKey'
+};
+
 /**
  *  UI component to place the map in the
  *  location found by the geocoder.
@@ -66,7 +71,9 @@ var Search = View.extend({
 
     this.geocoderService = this.options.geocoderService || injectedGeocoderConfig.provider || DEFAULT_GEOCODER;
     this.geocoder = GEOCODERS[this.geocoderService];
-    this.token = this.options.token || injectedGeocoderConfig.token;
+
+    const windowApiKey = GEOCODERS_WINDOW_API_KEYS[this.geocoderService];
+    this.token = this.options.token || injectedGeocoderConfig.token || window[windowApiKey];
   },
 
   render: function () {
@@ -213,7 +220,8 @@ var Search = View.extend({
     let token;
 
     if (provider) {
-      token = window.geocoderConfiguration[provider].search_bar_api_key;
+      token = window.geocoderConfiguration[provider] &&
+        window.geocoderConfiguration[provider].search_bar_api_key;
     }
 
     return { provider, token };
