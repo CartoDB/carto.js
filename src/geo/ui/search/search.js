@@ -67,11 +67,13 @@ var Search = View.extend({
   },
 
   _initializeGeocoder: function () {
-    this.geocoderService = this.options.geocoderService || DEFAULT_GEOCODER;
+    const injectedGeocoderConfig = this._getGeocodingInfoFromConfig();
+
+    this.geocoderService = this.options.geocoderService || injectedGeocoderConfig.provider || DEFAULT_GEOCODER;
     this.geocoder = GEOCODERS[this.geocoderService];
 
     const windowApiKey = GEOCODERS_WINDOW_API_KEYS[this.geocoderService];
-    this.token = this.options.token || window[windowApiKey];
+    this.token = this.options.token || injectedGeocoderConfig.token || window[windowApiKey];
   },
 
   render: function () {
@@ -207,6 +209,22 @@ var Search = View.extend({
   _unbindEvents: function () {
     this._searchPin && this._searchPin.unbind('click', this._toggleSearchInfowindow, this);
     this.mapView.unbind('click', this._destroySearchPin, this);
+  },
+
+  _getGeocodingInfoFromConfig () {
+    if (!window.geocoderConfiguration) {
+      return {};
+    }
+
+    const provider = window.geocoderConfiguration.provider;
+    let token;
+
+    if (provider) {
+      token = window.geocoderConfiguration[provider] &&
+        window.geocoderConfiguration[provider].search_bar_api_key;
+    }
+
+    return { provider, token };
   },
 
   clean: function () {

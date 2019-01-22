@@ -194,6 +194,87 @@ describe('geo/ui/search', function () {
     });
   });
 
+  describe('_initializeGeocoder', function () {
+    it('should set geocoder from options if available', function () {
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView,
+        geocoderService: 'mapbox',
+        token: 'token_from_options'
+      });
+
+      expect(this.view.geocoderService).toBe('mapbox');
+      expect(this.view.token).toBe('token_from_options');
+    });
+
+    it('should set geocoder from injected configuration if available', function () {
+      spyOn(Search.prototype, '_getGeocodingInfoFromConfig').and.returnValue({
+        provider: 'tomtom_fake',
+        token: 'fakeAPIKey'
+      });
+
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView
+      });
+
+      expect(this.view.geocoderService).toBe('tomtom_fake');
+      expect(this.view.token).toBe('fakeAPIKey');
+    });
+
+    it('should set default geocoder if no configurations are available', function () {
+      Object.defineProperty(window, 'tomtomApiKey', {
+        value: 'fake_tomtom_key',
+        writable: true
+      });
+
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView
+      });
+
+      expect(this.view.geocoderService).toBe('tomtom');
+      expect(this.view.token).toBe('fake_tomtom_key');
+    });
+  });
+
+  describe('_getGeocodingInfoFromConfig', function () {
+    it('should return an empty object if there is no geocoderConfiguration', function () {
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({});
+    });
+
+    it('should return provider and token from geocoderConfiguration', function () {
+      var geocoderConfiguration = {
+        provider: 'tomtom',
+        tomtom: {
+          search_bar_api_key: 'fakeAPIKey'
+        }
+      };
+
+      Object.defineProperty(window, 'geocoderConfiguration', {
+        value: geocoderConfiguration,
+        writable: true
+      });
+
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({
+        provider: 'tomtom', token: 'fakeAPIKey'
+      });
+    });
+
+    it('should return undefined provider and token if no provider found in geocoderConfiguration', function () {
+      var geocoderConfiguration = {};
+
+      Object.defineProperty(window, 'geocoderConfiguration', {
+        value: geocoderConfiguration,
+        writable: true
+      });
+
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({
+        provider: undefined, token: undefined
+      });
+    });
+  });
+
   afterEach(function () {
     this.$el.remove();
   });
