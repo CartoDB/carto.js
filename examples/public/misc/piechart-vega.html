@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CARTO.js + Category Dataviews + Vega Pie Chart</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
+    
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+    
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    
+    <!-- Custom Style -->
+    <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+  
+    <!-- Vega -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <aside class="toolbox">
+      <div class="box">
+        <header>
+          <h1>Pie Chart Example</h1>
+        </header>
+        <section>
+          <p class="description open-sans">Done with Vega Lite</p>
+          <br>
+          <div id="piechart"></div>
+          <div style="margin-top: 12px;" id="legend"></div>
+        </section>
+        <footer class="js-footer"></footer>
+      </div>
+    </aside>
+
+    <script>
+        const map = L.map('map').setView([30, 0], 3);
+        map.scrollWheelZoom.disable();
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+        maxZoom: 18
+        }).addTo(map);
+
+        const client = new carto.Client({
+        apiKey: 'default_public',
+        username: 'cartojs-test'
+        });
+
+        const source = new carto.source.SQL('SELECT * FROM ne_10m_populated_places_simple');
+        const style = new carto.style.CartoCSS(`
+            #layer {
+                marker-width: 7;
+                marker-fill: ramp([adm0name], cartocolor(Vivid), category(10));
+                marker-line-color: #FFFFFF;
+            }
+        `);
+        const layer = new carto.layer.Layer(source, style);
+
+        client.addLayer(layer);
+        client.getLeafletLayer().addTo(map);
+
+        const categoryDataview = new carto.dataview.Category(source, 'adm0name', {
+            limit: 12,
+            operation: carto.operation.COUNT
+        });
+
+        categoryDataview.on('dataChanged', data => {
+            console.log(data.categories);
+            const categories = data.categories;
+
+            drawPieChart(categories, '#piechart');
+        });
+
+        categoryDataview.on('error', error => {
+            alert(error.message);
+        });
+
+        client.addDataview(categoryDataview);
+
+        const bboxFilter = new carto.filter.BoundingBoxLeaflet(map);
+
+        categoryDataview.addFilter(bboxFilter);
+
+        const legend = document.getElementById("legend");
+
+        function renderCategoryLegend(metadata){
+        console.log(metadata);
+        metadata.styles.forEach(function (styleMetadata) {
+            if (styleMetadata.getProperty() == 'marker-fill') {
+                let metaCategories = styleMetadata.getCategories();
+                console.log(metaCategories)
+                for (category of metaCategories){
+                    const li = document.createElement('li');
+                    li.style.color = `${category.value}`
+                    li.innerHTML = `<span style="color: black;">${category.name}</span>`;
+                    legend.append(li);
+                    
+            }
+            }
+        });
+        }
+
+        layer.on('metadataChanged', renderCategoryLegend);
+
+        function drawPieChart(cats, id) {
+
+            const vegaSpecPie = {
+                    "$schema": "https://vega.github.io/schema/vega/v3.3.1.json",
+                    "width": 200,
+                    "height": 200,
+                    "autosize": "none",
+
+                    "signals": [{
+                        "name": "startAngle",
+                        "value": 0
+                        },
+                        {
+                        "name": "endAngle",
+                        "value": 6.29
+                        },
+                        {
+                        "name": "padAngle",
+                        "value": 0.05
+                        },
+                        {
+                        "name": "innerRadius",
+                        "value": 40
+                        },
+                        {
+                        "name": "sort",
+                        "value": false
+                        },
+                    ],
+
+                    "data": [{
+                        "name": "categories",
+                        "values": cats,
+                        "transform": [{
+                        "type": "pie",
+                        "field": "value",
+                        "startAngle": {
+                            "signal": "startAngle"
+                        },
+                        "endAngle": {
+                            "signal": "endAngle"
+                        },
+                        "sort": {
+                            "signal": "sort"
+                        }
+                        }]
+                    }],
+
+                    "scales": [{
+                        "name": "vivid",
+                        "type": "ordinal",
+                        "domain": {
+                        "data": "categories",
+                        "field": "name"
+                        },
+                        "range": ['#E58606','#5D69B1','#52BCA3','#99C945','#CC61B0','#24796C','#DAA51B','#2F8AC4','#764E9F','#ED645A','#CC3A8E','#A5AA99']
+                    }],
+
+                    "marks": [{
+                        "type": "arc",
+                        "from": {
+                        "data": "categories"
+                        },
+                        "encode": {
+                        "enter": {
+                            "fill": {
+                            "scale": "vivid",
+                            "field": "name"
+                            },
+                            "x": {
+                            "signal": "width / 2"
+                            },
+                            "y": {
+                            "signal": "height / 2"
+                            }
+                        },
+                        "update": {
+                            "startAngle": {
+                            "field": "startAngle"
+                            },
+                            "endAngle": {
+                            "field": "endAngle"
+                            },
+                            "padAngle": {
+                            "signal": "padAngle"
+                            },
+                            "innerRadius": {
+                            "signal": "innerRadius"
+                            },
+                            "outerRadius": {
+                            "signal": "width / 2"
+                            },
+                            "fillOpacity": {
+                            "value": 1
+                            }
+                        },
+                        "hover": {
+                            "fillOpacity": {
+                            "value": 0.8
+                            }
+                        }
+                        }
+                    }]
+                };
+
+            vegaEmbed(id, vegaSpecPie, {
+                actions: false
+            });
+        }
+    </script>
+      
+  </body>
+</html>
