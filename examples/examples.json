@@ -238,6 +238,11 @@
           "title": "Storymap using CARTO.js and Storymap.js",
           "desc": "Create a storytelling map using Storymap.js",
           "file": "public/misc/storymap-leaflet.html"
+        },
+        {
+          "title": "Pie Chart Widget using CARTO.js and Vega-Lite",
+          "desc": "Create a map with a pie chart using Vega Lite and CARTO.js category dataviews.",
+          "file": "public/misc/piechart-vega.html"
         }
       ]
     }
