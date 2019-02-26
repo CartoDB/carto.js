@@ -73,7 +73,6 @@
         });
 
         categoryDataview.on('dataChanged', data => {
-            console.log(data.categories);
             const categories = data.categories;
 
             drawPieChart(categories, '#piechart');
@@ -92,20 +91,20 @@
         const legend = document.getElementById("legend");
 
         function renderCategoryLegend(metadata){
-        console.log(metadata);
-        metadata.styles.forEach(function (styleMetadata) {
-            if (styleMetadata.getProperty() == 'marker-fill') {
-                let metaCategories = styleMetadata.getCategories();
-                console.log(metaCategories)
-                for (category of metaCategories){
-                    const li = document.createElement('li');
-                    li.style.color = `${category.value}`
-                    li.innerHTML = `<span style="color: black;">${category.name}</span>`;
-                    legend.append(li);
-                    
-            }
-            }
-        });
+
+            metadata.styles.forEach(function (styleMetadata) {
+                if (styleMetadata.getProperty() == 'marker-fill') {
+                    let metaCategories = styleMetadata.getCategories();
+
+                    for (category of metaCategories){
+                        const li = document.createElement('li');
+                        li.style.color = `${category.value}`
+                        li.innerHTML = `<span style="color: black;">${category.name}</span>`;
+                        legend.append(li);
+                        
+                }
+                }
+            });
         }
 
         layer.on('metadataChanged', renderCategoryLegend);
@@ -113,67 +112,67 @@
         function drawPieChart(cats, id) {
 
             const vegaSpecPie = {
-                    "$schema": "https://vega.github.io/schema/vega/v3.3.1.json",
-                    "width": 200,
-                    "height": 200,
-                    "autosize": "none",
+                "$schema": "https://vega.github.io/schema/vega/v3.3.1.json",
+                "width": 200,
+                "height": 200,
+                "autosize": "none",
 
-                    "signals": [{
-                        "name": "startAngle",
-                        "value": 0
-                        },
-                        {
-                        "name": "endAngle",
-                        "value": 6.29
-                        },
-                        {
-                        "name": "padAngle",
-                        "value": 0.05
-                        },
-                        {
-                        "name": "innerRadius",
-                        "value": 40
-                        },
-                        {
-                        "name": "sort",
-                        "value": false
-                        },
-                    ],
+                "signals": [{
+                    "name": "startAngle",
+                    "value": 0
+                    },
+                    {
+                    "name": "endAngle",
+                    "value": 6.29
+                    },
+                    {
+                    "name": "padAngle",
+                    "value": 0.05
+                    },
+                    {
+                    "name": "innerRadius",
+                    "value": 40
+                    },
+                    {
+                    "name": "sort",
+                    "value": false
+                    },
+                ],
 
-                    "data": [{
-                        "name": "categories",
-                        "values": cats,
-                        "transform": [{
-                        "type": "pie",
-                        "field": "value",
-                        "startAngle": {
-                            "signal": "startAngle"
-                        },
-                        "endAngle": {
-                            "signal": "endAngle"
-                        },
-                        "sort": {
-                            "signal": "sort"
-                        }
-                        }]
-                    }],
+                "data": [{
+                    "name": "categories",
+                    "values": cats,
+                    "transform": [{
+                    "type": "pie",
+                    "field": "value",
+                    "startAngle": {
+                        "signal": "startAngle"
+                    },
+                    "endAngle": {
+                        "signal": "endAngle"
+                    },
+                    "sort": {
+                        "signal": "sort"
+                    }
+                    }]
+                }],
 
-                    "scales": [{
-                        "name": "vivid",
-                        "type": "ordinal",
-                        "domain": {
-                        "data": "categories",
-                        "field": "name"
-                        },
-                        "range": ['#E58606','#5D69B1','#52BCA3','#99C945','#CC61B0','#24796C','#DAA51B','#2F8AC4','#764E9F','#ED645A','#CC3A8E','#A5AA99']
-                    }],
+                "scales": [{
+                    "name": "vivid",
+                    "type": "ordinal",
+                    "domain": {
+                    "data": "categories",
+                    "field": "name"
+                    },
+                    "range": ['#E58606','#5D69B1','#52BCA3','#99C945','#CC61B0','#24796C','#DAA51B','#2F8AC4','#764E9F','#ED645A','#CC3A8E','#A5AA99']
+                }],
 
-                    "marks": [{
-                        "type": "arc",
-                        "from": {
-                        "data": "categories"
-                        },
-                        "encode": {
+                "marks": [{
+                    "type": "arc",
+                    "from": {
+                    "data": "categories"
+                    },
+                    "encode": {
                         "enter": {
                             "fill": {
                             "scale": "vivid",
@@ -211,9 +210,9 @@
                             "value": 0.8
                             }
                         }
-                        }
-                    }]
-                };
+                    }
+                }]
+            };
 
             vegaEmbed(id, vegaSpecPie, {
                 actions: false
