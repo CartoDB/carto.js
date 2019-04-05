@@ -126,6 +126,9 @@ To load the Maps JavaScript API, use a script tag like the one in the following 
 
 The URL contained in the script tag is the location of a JavaScript file that loads all of the code you need for using the CARTO.js library. This script tag is required. We are using the minified version of the library.
 
+**Tip:** if you have experience with **npm** and a build system in your project (webpack, rollup…), you can install CARTO.js library with `npm install @carto/carto.js`. Then you can import it easily with `import carto from '@carto/carto.js` (or `var carto = require('@carto/carto.js')`, depending on your module system).
+
+
 #### HTTPS or HTTP
 We think security on the web is pretty important, and recommend using HTTPS whenever possible. As part of our efforts to make the web more secure, we've made all of the CARTO components available over HTTPS. Using HTTPS encryption makes your site more secure, and more resistant to snooping or tampering.
 
