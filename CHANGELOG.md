@@ -7,11 +7,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+### Changed
+- Improve Overview guide with npm info [2230](https://github.com/CartoDB/carto.js/issues/2230)
+
+## 4.1.11 - 2019-02-13
+### Changed
+- Using Google Maps v3.35 on examples [2227](https://github.com/CartoDB/carto.js/pull/2227)
+
+## 4.1.10 - 2019-01-18
+
+### Fixed
+
+- Trigger view update after search [2219](https://github.com/CartoDB/carto.js/pull/2219)
+- Filters: parse dates properly in the `between` filter.
+
+## 4.1.9 - 2019-01-09
+
+### Added
+- TomTom geocoder service [#2213](https://github.com/CartoDB/carto.js/issues/2213)
+
+### Fixed
+- Histogram: fix wrong selection in last bucket.
+
+### Changed
+- Improve examples. [#2211](https://github.com/CartoDB/carto.js/pull/2211)
+
+## 4.1.8 - 2018-10-29
+### Fixed
+- Moved 'browserify-shim' to devDependencies, fixing a potential problem with npm shrinkwrap.
+
+## 4.1.7 - 2018-10-18
+### Fixed
+- Client: Fix `serverUrl` parameter: `{username}` replacement, validation and documentation.
 
 ## 4.1.6 - 2018-09-07
 ### Fixed
-- Source Filters: Fix return in get-object-value that was causing unintended behaviours in parameters validation.
+- Source Filters: Fix return in get-object-value that was causing unintended behaviors in parameters validation.
 
 ## 4.1.5 - 2018-09-05
 ### Added

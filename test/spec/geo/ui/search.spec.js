@@ -1,7 +1,10 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var Search = require('../../../../src/geo/ui/search/search');
-var geocoder = require('../../../../src/geo/geocoder/mapbox-geocoder');
+
+var mapboxGeocoder = require('../../../../src/geo/geocoder/mapbox-geocoder');
+var tomtomGeocoder = require('../../../../src/geo/geocoder/tomtom-geocoder');
+
 var Map = require('../../../../src/geo/map');
 var LeafletMapView = require('../../../../src/geo/leaflet/leaflet-map-view');
 var fakeEvent = {
@@ -28,9 +31,23 @@ describe('geo/ui/search', function () {
     this.view = new Search({
       model: this.map,
       mapView: this.mapView,
-      token: 'pk.eyJ1IjoiY2FydG8tdGVhbSIsImEiOiJjamNseTl3ZzQwZnFkMndudnIydnJoMXZxIn0.HycQBkaaV7ZwLkHm5hEmfg'
+      token: 'a_valid_api_key'
     });
     this.view.render();
+  });
+
+  it('should use tomtom geocoder by default', function () {
+    expect(this.view.geocoder).toBe(tomtomGeocoder);
+  });
+
+  it('should allow changing geocoder easily', function () {
+    var search = new Search({
+      model: this.map,
+      mapView: this.mapView,
+      geocoderService: 'mapbox', // <<<
+      token: 'a_valid_mapbox_api_key'
+    });
+    expect(search.geocoder).toBe(mapboxGeocoder);
   });
 
   it('should render properly', function () {
@@ -53,13 +70,17 @@ describe('geo/ui/search', function () {
         },
         type: undefined
       };
-      spyOn(geocoder, 'geocode').and.callThrough();
+      // spyOn(this.view.geocoder, 'geocode').and.callThrough();
+      spyOn(this.view.geocoder, 'geocode').and.returnValue(Promise.resolve([{
+        center: [40.41889, -3.69194],
+        type: 'localadmin'
+      }]));
       this.view.$('.js-textInput').val('Madrid, Spain');
     });
 
     it('should search with geocoder when form is submit', function () {
       this.view.$('.js-form').submit();
-      expect(geocoder.geocode).toHaveBeenCalled();
+      expect(this.view.geocoder.geocode).toHaveBeenCalled();
     });
 
     it('should change map center when geocoder returns any result', function (done) {
@@ -74,7 +95,7 @@ describe('geo/ui/search', function () {
 
     describe('result zoom', function () {
       function testZoom (context, featureType, expectedZoom, done) {
-        geocoder.geocode.and.returnValue(Promise.resolve([{
+        context.view.geocoder.geocode.and.returnValue(Promise.resolve([{
           center: [43.0, -3],
           type: featureType
         }]));
@@ -169,6 +190,87 @@ describe('geo/ui/search', function () {
             done();
           }, 1000);
         }.bind(this));
+      });
+    });
+  });
+
+  describe('_initializeGeocoder', function () {
+    it('should set geocoder from options if available', function () {
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView,
+        geocoderService: 'mapbox',
+        token: 'token_from_options'
+      });
+
+      expect(this.view.geocoderService).toBe('mapbox');
+      expect(this.view.token).toBe('token_from_options');
+    });
+
+    it('should set geocoder from injected configuration if available', function () {
+      spyOn(Search.prototype, '_getGeocodingInfoFromConfig').and.returnValue({
+        provider: 'tomtom_fake',
+        token: 'fakeAPIKey'
+      });
+
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView
+      });
+
+      expect(this.view.geocoderService).toBe('tomtom_fake');
+      expect(this.view.token).toBe('fakeAPIKey');
+    });
+
+    it('should set default geocoder if no configurations are available', function () {
+      Object.defineProperty(window, 'tomtomApiKey', {
+        value: 'fake_tomtom_key',
+        writable: true
+      });
+
+      this.view = new Search({
+        model: this.map,
+        mapView: this.mapView
+      });
+
+      expect(this.view.geocoderService).toBe('tomtom');
+      expect(this.view.token).toBe('fake_tomtom_key');
+    });
+  });
+
+  describe('_getGeocodingInfoFromConfig', function () {
+    it('should return an empty object if there is no geocoderConfiguration', function () {
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({});
+    });
+
+    it('should return provider and token from geocoderConfiguration', function () {
+      var geocoderConfiguration = {
+        provider: 'tomtom',
+        tomtom: {
+          search_bar_api_key: 'fakeAPIKey'
+        }
+      };
+
+      Object.defineProperty(window, 'geocoderConfiguration', {
+        value: geocoderConfiguration,
+        writable: true
+      });
+
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({
+        provider: 'tomtom', token: 'fakeAPIKey'
+      });
+    });
+
+    it('should return undefined provider and token if no provider found in geocoderConfiguration', function () {
+      var geocoderConfiguration = {};
+
+      Object.defineProperty(window, 'geocoderConfiguration', {
+        value: geocoderConfiguration,
+        writable: true
+      });
+
+      expect(this.view._getGeocodingInfoFromConfig()).toEqual({
+        provider: undefined, token: undefined
       });
     });
   });

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Multilayer | CARTO</title>
+    <title>Pop-ups with embed video | CARTO</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
     <!-- Include Google Maps -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpVNTQI60ossApFzZ3dwSMZ1LcxOTY-rI&v=3.35"></script>
     <!-- Include CARTO.js -->
     <script src="../../../dist/public/carto.js"></script>
     <link href="../style.css" rel="stylesheet">
   </head>
-
   <body>
     <div id="map"></div>
-    <!-- Description -->
     <aside class="toolbox">
       <div class="box">
         <header>
-          <h1>Add more layers</h1>
+          <h1>Pop-Ups with embed video</h1>
           <button class="github-logo js-source-link"></button>
         </header>
         <section>
-          <p class="description open-sans">Add multiple CARTO layers to your map.</p>
+          <p class="description open-sans">Create pop-up information windows with embed videos.</p>
+
         </section>
         <footer class="js-footer"></footer>
       </div>
@@ -30,12 +30,11 @@
 
     <script>
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40, lng: 0 },
+        center: { lat: 0, lng: 0 },
         zoom: 5,
         fullscreenControl: false,
         gestureHandling: 'cooperative'
       });
-
       // Hide the map labels and geometry strokes
       map.set('styles', [{
         elementType: 'labels',
@@ -50,36 +49,49 @@
         username: 'cartojs-test'
       });
 
-      const spainCitiesSource = new carto.source.SQL(`
-        SELECT *
-          FROM ne_10m_populated_places_simple
-          WHERE adm0name = \'Spain\'
+      const cartoSource = new carto.source.Dataset(`
+        example_video
       `);
-      const spainCitiesStyle = new carto.style.CartoCSS(`
+      const cartoStyle = new carto.style.CartoCSS(`
         #layer {
-          marker-width: 7;
+          marker-width: 20;
           marker-fill: #EE4D5A;
           marker-line-color: #FFFFFF;
         }
       `);
-      const spainCitiesLayer = new carto.layer.Layer(spainCitiesSource, spainCitiesStyle);
+      const cartoLayer = new carto.layer.Layer(cartoSource, cartoStyle, {
+            featureClickColumns: ['youtube_url']
+        });
 
-      const europeCountriesSource = new carto.source.Dataset('ne_adm0_europe');
-      const europeCountriesStyle = new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: #826DBA;
-          polygon-opacity: 0.8;
-          ::outline {
-            line-width: 1;
-            line-color: #FFFFFF;
-            line-opacity: 0.8;
-          }
-        }
-      `);
-      const europeCountriesLayer = new carto.layer.Layer(europeCountriesSource, europeCountriesStyle);
-
-      client.addLayers([europeCountriesLayer, spainCitiesLayer]);
+      client.addLayer(cartoLayer);
       map.overlayMapTypes.push(client.getGoogleMapsMapType(map));
+
+      const infowindow = new google.maps.InfoWindow();
+
+      function openPopup(featureEvent) {
+        let content = '<div class="widget">';
+
+        if (featureEvent.data.youtube_url) {
+            content += `<iframe width="240" src= ${featureEvent.data.youtube_url} frameborder="0" allowfullscreen></iframe>`
+        }
+
+        content += `</div>`;
+
+        infowindow.setContent(content);
+        infowindow.setPosition(featureEvent.latLng);
+        if (!infowindow.map) {
+          infowindow.open(map);
+        }
+      }
+
+      function closePopup(featureEvent) {
+        infowindow.close();
+      }
+
+
+     cartoLayer.on('featureClicked', openPopup);
+
+
     </script>
   </body>
 </html>
