@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Layer with aggregation cluster | CARTO</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
+    <!-- Include Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpVNTQI60ossApFzZ3dwSMZ1LcxOTY-rI&v=3.35"></script>
+    <!-- Include CARTO.js -->
+    <script src="../../../dist/public/carto.js"></script>
+    <link href="../style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="map">
+    </div>
+    <!-- Description -->
+    <aside class="toolbox">
+      <div class="box">
+        <header>
+          <h1>Server tile aggregation cluster</h1>
+          <button class="github-logo js-source-link"></button>
+        </header>
+        <section>
+          <p class="description open-sans">This map has smart backend aggregation cluster applied. See source code for details.</p>
+        </section>
+        <footer class="js-footer"></footer>
+      </div>
+    </aside>
+
+    <script>
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 38.479395, lng: -102.480469 },
+        zoom: 3,
+        fullscreenControl: false,
+        gestureHandling: 'cooperative'
+      });
+
+      // Hide the map labels and geometry strokes
+      map.set('styles', [{
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      }, {
+        elementType: 'geometry.stroke',
+        stylers: [{ visibility: 'off' }]
+      }]);
+
+      const client = new carto.Client({
+        apiKey: 'default_public',
+        username: 'cartojs-test'
+      });
+
+      // Define source using value 1 as count to count the number
+      // of points within the aggregation that will be created
+      const source = new carto.source.SQL(`
+        SELECT *, 1 as count
+        FROM stormevents_locations_2014
+      `);
+
+      // Aggregation option summing al values of field count
+      const aggregation = new carto.layer.Aggregation({
+        threshold: 1,
+        resolution: 32,
+        placement: carto.layer.Aggregation.placement.SAMPLE,
+        columns: {
+          total_agg: {
+            aggregateFunction: carto.layer.Aggregation.operation.SUM,
+            aggregatedColumn: "count"
+          }
+        }
+      });
+
+      const style = new carto.style.CartoCSS(`
+        #layer {
+          marker-fill: red;
+          marker-width: ramp([total_agg], 6,25 , quantiles);
+        }
+        #layer::labels {
+          text-name: [total_agg];
+          text-face-name: 'DejaVu Sans Book';
+          text-size: 10;
+          text-fill: #FFFFFF;
+          text-label-position-tolerance: 0;
+          text-halo-radius: 1;
+          text-halo-fill: #6F808D;
+          text-allow-overlap: true;
+          text-placement: point;
+          text-placement-type: dummy;
+        }
+      `);
+
+      const layer = new carto.layer.Layer(source, style, { aggregation });
+
+      client.addLayer(layer);
+      map.overlayMapTypes.push(client.getGoogleMapsMapType(map));
+    </script>
+  </body>
+</html>
