@@ -340,7 +340,7 @@ var Infowindow = View.extend({
       display: 'none'
     });
 
-    $hookImage.load(
+    $hookImage.on('load',
       function () {
         $hook.parent().addClass('has-image');
         $hookImage.clipPath(this._getHookPoints(imageDimensions.height - this.options.hookHeight));
@@ -371,10 +371,9 @@ var Infowindow = View.extend({
     var $img = $("<img class='CDB-infowindow-media-item' />");
     $cover.append($img);
 
-    $img
-      .load(this._onLoadImageSuccess)
-      .error(this._onLoadImageError)
-      .attr('src', url);
+    $img.on('load', this._onLoadImageSuccess);
+    $img.on('error', this._onLoadImageError);
+    $img.attr('src', url);
   },
 
   _onLoadImageError: function () {
