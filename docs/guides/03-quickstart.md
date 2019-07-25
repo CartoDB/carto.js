@@ -22,7 +22,7 @@ This document is intended for website or mobile developers who want to include C
 
 CARTO.js requires using an API Key. From your CARTO dashboard, click [_Your API keys_](https://carto.com/login) from the avatar drop-down menu to view your uniquely generated API Key for managing data with CARTO Engine.
 
-If you want learn more about authorization and authentication, read the [authorization fundamentals section]({{site.fundamental_docs}}/authorization/). 
+If you want learn more about authorization and authentication, read the [authorization fundamentals section]({{site.fundamental_docs}}/authorization/).
 
 ### Importing Datasets
 Before you start working on the map, you need to import a couple of datasets. For this guide, we will use CARTO's Data Library, available from *Your datasets* dashboard, to import and connect public datasets to your account.
@@ -51,8 +51,8 @@ Create an HTML file using your preferred text editor and paste the following cod
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
     <!-- Include CARTO.js -->
     <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/%VERSION%/carto.min.js"></script>
     <!-- Fonts -->
