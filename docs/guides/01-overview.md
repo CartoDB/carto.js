@@ -20,8 +20,8 @@ The easiest way to start learning about the CARTO.js library is to see a simple 
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/%VERSION%/carto.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">

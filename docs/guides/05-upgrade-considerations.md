@@ -114,8 +114,8 @@ In order to make this example work with version 4 of CARTO.js, modify the code a
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
     <!-- Include CARTO.js -->
     <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/%VERSION%/carto.min.js"></script>
     <style>
