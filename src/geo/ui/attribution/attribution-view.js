@@ -26,6 +26,7 @@ module.exports = View.extend({
 
     this._onDocumentClick = this._onDocumentClick.bind(this);
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
+    this._toggleAttributionsBasedOnContainer = this._toggleAttributionsBasedOnContainer.bind(this);
 
     this._initBinds();
   },
@@ -39,6 +40,8 @@ module.exports = View.extend({
       })
     );
     this.$el.toggleClass('CDB-Attribution--gmaps', !!isGMaps);
+    this._toggleAttributionsBasedOnContainer();
+
     return this;
   },
 
@@ -48,6 +51,7 @@ module.exports = View.extend({
     }, this);
     this.map.bind('change:attribution', this.render, this);
     this.add_related_model(this.map);
+    $(window).bind('resize', this._toggleAttributionsBasedOnContainer);
   },
 
   _enableDocumentBinds: function () {
@@ -80,6 +84,15 @@ module.exports = View.extend({
     this.model.set('visible', !this.model.get('visible'));
   },
 
+  _toggleAttributionsBasedOnContainer: function () {
+    var MAP_CONTAINER_MOBILE_WIDTH = 650;
+    if (this.map.getMapViewSize().x > MAP_CONTAINER_MOBILE_WIDTH) {
+      this._showAttributions();
+    } else {
+      this._hideAttributions();
+    }
+  },
+
   _onDocumentClick: function (ev) {
     if (!$(ev.target).closest(this.el).length) {
       this._toggleAttributions();
@@ -88,6 +101,7 @@ module.exports = View.extend({
 
   clean: function () {
     this._disableDocumentBinds();
+    $(window).unbind('resize', this._toggleAttributionsBasedOnContainer);
     View.prototype.clean.call(this);
   }
 });
