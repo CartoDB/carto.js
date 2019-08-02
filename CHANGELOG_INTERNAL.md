@@ -4,6 +4,9 @@ This file contains all the changes in the **internal bundle** (used by Builder).
 
 All the changes that affects the public bundle should be released as *patch* or *minor* and be included in the main Changelog.
 
+## 4.1.12-0 - 2019-08-02
+- Change attribution character and toggle widget based on container [#2235](https://github.com/CartoDB/carto.js/pull/2235)
+
 ## 4.1.11-0 - 2019-01-22
 - Enable search box geocoder provider selection [#2224](https://github.com/CartoDB/carto.js/pull/2224)
 
