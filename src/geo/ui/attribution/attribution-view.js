@@ -87,9 +87,9 @@ module.exports = View.extend({
   _toggleAttributionsBasedOnContainer: function () {
     var MAP_CONTAINER_MOBILE_WIDTH = 650;
     if (this.map.getMapViewSize().x > MAP_CONTAINER_MOBILE_WIDTH) {
-      this._showAttributions();
+      this.model.set('visible', true);
     } else {
-      this._hideAttributions();
+      this.model.set('visible', false);
     }
   },
 
