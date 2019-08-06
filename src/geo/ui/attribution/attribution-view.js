@@ -24,7 +24,6 @@ module.exports = View.extend({
     });
     this.map = this.options.map;
 
-    this._onDocumentClick = this._onDocumentClick.bind(this);
     this._onDocumentKeyDown = this._onDocumentKeyDown.bind(this);
     this._toggleAttributionsBasedOnContainer = this._toggleAttributionsBasedOnContainer.bind(this);
 
@@ -56,12 +55,10 @@ module.exports = View.extend({
 
   _enableDocumentBinds: function () {
     $(document).bind('keydown', this._onDocumentKeyDown);
-    $(document).bind('click', this._onDocumentClick);
   },
 
   _disableDocumentBinds: function () {
     $(document).unbind('keydown', this._onDocumentKeyDown);
-    $(document).unbind('click', this._onDocumentClick);
   },
 
   _onDocumentKeyDown: function (ev) {
@@ -87,15 +84,9 @@ module.exports = View.extend({
   _toggleAttributionsBasedOnContainer: function () {
     var MAP_CONTAINER_MOBILE_WIDTH = 650;
     if (this.map.getMapViewSize().x > MAP_CONTAINER_MOBILE_WIDTH) {
-      this._showAttributions();
+      this.model.set('visible', true);
     } else {
-      this._hideAttributions();
-    }
-  },
-
-  _onDocumentClick: function (ev) {
-    if (!$(ev.target).closest(this.el).length) {
-      this._toggleAttributions();
+      this.model.set('visible', false);
     }
   },
 

@@ -91,11 +91,6 @@ describe('geo/ui/attribution', function () {
       this.keyEsc();
       expect(this.viewHasClass('is-active')).toBeFalsy();
     });
-
-    it('should collapse the attributions when user clicks on the document', function () {
-      $(document).trigger('click');
-      expect(this.viewHasClass('is-active')).toBeFalsy();
-    });
   });
 
   describe('when attributions are hidden', function () {
