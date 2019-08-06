@@ -4,6 +4,9 @@ This file contains all the changes in the **internal bundle** (used by Builder).
 
 All the changes that affects the public bundle should be released as *patch* or *minor* and be included in the main Changelog.
 
+## 4.1.12-1 - 2019-08-06
+- Attributions widget: prevent autocollapsing and fix button bug [#2236](https://github.com/CartoDB/carto.js/pull/2236)
+
 ## 4.1.12-0 - 2019-08-02
 - Change attribution character and toggle widget based on container [#2235](https://github.com/CartoDB/carto.js/pull/2235)
 
