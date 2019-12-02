@@ -1,20 +1,12 @@
-var _ = require('underscore');
 var bundles = require('./_browserify-bundles');
 
 /**
- *  Uglify grunt task for CARTO.js
+ *  Manger-compressor for CARTO.js ES6+ compliant
  *
  */
 module.exports = {
   task: function() {
     var cfg = {};
-    var defaultOptions = {
-      sourceMap: true,
-      banner: [
-        '// CartoDB.js version: <%= version %>',
-        '// sha: <%= gitinfo.local.branch.current.SHA %>',
-      ].join('\n'),
-    };
 
     for (var bundleName in bundles) {
       if (!/tmp|specs/.test(bundleName)) {
@@ -24,9 +16,9 @@ module.exports = {
         files[uglifiedDest] = src;
 
         cfg[bundleName] = {
-          options: _.extend({
-            sourceMapIn: src.replace('.js', '.map')
-          }, defaultOptions),
+          options: {
+            sourceMap: true
+          },
           files: files
         }
       }
