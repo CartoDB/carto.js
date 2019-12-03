@@ -362,6 +362,16 @@ describe('api/v4/dataview/category', function () {
       expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
     });
 
+    it('creates the internal model with Circle filter if provided', function () {
+      var filter = new carto.filter.Circle();
+      dataview.addFilter(filter);
+      dataview.$setEngine(engine);
+
+      var internalModel = dataview.$getInternalModel();
+      expect(internalModel._circleFilter).toBeDefined();
+      expect(internalModel.syncsOnCircleFilterChanges()).toBe(true);
+    });
+
     it('calling twice to $setEngine does not create another internalModel', function () {
       spyOn(dataview, '_createInternalModel').and.callThrough();
 
