@@ -326,7 +326,7 @@ describe('api/v4/dataview/category', function () {
     });
   });
 
-  describe('.$setEngine', function () {
+  fdescribe('.$setEngine', function () {
     var engine;
     var dataview;
 
@@ -339,9 +339,7 @@ describe('api/v4/dataview/category', function () {
     });
 
     it('creates the internal model', function () {
-      var filter = new carto.filter.BoundingBox();
       dataview.disable(); // To test that it passes the ._enabled property to the internal model
-      dataview.addFilter(filter);
       dataview.$setEngine(engine);
 
       var internalModel = dataview.$getInternalModel();
@@ -351,17 +349,17 @@ describe('api/v4/dataview/category', function () {
       expect(internalModel.get('aggregation')).toEqual(dataview._operation);
       expect(internalModel.get('aggregation_column')).toEqual(dataview._operationColumn);
       expect(internalModel.isEnabled()).toBe(false);
-      expect(internalModel._bboxFilter).toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
       expect(internalModel._engine).toBe(engine);
     });
 
-    it('creates the internal model with no bounding box if not provided', function () {
+    it('creates the internal model with BoundingBox filter if provided', function () {
+      var filter = new carto.filter.BoundingBox();
+      dataview.addFilter(filter);
       dataview.$setEngine(engine);
 
       var internalModel = dataview.$getInternalModel();
-      expect(internalModel._bboxFilter).not.toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(false);
+      expect(internalModel._bboxFilter).toBeDefined();
+      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
     });
 
     it('calling twice to $setEngine does not create another internalModel', function () {
