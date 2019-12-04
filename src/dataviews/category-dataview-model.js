@@ -82,6 +82,11 @@ module.exports = DataviewModelBase.extend({
     this._searchModel.fetchIfSearchIsApplied();
   },
 
+  _onCircleFilterChanged: function () {
+    DataviewModelBase.prototype._onCircleFilterChanged.apply(this, arguments);
+    this._searchModel.fetchIfSearchIsApplied();
+  },
+
   _bindSearchModelEvents: function () {
     this.listenTo(this._searchModel, 'loading', function () {
       this.trigger('loading', this);
@@ -110,6 +115,10 @@ module.exports = DataviewModelBase.extend({
 
   _shouldFetchOnBoundingBoxChange: function () {
     return DataviewModelBase.prototype._shouldFetchOnBoundingBoxChange.call(this) && !this.isSearchApplied();
+  },
+
+  _shouldFetchOnCircleFilterChange: function () {
+    return DataviewModelBase.prototype._shouldFetchOnCircleFilterChange.call(this) && !this.isSearchApplied();
   },
 
   enableFilter: function () {

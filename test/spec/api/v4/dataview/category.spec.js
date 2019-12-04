@@ -326,7 +326,7 @@ describe('api/v4/dataview/category', function () {
     });
   });
 
-  fdescribe('.$setEngine', function () {
+  describe('.$setEngine', function () {
     var engine;
     var dataview;
 
@@ -362,6 +362,20 @@ describe('api/v4/dataview/category', function () {
       expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
     });
 
+    it('allows removing a BoundingBox filter', function () {
+      var filter = new carto.filter.BoundingBox();
+      dataview.addFilter(filter);
+      dataview.$setEngine(engine);
+      expect(dataview.hasFilter(filter)).toBe(true);
+
+      dataview.removeFilter(filter);
+
+      expect(dataview.hasFilter(filter)).toBe(false);
+      var internalModel = dataview.$getInternalModel();
+      expect(internalModel._bboxFilter).toBeNull();
+      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(false);
+    });
+
     it('creates the internal model with Circle filter if provided', function () {
       var filter = new carto.filter.Circle();
       dataview.addFilter(filter);
@@ -370,6 +384,20 @@ describe('api/v4/dataview/category', function () {
       var internalModel = dataview.$getInternalModel();
       expect(internalModel._circleFilter).toBeDefined();
       expect(internalModel.syncsOnCircleFilterChanges()).toBe(true);
+    });
+
+    it('allows removing a Circle filter', function () {
+      var filter = new carto.filter.Circle();
+      dataview.addFilter(filter);
+      dataview.$setEngine(engine);
+      expect(dataview.hasFilter(filter)).toBe(true);
+
+      dataview.removeFilter(filter);
+
+      expect(dataview.hasFilter(filter)).toBe(false);
+      var internalModel = dataview.$getInternalModel();
+      expect(internalModel._circleFilter).toBeNull();
+      expect(internalModel.syncsOnCircleFilterChanges()).toBe(false);
     });
 
     it('calling twice to $setEngine does not create another internalModel', function () {

@@ -1,7 +1,4 @@
-var _ = require('underscore');
 var Model = require('../../core/model');
-
-// TODO: Add more detailed methods to 'set/get' center and radius
 
 module.exports = Model.extend({
   initialize: function () {

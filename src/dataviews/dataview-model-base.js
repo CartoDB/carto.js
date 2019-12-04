@@ -22,16 +22,23 @@ module.exports = Model.extend({
     url: '',
     data: [],
     sync_on_bbox_change: true,
+    sync_on_circle_change: true,
     enabled: true,
     status: UNFETCHED_STATUS
   },
 
   url: function () {
     var params = _.union(
-      [ this._getBoundingBoxFilterParam() ],
+      [ this._getSpatialFilterParam() ],
       this._getDataviewSpecificURLParams()
     );
 
+    this._addAuthTo(params);
+
+    return this.get('url') + '?' + params.join('&');
+  },
+
+  _addAuthTo: function (params) {
     if (this._engine.getApiKey()) {
       params.push('api_key=' + this._engine.getApiKey());
     } else if (this._engine.getAuthToken()) {
@@ -44,7 +51,16 @@ module.exports = Model.extend({
         params.push('auth_token=' + authToken);
       }
     }
-    return this.get('url') + '?' + params.join('&');
+  },
+
+  _getSpatialFilterParam: function () {
+    if (this._bboxFilter) {
+      return this._getBoundingBoxFilterParam();
+    }
+
+    if (this._circleFilter) {
+      return this._getCircleFilterParam();
+    }
   },
 
   _getBoundingBoxFilterParam: function () {
@@ -53,6 +69,17 @@ module.exports = Model.extend({
     this._checkBBoxFilter();
     if (this.syncsOnBoundingBoxChanges()) {
       result = 'bbox=' + this._bboxFilter.serialize();
+    }
+
+    return result;
+  },
+
+  _getCircleFilterParam: function () {
+    var result = '';
+
+    this._checkCircleFilter();
+    if (this.syncsOnCircleFilterChanges()) {
+      result = 'circle=' + this._circleFilter.serialize();
     }
 
     return result;
@@ -92,11 +119,19 @@ module.exports = Model.extend({
       this.filter.set('dataviewId', this.id);
     }
 
+    this._addSpatialFilterFrom(opts);
+
+    this._initBinds();
+  },
+
+  _addSpatialFilterFrom (opts) {
     if (opts.bboxFilter) {
       this.addBBoxFilter(opts.bboxFilter);
     }
 
-    this._initBinds();
+    if (opts.circleFilter) {
+      this.addCircleFilter(opts.circleFilter);
+    }
   },
 
   _initBinds: function () {
@@ -140,12 +175,22 @@ module.exports = Model.extend({
   _onMapBoundsChanged: function () {
     if (this._shouldFetchOnBoundingBoxChange()) {
       // If the widget is the first one created it changes the map bounds
-      // and cacels the first ._fetch request so we have to call ._fetch here
+      // and cancels the first ._fetch request so we have to call ._fetch here
       // instead of .refresh to set the binds if they're not set up yet
       this._fetch();
     }
 
     if (this.syncsOnBoundingBoxChanges()) {
+      this._newDataAvailable = true;
+    }
+  },
+
+  _onCircleFilterChanged: function () {
+    if (this._shouldFetchOnCircleFilterChange()) {
+      this._fetch();
+    }
+
+    if (this.syncsOnCircleFilterChanges()) {
       this._newDataAvailable = true;
     }
   },
@@ -225,6 +270,11 @@ module.exports = Model.extend({
       this.syncsOnBoundingBoxChanges();
   },
 
+  _shouldFetchOnCircleFilterChange: function () {
+    return this.isEnabled() &&
+      this.syncsOnCircleFilterChanges();
+  },
+
   refresh: function () {
     this.fetch();
   },
@@ -236,6 +286,25 @@ module.exports = Model.extend({
     this._stopListeningBBoxChanges();
     this._bboxFilter = bboxFilter;
     this._listenToBBoxChanges();
+  },
+
+  removeBBoxFilter: function () {
+    this._stopListeningBBoxChanges();
+    this._bboxFilter = null;
+  },
+
+  addCircleFilter: function (circleFilter) {
+    if (!circleFilter) {
+      return;
+    }
+    this._stopListeningCircleFilterChanges();
+    this._circleFilter = circleFilter;
+    this._listenToCircleFilterChanges();
+  },
+
+  removeCircleFilter: function () {
+    this._stopListeningCircleFilterChanges();
+    this._circleFilter = null;
   },
 
   update: function (attrs) {
@@ -341,6 +410,10 @@ module.exports = Model.extend({
     return this.get('sync_on_bbox_change');
   },
 
+  syncsOnCircleFilterChanges: function () {
+    return this.get('sync_on_circle_change');
+  },
+
   _checkSourceAttribute: function (source) {
     if (!(source instanceof AnalysisModel)) {
       throw new Error('Source must be an instance of AnalysisModel');
@@ -353,6 +426,12 @@ module.exports = Model.extend({
     }
   },
 
+  _checkCircleFilter: function () {
+    if (this.syncsOnCircleFilterChanges() && !this._circleFilter) {
+      throw new Error('Cannot sync on circle filter changes. There is no circle filter.');
+    }
+  },
+
   _listenToBBoxChanges: function () {
     if (this._bboxFilter) {
       this.listenTo(this._bboxFilter, 'boundsChanged', this._onMapBoundsChanged);
@@ -362,6 +441,18 @@ module.exports = Model.extend({
   _stopListeningBBoxChanges: function () {
     if (this._bboxFilter) {
       this.stopListening(this._bboxFilter, 'boundsChanged');
+    }
+  },
+
+  _listenToCircleFilterChanges: function () {
+    if (this._circleFilter) {
+      this.listenTo(this._circleFilter, 'circleFilterChanged', this._onCircleFilterChanged);
+    }
+  },
+
+  _stopListeningCircleFilterChanges: function () {
+    if (this._circleFilter) {
+      this.stopListening(this._circleFilter, 'circleFilterChanged');
     }
   },
 
@@ -380,6 +471,7 @@ module.exports = Model.extend({
   ATTRS_NAMES: [
     'id',
     'sync_on_bbox_change',
+    'sync_on_circle_change',
     'enabled',
     'source'
   ]
