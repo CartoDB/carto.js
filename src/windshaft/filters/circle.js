@@ -18,6 +18,6 @@ module.exports = Model.extend({
   },
 
   serialize: function () {
-    return this.getCircle();
+    return encodeURIComponent(JSON.stringify(this.getCircle()));
   }
 });
