@@ -4,6 +4,7 @@ var status = require('../constants').status;
 var SourceBase = require('../source/base');
 var FilterBase = require('../filter/base');
 var SQLFilterBase = require('../filter/base-sql');
+var SpatialFilterTypes = require('../filter/spatial-filter-types');
 var CartoError = require('../error-handling/carto-error');
 var CartoValidationError = require('../error-handling/carto-validation-error');
 
@@ -159,9 +160,7 @@ Base.prototype.getColumn = function () {
  */
 Base.prototype.addFilter = function (filter) {
   this._checkFilter(filter);
-  if (filter !== this._boundingBoxFilter) {
-    this._addBoundingBoxFilter(filter);
-  }
+  this._addSpatialFilter(filter);
   return this;
 };
 
@@ -174,9 +173,7 @@ Base.prototype.addFilter = function (filter) {
  */
 Base.prototype.removeFilter = function (filter) {
   this._checkFilter(filter);
-  if (filter === this._boundingBoxFilter) {
-    this._removeBoundingBoxFilter();
-  }
+  this._removeSpatialFilter(filter);
   return this;
 };
 
@@ -189,8 +186,13 @@ Base.prototype.removeFilter = function (filter) {
  */
 Base.prototype.hasFilter = function (filter) {
   this._checkFilter(filter);
-  return (filter === this._boundingBoxFilter) &&
+  var hasBBoxFilter = (filter === this._boundingBoxFilter) &&
     (this._internalModel && this._internalModel.get('sync_on_bbox_change'));
+
+  var hasCircleFilter = (filter === this._circleFilter) &&
+    (this._internalModel && this._internalModel.get('sync_on_circle_change'));
+
+  return hasBBoxFilter || hasCircleFilter;
 };
 
 Base.prototype.getData = function () {
@@ -339,8 +341,42 @@ Base.prototype._triggerError = function (model, internalDataviewError) {
   this.trigger('error', new CartoError(internalDataviewError));
 };
 
-Base.prototype._addBoundingBoxFilter = function (filter) {
-  this._boundingBoxFilter = filter;
+Base.prototype._addSpatialFilter = function (spatialFilter) {
+  switch (spatialFilter.type) {
+    case SpatialFilterTypes.BBOX:
+      this._addBoundingBoxFilter(spatialFilter);
+      break;
+    case SpatialFilterTypes.CIRCLE:
+      this._addCircleFilter(spatialFilter);
+      break;
+    default:
+      throw new Error('The filter is not a valid spatial filter.');
+  }
+};
+
+Base.prototype._removeSpatialFilter = function (spatialFilter) {
+  switch (spatialFilter.type) {
+    case SpatialFilterTypes.BBOX:
+      if (spatialFilter === this._boundingBoxFilter) {
+        this._removeBoundingBoxFilter();
+      }
+      break;
+    case SpatialFilterTypes.CIRCLE:
+      if (spatialFilter === this._circleFilter) {
+        this._removeCircleFilter();
+      }
+      break;
+    default:
+      throw new Error('The filter is not a valid spatial filter.');
+  }
+};
+
+Base.prototype._addBoundingBoxFilter = function (bboxFilter) {
+  if (bboxFilter === this._boundingBoxFilter) {
+    return;
+  }
+
+  this._boundingBoxFilter = bboxFilter;
   if (this._internalModel) {
     this._internalModel.addBBoxFilter(this._boundingBoxFilter.$getInternalModel());
     this._internalModel.set('sync_on_bbox_change', true);
@@ -350,7 +386,28 @@ Base.prototype._addBoundingBoxFilter = function (filter) {
 Base.prototype._removeBoundingBoxFilter = function () {
   this._boundingBoxFilter = null;
   if (this._internalModel) {
+    this._internalModel.removeBBoxFilter();
     this._internalModel.set('sync_on_bbox_change', false);
+  }
+};
+
+Base.prototype._addCircleFilter = function (circleFilter) {
+  if (circleFilter === this._circleFilter) {
+    return;
+  }
+
+  this._circleFilter = circleFilter;
+  if (this._internalModel) {
+    this._internalModel.addCircleFilter(this._circleFilter.$getInternalModel());
+    this._internalModel.set('sync_on_circle_change', true);
+  }
+};
+
+Base.prototype._removeCircleFilter = function () {
+  this._circleFilter = null;
+  if (this._internalModel) {
+    this._internalModel.removeCircleFilter();
+    this._internalModel.set('sync_on_circle_change', false);
   }
 };
 
