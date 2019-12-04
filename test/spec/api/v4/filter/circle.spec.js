@@ -1,6 +1,6 @@
 var carto = require('../../../../../src/api/v4/index');
 
-fdescribe('api/v4/filter/circle', function () {
+describe('api/v4/filter/circle', function () {
   describe('initialization', function () {
     it('should create the internalModel', function () {
       var circleFilter = new carto.filter.Circle();

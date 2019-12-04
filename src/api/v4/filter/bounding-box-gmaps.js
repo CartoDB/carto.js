@@ -4,6 +4,7 @@ var Base = require('./base');
 var GoogleMapsBoundingBoxAdapter = require('../../../geo/adapters/gmaps-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 var utils = require('../../../core/util');
+var SpatialFilterTypes = require('./spatial-filter-types');
 
 /**
  * Bounding box filter for Google Maps maps.
@@ -30,6 +31,8 @@ function BoundingBoxGoogleMaps (map) {
   if (!_isGoogleMap(map)) {
     throw new Error('Bounding box requires a Google Maps map but got: ' + map);
   }
+  this.type = SpatialFilterTypes.BBOX;
+
   // Adapt the Google Maps map to offer unique:
   // - getBounds() function
   // - 'boundsChanged' event
