@@ -2,6 +2,7 @@ var _ = require('underscore');
 var Base = require('./base');
 var CircleFilterModel = require('../../../windshaft/filters/circle');
 var CartoValidationError = require('../error-handling/carto-validation-error');
+var SpatialFilterTypes = require('./spatial-filter-types');
 
 /**
  * Generic circle filter.
@@ -23,6 +24,7 @@ var CartoValidationError = require('../error-handling/carto-validation-error');
  */
 function Circle () {
   this._internalModel = new CircleFilterModel();
+  this.type = SpatialFilterTypes.CIRCLE;
 }
 
 Circle.prototype = Object.create(Base.prototype);
