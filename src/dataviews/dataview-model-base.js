@@ -78,7 +78,7 @@ module.exports = Model.extend({
     var result = '';
 
     this._checkCircleFilter();
-    if (this.syncsOnCircleFilterChanges()) {
+    if (this.syncsOnCircleChanges()) {
       result = 'circle=' + this._circleFilter.serialize();
     }
 
@@ -185,12 +185,12 @@ module.exports = Model.extend({
     }
   },
 
-  _onCircleFilterChanged: function () {
-    if (this._shouldFetchOnCircleFilterChange()) {
+  _onCircleChanged: function () {
+    if (this._shouldFetchOnCircleChange()) {
       this._fetch();
     }
 
-    if (this.syncsOnCircleFilterChanges()) {
+    if (this.syncsOnCircleChanges()) {
       this._newDataAvailable = true;
     }
   },
@@ -270,9 +270,9 @@ module.exports = Model.extend({
       this.syncsOnBoundingBoxChanges();
   },
 
-  _shouldFetchOnCircleFilterChange: function () {
+  _shouldFetchOnCircleChange: function () {
     return this.isEnabled() &&
-      this.syncsOnCircleFilterChanges();
+      this.syncsOnCircleChanges();
   },
 
   refresh: function () {
@@ -297,13 +297,13 @@ module.exports = Model.extend({
     if (!circleFilter) {
       return;
     }
-    this._stopListeningCircleFilterChanges();
+    this._stopListeningCircleChanges();
     this._circleFilter = circleFilter;
-    this._listenToCircleFilterChanges();
+    this._listenToCircleChanges();
   },
 
   removeCircleFilter: function () {
-    this._stopListeningCircleFilterChanges();
+    this._stopListeningCircleChanges();
     this._circleFilter = null;
   },
 
@@ -410,7 +410,7 @@ module.exports = Model.extend({
     return this.get('sync_on_bbox_change');
   },
 
-  syncsOnCircleFilterChanges: function () {
+  syncsOnCircleChanges: function () {
     return this.get('sync_on_circle_change');
   },
 
@@ -427,7 +427,7 @@ module.exports = Model.extend({
   },
 
   _checkCircleFilter: function () {
-    if (this.syncsOnCircleFilterChanges() && !this._circleFilter) {
+    if (this.syncsOnCircleChanges() && !this._circleFilter) {
       throw new Error('Cannot sync on circle filter changes. There is no circle filter.');
     }
   },
@@ -444,15 +444,15 @@ module.exports = Model.extend({
     }
   },
 
-  _listenToCircleFilterChanges: function () {
+  _listenToCircleChanges: function () {
     if (this._circleFilter) {
-      this.listenTo(this._circleFilter, 'circleFilterChanged', this._onCircleFilterChanged);
+      this.listenTo(this._circleFilter, 'circleChanged', this._onCircleChanged);
     }
   },
 
-  _stopListeningCircleFilterChanges: function () {
+  _stopListeningCircleChanges: function () {
     if (this._circleFilter) {
-      this.stopListening(this._circleFilter, 'circleFilterChanged');
+      this.stopListening(this._circleFilter, 'circleChanged');
     }
   },
 

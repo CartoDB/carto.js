@@ -383,7 +383,7 @@ describe('api/v4/dataview/category', function () {
 
       var internalModel = dataview.$getInternalModel();
       expect(internalModel._circleFilter).toBeDefined();
-      expect(internalModel.syncsOnCircleFilterChanges()).toBe(true);
+      expect(internalModel.syncsOnCircleChanges()).toBe(true);
     });
 
     it('allows removing a Circle filter', function () {
@@ -397,7 +397,7 @@ describe('api/v4/dataview/category', function () {
       expect(dataview.hasFilter(filter)).toBe(false);
       var internalModel = dataview.$getInternalModel();
       expect(internalModel._circleFilter).toBeNull();
-      expect(internalModel.syncsOnCircleFilterChanges()).toBe(false);
+      expect(internalModel.syncsOnCircleChanges()).toBe(false);
     });
 
     it('calling twice to $setEngine does not create another internalModel', function () {
