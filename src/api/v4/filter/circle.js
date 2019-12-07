@@ -52,7 +52,7 @@ Circle.prototype.setCircle = function (circle) {
  * @api
  */
 Circle.prototype.resetCircle = function () {
-  return this.setCircle({ lat: 0, lng: 0, radius: 0 }); // TODO check null use?
+  return this.setCircle({ lat: 0, lng: 0, radius: 0 });
 };
 
 /**
