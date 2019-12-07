@@ -27,3 +27,11 @@ module.exports = Base;
  * @type {carto.filter.Bounds}
  * @api
  */
+
+/**
+ * Fired when circle filter have changed. Handler gets a parameter with the new circle.
+ *
+ * @event circleChanged
+ * @type {carto.filter.CircleData}
+ * @api
+ */
