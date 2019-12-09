@@ -325,10 +325,8 @@ describe('api/v4/dataview/histogram', function () {
     });
 
     it('creates the internal model', function () {
-      var filter = new carto.filter.BoundingBox();
       dataview.disable(); // To test that it passes the ._enabled property to the internal model
       dataview.setBins(15);
-      dataview.addFilter(filter);
       dataview.$setEngine(engine);
 
       var internalModel = dataview.$getInternalModel();
@@ -336,17 +334,7 @@ describe('api/v4/dataview/histogram', function () {
       expect(internalModel.get('column')).toEqual(dataview._column);
       expect(internalModel.get('bins')).toBe(15);
       expect(internalModel.isEnabled()).toBe(false);
-      expect(internalModel._bboxFilter).toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
       expect(internalModel._engine).toBe(engine);
-    });
-
-    it('creates the internal model with no bounding box if not provided', function () {
-      dataview.$setEngine(engine);
-
-      var internalModel = dataview.$getInternalModel();
-      expect(internalModel._bboxFilter).not.toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(false);
     });
 
     it('calling twice to $setEngine does not create another internalModel', function () {
@@ -356,6 +344,18 @@ describe('api/v4/dataview/histogram', function () {
       dataview.$setEngine(engine);
 
       expect(dataview._createInternalModel.calls.count()).toBe(1);
+    });
+
+    describe('spatial filters', function () {
+      it('creates the internal model with BoundingBox filter if provided', function () {
+        var filter = new carto.filter.BoundingBox();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._bboxFilter).toBeDefined();
+        expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
+      });
     });
   });
 
