@@ -1,6 +1,7 @@
 var Backbone = require('backbone');
 var WindshaftFiltersRange = require('../../../src/windshaft/filters/range');
 var WindshaftFiltersBoundingBox = require('../../../src/windshaft/filters/bounding-box');
+var WindshaftFiltersCircle = require('../../../src/windshaft/filters/circle');
 var HistogramDataviewModel = require('../../../src/dataviews/histogram-dataview-model');
 var MapModelBoundingBoxAdapter = require('../../../src/geo/adapters/map-model-bounding-box-adapter');
 var helper = require('../../../src/dataviews/helpers/histogram-helper');
@@ -476,6 +477,48 @@ describe('dataviews/histogram-dataview-model', function () {
 
     it('should include bbox', function () {
       expect(this.model.url()).toEqual('http://example.com?bbox=2,1,4,3&' + apiKeyQueryParam);
+    });
+
+    it('should include circle filter', function () {
+      var filter = new WindshaftFiltersCircle();
+      var circle = {lat: 1, lng: 2, radius: 3};
+      filter.setCircle(circle);
+
+      this.model = new HistogramDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
+        circleFilter: filter
+      });
+      // DataviewModel defaults set this prop to true, even for cases like this not requiring passing a bbox filter
+      this.model.set('sync_on_bbox_change', false);
+
+      var circleEncoded = encodeURIComponent(JSON.stringify(circle));
+      expect(this.model.set('url', 'http://example.com'));
+      expect(this.model.url()).toEqual('http://example.com?circle=' + circleEncoded + '&' + apiKeyQueryParam);
+    });
+
+    it('should update circle filter', function () {
+      var filter = new WindshaftFiltersCircle();
+      var circle = {lat: 1, lng: 2, radius: 3};
+      filter.setCircle(circle);
+
+      this.model = new HistogramDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
+        circleFilter: filter
+      });
+      // DataviewModel defaults set this prop to true, even for cases like this not requiring passing a bbox filter
+      this.model.set('sync_on_bbox_change', false);
+
+      // updated!
+      var updatedCircle = {lat: 10, lng: 20, radius: 30};
+      filter.setCircle(updatedCircle);
+
+      var updatedCircleEncoded = encodeURIComponent(JSON.stringify(updatedCircle));
+      expect(this.model.set('url', 'http://example.com'));
+      expect(this.model.url()).toEqual('http://example.com?circle=' + updatedCircleEncoded + '&' + apiKeyQueryParam);
     });
 
     describe('column type is number', function () {
