@@ -112,6 +112,30 @@ describe('dataviews/category-dataview-model', function () {
       expect(this.model.set('url', 'http://example.com'));
       expect(this.model.url()).toEqual('http://example.com?circle=' + circleEncoded + '&own_filter=0&categories=6&' + apiKeyQueryParam);
     });
+
+    it('should update circle filter', function () {
+      var filter = new WindshaftFiltersCircle();
+      var circle = {lat: 1, lng: 2, radius: 3};
+      filter.setCircle(circle);
+
+      this.model = new CategoryDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
+        filter: new WindshaftFiltersCategory(),
+        circleFilter: filter
+      });
+      // DataviewModel defaults set this prop to true, even for cases like this not requiring passing a bbox filter
+      this.model.set('sync_on_bbox_change', false);
+
+      // updated!
+      var updatedCircle = {lat: 10, lng: 20, radius: 30};
+      filter.setCircle(updatedCircle);
+
+      var updatedCircleEncoded = encodeURIComponent(JSON.stringify(updatedCircle));
+      expect(this.model.set('url', 'http://example.com'));
+      expect(this.model.url()).toEqual('http://example.com?circle=' + updatedCircleEncoded + '&own_filter=0&categories=6&' + apiKeyQueryParam);
+    });
   });
 
   describe('binds', function () {
