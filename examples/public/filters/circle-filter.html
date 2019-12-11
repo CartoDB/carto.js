@@ -9,20 +9,31 @@
     <!-- Include Leaflet -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
+
     <!-- Include Leaflet Draw plugin -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.css" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-    <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js"></script>
+    <!-- <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js"></script> -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script> -->
 
     <!-- Include CARTO.js -->
     <script src="../../../dist/public/carto.js"></script>
     <link href="../style.css" rel="stylesheet">
+    <!-- Include Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
+    <style>
+        .dataview {
+            margin-bottom: 0px;
+            color: gray;
+            padding-bottom: 3px;
+            border-bottom: 1px gray solid;
+        }
+        </style>
 </head>
 
 <body>
@@ -31,112 +42,319 @@
 
     <!-- Description -->
     <aside class="toolbox">
-        <div class="box">
+        <div class="box" style="max-height:90vh; overflow: auto;">
             <header>
-                <h1>Filter data based on a Circle</h1>
+                <h1>Circle Filter</h1>
             </header>
-            <div class="widget category">
-                <!-- To be updated with Category & Circle filter -->
+            <br/>
+            <div>
+                <p class="open-sans dataview">Formula dataview</p>
+                <div class="widget formula">
+                    <!-- To be updated with Formula & Circle filter -->
+                </div>
+                <p class="open-sans dataview">Category dataview</p>
+                <div class="widget category">
+                    <!-- To be updated with Category & Circle filter -->
+                </div>
+                <p class="open-sans dataview">Histogram dataview</p>
+                <div class="widget histogram">
+                    <!-- To be updated with Histogram & Circle filter -->
+                </div>
+
             </div>
-            <div class="widget formula">
-                <!-- To be updated with Formula & Circle filter -->
+            <div>
+                <p class="open-sans dataview">TimeSeries dataview</p>
+                <div>
+                    <!-- To be updated with TimeSeries & Circle filter -->
+                    <canvas id="railroadWidget"></canvas>
+                </div>
             </div>
-            <div class="widget histogram">
-                <!-- To be updated with Histogram & Circle filter -->
-            </div>
-            <footer class="js-footer"></footer>
+            <!-- DEBUG -->
+            <footer class="js-footer">
+                <div id="sqlResult">
+                    <!-- To be updated with SQL API -->
+                </div>
+            </footer>
         </div>
 
     </aside>
 
     <script>
-        // set map with initial zoom and coodinates view
-        const map = L.map('map').setView([40, -80], 7);
+        // basic objects
+        let map;
+        let client;
 
-        // disable scroll wheel zoom
-        map.scrollWheelZoom.disable();
+        let citiesSource;
+        let railRoadSource;
 
-        // add basemaps to map
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-            maxZoom: 18
-        }).addTo(map);
+        let categoryDataview;
+        let formulaDataview;
+        let histogramDataview;
+        let timeSeriesDataview;
 
-        // layer to draw circles
-        let drawnItems = L.featureGroup().addTo(map);
+        let railroadWidget;
 
-        // set CARTO client
-        // const client = new carto.Client({
-        //         apiKey: 'default_public',
-        //         username: 'cartojs-test'
-        //     });
+        let circleFilter;
 
-        const client = new carto.Client({
-            apiKey: 'cb87fdd365de6e78eda5734c3427224ec4bc9033',
-            username: 'cdb',
-            serverUrl: 'http://cdb.localhost.lan:8181'
-        });
+        let drawnItems;
 
-        // set SQL query to create the grid of hexagons
-        const source = new carto.source.SQL(`
+        // create basic map and client configuration
+        function createBasicMap() {
+            map = L.map('map').setView([40, -80], 7);
+            map.scrollWheelZoom.disable();
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+                maxZoom: 18
+            }).addTo(map);
+
+            // set CARTO client
+            // const client = new carto.Client({
+            //         apiKey: 'default_public',
+            //         username: 'cartojs-test'
+            //     });
+
+            client = new carto.Client({
+                apiKey: 'cb87fdd365de6e78eda5734c3427224ec4bc9033',
+                username: 'cdb',
+                serverUrl: 'http://cdb.localhost.lan:8181'
+            });
+        }
+
+        // create a cities layer & source
+        function prepareCitiesLayer() {
+            citiesSource = new carto.source.SQL(`
                 SELECT * FROM ne_10m_populated_places_simple
             `);
-
-        // define styles of layer.
-        const style = new carto.style.CartoCSS(`
+            const style = new carto.style.CartoCSS(`
                 #layer {
                         marker-fill: red;
                     }
             `);
+            const layer = new carto.layer.Layer(citiesSource, style, {
+                featureClickColumns: ['name', 'adm0name', 'adm1name', 'pop_max']
+            });
+            client.addLayer(layer);
 
-        // set the CARTO layer using the source and style defines previously
-        const layer = new carto.layer.Layer(source, style, {
-            featureClickColumns: ['name', 'adm0name', 'adm1name', 'pop_max']
-        });
+            layer.on('featureClicked', featureEvent => {
+                console.log(featureEvent.data);
+            });
+        }
 
-        // add CARTO layer to the client
-        client.addLayer(layer);
+        // functions to display filtered dataview results on the panel
+        //  1. cities --> category
+        function renderWidgetCategory(data) {
+            const categories = data.categories.map(category => `
+                <li>
+                    <h3>${category.name}</h3>
+                    <p class="open-sans">${parseInt(category.value)} <small>inhabitants</small></p>
+                </li>
+                `).join('');
+            const content = `<ul>${categories}</ul>`;
+            document.querySelector('.widget.category').innerHTML = content;
+        }
+
+        //  2. cities --> formula
+        function renderWidgetFormula(data) {
+            const content = `<h2 class="h2">${data.result} <small>cities</small></h2>`;
+            document.querySelector('.widget.formula').innerHTML = content;
+        }
+
+        //  3. cities --> histogram
+        function renderWidgetHistogram(data) {
+            let histogram = '<ul class="open-sans">';
+            data.bins.forEach(bin => {
+                const line = '<li>' + bin.start + ' to ' + bin.end + ' interval has ' + bin.freq +
+                    ' cities</li>';
+                if (bin.freq > 0) {
+                    histogram += line;
+                }
+            });
+            histogram += "</ul>";
+            document.querySelector('.widget.histogram').innerHTML = histogram;
+        }
+
+        //  4. raiload --> timeseries
+        function initializeWidgetTimeSeries() {
+            const widgetElement = document.getElementById("railroadWidget").getContext('2d');
+
+            railroadWidget = new Chart(widgetElement, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Count by Date',
+                        data: [],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                }
+            });
+        }
+
+        function renderWidgetTimeSeries(data) {
+            railroadWidget.data.labels = data.bins.map(function (x) {
+                let dt = new Date(x.start);
+                return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+            });
+            railroadWidget.data.datasets.forEach((dataset) => {
+                dataset.data = data.bins.map(x => x.freq);
+            });
+            railroadWidget.update();
+        };
+
+        // create 3 dataviews on cities (Category, Formula & Histogram).
+        function createDataviewsOnCities() {
+            // Category dataview
+            categoryDataview = new carto.dataview.Category(citiesSource, 'adm1name', {
+                limit: 4,
+                operation: carto.operation.SUM,
+                operationColumn: 'pop_max'
+            });
+            categoryDataview.on('dataChanged', renderWidgetCategory);
+            client.addDataview(categoryDataview);
+
+            // Formula dataview
+            formulaDataview = new carto.dataview.Formula(citiesSource, 'pop_max', {
+                operation: carto.operation.COUNT,
+            });
+            formulaDataview.on('dataChanged', renderWidgetFormula);
+            client.addDataview(formulaDataview);
+
+            // Histogram dataview
+            histogramDataview = new carto.dataview.Histogram(citiesSource, 'pop_max', {
+                bins: 10
+            });
+            histogramDataview.on('dataChanged', renderWidgetHistogram);
+            client.addDataview(histogramDataview);
+        }
+
+        // create a railroad data layer & source
+        function prepareRailroadLayer() {
+            railRoadSource = new carto.source.Dataset('railroad_data');
+            const railroadLayer = new carto.layer.Layer(railRoadSource,
+                new carto.style.CartoCSS(`
+                    #layer {
+                        marker-width: 5;
+                        marker-fill: black;
+                        marker-line-color: #FFFFFF;
+                        marker-line-width: 0.3;
+                    }
+                `)
+            );
+            client.addLayer(railroadLayer);
+        }
+
+        // create 1 dataview on railroad data (TimeSeries)
+        function createDataviewOnRailroad() {
+            timeSeriesDataview = new carto.dataview.TimeSeries(railRoadSource, 'date', {
+                aggregation: carto.dataview.timeAggregation.AUTO,
+                offset: 1
+            });
+            timeSeriesDataview.on('dataChanged', renderWidgetTimeSeries);
+            client.addDataview(timeSeriesDataview);
+        }
+
+        // create the circle filter and add it to the dataviews
+        function createAndBindCircleFilter() {
+            circleFilter = new carto.filter.Circle();
+            circleFilter.setCircle({
+                lat: 0,
+                lng: 0,
+                radius: 0
+            });
+
+            categoryDataview.addFilter(circleFilter);
+            formulaDataview.addFilter(circleFilter);
+            histogramDataview.addFilter(circleFilter);
+            timeSeriesDataview.addFilter(circleFilter);
+        }
+
+        function prepareCircleDrawing() {
+            // layer to draw circles
+            drawnItems = L.featureGroup().addTo(map);
+
+            // Control to draw a Circle and use it as the spatial filter
+            let drawControl = new L.Control.Draw({
+                draw: {
+                    polygon: false,
+                    polyline: false,
+                    line: false,
+                    marker: false,
+                    rectangle: false,
+                    circle: {
+                        shapeOptions: {
+                            color: 'red',
+                            weight: 0.1,
+                            opacity: 0.5
+                        }
+                    },
+                    circlemarker: false,
+                },
+                edit: false
+            });
+            map.addControl(drawControl);
+
+            // Get radius and center & apply to Circle filter
+            map.on(L.Draw.Event.CREATED, function (e, d) {
+                let drawnCircle = e.layer;
+                drawnItems.clearLayers();
+                drawnItems.addLayer(drawnCircle);
+
+                // get circle data
+                let radius = drawnCircle.getRadius();
+                let centerLat = drawnCircle.getLatLng().lat;
+                let centerLng = drawnCircle.getLatLng().lng;
+
+                const circleData = {
+                    lat: centerLat,
+                    lng: centerLng,
+                    radius: radius
+                };
+                console.log(circleData);
+
+                // Add turf buffer
+                // var buffered = turf.buffer(turf.point([centerLng, centerLat]), radius / 1000.0, {
+                //     units: 'kilometers'
+                // });
+                // L.geoJSON(buffered).addTo(drawnItems);
+
+
+                circleFilter.setCircle(circleData); // updated filter !
+                fetchCircle(radius, centerLat, centerLng); // complementary query (not required)
+            });
+
+        }
+
+        // Run the example
+        createBasicMap();
+
+        prepareCitiesLayer();
+        prepareRailroadLayer();
+
         client.getLeafletLayer().addTo(map);
 
-        layer.on('featureClicked', featureEvent => {
-            console.log(featureEvent.data);
-        });
+        createDataviewsOnCities();
+        createDataviewOnRailroad();
+        initializeWidgetTimeSeries();
 
-        // Category dataview
-        const categoryDataview = new carto.dataview.Category(source, 'adm1name', {
-            limit: 4,
-            operation: carto.operation.SUM,
-            operationColumn: 'pop_max'
-        });
-        categoryDataview.on('dataChanged', renderWidgetCategory);
-        client.addDataview(categoryDataview);
-
-        // Formula dataview
-        const formulaDataview = new carto.dataview.Formula(source, 'pop_max', {
-            operation: carto.operation.COUNT,
-        });
-        formulaDataview.on('dataChanged', renderWidgetFormula);
-        client.addDataview(formulaDataview);
-
-        // Histogram dataview
-        const histogramDataview = new carto.dataview.Histogram(source, 'pop_max', { bins: 10 });
-        histogramDataview.on('dataChanged', renderWidgetHistogram);
-        client.addDataview(histogramDataview);
+        createAndBindCircleFilter();
 
 
-        // Circle filter, applied to Category dataview
-        const circleFilter = new carto.filter.Circle();
-        circleFilter.setCircle({
-            lat: 0,
-            lng: 0,
-            radius: 0
-        }); // initial filter
+        prepareCircleDrawing();
 
+
+        // DEBUG ----- delete from here...
+
+        // TO DELETE debug
         debug();
 
         function debug() {
             const Y = 42.373976901906055;
             const X = -4.76428185675705;
             const R = 221701.68161184734;
+
+            map.flyTo(new L.LatLng(Y, X));
 
             circleFilter.setCircle({
                 lat: Y,
@@ -168,98 +386,46 @@
             var buffered = turf.buffer(turf.point([X, Y]), R / 1000.0, {
                 units: 'kilometers'
             });
-            L.geoJSON(buffered, {
-                style: {
-                    color: 'purple',
-                    fillOpacity: 0
-                }
-            }).addTo(map);
+            // L.geoJSON(buffered, {
+            //     style: {
+            //         color: 'purple',
+            //         fillOpacity: 0
+            //     }
+            // }).addTo(map);
+            console.log(R, Y, X);
+            fetchCircle(R, Y, X);
         };
 
-        // Apply circleFilter to datasviews
-        categoryDataview.addFilter(circleFilter);
-        formulaDataview.addFilter(circleFilter);
-        histogramDataview.addFilter(circleFilter);
+        function fetchCircle(radius, lat, lng) {
+            q = `
+              SELECT count(*) as n, sum(pop_max) as pop
+              FROM ne_10m_populated_places_simple
+              WHERE ST_intersects(
+                  the_geom,
+                  ST_Buffer(
+                    ST_SetSRID(ST_Point(${lng},${lat}),4326)::geography,
+                    ${radius})::geometry
+                  )
+                `;
+            runQuery(q);
+        };
 
-        // Display Category dataview
-        function renderWidgetCategory(data) {
-            const categories = data.categories.map(category => `
-            <li>
-                <h3>${category.name}</h3>
-                <p class="open-sans">${parseInt(category.value)} <small>inhabitants</small></p>
-            </li>
-            `).join('');
-            const content = `<ul>${categories}</ul>`;
-
-            document.querySelector('.widget.category').innerHTML = content;
+        function runQuery(q) {
+            // fetch(`https://cartojs-test.carto.com/api/v2/sql?q=${q}`)
+            fetch(
+                    `http://cdb.localhost.lan:8080/api/v2/sql?q=${q}&api_key=cb87fdd365de6e78eda5734c3427224ec4bc9033`)
+                .then((resp) => resp.json())
+                .then((response) => {
+                    // we get the data from the request response
+                    let r = response.rows[0];
+                    document.getElementById('sqlResult').innerHTML =
+                        `SQL API --> Total places: ${r.n}<br/>Total pop: ${r.pop}`;
+                })
+                .catch(function (error) {
+                    // check if the request is returning an error
+                    console.log(error)
+                });
         }
-
-        // Display Formnula dataview
-        function renderWidgetFormula(data) {
-            const content = `<h2 class="h2">${data.result} <small>cities</small></h2>`;
-            document.querySelector('.widget.formula').innerHTML = content;
-        }
-
-        // Display histogram dataview
-        function renderWidgetHistogram(data) {
-            let histogram = '<ul class="open-sans">';
-            data.bins.forEach(bin => {
-                const line = '<li>' + bin.start + ' to ' + bin.end + ' has ' + bin.freq + ' cities</li>';
-                histogram += line;
-            });
-            histogram += "</ul>";
-            document.querySelector('.widget.histogram').innerHTML = histogram;
-        }
-
-        // control to add a circle and modify filter
-        let drawControl = new L.Control.Draw({
-            draw: {
-                polygon: false,
-                polyline: false,
-                line: false,
-                marker: false,
-                rectangle: false,
-                circle: {
-                    shapeOptions: {
-                        color: 'red',
-                        weight: 0.1,
-                        opacity: 0.5
-                    }
-                },
-                circlemarker: false,
-            },
-            edit: false
-        });
-
-        map.addControl(drawControl);
-
-        // get radius and center & apply to Circle filter
-        map.on(L.Draw.Event.CREATED, function (e, d) {
-            let circle = e.layer;
-
-            // get circle data
-            let radius = circle.getRadius();
-            let centerLat = circle.getLatLng().lat;
-            let centerLng = circle.getLatLng().lng;
-
-            drawnItems.clearLayers();
-            drawnItems.addLayer(circle); // add geometric circle
-
-            // Add turf buffer
-            var buffered = turf.buffer(turf.point([centerLng, centerLat]), radius / 1000.0, {
-                units: 'kilometers'
-            });
-            L.geoJSON(buffered).addTo(drawnItems);
-
-            const circleData = {
-                lat: centerLat,
-                lng: centerLng,
-                radius: radius
-            };
-            console.log(circleData);
-
-            circleFilter.setCircle(circleData); // updated filter
-        });
 
     </script>
 </body>
