@@ -192,7 +192,10 @@ Base.prototype.hasFilter = function (filter) {
   var hasCircleFilter = (filter === this._circleFilter) &&
     (this._internalModel && this._internalModel.get('sync_on_circle_change'));
 
-  return hasBBoxFilter || hasCircleFilter;
+  var hasPolygonFilter = (filter === this._polygonFilter) &&
+    (this._internalModel && this._internalModel.get('sync_on_polygon_change'));
+
+  return hasBBoxFilter || hasCircleFilter || hasPolygonFilter;
 };
 
 Base.prototype.getData = function () {
@@ -349,6 +352,9 @@ Base.prototype._addSpatialFilter = function (spatialFilter) {
     case SpatialFilterTypes.CIRCLE:
       this._addCircleFilter(spatialFilter);
       break;
+    case SpatialFilterTypes.POLYGON:
+      this._addPolygonFilter(spatialFilter);
+      break;
     default:
       throw new Error('The filter is not a valid spatial filter.');
   }
@@ -364,6 +370,11 @@ Base.prototype._removeSpatialFilter = function (spatialFilter) {
     case SpatialFilterTypes.CIRCLE:
       if (spatialFilter === this._circleFilter) {
         this._removeCircleFilter();
+      }
+      break;
+    case SpatialFilterTypes.POLYGON:
+      if (spatialFilter === this._polygonFilter) {
+        this._removePolygonFilter();
       }
       break;
     default:
@@ -408,6 +419,26 @@ Base.prototype._removeCircleFilter = function () {
   if (this._internalModel) {
     this._internalModel.removeCircleFilter();
     this._internalModel.set('sync_on_circle_change', false);
+  }
+};
+
+Base.prototype._addPolygonFilter = function (polygonFilter) {
+  if (polygonFilter === this._polygonFilter) {
+    return;
+  }
+
+  this._polygonFilter = polygonFilter;
+  if (this._internalModel) {
+    this._internalModel.addPolygonFilter(this._polygonFilter.$getInternalModel());
+    this._internalModel.set('sync_on_polygon_change', true);
+  }
+};
+
+Base.prototype._removePolygonFilter = function () {
+  this._polygonFilter = null;
+  if (this._internalModel) {
+    this._internalModel.removePolygonFilter();
+    this._internalModel.set('sync_on_polygon_change', false);
   }
 };
 

@@ -29,9 +29,17 @@ module.exports = Base;
  */
 
 /**
- * Fired when circle filter have changed. Handler gets a parameter with the new circle.
+ * Fired when circle filter has changed. Handler gets a parameter with the new circle.
  *
  * @event circleChanged
  * @type {carto.filter.CircleData}
+ * @api
+ */
+
+/**
+ * Fired when polygon filter has changed. Handler gets a parameter with the new polygon.
+ *
+ * @event polygonChanged
+ * @type {carto.filter.PolygonData}
  * @api
  */

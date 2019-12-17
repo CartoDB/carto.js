@@ -23,6 +23,7 @@ module.exports = Model.extend({
     data: [],
     sync_on_bbox_change: true,
     sync_on_circle_change: true,
+    sync_on_polygon_change: true,
     enabled: true,
     status: UNFETCHED_STATUS
   },
@@ -61,6 +62,10 @@ module.exports = Model.extend({
     if (this._circleFilter) {
       return this._getCircleFilterParam();
     }
+
+    if (this._polygonFilter) {
+      return this._getPolygonFilterParam();
+    }
   },
 
   _getBoundingBoxFilterParam: function () {
@@ -80,6 +85,17 @@ module.exports = Model.extend({
     this._checkCircleFilter();
     if (this.syncsOnCircleChanges()) {
       result = 'circle=' + this._circleFilter.serialize();
+    }
+
+    return result;
+  },
+
+  _getPolygonFilterParam: function () {
+    var result = '';
+
+    this._checkPolygonFilter();
+    if (this.syncsOnPolygonChanges()) {
+      result = 'polygon=' + this._polygonFilter.serialize();
     }
 
     return result;
@@ -131,6 +147,10 @@ module.exports = Model.extend({
 
     if (opts.circleFilter) {
       this.addCircleFilter(opts.circleFilter);
+    }
+
+    if (opts.polygonFilter) {
+      this.addPolygonFilter(opts.polygonFilter);
     }
   },
 
@@ -191,6 +211,16 @@ module.exports = Model.extend({
     }
 
     if (this.syncsOnCircleChanges()) {
+      this._newDataAvailable = true;
+    }
+  },
+
+  _onPolygonChanged: function () {
+    if (this._shouldFetchOnPolygonChange()) {
+      this._fetch();
+    }
+
+    if (this.syncsOnPolygonChanges()) {
       this._newDataAvailable = true;
     }
   },
@@ -275,6 +305,11 @@ module.exports = Model.extend({
       this.syncsOnCircleChanges();
   },
 
+  _shouldFetchOnPolygonChange: function () {
+    return this.isEnabled() &&
+      this.syncsOnPolygonChanges();
+  },
+
   refresh: function () {
     this.fetch();
   },
@@ -305,6 +340,20 @@ module.exports = Model.extend({
   removeCircleFilter: function () {
     this._stopListeningCircleChanges();
     this._circleFilter = null;
+  },
+
+  addPolygonFilter: function (polygonFilter) {
+    if (!polygonFilter) {
+      return;
+    }
+    this._stopListeningPolygonChanges();
+    this._polygonFilter = polygonFilter;
+    this._listenToPolygonChanges();
+  },
+
+  removePolygonFilter: function () {
+    this._stopListeningPolygonChanges();
+    this._polygonFilter = null;
   },
 
   update: function (attrs) {
@@ -414,6 +463,10 @@ module.exports = Model.extend({
     return this.get('sync_on_circle_change');
   },
 
+  syncsOnPolygonChanges: function () {
+    return this.get('sync_on_polygon_change');
+  },
+
   _checkSourceAttribute: function (source) {
     if (!(source instanceof AnalysisModel)) {
       throw new Error('Source must be an instance of AnalysisModel');
@@ -429,6 +482,12 @@ module.exports = Model.extend({
   _checkCircleFilter: function () {
     if (this.syncsOnCircleChanges() && !this._circleFilter) {
       throw new Error('Cannot sync on circle filter changes. There is no circle filter.');
+    }
+  },
+
+  _checkPolygonFilter: function () {
+    if (this.syncsOnPolygonChanges() && !this._polygonFilter) {
+      throw new Error('Cannot sync on polygon filter changes. There is no polygon filter.');
     }
   },
 
@@ -456,6 +515,18 @@ module.exports = Model.extend({
     }
   },
 
+  _listenToPolygonChanges: function () {
+    if (this._polygonFilter) {
+      this.listenTo(this._polygonFilter, 'polygonChanged', this._onPolygonChanged);
+    }
+  },
+
+  _stopListeningPolygonChanges: function () {
+    if (this._polygonFilter) {
+      this.stopListening(this._polygonFilter, 'polygonChanged');
+    }
+  },
+
   _parseError: function (response) {
     var error = {};
     var errors = parseWindshaftErrors(response, 'dataview');
@@ -472,6 +543,7 @@ module.exports = Model.extend({
     'id',
     'sync_on_bbox_change',
     'sync_on_circle_change',
+    'sync_on_polygon_change',
     'enabled',
     'source'
   ]

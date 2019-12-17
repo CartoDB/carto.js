@@ -87,6 +87,11 @@ module.exports = DataviewModelBase.extend({
     this._searchModel.fetchIfSearchIsApplied();
   },
 
+  _onPolygonChanged: function () {
+    DataviewModelBase.prototype._onPolygonChanged.apply(this, arguments);
+    this._searchModel.fetchIfSearchIsApplied();
+  },
+
   _bindSearchModelEvents: function () {
     this.listenTo(this._searchModel, 'loading', function () {
       this.trigger('loading', this);
@@ -119,6 +124,10 @@ module.exports = DataviewModelBase.extend({
 
   _shouldFetchOnCircleChange: function () {
     return DataviewModelBase.prototype._shouldFetchOnCircleChange.call(this) && !this.isSearchApplied();
+  },
+
+  _shouldFetchOnPolygonChange: function () {
+    return DataviewModelBase.prototype._shouldFetchOnPolygonChange.call(this) && !this.isSearchApplied();
   },
 
   enableFilter: function () {
