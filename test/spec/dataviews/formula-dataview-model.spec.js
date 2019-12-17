@@ -3,6 +3,7 @@ var FormulaDataviewModel = require('../../../src/dataviews/formula-dataview-mode
 var MockFactory = require('../../helpers/mockFactory');
 var WindshaftFiltersBoundingBox = require('../../../src/windshaft/filters/bounding-box');
 var WindshaftFiltersCircle = require('../../../src/windshaft/filters/circle');
+var WindshaftFiltersPolygon = require('../../../src/windshaft/filters/polygon');
 var MapModelBoundingBoxAdapter = require('../../../src/geo/adapters/map-model-bounding-box-adapter');
 var createEngine = require('../fixtures/engine.fixture.js');
 
@@ -90,6 +91,50 @@ describe('dataviews/formula-dataview-model', function () {
       var updatedCircleEncoded = encodeURIComponent(JSON.stringify(updatedCircle));
       expect(this.model.set('url', 'http://example.com'));
       expect(this.model.url()).toEqual('http://example.com?circle=' + updatedCircleEncoded + '&' + apiKeyQueryParam);
+    });
+
+    it('should include polygon filter, plus other required params', function () {
+      var filter = new WindshaftFiltersPolygon();
+      var polygon = { type: 'Polygon', coordinates: [[1, 2], [3, 4], [5, 6], [1, 2]] };
+      filter.setPolygon(polygon);
+
+      this.model = new FormulaDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
+        polygonFilter: filter
+      });
+
+      // DataviewModel defaults set this prop to true, even for cases like this not requiring passing a bbox filter
+      this.model.set('sync_on_bbox_change', false);
+
+      var polygonEncoded = encodeURIComponent(JSON.stringify(polygon));
+      expect(this.model.set('url', 'http://example.com'));
+      expect(this.model.url()).toEqual('http://example.com?polygon=' + polygonEncoded + '&' + apiKeyQueryParam);
+    });
+
+    it('should update polygon filter', function () {
+      var filter = new WindshaftFiltersPolygon();
+      var polygon = { type: 'Polygon', coordinates: [[1, 2], [3, 4], [5, 6], [1, 2]] };
+      filter.setPolygon(polygon);
+
+      this.model = new FormulaDataviewModel({
+        source: this.source
+      }, {
+        engine: engineMock,
+        polygonFilter: filter
+      });
+      // DataviewModel defaults set this prop to true, even for cases like this not requiring passing a bbox filter
+      this.model.set('sync_on_bbox_change', false);
+
+      // updated!
+      var updatedPolygon = { type: 'Polygon', coordinates: [[10, 20], [30, 40], [50, 60], [10, 20]] };
+
+      filter.setPolygon(updatedPolygon);
+
+      var updatedPolygonEncoded = encodeURIComponent(JSON.stringify(updatedPolygon));
+      expect(this.model.set('url', 'http://example.com'));
+      expect(this.model.url()).toEqual('http://example.com?polygon=' + updatedPolygonEncoded + '&' + apiKeyQueryParam);
     });
   });
 });
