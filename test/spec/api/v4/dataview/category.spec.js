@@ -419,20 +419,20 @@ describe('api/v4/dataview/category', function () {
         expect(internalModel._polygonFilter).toBeDefined();
         expect(internalModel.syncsOnPolygonChanges()).toBe(true);
       });
-    });
 
-    it('allows removing a Polygon filter', function () {
-      var filter = new carto.filter.Polygon();
-      dataview.addFilter(filter);
-      dataview.$setEngine(engine);
-      expect(dataview.hasFilter(filter)).toBe(true);
+      it('allows removing a Polygon filter', function () {
+        var filter = new carto.filter.Polygon();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+        expect(dataview.hasFilter(filter)).toBe(true);
 
-      dataview.removeFilter(filter);
+        dataview.removeFilter(filter);
 
-      expect(dataview.hasFilter(filter)).toBe(false);
-      var internalModel = dataview.$getInternalModel();
-      expect(internalModel._polygonFilter).toBeNull();
-      expect(internalModel.syncsOnPolygonChanges()).toBe(false);
+        expect(dataview.hasFilter(filter)).toBe(false);
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._polygonFilter).toBeNull();
+        expect(internalModel.syncsOnPolygonChanges()).toBe(false);
+      });
     });
   });
 });
