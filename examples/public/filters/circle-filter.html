@@ -29,6 +29,9 @@
             padding-bottom: 3px;
             border-bottom: 1px #ddd solid;
         }
+        #railroadWidget {
+            max-width: 90%;
+        }
 
     </style>
 </head>
@@ -57,7 +60,6 @@
                 <div class="widget histogram">
                     <!-- To be updated with Histogram & Circle filter -->
                 </div>
-
             </div>
             <div>
                 <p class="open-sans dataview">TimeSeries dataview</p>
@@ -66,12 +68,6 @@
                     <canvas id="railroadWidget"></canvas>
                 </div>
             </div>
-            <!-- DEBUG -->
-            <footer class="js-footer">
-                <div id="sqlResult">
-                    <!-- To be updated with SQL API -->
-                </div>
-            </footer>
         </div>
 
     </aside>
@@ -126,14 +122,8 @@
                         marker-fill: red;
                     }
             `);
-            const layer = new carto.layer.Layer(citiesSource, style, {
-                featureClickColumns: ['name', 'adm0name', 'adm1name', 'pop_max']
-            });
+            const layer = new carto.layer.Layer(citiesSource, style);
             client.addLayer(layer);
-
-            layer.on('featureClicked', featureEvent => {
-                console.log(featureEvent.data);
-            });
         }
 
         // functions to display filtered dataview results on the panel
@@ -179,7 +169,8 @@
                     datasets: [{
                         label: 'Railroad accidents',
                         data: [],
-                        borderWidth: 1
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(0, 255, 0, 0.5)'
                     }]
                 },
                 options: {
@@ -239,8 +230,8 @@
                 new carto.style.CartoCSS(`
                     #layer {
                         marker-width: 5;
-                        marker-fill: black;
-                        marker-line-color: #FFFFFF;
+                        marker-fill: #00FF00;
+                        marker-line-color: gray;
                         marker-line-width: 0.3;
                     }
                 `)
@@ -316,9 +307,7 @@
                 };
                 console.log(circleData);
                 circleFilter.setCircle(circleData); // updated filter !
-                fetchCircle(radius, centerLat, centerLng); // complementary query (not required)
             });
-
         }
 
         // Run the example
@@ -335,92 +324,7 @@
 
         createAndBindCircleFilter();
 
-
         prepareCircleDrawing();
-
-
-        // DEBUG ----- delete from here...
-
-        // TO DELETE debug
-        debug();
-
-        function debug() {
-            const Y = 42.373976901906055;
-            const X = -4.76428185675705;
-            const R = 221701.68161184734;
-
-            map.flyTo(new L.LatLng(Y, X));
-
-            circleFilter.setCircle({
-                lat: Y,
-                lng: X,
-                radius: R
-            });
-
-            // 1. Leaflet circle
-            var circle = L.circle([Y, X], {
-                color: "red",
-                fillColor: "#f03",
-                fillOpacity: 0,
-                radius: R
-            }).addTo(map);
-
-            // 2. Turf circle
-            // var turfCircle = turf.circle([X, Y], R / 1000.0, {
-            //     steps: 12,
-            //     units: 'kilometers'
-            // });
-            // L.geoJSON(turfCircle, {
-            //     style: {
-            //         color: 'green',
-            //         fillOpacity: 0
-            //     }
-            // }).addTo(map);
-
-            // 2. Turf buffer
-            // var buffered = turf.buffer(turf.point([X, Y]), R / 1000.0, {
-            //     units: 'kilometers'
-            // });
-            // L.geoJSON(buffered, {
-            //     style: {
-            //         color: 'purple',
-            //         fillOpacity: 0
-            //     }
-            // }).addTo(map);
-            console.log(R, Y, X);
-            fetchCircle(R, Y, X);
-        };
-
-        function fetchCircle(radius, lat, lng) {
-            q = `
-              SELECT count(*) as n, sum(pop_max) as pop
-              FROM ne_10m_populated_places_simple
-              WHERE ST_intersects(
-                  the_geom,
-                  ST_Buffer(
-                    ST_SetSRID(ST_Point(${lng},${lat}),4326)::geography,
-                    ${radius})::geometry
-                  )
-                `;
-            runQuery(q);
-        };
-
-        function runQuery(q) {
-            // fetch(`https://cartojs-test.carto.com/api/v2/sql?q=${q}`)
-            fetch(
-                    `http://cdb.localhost.lan:8080/api/v2/sql?q=${q}&api_key=cb87fdd365de6e78eda5734c3427224ec4bc9033`)
-                .then((resp) => resp.json())
-                .then((response) => {
-                    // we get the data from the request response
-                    let r = response.rows[0];
-                    document.getElementById('sqlResult').innerHTML =
-                        `SQL API --> Total places: ${r.n}<br/>Total pop: ${r.pop}`;
-                })
-                .catch(function (error) {
-                    // check if the request is returning an error
-                    console.log(error)
-                });
-        }
 
     </script>
 </body>
