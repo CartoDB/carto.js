@@ -6,23 +6,19 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
+
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
 
     <!-- Include Leaflet Draw plugin -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.css" /> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-    <!-- <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-geodesy/v0.1.0/leaflet-geodesy.js"></script> -->
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@turf/turf@5.1.6/turf.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.css" />
 
     <!-- Include CARTO.js -->
     <script src="../../../dist/public/carto.js"></script>
     <link href="../style.css" rel="stylesheet">
+
     <!-- Include Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
@@ -31,9 +27,10 @@
             margin-bottom: 0px;
             color: gray;
             padding-bottom: 3px;
-            border-bottom: 1px gray solid;
+            border-bottom: 1px #ddd solid;
         }
-        </style>
+
+    </style>
 </head>
 
 <body>
@@ -46,7 +43,7 @@
             <header>
                 <h1>Circle Filter</h1>
             </header>
-            <br/>
+            <br />
             <div>
                 <p class="open-sans dataview">Formula dataview</p>
                 <div class="widget formula">
@@ -179,15 +176,21 @@
             railroadWidget = new Chart(widgetElement, {
                 type: 'bar',
                 data: {
-                    labels: [],
                     datasets: [{
-                        label: 'Count by Date',
+                        label: 'Railroad accidents',
                         data: [],
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                display: false
+                            }
+                        }]
+                    }
                 }
             });
         }
@@ -312,14 +315,6 @@
                     radius: radius
                 };
                 console.log(circleData);
-
-                // Add turf buffer
-                // var buffered = turf.buffer(turf.point([centerLng, centerLat]), radius / 1000.0, {
-                //     units: 'kilometers'
-                // });
-                // L.geoJSON(buffered).addTo(drawnItems);
-
-
                 circleFilter.setCircle(circleData); // updated filter !
                 fetchCircle(radius, centerLat, centerLng); // complementary query (not required)
             });
@@ -382,10 +377,10 @@
             //     }
             // }).addTo(map);
 
-            // 3. Turf buffer
-            var buffered = turf.buffer(turf.point([X, Y]), R / 1000.0, {
-                units: 'kilometers'
-            });
+            // 2. Turf buffer
+            // var buffered = turf.buffer(turf.point([X, Y]), R / 1000.0, {
+            //     units: 'kilometers'
+            // });
             // L.geoJSON(buffered, {
             //     style: {
             //         color: 'purple',
