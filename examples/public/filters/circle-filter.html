@@ -45,6 +45,7 @@
         <div class="box" style="max-height:90vh; overflow: auto;">
             <header>
                 <h1>Circle Filter</h1>
+                <p class="open-sans">Draw a circle to get filtered results</p>
             </header>
             <br />
             <div>
@@ -161,9 +162,9 @@
 
         //  4. raiload --> timeseries
         function initializeWidgetTimeSeries() {
-            const widgetElement = document.getElementById("railroadWidget").getContext('2d');
+            const widgetElement = document.getElementById("railroadWidget");
 
-            railroadWidget = new Chart(widgetElement, {
+            railroadWidget = new Chart(widgetElement.getContext('2d'), {
                 type: 'bar',
                 data: {
                     datasets: [{
@@ -184,9 +185,16 @@
                     }
                 }
             });
+            widgetElement.style.display = 'none';
         }
 
         function renderWidgetTimeSeries(data) {
+            const widget = document.getElementById("railroadWidget");
+            if (data.totalAmount === 0){
+               widget.style.display = 'none';
+            }else{
+                widget.style.display = 'block';
+            }
             railroadWidget.data.labels = data.bins.map(function (x) {
                 let dt = new Date(x.start);
                 return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
