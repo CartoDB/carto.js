@@ -8,8 +8,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Changed
+### Added
 - Improve Overview guide with npm info [2230](https://github.com/CartoDB/carto.js/issues/2230)
+- New dataview filters: circle & polygon [2242](https://github.com/CartoDB/carto.js/pull/2242)
+
+### Fixed
+- Support options dead link [2240](https://github.com/CartoDB/carto.js/issues/2240)
+
 
 ## 4.1.11 - 2019-02-13
 ### Changed
@@ -18,7 +23,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## 4.1.10 - 2019-01-18
 
 ### Fixed
-
 - Trigger view update after search [2219](https://github.com/CartoDB/carto.js/pull/2219)
 - Filters: parse dates properly in the `between` filter.
 
