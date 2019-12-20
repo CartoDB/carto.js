@@ -45,11 +45,11 @@ function _createBins (data, maxFreq) {
   return data.map(function (bin) {
     /**
      *  @example
-     *  
+     *
      * // We created an histogram containing airBnb prices per night
      * const histogramDataview = new carto.dataview.Histogram(airbnbDataset, 'price', { bins: 7 });
      * // Listen to dataChanged events
-     * histogramDataview.on('dataChanged', data => { 
+     * histogramDataview.on('dataChanged', data => {
      *  // The first bin contains prices from 0 to 20€ per night, there are 3 rentals in this bin with a cost of 10 15 and 20€.
      *  const bin = console.log(data.bins[0]);
      *  // This is the bin index in the bins array
@@ -69,10 +69,10 @@ function _createBins (data, maxFreq) {
      *  // Those 3 prices represent the 20% of the dataset.
      *  bin.normalized; // 0.2
      * });
-     * 
-     * 
-     * 
-     *  
+     *
+     *
+     *
+     *
      * @typedef {object} carto.dataview.BinItem
      * @property {number} index - Number indicating the bin order
      * @property {number} start - The lower limit of the bin

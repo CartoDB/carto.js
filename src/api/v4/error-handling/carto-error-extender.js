@@ -5,9 +5,9 @@ var ERROR_LIST = require('./error-list');
  * Returns two parameters to enrich a CartoError.
  * - friendlyMessage: A easy to understand error description.
  * - errorCode: Am unique error code
- * 
+ *
  * @param {CartoError} cartoError
- * 
+ *
  * @returns {object} - An object containing a friendly message and a errorCode
  */
 function getExtraFields (cartoError) {
@@ -21,8 +21,8 @@ function getExtraFields (cartoError) {
 }
 
 /**
- * 
- * @param {CartoError} cartoError 
+ *
+ * @param {CartoError} cartoError
  */
 function _getErrorList (cartoError) {
   return ERROR_LIST[cartoError.origin] && ERROR_LIST[cartoError.origin][cartoError.type];
@@ -31,7 +31,7 @@ function _getErrorList (cartoError) {
 /**
  * Get the listed error from a cartoError, if no listedError is found return a generic
  * unknown error.
- * @param {CartoError} cartoError 
+ * @param {CartoError} cartoError
  */
 function _getListedError (cartoError, errorList) {
   var errorListkeys = _.keys(errorList);
@@ -76,8 +76,8 @@ function _replaceRegex (cartoError, listedError) {
 
 /**
  * Generate an unique string that represents a cartoError
- * @param {cartoError} cartoError 
- * @param {string} key 
+ * @param {cartoError} cartoError
+ * @param {string} key
  */
 function _buildErrorCode (cartoError, key) {
   var fragments = [];
