@@ -45,7 +45,7 @@
         <div class="box" style="max-height:90vh; overflow: auto;">
             <header>
                 <h1>Polygon Filter</h1>
-                <p class="open-sans">Draw a polygon to get filtered results</p>
+                <p class="open-sans"><em>Draw a polygon to get filtered results</em></p>
             </header>
             <br />
             <div>
@@ -101,15 +101,9 @@
             }).addTo(map);
 
             // set CARTO client
-            // const client = new carto.Client({
-            //         apiKey: 'default_public',
-            //         username: 'cartojs-test'
-            //     });
-
             client = new carto.Client({
-                apiKey: 'cb87fdd365de6e78eda5734c3427224ec4bc9033',
-                username: 'cdb',
-                serverUrl: 'http://cdb.localhost.lan:8181'
+                apiKey: 'default_public',
+                username: 'cartojs-test'
             });
         }
 
