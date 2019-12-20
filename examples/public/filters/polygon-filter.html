@@ -217,6 +217,11 @@
             formulaDataview.on('dataChanged', renderWidgetFormula);
             client.addDataview(formulaDataview);
 
+            // Example to deal with dataview errors
+            formulaDataview.on('error', cartoError => {
+                console.error(cartoError.message);
+            })
+
             // Histogram dataview
             histogramDataview = new carto.dataview.Histogram(citiesSource, 'pop_max', {
                 bins: 10

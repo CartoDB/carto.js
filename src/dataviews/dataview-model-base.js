@@ -10,6 +10,8 @@ var FETCHING_STATUS = 'fetching';
 var FETCHED_STATUS = 'fetched';
 var FETCH_ERROR_STATUS = 'error';
 
+var REQUEST_GET_MAX_URL_LENGTH = 2083; // IE11
+
 var REQUIRED_OPTS = [
   'engine'
 ];
@@ -36,7 +38,8 @@ module.exports = Model.extend({
 
     this._addAuthTo(params);
 
-    return this.get('url') + '?' + params.join('&');
+    var urlWithParams = this.get('url') + '?' + params.join('&');
+    return urlWithParams;
   },
 
   _addAuthTo: function (params) {
@@ -392,11 +395,23 @@ module.exports = Model.extend({
       error: function (_model, response) {
         if (!response || (response && response.statusText !== 'abort')) {
           this.set('status', FETCH_ERROR_STATUS);
+          if (this._errorWithBigPolygonFilter(_model)) {
+            response.statusText = 'error in the dataview request. ' +
+              'Check the Polygon filter size (reduce the number of vertices and retry).';
+          }
           var error = this._parseError(response);
           this._triggerStatusError(error);
         }
       }.bind(this)
     }));
+  },
+
+  _errorWithBigPolygonFilter: function (model) {
+    var usingPolygonFilter = model && model.attributes && model.attributes.sync_on_polygon_change;
+    if (usingPolygonFilter && this.url().length > REQUEST_GET_MAX_URL_LENGTH) {
+      return true;
+    }
+    return false;
   },
 
   toJSON: function () {
