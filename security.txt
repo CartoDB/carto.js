@@ -1,4 +1,3 @@
-
 Contact: mailto:security-issues@carto.com
 Preferred-Languages: en
 Policy: https://github.com/CartoDB/carto.js/blob/master/SECURITY-POLICY
