@@ -13,7 +13,6 @@ var SpatialFilterTypes = require('./spatial-filter-types');
  *
  * This filter could be useful if you want give the users to ability to select a portion of the map and update the dataviews accordingly.
  *
- * @fires boundsChanged
  *
  * @constructor
  * @fires boundsChanged

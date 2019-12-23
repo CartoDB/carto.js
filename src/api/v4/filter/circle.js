@@ -13,7 +13,6 @@ var SpatialFilterTypes = require('./spatial-filter-types');
  *
  * This filter could be useful if you want give the users the ability to select a buffer around a point of interest in the map and update the dataviews accordingly.
  *
- * @fires circleChanged
  *
  * @constructor
  * @fires circleChanged
