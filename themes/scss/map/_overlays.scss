@@ -293,6 +293,11 @@ $maxLegendContainerHeight: 300px;
   z-index: 3;
 }
 
+.Legends {
+  display: flex;
+  flex-direction: column;
+}
+
 .CDB-Legend-item {
   height: 100%;
 }
