@@ -128,6 +128,16 @@
           }
         },
         {
+          "title": "Circle filter",
+          "desc": "Apply a circle filter to the widgets",
+          "file": "public/filters/circle-filter.html"
+        },
+        {
+          "title": "Polygon filter",
+          "desc": "Apply a polygon filter to the widgets",
+          "file": "public/filters/polygon-filter.html"
+        },
+        {
           "title": "Status and error handling",
           "desc": "Manage the status and erros in dataviews",
           "file": "public/dataviews/error-handling.html"

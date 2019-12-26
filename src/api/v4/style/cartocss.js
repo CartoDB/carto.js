@@ -52,7 +52,7 @@ CartoCSS.prototype.getContent = function () {
  *    marker-fill: blue;
  *  }`)
  *  .then(() => {
- *    console.log('cartoCSS was updated'); 
+ *    console.log('cartoCSS was updated');
  *  })
  *  .catch(() => {
  *    console.error('Error updating the cartoCSS for the layer');

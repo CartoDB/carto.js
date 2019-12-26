@@ -325,12 +325,10 @@ describe('api/v4/dataview/time-series', function () {
     });
 
     it('creates the internal model', function () {
-      var filter = new carto.filter.BoundingBox();
       dataview.disable(); // To test that it passes the ._enabled property to the internal model
       dataview.setAggregation(carto.dataview.timeAggregation.WEEK);
       dataview.setOffset(6);
       dataview.useLocalTimezone(true);
-      dataview.addFilter(filter);
       dataview.$setEngine(engine);
 
       var internalModel = dataview.$getInternalModel();
@@ -340,17 +338,7 @@ describe('api/v4/dataview/time-series', function () {
       expect(internalModel.get('localTimezone')).toBe(true);
       expect(internalModel.get('offset')).toBe(6 * 3600);
       expect(internalModel.isEnabled()).toBe(false);
-      expect(internalModel._bboxFilter).toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
       expect(internalModel._engine).toBe(engine);
-    });
-
-    it('creates the internal model with no bounding box if not provided', function () {
-      dataview.$setEngine(engine);
-
-      var internalModel = dataview.$getInternalModel();
-      expect(internalModel._bboxFilter).not.toBeDefined();
-      expect(internalModel.syncsOnBoundingBoxChanges()).toBe(false);
     });
 
     it('calling twice to $setEngine does not create another internalModel', function () {
@@ -360,6 +348,80 @@ describe('api/v4/dataview/time-series', function () {
       dataview.$setEngine(engine);
 
       expect(dataview._createInternalModel.calls.count()).toBe(1);
+    });
+
+    describe('spatial filters', function () {
+      it('creates the internal model with BoundingBox filter if provided', function () {
+        var filter = new carto.filter.BoundingBox();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._bboxFilter).toBeDefined();
+        expect(internalModel.syncsOnBoundingBoxChanges()).toBe(true);
+      });
+
+      it('allows removing a BoundingBox filter', function () {
+        var filter = new carto.filter.BoundingBox();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+        expect(dataview.hasFilter(filter)).toBe(true);
+
+        dataview.removeFilter(filter);
+
+        expect(dataview.hasFilter(filter)).toBe(false);
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._bboxFilter).toBeNull();
+        expect(internalModel.syncsOnBoundingBoxChanges()).toBe(false);
+      });
+
+      it('creates the internal model with Circle filter if provided', function () {
+        var filter = new carto.filter.Circle();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._circleFilter).toBeDefined();
+        expect(internalModel.syncsOnCircleChanges()).toBe(true);
+      });
+
+      it('allows removing a Circle filter', function () {
+        var filter = new carto.filter.Circle();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+        expect(dataview.hasFilter(filter)).toBe(true);
+
+        dataview.removeFilter(filter);
+
+        expect(dataview.hasFilter(filter)).toBe(false);
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._circleFilter).toBeNull();
+        expect(internalModel.syncsOnCircleChanges()).toBe(false);
+      });
+
+      it('creates the internal model with Polygon filter if provided', function () {
+        var filter = new carto.filter.Polygon();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._polygonFilter).toBeDefined();
+        expect(internalModel.syncsOnPolygonChanges()).toBe(true);
+      });
+
+      it('allows removing a Polygon filter', function () {
+        var filter = new carto.filter.Polygon();
+        dataview.addFilter(filter);
+        dataview.$setEngine(engine);
+        expect(dataview.hasFilter(filter)).toBe(true);
+
+        dataview.removeFilter(filter);
+
+        expect(dataview.hasFilter(filter)).toBe(false);
+        var internalModel = dataview.$getInternalModel();
+        expect(internalModel._polygonFilter).toBeNull();
+        expect(internalModel.syncsOnPolygonChanges()).toBe(false);
+      });
     });
   });
 });

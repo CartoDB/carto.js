@@ -205,11 +205,15 @@ Histogram.prototype._createInternalModel = function (engine) {
     start: this._start,
     end: this._end,
     sync_on_bbox_change: !!this._boundingBoxFilter,
+    sync_on_circle_change: !!this._circleFilter,
+    sync_on_polygon_change: !!this._polygonFilter,
     enabled: this._enabled,
     column_type: 'number'
   }, {
     engine: engine,
-    bboxFilter: this._boundingBoxFilter && this._boundingBoxFilter.$getInternalModel()
+    bboxFilter: this._boundingBoxFilter && this._boundingBoxFilter.$getInternalModel(),
+    circleFilter: this._circleFilter && this._circleFilter.$getInternalModel(),
+    polygonFilter: this._polygonFilter && this._polygonFilter.$getInternalModel()
   });
 };
 

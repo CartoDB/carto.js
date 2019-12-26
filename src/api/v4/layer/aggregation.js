@@ -40,25 +40,25 @@ var PLACEMENTS = {
 var VALID_RESOLUTIONS = [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256];
 
 /**
- * An aggregation can be passed to a {@link carto.layer.Layer} to reduce the number of visible points 
+ * An aggregation can be passed to a {@link carto.layer.Layer} to reduce the number of visible points
  * increasing the performance.
- * 
+ *
  * See {@link https://carto.com/developers/maps-api/guides/tile-aggregation/} for more info.
- * 
- * @param {object} opts 
+ *
+ * @param {object} opts
  * @param {number} opts.threshold - The minimum number of rows in the dataset for aggregation to be applied
  * @param {number} opts.resolution - The cell-size of the spatial aggregation grid [more info]{@link https://carto.com/developers/maps-api/tile-aggregation#resolution}
  * @param {string} opts.placement - The kind of [aggregated geometry]{@link https://carto.com/developers/maps-api/tile-aggregation#placement} generated
  * @param {object} opts.columns - The new columns are computed by a applying an aggregate function to all the points in each group
  * @param {string} opts.columns.aggregatedFunction - The Function used to aggregate the points: avg (average), sum, min (minimum), max (maximum) and mode (the most frequent value in the group)
  * @param {string} opts.columns.aggregatedColumn - The name of the original column to be aggregated.
- * 
+ *
  * @example
  * // Create a layer with aggregated data.
  * const aggregationOptions = {
  *   // CARTO applies aggregation if your dataset has more than threshold rows. In this case, more than 1 row.
  *   threshold: 1,
- *   // Defines the cell-size of the aggregation grid. In this case, 1x1 pixel. 
+ *   // Defines the cell-size of the aggregation grid. In this case, 1x1 pixel.
  *   resolution: 1,
  *   // Where the new point will be placed. In this case, at the center of the grid.
  *   placement: carto.layer.Aggregation.placement.GRID,
@@ -78,7 +78,7 @@ var VALID_RESOLUTIONS = [0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256];
  * };
  * const aggregation = new Aggregation(options);
  * const layer = new carto.layer.Layer(source, style, { aggregation: aggregation });
- * 
+ *
  * @constructor
  * @api
  * @memberof carto.layer

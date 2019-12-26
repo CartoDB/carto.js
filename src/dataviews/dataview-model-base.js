@@ -10,6 +10,8 @@ var FETCHING_STATUS = 'fetching';
 var FETCHED_STATUS = 'fetched';
 var FETCH_ERROR_STATUS = 'error';
 
+var REQUEST_GET_MAX_URL_LENGTH = 2083; // IE11
+
 var REQUIRED_OPTS = [
   'engine'
 ];
@@ -22,16 +24,32 @@ module.exports = Model.extend({
     url: '',
     data: [],
     sync_on_bbox_change: true,
+    sync_on_circle_change: true,
+    sync_on_polygon_change: true,
     enabled: true,
     status: UNFETCHED_STATUS
   },
 
   url: function () {
     var params = _.union(
-      [ this._getBoundingBoxFilterParam() ],
+      [ this._getSpatialFilterParam() ],
       this._getDataviewSpecificURLParams()
     );
 
+    this._addAuthTo(params);
+
+    var urlWithParams = this.get('url') + '?' + params.join('&');
+
+    if (urlWithParams.length > REQUEST_GET_MAX_URL_LENGTH) {
+      throw new Error(
+        'URL length is longer than allowed (' + REQUEST_GET_MAX_URL_LENGTH + ' chars). ' +
+        'Check your filters (eg. if using a Polygon filter, reduce the number of vertices).'
+      );
+    }
+    return urlWithParams;
+  },
+
+  _addAuthTo: function (params) {
     if (this._engine.getApiKey()) {
       params.push('api_key=' + this._engine.getApiKey());
     } else if (this._engine.getAuthToken()) {
@@ -44,7 +62,20 @@ module.exports = Model.extend({
         params.push('auth_token=' + authToken);
       }
     }
-    return this.get('url') + '?' + params.join('&');
+  },
+
+  _getSpatialFilterParam: function () {
+    if (this._bboxFilter) {
+      return this._getBoundingBoxFilterParam();
+    }
+
+    if (this._circleFilter) {
+      return this._getCircleFilterParam();
+    }
+
+    if (this._polygonFilter) {
+      return this._getPolygonFilterParam();
+    }
   },
 
   _getBoundingBoxFilterParam: function () {
@@ -53,6 +84,28 @@ module.exports = Model.extend({
     this._checkBBoxFilter();
     if (this.syncsOnBoundingBoxChanges()) {
       result = 'bbox=' + this._bboxFilter.serialize();
+    }
+
+    return result;
+  },
+
+  _getCircleFilterParam: function () {
+    var result = '';
+
+    this._checkCircleFilter();
+    if (this.syncsOnCircleChanges()) {
+      result = 'circle=' + this._circleFilter.serialize();
+    }
+
+    return result;
+  },
+
+  _getPolygonFilterParam: function () {
+    var result = '';
+
+    this._checkPolygonFilter();
+    if (this.syncsOnPolygonChanges()) {
+      result = 'polygon=' + this._polygonFilter.serialize();
     }
 
     return result;
@@ -92,11 +145,23 @@ module.exports = Model.extend({
       this.filter.set('dataviewId', this.id);
     }
 
+    this._addSpatialFilterFrom(opts);
+
+    this._initBinds();
+  },
+
+  _addSpatialFilterFrom (opts) {
     if (opts.bboxFilter) {
       this.addBBoxFilter(opts.bboxFilter);
     }
 
-    this._initBinds();
+    if (opts.circleFilter) {
+      this.addCircleFilter(opts.circleFilter);
+    }
+
+    if (opts.polygonFilter) {
+      this.addPolygonFilter(opts.polygonFilter);
+    }
   },
 
   _initBinds: function () {
@@ -140,12 +205,32 @@ module.exports = Model.extend({
   _onMapBoundsChanged: function () {
     if (this._shouldFetchOnBoundingBoxChange()) {
       // If the widget is the first one created it changes the map bounds
-      // and cacels the first ._fetch request so we have to call ._fetch here
+      // and cancels the first ._fetch request so we have to call ._fetch here
       // instead of .refresh to set the binds if they're not set up yet
       this._fetch();
     }
 
     if (this.syncsOnBoundingBoxChanges()) {
+      this._newDataAvailable = true;
+    }
+  },
+
+  _onCircleChanged: function () {
+    if (this._shouldFetchOnCircleChange()) {
+      this._fetch();
+    }
+
+    if (this.syncsOnCircleChanges()) {
+      this._newDataAvailable = true;
+    }
+  },
+
+  _onPolygonChanged: function () {
+    if (this._shouldFetchOnPolygonChange()) {
+      this._fetch();
+    }
+
+    if (this.syncsOnPolygonChanges()) {
       this._newDataAvailable = true;
     }
   },
@@ -225,6 +310,16 @@ module.exports = Model.extend({
       this.syncsOnBoundingBoxChanges();
   },
 
+  _shouldFetchOnCircleChange: function () {
+    return this.isEnabled() &&
+      this.syncsOnCircleChanges();
+  },
+
+  _shouldFetchOnPolygonChange: function () {
+    return this.isEnabled() &&
+      this.syncsOnPolygonChanges();
+  },
+
   refresh: function () {
     this.fetch();
   },
@@ -236,6 +331,39 @@ module.exports = Model.extend({
     this._stopListeningBBoxChanges();
     this._bboxFilter = bboxFilter;
     this._listenToBBoxChanges();
+  },
+
+  removeBBoxFilter: function () {
+    this._stopListeningBBoxChanges();
+    this._bboxFilter = null;
+  },
+
+  addCircleFilter: function (circleFilter) {
+    if (!circleFilter) {
+      return;
+    }
+    this._stopListeningCircleChanges();
+    this._circleFilter = circleFilter;
+    this._listenToCircleChanges();
+  },
+
+  removeCircleFilter: function () {
+    this._stopListeningCircleChanges();
+    this._circleFilter = null;
+  },
+
+  addPolygonFilter: function (polygonFilter) {
+    if (!polygonFilter) {
+      return;
+    }
+    this._stopListeningPolygonChanges();
+    this._polygonFilter = polygonFilter;
+    this._listenToPolygonChanges();
+  },
+
+  removePolygonFilter: function () {
+    this._stopListeningPolygonChanges();
+    this._polygonFilter = null;
   },
 
   update: function (attrs) {
@@ -274,11 +402,23 @@ module.exports = Model.extend({
       error: function (_model, response) {
         if (!response || (response && response.statusText !== 'abort')) {
           this.set('status', FETCH_ERROR_STATUS);
+          if (this._errorWithBigPolygonFilter(_model)) {
+            response.statusText = 'error in the dataview request. ' +
+              'Check the Polygon filter size (reduce the number of vertices and retry).';
+          }
           var error = this._parseError(response);
           this._triggerStatusError(error);
         }
       }.bind(this)
     }));
+  },
+
+  _errorWithBigPolygonFilter: function (model) {
+    var usingPolygonFilter = model && model.attributes && model.attributes.sync_on_polygon_change;
+    if (usingPolygonFilter && this.url().length > REQUEST_GET_MAX_URL_LENGTH) {
+      return true;
+    }
+    return false;
   },
 
   toJSON: function () {
@@ -341,6 +481,14 @@ module.exports = Model.extend({
     return this.get('sync_on_bbox_change');
   },
 
+  syncsOnCircleChanges: function () {
+    return this.get('sync_on_circle_change');
+  },
+
+  syncsOnPolygonChanges: function () {
+    return this.get('sync_on_polygon_change');
+  },
+
   _checkSourceAttribute: function (source) {
     if (!(source instanceof AnalysisModel)) {
       throw new Error('Source must be an instance of AnalysisModel');
@@ -353,6 +501,18 @@ module.exports = Model.extend({
     }
   },
 
+  _checkCircleFilter: function () {
+    if (this.syncsOnCircleChanges() && !this._circleFilter) {
+      throw new Error('Cannot sync on circle filter changes. There is no circle filter.');
+    }
+  },
+
+  _checkPolygonFilter: function () {
+    if (this.syncsOnPolygonChanges() && !this._polygonFilter) {
+      throw new Error('Cannot sync on polygon filter changes. There is no polygon filter.');
+    }
+  },
+
   _listenToBBoxChanges: function () {
     if (this._bboxFilter) {
       this.listenTo(this._bboxFilter, 'boundsChanged', this._onMapBoundsChanged);
@@ -362,6 +522,30 @@ module.exports = Model.extend({
   _stopListeningBBoxChanges: function () {
     if (this._bboxFilter) {
       this.stopListening(this._bboxFilter, 'boundsChanged');
+    }
+  },
+
+  _listenToCircleChanges: function () {
+    if (this._circleFilter) {
+      this.listenTo(this._circleFilter, 'circleChanged', this._onCircleChanged);
+    }
+  },
+
+  _stopListeningCircleChanges: function () {
+    if (this._circleFilter) {
+      this.stopListening(this._circleFilter, 'circleChanged');
+    }
+  },
+
+  _listenToPolygonChanges: function () {
+    if (this._polygonFilter) {
+      this.listenTo(this._polygonFilter, 'polygonChanged', this._onPolygonChanged);
+    }
+  },
+
+  _stopListeningPolygonChanges: function () {
+    if (this._polygonFilter) {
+      this.stopListening(this._polygonFilter, 'polygonChanged');
     }
   },
 
@@ -380,6 +564,8 @@ module.exports = Model.extend({
   ATTRS_NAMES: [
     'id',
     'sync_on_bbox_change',
+    'sync_on_circle_change',
+    'sync_on_polygon_change',
     'enabled',
     'source'
   ]

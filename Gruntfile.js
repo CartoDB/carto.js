@@ -46,7 +46,8 @@ module.exports = function (grunt) {
     copy: require('./grunt/tasks/copy').task(),
     clean: require('./grunt/tasks/clean').task(),
     concat: require('./grunt/tasks/concat').task(),
-    uglify: require('./grunt/tasks/uglify').task(),
+    terser: require('./grunt/tasks/terser').task(),
+    usebanner: require('./grunt/tasks/usebanner').task(),
     cssmin: require('./grunt/tasks/cssmin').task(),
     imagemin: require('./grunt/tasks/imagemin').task(),
     jasmine: jasmineCfg,
@@ -129,7 +130,8 @@ module.exports = function (grunt) {
     .concat(js)
     .concat([
       'exorcise',
-      'uglify'
+      'terser',
+      'usebanner'
     ]);
   var devJS = allDeps
     .concat('preWatch')

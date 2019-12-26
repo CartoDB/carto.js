@@ -7,7 +7,7 @@ var GENERIC_ORIGIN = 'generic';
 /**
  * Build a cartoError from a generic error.
  * @constructor
- * 
+ *
  * @return {CartoError} A well formed object representing the error.
  */
 function CartoError (error, opts) {
@@ -40,7 +40,7 @@ function CartoError (error, opts) {
   return cartoError;
 }
 
-// Windshaft should have been parsed already 
+// Windshaft should have been parsed already
 function _isWindshaftError (error) {
   return error && error.origin === 'windshaft';
 }
@@ -96,26 +96,26 @@ module.exports = CartoError;
 
 /**
  * Represents an error in the carto library.
- * 
+ *
  * Some actions like adding a layer to a map are asynchronous and require a server round trip.
  * If some error happens during this communnication with the server, an error with a `CartoError` object
  * will be fired.
- * 
+ *
  * CartoErrors can be obtained by listening to the client 'error' `client.on('error', callback);`,
  * through any async action or by listening to 'error' events on particular objects (eg: dataviews).
- * 
+ *
  * Promises are also rejected with a CartoError.
  * @example
  * // Listen when a layer has been added or there has been an error.
  * client.addLayer(layerWithErrors)
  *  .then(()=> console.log('Layer added succesfully'))
  *  .catch(cartoError => console.error(cartoError.message))
- * @example 
+ * @example
  * // Events also will be registered here when the map changes.
  * client.on('success', function () {
  *  console.log('Client reloaded');
  * });
- * 
+ *
  * client.on('error', function (clientError) {
  *  console.error(clientError.message);
  * });
@@ -124,7 +124,7 @@ module.exports = CartoError;
  * dataview.on('error', function (error) {
  *   console.error(error.message);
  * });
- * 
+ *
  * @typedef {object} CartoError
  * @property {string} message - A short error description
  * @property {string} name - The name of the error "CartoError"
@@ -132,6 +132,6 @@ module.exports = CartoError;
  * @property {object} originalError - An object containing the internal/original error
  * @property {object} stack - Error stack trace
  * @property {string} type - Error type
- * @property {string} sourceId - Available if the error is related to a source object. Indicates the ID of the source that has a problem. 
+ * @property {string} sourceId - Available if the error is related to a source object. Indicates the ID of the source that has a problem.
  * @api
  */
