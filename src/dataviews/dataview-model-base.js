@@ -39,6 +39,13 @@ module.exports = Model.extend({
     this._addAuthTo(params);
 
     var urlWithParams = this.get('url') + '?' + params.join('&');
+
+    if (urlWithParams.length > REQUEST_GET_MAX_URL_LENGTH) {
+      throw new Error(
+        'URL length is longer than allowed (' + REQUEST_GET_MAX_URL_LENGTH + ' chars). ' +
+        'Check your filters (eg. if using a Polygon filter, reduce the number of vertices).'
+      );
+    }
     return urlWithParams;
   },
 
