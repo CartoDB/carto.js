@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Filter data on map with Polygon | CARTO</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
+
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
+
+    <!-- Include Leaflet Draw plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.13/leaflet.draw.css" />
+
+    <!-- Include CARTO.js -->
+    <script src="https://unpkg.com/@carto/carto.js/carto.min.js"></script>
+    <link href="../style.css" rel="stylesheet">
+
+    <!-- Include Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+    <style>
+        .dataview {
+            margin-bottom: 0px;
+            color: gray;
+            padding-bottom: 3px;
+            border-bottom: 1px #ddd solid;
+        }
+        #railroadWidget {
+            max-width: 90%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- map element -->
+    <div id="map"></div>
+
+    <!-- Description -->
+    <aside class="toolbox">
+        <div class="box" style="max-height:90vh; overflow: auto;">
+            <header>
+                <h1>Polygon Filter</h1>
+                <p class="open-sans"><em>Draw a polygon to get filtered results</em></p>
+            </header>
+            <br />
+            <div>
+                <p class="open-sans dataview">Formula dataview</p>
+                <div class="widget formula">
+                    <!-- To be updated with Formula & Circle filter -->
+                </div>
+                <p class="open-sans dataview">Category dataview</p>
+                <div class="widget category">
+                    <!-- To be updated with Category & Circle filter -->
+                </div>
+                <p class="open-sans dataview">Histogram dataview</p>
+                <div class="widget histogram">
+                    <!-- To be updated with Histogram & Circle filter -->
+                </div>
+            </div>
+            <div>
+                <p class="open-sans dataview">TimeSeries dataview</p>
+                <div>
+                    <!-- To be updated with TimeSeries & Circle filter -->
+                    <canvas id="railroadWidget"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <script>
+        // basic objects
+        let map;
+        let client;
+
+        let citiesSource;
+        let railRoadSource;
+
+        let categoryDataview;
+        let formulaDataview;
+        let histogramDataview;
+        let timeSeriesDataview;
+
+        let railroadWidget;
+
+        let polygonFilter;
+
+        let drawnItems;
+
+        // create basic map and client configuration
+        function createBasicMap() {
+            map = L.map('map').setView([40, -80], 7);
+            map.scrollWheelZoom.disable();
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+                maxZoom: 18
+            }).addTo(map);
+
+            // set CARTO client
+            client = new carto.Client({
+                apiKey: 'default_public',
+                username: 'cartojs-test'
+            });
+        }
+
+        // create a cities layer & source
+        function prepareCitiesLayer() {
+            citiesSource = new carto.source.SQL(`
+                SELECT * FROM ne_10m_populated_places_simple
+            `);
+            const style = new carto.style.CartoCSS(`
+                #layer {
+                        marker-fill: red;
+                    }
+            `);
+            const layer = new carto.layer.Layer(citiesSource, style);
+            client.addLayer(layer);
+        }
+
+        // functions to display filtered dataview results on the panel
+        //  1. cities --> category
+        function renderWidgetCategory(data) {
+            const categories = data.categories.map(category => `
+                <li>
+                    <h3>${category.name}</h3>
+                    <p class="open-sans">${parseInt(category.value)} <small>inhabitants</small></p>
+                </li>
+                `).join('');
+            const content = `<ul>${categories}</ul>`;
+            document.querySelector('.widget.category').innerHTML = content;
+        }
+
+        //  2. cities --> formula
+        function renderWidgetFormula(data) {
+            const content = `<h2 class="h2">${data.result} <small>cities</small></h2>`;
+            document.querySelector('.widget.formula').innerHTML = content;
+        }
+
+        //  3. cities --> histogram
+        function renderWidgetHistogram(data) {
+            let histogram = '<ul class="open-sans">';
+            data.bins.forEach(bin => {
+                const line = '<li>' + bin.start + ' to ' + bin.end + ' interval has ' + bin.freq +
+                    ' cities</li>';
+                if (bin.freq > 0) {
+                    histogram += line;
+                }
+            });
+            histogram += "</ul>";
+            document.querySelector('.widget.histogram').innerHTML = histogram;
+        }
+
+        //  4. raiload --> timeseries
+        function initializeWidgetTimeSeries() {
+            const widgetElement = document.getElementById("railroadWidget");
+
+            railroadWidget = new Chart(widgetElement.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Railroad accidents',
+                        data: [],
+                        borderWidth: 1,
+                        backgroundColor: 'rgba(0, 255, 0, 0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                display: false
+                            }
+                        }]
+                    }
+                }
+            });
+            widgetElement.style.display = 'none';
+        }
+
+        function renderWidgetTimeSeries(data) {
+            const widget = document.getElementById("railroadWidget");
+            if (data.totalAmount === 0){
+               widget.style.display = 'none';
+            }else{
+                widget.style.display = 'block';
+            }
+            railroadWidget.data.labels = data.bins.map(function (x) {
+                let dt = new Date(x.start);
+                return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+            });
+            railroadWidget.data.datasets.forEach((dataset) => {
+                dataset.data = data.bins.map(x => x.freq);
+            });
+            railroadWidget.update();
+        };
+
+        // create 3 dataviews on cities (Category, Formula & Histogram).
+        function createDataviewsOnCities() {
+            // Category dataview
+            categoryDataview = new carto.dataview.Category(citiesSource, 'adm1name', {
+                limit: 4,
+                operation: carto.operation.SUM,
+                operationColumn: 'pop_max'
+            });
+            categoryDataview.on('dataChanged', renderWidgetCategory);
+            client.addDataview(categoryDataview);
+
+            // Formula dataview
+            formulaDataview = new carto.dataview.Formula(citiesSource, 'pop_max', {
+                operation: carto.operation.COUNT,
+            });
+            formulaDataview.on('dataChanged', renderWidgetFormula);
+            client.addDataview(formulaDataview);
+
+            // Example to deal with dataview errors
+            formulaDataview.on('error', cartoError => {
+                console.error(cartoError.message);
+            })
+
+            // Histogram dataview
+            histogramDataview = new carto.dataview.Histogram(citiesSource, 'pop_max', {
+                bins: 10
+            });
+            histogramDataview.on('dataChanged', renderWidgetHistogram);
+            client.addDataview(histogramDataview);
+        }
+
+        // create a railroad data layer & source
+        function prepareRailroadLayer() {
+            railRoadSource = new carto.source.Dataset('railroad_data');
+            const railroadLayer = new carto.layer.Layer(railRoadSource,
+                new carto.style.CartoCSS(`
+                    #layer {
+                        marker-width: 5;
+                        marker-fill: #00FF00;
+                        marker-line-color: gray;
+                        marker-line-width: 0.3;
+                    }
+                `)
+            );
+            client.addLayer(railroadLayer);
+        }
+
+        // create 1 dataview on railroad data (TimeSeries)
+        function createDataviewOnRailroad() {
+            timeSeriesDataview = new carto.dataview.TimeSeries(railRoadSource, 'date', {
+                aggregation: carto.dataview.timeAggregation.AUTO,
+                offset: 1
+            });
+            timeSeriesDataview.on('dataChanged', renderWidgetTimeSeries);
+            client.addDataview(timeSeriesDataview);
+        }
+
+        // create the polygon filter and add it to the dataviews
+        function createAndBindPolygonFilter() {
+            polygonFilter = new carto.filter.Polygon();
+            polygonFilter.setPolygon({
+                type: 'Polygon',
+                coordinates: []
+            });
+
+            categoryDataview.addFilter(polygonFilter);
+            formulaDataview.addFilter(polygonFilter);
+            histogramDataview.addFilter(polygonFilter);
+            timeSeriesDataview.addFilter(polygonFilter);
+        }
+
+        function preparePolygonDrawing() {
+            // layer to draw polygons
+            drawnItems = L.featureGroup().addTo(map);
+
+            // Control to draw a Polygon and use it as the spatial filter
+            let drawControl = new L.Control.Draw({
+                draw: {
+                    polygon: {
+                        allowIntersection: false,
+                        showArea: true,
+                        shapeOptions: {
+                            color: '#bada55'
+                        }
+                    },
+                    polyline: false,
+                    line: false,
+                    marker: false,
+                    rectangle: false,
+                    circle: false,
+                    circlemarker: false,
+                },
+                edit: false
+            });
+            map.addControl(drawControl);
+
+            // Get radius and center & apply to Polygon filter
+            map.on(L.Draw.Event.CREATED, function (e, d) {
+                let drawnPolygon = e.layer;
+                drawnItems.clearLayers();
+                drawnItems.addLayer(drawnPolygon);
+
+                // get polygon data
+                let polygonData = drawnPolygon.toGeoJSON()['geometry'];
+                console.log(polygonData);
+
+                polygonFilter.setPolygon(polygonData); // updated filter !
+            });
+
+        }
+
+        // Run the example
+        createBasicMap();
+
+        prepareCitiesLayer();
+        prepareRailroadLayer();
+
+        client.getLeafletLayer().addTo(map);
+
+        createDataviewsOnCities();
+        createDataviewOnRailroad();
+        initializeWidgetTimeSeries();
+
+        createAndBindPolygonFilter();
+
+        preparePolygonDrawing();
+
+    </script>
+</body>
+
+</html>

@@ -56,6 +56,14 @@
             "leaflet": "public/layers/layer-with-aggregation-leaflet.html",
             "gmaps": "public/layers/layer-with-aggregation-gmaps.html"
           }
+        },
+        {
+          "title": "Server tile aggregation with cluster of points",
+          "desc": "Apply smart backend aggregation to create a cluster of points",
+          "file": {
+            "leaflet": "public/layers/layer-with-aggregation-cluster-leaflet.html",
+            "gmaps": "public/layers/layer-with-aggregation-cluster-gmaps.html"
+          }
         }
       ]
     },
@@ -118,6 +126,16 @@
             "leaflet": "public/filters/bounding-box-leaflet.html",
             "gmaps": "public/filters/bounding-box-gmaps.html"
           }
+        },
+        {
+          "title": "Circle filter",
+          "desc": "Apply a circle filter to the widgets",
+          "file": "public/filters/circle-filter.html"
+        },
+        {
+          "title": "Polygon filter",
+          "desc": "Apply a polygon filter to the widgets",
+          "file": "public/filters/polygon-filter.html"
         },
         {
           "title": "Status and error handling",
@@ -238,6 +256,11 @@
           "title": "Storymap using CARTO.js and Storymap.js",
           "desc": "Create a storytelling map using Storymap.js",
           "file": "public/misc/storymap-leaflet.html"
+        },
+        {
+          "title": "Pie Chart Widget using CARTO.js and Vega-Lite",
+          "desc": "Create a map with a pie chart using Vega Lite and CARTO.js category dataviews.",
+          "file": "public/misc/piechart-vega.html"
         }
       ]
     }

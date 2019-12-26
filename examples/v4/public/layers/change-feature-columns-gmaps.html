@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
   <!-- Include Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAORE5iCjgLb4sMcWfmyRJgtP9VwfOrbJM&v=3.32"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpVNTQI60ossApFzZ3dwSMZ1LcxOTY-rI&v=3.35"></script>
   <!-- Include CARTO.js -->
   <script src="https://unpkg.com/@carto/carto.js/carto.min.js"></script>
   <link href="../style.css" rel="stylesheet">
@@ -104,12 +104,12 @@
 
     function setMoreData() {
       layer.setFeatureClickColumns(['name', 'pop_max', 'pop_min']);
-      document.getElementById('content').innerHTML = '';
+      document.getElementById('info').innerHTML = '';
     }
 
     function setLessData() {
       layer.setFeatureClickColumns(['name']);
-      document.getElementById('content').innerHTML = '';
+      document.getElementById('info').innerHTML = '';
     }
   </script>
 </body>

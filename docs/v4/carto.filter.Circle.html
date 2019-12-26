@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Circle</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Circle</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="carto.html">carto</a><a href="carto.filter.html">.filter</a>.</span>Circle<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    
+    <h4 class="name" id="Circle"><span class="type-signature"></span>new Circle<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Generic circle filter.</p>
+<p>When this filter is included into a dataview only the data inside a custom circle will be taken into account.</p>
+<p>You can manually set the circle properties with the <code>setCircle()</code>.</p>
+<p>This filter could be useful if you want give the users the ability to select a buffer around a point of interest in the map and update the dataviews accordingly.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="global.html#event:circleChanged">event:circleChanged</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="carto.filter.Base.html">carto.filter.Base</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getCircle"><span class="type-signature"></span>getCircle<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.filter.html#.CircleData">carto.filter.CircleData</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Return the current circle data</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Current circle data</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.html#.CircleData">carto.filter.CircleData</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="resetCircle"><span class="type-signature"></span>resetCircle<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="carto.filter.Circle.html">carto.filter.Circle</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Reset the circle.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="global.html#event:circleChanged">event:circleChanged</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.Circle.html">carto.filter.Circle</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setCircle"><span class="type-signature"></span>setCircle<span class="signature">(circle)</span><span class="type-signature"> &rarr; {<a href="carto.filter.Circle.html">carto.filter.Circle</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Set the circle.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>circle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="carto.filter.html#.CircleData">carto.filter.CircleData</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<h5>Fires:</h5>
+<ul>
+    <li><a href="global.html#event:circleChanged">event:circleChanged</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>this</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="carto.filter.Circle.html">carto.filter.Circle</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="carto.Client.html">carto.Client</a></li><li><a href="carto.dataview.Base.html">carto.dataview.Base</a></li><li><a href="carto.dataview.Category.html">carto.dataview.Category</a></li><li><a href="carto.dataview.Formula.html">carto.dataview.Formula</a></li><li><a href="carto.dataview.Histogram.html">carto.dataview.Histogram</a></li><li><a href="carto.dataview.TimeSeries.html">carto.dataview.TimeSeries</a></li><li><a href="carto.filter.AND.html">carto.filter.AND</a></li><li><a href="carto.filter.Base.html">carto.filter.Base</a></li><li><a href="carto.filter.BoundingBox.html">carto.filter.BoundingBox</a></li><li><a href="carto.filter.BoundingBoxGoogleMaps.html">carto.filter.BoundingBoxGoogleMaps</a></li><li><a href="carto.filter.BoundingBoxLeaflet.html">carto.filter.BoundingBoxLeaflet</a></li><li><a href="carto.filter.Category.html">carto.filter.Category</a></li><li><a href="carto.filter.Circle.html">carto.filter.Circle</a></li><li><a href="carto.filter.FiltersCollection.html">carto.filter.FiltersCollection</a></li><li><a href="carto.filter.OR.html">carto.filter.OR</a></li><li><a href="carto.filter.Polygon.html">carto.filter.Polygon</a></li><li><a href="carto.filter.Range.html">carto.filter.Range</a></li><li><a href="carto.layer.Aggregation.html">carto.layer.Aggregation</a></li><li><a href="carto.layer.Base.html">carto.layer.Base</a></li><li><a href="carto.layer.Layer.html">carto.layer.Layer</a></li><li><a href="carto.layer.metadata.Base.html">carto.layer.metadata.Base</a></li><li><a href="carto.layer.metadata.Buckets.html">carto.layer.metadata.Buckets</a></li><li><a href="carto.layer.metadata.Categories.html">carto.layer.metadata.Categories</a></li><li><a href="carto.source.Base.html">carto.source.Base</a></li><li><a href="carto.source.Dataset.html">carto.source.Dataset</a></li><li><a href="carto.source.SQL.html">carto.source.SQL</a></li><li><a href="carto.style.Base.html">carto.style.Base</a></li><li><a href="carto.style.CartoCSS.html">carto.style.CartoCSS</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:aggregationChanged">aggregationChanged</a></li><li><a href="global.html#event:binsChanged">binsChanged</a></li><li><a href="global.html#event:boundsChanged">boundsChanged</a></li><li><a href="global.html#event:circleChanged">circleChanged</a></li><li><a href="global.html#event:columnChanged">columnChanged</a></li><li><a href="global.html#event:dataChanged">dataChanged</a></li><li><a href="global.html#event:error">error</a></li><li><a href="global.html#event:featureClicked">featureClicked</a></li><li><a href="global.html#event:featureOut">featureOut</a></li><li><a href="global.html#event:featureOver">featureOver</a></li><li><a href="global.html#event:limitChanged">limitChanged</a></li><li><a href="global.html#event:localTimezoneChanged">localTimezoneChanged</a></li><li><a href="global.html#event:metadataChanged">metadataChanged</a></li><li><a href="global.html#event:offsetChanged">offsetChanged</a></li><li><a href="global.html#event:operationChanged">operationChanged</a></li><li><a href="global.html#event:operationColumnChanged">operationColumnChanged</a></li><li><a href="global.html#event:polygonChanged">polygonChanged</a></li><li><a href="global.html#event:queryChanged">queryChanged</a></li><li><a href="global.html#event:sourceChanged">sourceChanged</a></li><li><a href="global.html#event:statusChanged">statusChanged</a></li><li><a href="global.html#event:styleChanged">styleChanged</a></li><li><a href="global.html#event:success">success</a></li></ul><h3>Namespaces</h3><ul><li><a href="carto.html">carto</a></li><li><a href="carto.dataview.html">carto.dataview</a></li><li><a href="carto.filter.html">carto.filter</a></li><li><a href="carto.layer.html">carto.layer</a></li><li><a href="carto.layer.metadata.html">carto.layer.metadata</a></li><li><a href="carto.source.html">carto.source</a></li><li><a href="carto.style.html">carto.style</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Dec 26 2019 17:24:02 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
