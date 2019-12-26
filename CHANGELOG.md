@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## 4.2 - 2019-12-26
 ### Added
 - Improve Overview guide with npm info [2230](https://github.com/CartoDB/carto.js/issues/2230)
 - New dataview filters: circle & polygon [2242](https://github.com/CartoDB/carto.js/pull/2242)
@@ -15,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Support options dead link [2240](https://github.com/CartoDB/carto.js/issues/2240)
 - Replace uglify with terser to fix internal build [2242](https://github.com/CartoDB/carto.js/pull/2242)
+- Fix scroll in gradient legends [2244](https://github.com/CartoDB/carto.js/issues/2244)
 
 ### Changed
 - Update eslint [2242](https://github.com/CartoDB/carto.js/pull/2242)
