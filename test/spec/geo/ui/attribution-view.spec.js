@@ -17,6 +17,7 @@ describe('geo/ui/attribution', function () {
     this.map = new Map(null, {
       layersFactory: {}
     });
+    this.map.setMapViewSize({ x: 650, y: 1000 });
     spyOn(this.map, 'bind').and.callThrough();
     spyOn(AttributionView.prototype, 'render').and.callThrough();
 
@@ -35,6 +36,20 @@ describe('geo/ui/attribution', function () {
     it('should render properly', function () {
       expect(this.$button.length).toBe(1);
       expect(this.$text.length).toBe(1);
+    });
+
+    it('should render expanded if map container is greater than 650px', function () {
+      this.map.setMapViewSize({ x: 750, y: 1000 });
+      this.view.render();
+      expect(this.viewHasClass('CDB-Attribution')).toBeTruthy();
+      expect(this.viewHasClass('is-active')).toBeTruthy();
+    });
+
+    it('should render collapsed if map container is smaller than 650px', function () {
+      this.map.setMapViewSize({ x: 450, y: 1000 });
+      this.view.render();
+      expect(this.viewHasClass('CDB-Attribution')).toBeTruthy();
+      expect(this.viewHasClass('is-active')).toBeFalsy();
     });
 
     it('should add GMaps properly when provider is not Leaflet', function () {
@@ -74,11 +89,6 @@ describe('geo/ui/attribution', function () {
 
     it('should collapse the attributions when ESC is pressed', function () {
       this.keyEsc();
-      expect(this.viewHasClass('is-active')).toBeFalsy();
-    });
-
-    it('should collapse the attributions when user clicks on the document', function () {
-      $(document).trigger('click');
       expect(this.viewHasClass('is-active')).toBeFalsy();
     });
   });

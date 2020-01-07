@@ -1,4 +1,3 @@
-// TODO: Delete this!
 /**
  * Events fired by a layer
  *

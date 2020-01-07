@@ -20,8 +20,8 @@ The easiest way to start learning about the CARTO.js library is to see a simple 
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/%VERSION%/carto.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
@@ -126,7 +126,7 @@ To load the Maps JavaScript API, use a script tag like the one in the following 
 
 The URL contained in the script tag is the location of a JavaScript file that loads all of the code you need for using the CARTO.js library. This script tag is required. We are using the minified version of the library.
 
-**Tip:** if you have experience with **npm** and a build system in your project (webpack, rollup…), you can install CARTO.js library with `npm install @carto/carto.js`. Then you can import it easily with `import carto from '@carto/carto.js` (or `var carto = require('@carto/carto.js')`, depending on your module system).
+**Tip:** If you have experience with **npm** and a build system in your project (webpack, rollup…), you can install CARTO.js library with `npm install @carto/carto.js`. Then you can import it easily with `import carto from '@carto/carto.js` (or `var carto = require('@carto/carto.js')`, depending on your module system).
 
 
 #### HTTPS or HTTP

@@ -53,6 +53,7 @@ describe('vis/vis-view', function () {
     this.visView = createVisView(this.container, this.visModel, this.settingsModel);
 
     this.visModel.load(new VizJSON(this.mapConfig));
+    this.visModel.map.setMapViewSize({ x: 650, y: 1000 });
     this.visView.render();
   });
 

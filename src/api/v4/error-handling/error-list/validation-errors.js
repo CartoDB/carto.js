@@ -194,6 +194,14 @@ module.exports = {
       messageRegex: /invalidBoundsObject/,
       friendlyMessage: 'Bounds object is not valid. Use a carto.filter.Bounds object'
     },
+    'invalid-circle-object': {
+      messageRegex: /invalidCircleObject/,
+      friendlyMessage: 'Circle object is not valid. Use a carto.filter.CircleData object'
+    },
+    'invalid-polygon-object': {
+      messageRegex: /invalidPolygonObject/,
+      friendlyMessage: 'Polygon object is not valid. Use a carto.filter.PolygonData object'
+    },
     'column-required': {
       messageRegex: /columnRequired/,
       friendlyMessage: 'Column property is required.'

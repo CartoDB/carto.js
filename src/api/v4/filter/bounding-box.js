@@ -2,17 +2,17 @@ var _ = require('underscore');
 var Base = require('./base');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 var CartoValidationError = require('../error-handling/carto-validation-error');
+var SpatialFilterTypes = require('./spatial-filter-types');
 
 /**
  * Generic bounding box filter.
  *
  * When this filter is included into a dataview only the data inside a custom bounding box will be taken into account.
- * 
+ *
  * You can manually set the bounds via the `.setBounds()` method.
- * 
+ *
  * This filter could be useful if you want give the users to ability to select a portion of the map and update the dataviews accordingly.
- * 
- * @fires boundsChanged
+ *
  *
  * @constructor
  * @fires boundsChanged
@@ -23,6 +23,7 @@ var CartoValidationError = require('../error-handling/carto-validation-error');
  */
 function BoundingBox () {
   this._internalModel = new BoundingBoxFilterModel();
+  this.type = SpatialFilterTypes.BBOX;
 }
 
 BoundingBox.prototype = Object.create(Base.prototype);

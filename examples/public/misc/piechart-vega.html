@@ -5,19 +5,19 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
-    
+
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
-    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
+
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    
+
     <!-- Custom Style -->
     <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
-  
+
     <!-- Vega -->
     <script src="https://cdn.jsdelivr.net/npm/vega@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@2"></script>
@@ -98,7 +98,7 @@
                 const li = document.createElement('li');
                 li.style.color = `${category.value}`
                 li.innerHTML = `<span style="color: black;">${category.name}</span>`;
-                legend.append(li);      
+                legend.append(li);
               }
             }
         });
@@ -214,6 +214,6 @@
       });
     }
     </script>
-      
+
   </body>
 </html>

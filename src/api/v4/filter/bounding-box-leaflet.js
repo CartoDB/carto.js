@@ -3,6 +3,7 @@ var Base = require('./base');
 var LeafletBoundingBoxAdapter = require('../../../geo/adapters/leaflet-bounding-box-adapter');
 var BoundingBoxFilterModel = require('../../../windshaft/filters/bounding-box');
 var utils = require('../../../core/util');
+var SpatialFilterTypes = require('./spatial-filter-types');
 
 /**
  * Bounding box filter for Leaflet maps.
@@ -29,6 +30,8 @@ function BoundingBoxLeaflet (map) {
   if (!_isLeafletMap(map)) {
     throw new Error('Bounding box requires a Leaflet map but got: ' + map);
   }
+  this.type = SpatialFilterTypes.BBOX;
+
   // Adapt the Leaflet map to offer unique:
   // - getBounds() function
   // - 'boundsChanged' event

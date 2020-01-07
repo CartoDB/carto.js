@@ -6,6 +6,9 @@ describe('vis/overlays-factory', function () {
   beforeEach(function () {
     this.map = new Backbone.Model();
     this.map.layers = new Backbone.Collection();
+    this.map.getMapViewSize = function () {
+      return { x: 650, y: 1000 };
+    };
 
     this.mapView = new Backbone.View();
     this.mapView.map = this.map;

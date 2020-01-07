@@ -23,7 +23,7 @@ var parseCategoryData = require('./parse-data.js');
  *  });
  * ```
  *
- * Like every other dataview, this is an async object and you must wait for the data to be availiable.
+ * Like every other dataview, this is an async object and you must wait for the data to be available.
  *
  * The data format for the category-dataview is described in {@link carto.dataview.CategoryData}
  *
@@ -229,11 +229,15 @@ Category.prototype._createInternalModel = function (engine) {
     aggregation_column: this._operationColumn,
     categories: this._limit,
     sync_on_bbox_change: !!this._boundingBoxFilter,
+    sync_on_circle_change: !!this._circleFilter,
+    sync_on_polygon_change: !!this._polygonFilter,
     enabled: this._enabled
   }, {
     engine: engine,
     filter: new CategoryFilter(),
-    bboxFilter: this._boundingBoxFilter && this._boundingBoxFilter.$getInternalModel()
+    bboxFilter: this._boundingBoxFilter && this._boundingBoxFilter.$getInternalModel(),
+    circleFilter: this._circleFilter && this._circleFilter.$getInternalModel(),
+    polygonFilter: this._polygonFilter && this._polygonFilter.$getInternalModel()
   });
 };
 
