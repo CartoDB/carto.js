@@ -50,15 +50,15 @@ module.exports = View.extend({
     }, this);
     this.map.bind('change:attribution', this.render, this);
     this.add_related_model(this.map);
-    $(window).bind('resize', this._toggleAttributionsBasedOnContainer);
+    $(window).on('resize', this._toggleAttributionsBasedOnContainer);
   },
 
   _enableDocumentBinds: function () {
-    $(document).bind('keydown', this._onDocumentKeyDown);
+    $(document).on('keydown', this._onDocumentKeyDown);
   },
 
   _disableDocumentBinds: function () {
-    $(document).unbind('keydown', this._onDocumentKeyDown);
+    $(document).on('keydown', this._onDocumentKeyDown);
   },
 
   _onDocumentKeyDown: function (ev) {
@@ -92,7 +92,7 @@ module.exports = View.extend({
 
   clean: function () {
     this._disableDocumentBinds();
-    $(window).unbind('resize', this._toggleAttributionsBasedOnContainer);
+    $(window).off('resize', this._toggleAttributionsBasedOnContainer);
     View.prototype.clean.call(this);
   }
 });

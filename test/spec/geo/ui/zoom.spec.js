@@ -30,7 +30,7 @@ describe('geo/ui/zoom', function () {
     });
 
     it('should zoom in when button is clicked', function () {
-      this.$zoomIn.click();
+      this.$zoomIn.trigger('click');
       expect(this.map.setZoom).toHaveBeenCalled();
       expect(this.$zoomIn.hasClass('is-disabled')).toBeFalsy();
     });
@@ -40,7 +40,7 @@ describe('geo/ui/zoom', function () {
         zoom: 3,
         maxZoom: 3
       });
-      this.$zoomIn.click();
+      this.$zoomIn.trigger('click');
       expect(this.map.setZoom).not.toHaveBeenCalled();
     });
 
@@ -59,7 +59,7 @@ describe('geo/ui/zoom', function () {
     });
 
     it('should zoom out when button is clicked', function () {
-      this.$zoomOut.click();
+      this.$zoomOut.trigger('click');
       expect(this.map.setZoom).toHaveBeenCalled();
       expect(this.$zoomOut.hasClass('is-disabled')).toBeFalsy();
     });
@@ -69,7 +69,7 @@ describe('geo/ui/zoom', function () {
         zoom: 3,
         minZoom: 3
       });
-      this.$zoomOut.click();
+      this.$zoomOut.trigger('click');
       expect(this.map.setZoom).not.toHaveBeenCalled();
     });
 

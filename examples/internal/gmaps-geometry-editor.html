@@ -509,7 +509,7 @@
     }
 
     function enableControls(vis) {
-      $('.js-drawing-control').click(function () {
+      $('.js-drawing-control').on('click', function () {
         var clickedControl = this;
         $('.js-drawing-control').each(function (index) {
           var isEnabled = false;

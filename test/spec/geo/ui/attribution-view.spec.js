@@ -12,6 +12,7 @@ describe('geo/ui/attribution', function () {
       var e = $.Event('keydown');
       e.keyCode = 27; // ESC
       $(document).trigger(e);
+      return this;
     };
 
     this.map = new Map(null, {
@@ -62,7 +63,7 @@ describe('geo/ui/attribution', function () {
 
   describe('attributions change', function () {
     it('should render when it is visible', function () {
-      this.$button.click(); // Making it visible
+      this.$button.trigger('click'); // Making it visible
       this.map.trigger('change:attribution');
       expect(AttributionView.prototype.render).toHaveBeenCalled();
     });
@@ -75,7 +76,7 @@ describe('geo/ui/attribution', function () {
 
   describe('when the attributions are displayed', function () {
     beforeEach(function () {
-      this.$button.click();
+      this.$button.trigger('click');
     });
 
     it('should have is-active class', function () {
@@ -83,7 +84,7 @@ describe('geo/ui/attribution', function () {
     });
 
     it('should hide attributions text when js-button is clicked', function () {
-      this.$button.click();
+      this.$button.trigger('click');
       expect(this.viewHasClass('is-active')).toBeFalsy();
     });
 
@@ -95,7 +96,7 @@ describe('geo/ui/attribution', function () {
 
   describe('when attributions are hidden', function () {
     beforeEach(function () {
-      this.$button.click();
+      this.$button.trigger('click');
       this.keyEsc();
     });
 
@@ -104,7 +105,7 @@ describe('geo/ui/attribution', function () {
     });
 
     it('should show attributions text when js-button is clicked', function () {
-      this.$button.click();
+      this.$button.trigger('click');
       expect(this.viewHasClass('is-active')).toBeTruthy();
     });
 
