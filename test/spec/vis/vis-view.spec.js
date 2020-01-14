@@ -20,7 +20,7 @@ var createVisView = function (container, visModel, settingsModel) {
 
 describe('vis/vis-view', function () {
   beforeEach(function () {
-    spyOn(MapViewFactory, 'createMapView').and.returnValue(jasmine.createSpyObj('fakeMapView', ['render', 'clean', 'bind']));
+    spyOn(MapViewFactory, 'createMapView').and.returnValue(jasmine.createSpyObj('fakeMapView', ['render', 'clean', 'bind', 'on']));
     this.container = $('<div>').css('height', '200px');
     this.mapConfig = {
       updated_at: 'cachebuster',
