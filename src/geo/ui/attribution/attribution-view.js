@@ -58,7 +58,7 @@ module.exports = View.extend({
   },
 
   _disableDocumentBinds: function () {
-    $(document).on('keydown', this._onDocumentKeyDown);
+    $(document).off('keydown', this._onDocumentKeyDown);
   },
 
   _onDocumentKeyDown: function (ev) {
