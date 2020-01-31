@@ -88,7 +88,7 @@ class FiltersCollection extends Base {
    * @api
    */
   getFilters () {
-    return this._filters;
+    return [].concat(this._filters);
   }
 
   $getSQL () {
