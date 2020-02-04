@@ -24,10 +24,10 @@ var Model = Backbone.Model.extend({
     this.trigger('loadModelStarted');
 
     $.when(Backbone.Model.prototype.fetch.call(this, args))
-      .then(function (ev) {
+      .done(function (ev) {
         self.trigger('loadModelCompleted', ev, self);
       })
-      .catch(function (ev) {
+      .fail(function (ev) {
         self.trigger('loadModelFailed', ev, self);
       });
   },
@@ -72,10 +72,10 @@ var Model = Backbone.Model.extend({
     var promise = Backbone.Model.prototype.save.apply(this, arguments);
 
     $.when(promise)
-      .then(function () {
+      .done(function () {
         if (!opt2 || !opt2.silent) self.trigger('saved');
       })
-      .catch(function () {
+      .fail(function () {
         if (!opt2 || !opt2.silent) self.trigger('errorSaving');
       });
 
