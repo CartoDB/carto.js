@@ -28,8 +28,8 @@ var Model = Backbone.Model.extend({
         self.trigger('loadModelCompleted', ev, self);
       })
       .catch(function (ev) {
-      self.trigger('loadModelFailed', ev, self);
-    });
+        self.trigger('loadModelFailed', ev, self);
+      });
   },
   /**
   * Changes the attribute used as Id
