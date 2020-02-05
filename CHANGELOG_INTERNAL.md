@@ -6,6 +6,7 @@ All the changes that affects the public bundle should be released as *patch* or 
 
 ## 4.1.12-1 - 2019-08-06
 - Attributions widget: prevent autocollapsing and fix button bug [#2236](https://github.com/CartoDB/carto.js/pull/2236)
+- Update jquery dependencies [#2239](https://github.com/CartoDB/carto.js/pull/2239)
 
 ## 4.1.12-0 - 2019-08-02
 - Change attribution character and toggle widget based on container [#2235](https://github.com/CartoDB/carto.js/pull/2235)
