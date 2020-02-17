@@ -76,7 +76,8 @@ var Template = Backbone.Model.extend({
       : function compile (template) {
         Mustache.parse(template);
         return function (view, partials) {
-          return Mustache.render(template, view, partials);
+          var currentView = view || {};
+          return Mustache.render(template, currentView, partials);
         };
       }
   },
