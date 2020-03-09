@@ -5,7 +5,6 @@
 .tmp
 .vscode
 *.swp
-dist
 docs/public
 docs/internal
 Gemfile.lock
