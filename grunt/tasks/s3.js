@@ -12,7 +12,8 @@ module.exports = {
         accessKeyId: "<%= secrets.AWS_USER_S3_KEY %>",
         secretAccessKey: "<%= secrets.AWS_USER_S3_SECRET %>",
         bucket: "<%= secrets.AWS_S3_BUCKET %>",
-        dryRun: false
+        dryRun: false,
+	maxRetries: 5
       }
     };
 
