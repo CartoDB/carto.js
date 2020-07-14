@@ -212,7 +212,7 @@ describe('src/vis/vizjson', function () {
             url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             name: 'Positron',
             className: 'httpsbasemapscartocdncomlight_nolabelszxypng',
-            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/attributions\'>CARTO</a>',
+            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/about-carto/\'>CARTO</a>',
             urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
           }
         }]
@@ -244,7 +244,7 @@ describe('src/vis/vizjson', function () {
             url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             name: 'Positron',
             className: 'httpsbasemapscartocdncomlight_nolabelszxypng',
-            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/attributions\'>CARTO</a>',
+            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/about-carto/\'>CARTO</a>',
             urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
           }
         }]
@@ -258,7 +258,7 @@ describe('src/vis/vizjson', function () {
           url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
           name: 'Positron',
           className: 'httpsbasemapscartocdncomlight_nolabelszxypng',
-          attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/attributions\'>CARTO</a>',
+          attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/about-carto/\'>CARTO</a>',
           urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
         }
       });
@@ -275,7 +275,7 @@ describe('src/vis/vizjson', function () {
             url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
             name: 'Positron',
             className: 'httpsbasemapscartocdncomlight_nolabelszxypng',
-            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/attributions\'>CARTO</a>',
+            attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/about-carto/\'>CARTO</a>',
             urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
           }
         }]
@@ -289,7 +289,7 @@ describe('src/vis/vizjson', function () {
           url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
           name: 'Positron',
           className: 'httpsbasemapscartocdncomlight_nolabelszxypng',
-          attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/attributions\'>CARTO</a>',
+          attribution: '&copy; <a href=\'http://www.openstreetmap.org/copyright\'>OpenStreetMap</a> contributors &copy; <a href= \'https://carto.com/about-carto/\'>CARTO</a>',
           urlTemplate: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'
         }
       });

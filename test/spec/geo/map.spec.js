@@ -190,7 +190,7 @@ describe('core/geo/map', function () {
 
     // Map has the default CartoDB attribution
     expect(map.get('attribution')).toEqual([
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
 
     var layer1 = new CartoDBLayer({ attribution: 'attribution1' }, { engine: engineMock });
@@ -204,7 +204,7 @@ describe('core/geo/map', function () {
     expect(map.get('attribution')).toEqual([
       'attribution1',
       'wadus',
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
 
     var layer = new CartoDBLayer({ attribution: 'attribution2' }, { engine: engineMock });
@@ -216,7 +216,7 @@ describe('core/geo/map', function () {
       'attribution1',
       'wadus',
       'attribution2',
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
 
     layer.set('attribution', 'new attribution');
@@ -226,7 +226,7 @@ describe('core/geo/map', function () {
       'attribution1',
       'wadus',
       'new attribution',
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
 
     map.layers.remove(layer);
@@ -234,7 +234,7 @@ describe('core/geo/map', function () {
     expect(map.get('attribution')).toEqual([
       'attribution1',
       'wadus',
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
 
     // Addind a layer with the default attribution
@@ -246,7 +246,7 @@ describe('core/geo/map', function () {
     expect(map.get('attribution')).toEqual([
       'attribution1',
       'wadus',
-      '© <a href="https://carto.com/attributions" target="_blank">CARTO</a>'
+      '© <a href="https://carto.com/about-carto/" target="_blank">CARTO</a>'
     ]);
   });
 
