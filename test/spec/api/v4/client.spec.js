@@ -358,7 +358,7 @@ describe('api/v4/client', function () {
 
     it('should have the OpenStreetMap / Carto attribution', function () {
       expect(leafletLayer.getAttribution()).toBe(
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/about-carto/">CARTO</a>'
       );
     });
 
