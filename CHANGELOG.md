@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 4.2.1 - 2020-07-15
+### Changed
+- Changed attribution link ([#2253](https://github.com/CartoDB/carto.js/pull/2253))
+
 ## 4.2 - 2019-12-26
 ### Added
 - Improve Overview guide with npm info [2230](https://github.com/CartoDB/carto.js/issues/2230)
