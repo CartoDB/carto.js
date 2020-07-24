@@ -123,11 +123,26 @@ var Infowindow = View.extend({
   _initBinds: function () {
     _.bindAll(this, '_onKeyUp', '_onLoadImageSuccess', '_onLoadImageError');
 
-    this.listenTo(this.model, 'change:content change:alternative_names change:width change:maxHeight', this.render, this);
-    this.listenTo(this.model, 'change:latlng', this._updateAndAdjustPan, this);
-    this.listenTo(this.model, 'change:visibility', this.toggle, this);
-    this.listenTo(this.model, 'change:template change:sanitizeTemplate', this._compileTemplate, this);
+    // infowindow changes
+    // NOTE: debounce is relevant to avoid glitches when interacting with overlapped
+    // features from different layers (and probably with different templates)
+    this.render = _.debounce(this.render, 300);
+    this.listenTo(this.model,
+      'change:content change:alternative_names change:width change:maxHeight',
+      this.render,
+      this
+    );
 
+    this._debouncedUpdateAndAdjustPan = _.debounce(this._updateAndAdjustPan, 300);
+    this.listenTo(this.model, 'change:latlng', this._debouncedUpdateAndAdjustPan, this);
+
+    this._debouncedToggle = _.debounce(this.toggle, 300);
+    this.listenTo(this.model, 'change:visibility', this._debouncedToggle, this);
+
+    this._debouncedCompileTemplate = _.debounce(this._compileTemplate, 300);
+    this.listenTo(this.model, 'change:template change:sanitizeTemplate', this._debouncedCompileTemplate, this);
+
+    // map related-events
     this.listenTo(this.mapView.map, 'change', this._updatePosition, this);
 
     this.listenTo(this.mapView, 'zoomstart', function () {

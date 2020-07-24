@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
+var _ = require('underscore');
 var Map = require('../../../../src/geo/map');
 var MapView = require('../../../../src/geo/map-view');
 var InfowindowModel = require('../../../../src/geo/ui/infowindow-model');
@@ -27,6 +28,8 @@ describe('geo/ui/infowindow-view', function () {
         { name: 'test2', position: 2, title: true }
       ]
     });
+
+    spyOn(_, 'debounce').and.callFake(function (func) { return function () { func.apply(this, arguments); }; });
 
     view = new Infowindow({
       model: model,
@@ -96,7 +99,8 @@ describe('geo/ui/infowindow-view', function () {
       template: template
     });
 
-    expect(view.render().$el.html().length).not.toBe(0);
+    view.render();
+    expect(view.$el.html().length).not.toBe(0);
   });
 
   it('should render with alternative_name set', function () {
