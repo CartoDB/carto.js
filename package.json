@@ -1,6 +1,6 @@
 {
   "name": "internal-carto.js",
-  "version": "4.2.1",
+  "version": "4.2.2-0",
   "description": "CARTO javascript library",
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "Iago Lastra <iago@carto.com>",
     "Elena Torró <elena@carto.com>",
     "Jesús Botella <jbotella@carto.com>",
+    "Víctor Velarde <victor.velarde@gmail.com",
     "Alejandra Arri <alejandraarri@carto.com>"
   ],
   "private": true,
