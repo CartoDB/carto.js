@@ -9,6 +9,7 @@ var CONTAINED_OVERLAYS = ['attribution', 'fullscreen', 'tiles', 'limits', 'logo'
 
 var OverlaysView = View.extend({
   initialize: function (opts) {
+    debugger;
     if (!opts.overlaysCollection) throw new Error('overlaysCollection is required');
     if (!opts.engine) throw new Error('engine is required');
     if (!opts.visView) throw new Error('visView is required');
@@ -44,9 +45,20 @@ var OverlaysView = View.extend({
     this._engine.on(Engine.Events.RELOAD_ERROR, this._hideLoaderOverlay, this);
     this._engine.on(Engine.Events.RELOAD_SUCCESS, this._hideLoaderOverlay, this);
 
-    this.listenTo(this._overlaysCollection, 'add remove change', this.render, this);
-    this.listenTo(this._mapModel, 'error:limit', this._addLimitsOverlay, this);
-    this.listenTo(this._mapModel, 'error:tile', this._addTilesOverlay, this);
+    this.listenTo(this._overlaysCollection, 'add remove change', (event) => {
+      console.log('change in _overlaysCollectio: ', event);
+      this.render();
+    }, this);
+
+    this.listenTo(this._mapModel, 'error:limit', (event) => {
+      console.log('error:limit: ', event);
+      this._addLimitsOverlay();
+    }, this);
+
+    this.listenTo(this._mapModel, 'error:tile', (event) => {
+      console.log('error:tile', event);
+      this._addTilesOverlay();
+    }, this);
   },
 
   _clearOverlays: function () {
@@ -124,6 +136,7 @@ var OverlaysView = View.extend({
   },
 
   _addLimitsOverlay: function () {
+    console.log('_addLimitsOverlay');
     if (!this._areLimitsErrorsEnabled()) return;
     this._removeTilesOverlay();
 
@@ -135,10 +148,12 @@ var OverlaysView = View.extend({
   },
 
   _hasLimitsOverlay: function () {
+    console.log('_hasLimitsOverlay');
     return !!this._getOverlayViewByType(C.OVERLAY_TYPES.LIMITS);
   },
 
   _addTilesOverlay: function () {
+    console.log('_addTilesOverlay');
     if (this._hasLimitsOverlay()) return;
 
     var tilesOverlay = this._getOverlayViewByType(C.OVERLAY_TYPES.TILES);
@@ -149,6 +164,7 @@ var OverlaysView = View.extend({
   },
 
   _removeLimitsOverlay: function () {
+    console.log('_removeLimitsOverlay');
     var overlay = this._overlaysCollection.findWhere({
       type: C.OVERLAY_TYPES.LIMITS
     });
@@ -156,6 +172,7 @@ var OverlaysView = View.extend({
   },
 
   _removeTilesOverlay: function () {
+    console.log('_removeTilesOverlay');
     var overlay = this._overlaysCollection.findWhere({
       type: C.OVERLAY_TYPES.TILES
     });
