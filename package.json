@@ -48,7 +48,7 @@
     "postcss": "5.0.19",
     "promise-polyfill": "^6.1.0",
     "torque.js": "CartoDB/torque#master",
-    "underscore": "1.8.3",
+    "underscore": "1.12.1",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
