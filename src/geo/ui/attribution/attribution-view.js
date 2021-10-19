@@ -31,7 +31,12 @@ module.exports = View.extend({
   },
 
   render: function () {
-    var attributions = _.compact(this.map.get('attribution')).join(', ');
+    var attributionsSet = [...new Set(this.map.get('attribution'))];
+    var attributions = _.compact(attributionsSet)
+      .join(', ')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/\s,/g, ',')
+      .replace(/\,{2,}/g, ',');
     var isGMaps = this.map.get('provider') !== 'leaflet';
     this.$el.html(
       template({
@@ -46,7 +51,7 @@ module.exports = View.extend({
 
   _initBinds: function () {
     this.model.bind('change:visible', function (mdl, isVisible) {
-      this[ isVisible ? '_showAttributions' : '_hideAttributions' ]();
+      this[isVisible ? '_showAttributions' : '_hideAttributions']();
     }, this);
     this.map.bind('change:attribution', this.render, this);
     this.add_related_model(this.map);
