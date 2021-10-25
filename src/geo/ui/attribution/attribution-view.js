@@ -31,12 +31,11 @@ module.exports = View.extend({
   },
 
   render: function () {
+    var emptyStringRegExp = new RegExp(/[A-z]/g);
     var attributionsSet = [...new Set(this.map.get('attribution'))];
     var attributions = _.compact(attributionsSet)
-      .join(', ')
-      .replace(/\s{2,}/g, ' ')
-      .replace(/\s,/g, ',')
-      .replace(/\,{2,}/g, ',');
+      .filter(attribution => emptyStringRegExp.test(attribution))
+      .join(', ');
     var isGMaps = this.map.get('provider') !== 'leaflet';
     this.$el.html(
       template({
