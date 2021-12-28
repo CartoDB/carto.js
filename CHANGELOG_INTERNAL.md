@@ -4,6 +4,9 @@ This file contains all the changes in the **internal bundle** (used by Builder).
 
 All the changes that affects the public bundle should be released as *patch* or *minor* and be included in the main Changelog.
 
+## 4.2.2-2 - 2021-12-28
+- Check attributions text before loading them [#2261](https://github.com/CartoDB/carto.js/pull/2261)
+
 ## 4.2.2-1 - 2020-07-24
 - Fix wrong popup position when clicking overlapping features from different layers [#2254](https://github.com/CartoDB/carto.js/pull/2254)
 
