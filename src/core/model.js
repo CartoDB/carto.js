@@ -20,15 +20,16 @@ var Model = Backbone.Model.extend({
   */
   fetch: function (args) {
     var self = this;
-    // var date = new Date();
+
     this.trigger('loadModelStarted');
-    $.when(Backbone.Model.prototype.fetch.call(this, args)).done(function (ev) {
-      self.trigger('loadModelCompleted', ev, self);
-      // var dateComplete = new Date()
-      // console.log('completed in '+(dateComplete - date));
-    }).fail(function (ev) {
-      self.trigger('loadModelFailed', ev, self);
-    });
+
+    $.when(Backbone.Model.prototype.fetch.call(this, args))
+      .done(function (ev) {
+        self.trigger('loadModelCompleted', ev, self);
+      })
+      .fail(function (ev) {
+        self.trigger('loadModelFailed', ev, self);
+      });
   },
   /**
   * Changes the attribute used as Id
@@ -69,11 +70,15 @@ var Model = Backbone.Model.extend({
     var self = this;
     if (!opt2 || !opt2.silent) this.trigger('saving');
     var promise = Backbone.Model.prototype.save.apply(this, arguments);
-    $.when(promise).done(function () {
-      if (!opt2 || !opt2.silent) self.trigger('saved');
-    }).fail(function () {
-      if (!opt2 || !opt2.silent) self.trigger('errorSaving');
-    });
+
+    $.when(promise)
+      .done(function () {
+        if (!opt2 || !opt2.silent) self.trigger('saved');
+      })
+      .fail(function () {
+        if (!opt2 || !opt2.silent) self.trigger('errorSaving');
+      });
+
     return promise;
   }
 });

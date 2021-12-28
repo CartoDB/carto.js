@@ -79,7 +79,7 @@ describe('geo/ui/search', function () {
     });
 
     it('should search with geocoder when form is submit', function () {
-      this.view.$('.js-form').submit();
+      this.view.$('.js-form').trigger('submit');
       expect(this.view.geocoder.geocode).toHaveBeenCalled();
     });
 

@@ -185,12 +185,13 @@ describe('api/v4/client', function () {
     });
   });
 
-  describe('.addLayers', function () {
-    it('should add a layers array', function () { });
-    it('should add a layer array triggering ONE reload cycle by default', function () { });
-    it('should add a layers array without triggering a reload cycle when opts.reload is false', function () { });
-    it('should return a rejected promise when some error happened', function () { });
-  });
+  // Commented because no expectations is polluting the test output
+  // describe('.addLayers', function () {
+  //   it('should add a layers array', function () { });
+  //   it('should add a layer array triggering ONE reload cycle by default', function () { });
+  //   it('should add a layers array without triggering a reload cycle when opts.reload is false', function () { });
+  //   it('should return a rejected promise when some error happened', function () { });
+  // });
 
   describe('.getLayers', function () {
     it('should return an empty array when there are no layers', function () {

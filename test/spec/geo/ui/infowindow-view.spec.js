@@ -285,7 +285,7 @@ describe('geo/ui/infowindow-view', function () {
     model.set('visibility', true, { silent: true });
     expect(model.get('visibility')).toBe(true);
 
-    view.$('.js-close').click();
+    view.$('.js-close').trigger('click');
 
     // Infowindow has been closed
     expect(model.get('visibility')).toBe(false);

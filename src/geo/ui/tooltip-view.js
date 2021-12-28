@@ -34,9 +34,11 @@ var TooltipView = View.extend({
 
   render: function () {
     var content = this.model.get('content');
-    var sanitizedOutput = sanitize.html(this.template(content));
-    this.$el.html(sanitizedOutput);
-    this._updatePosition();
+    if (content) {
+      var sanitizedOutput = sanitize.html(this.template(content));
+      this.$el.html(sanitizedOutput);
+      this._updatePosition();
+    }
     return this;
   },
 

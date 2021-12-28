@@ -44,7 +44,7 @@ describe('geo/ui/limits', function () {
 
   describe('when the limits overlay is displayed', function () {
     beforeEach(function () {
-      this.$button.click();
+      this.$button.trigger('click');
     });
 
     it('should have .is-active class', function () {
@@ -52,7 +52,7 @@ describe('geo/ui/limits', function () {
     });
 
     it('should hide the overlay when .js-button is clicked', function () {
-      this.$button.click();
+      this.$button.trigger('click');
       expect(this.viewHasClass('is-active')).toBeFalsy();
     });
 
@@ -69,7 +69,7 @@ describe('geo/ui/limits', function () {
 
   describe('when the limits overlay is hidden', function () {
     beforeEach(function () {
-      this.$button.click();
+      this.$button.trigger('click');
       this.keyEsc();
     });
 
@@ -78,7 +78,7 @@ describe('geo/ui/limits', function () {
     });
 
     it('should show the overlay when js-button is clicked', function () {
-      this.$button.click();
+      this.$button.trigger('click');
       expect(this.viewHasClass('is-active')).toBeTruthy();
     });
 

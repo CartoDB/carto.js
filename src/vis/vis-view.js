@@ -41,7 +41,7 @@ var Vis = View.extend({
     // correct size.
     var mapH = this.$el.outerHeight();
     if (mapH === 0) {
-      $(window).bind('resize', this._onResize);
+      $(window).on('resize', this._onResize);
     }
   },
 
@@ -118,7 +118,7 @@ var Vis = View.extend({
   },
 
   _onResize: function () {
-    $(window).unbind('resize', this._onResize);
+    $(window).off('resize', this._onResize);
 
     var self = this;
     // This timeout is necessary due to GMaps needs time

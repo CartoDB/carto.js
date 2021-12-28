@@ -130,7 +130,7 @@
       }
     }
 
-    $('.js-basemap').click(function (e) {
+    $('.js-basemap').on('click', function (e) {
       e.preventDefault();
       replaceBasemap($(this).data('provider'), $(this).data('basemap-id'));
     });

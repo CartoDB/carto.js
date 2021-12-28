@@ -136,8 +136,8 @@ var GoogleMapsMapView = MapView.extend({
 
   getSize: function () {
     return {
-      x: this.$el.width(),
-      y: this.$el.height()
+      x: this.$el.width() || 0,
+      y: this.$el.height() || 0
     };
   },
 

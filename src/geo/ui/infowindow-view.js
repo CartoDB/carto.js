@@ -355,7 +355,7 @@ var Infowindow = View.extend({
       display: 'none'
     });
 
-    $hookImage.load(
+    $hookImage.on('load',
       function () {
         $hook.parent().addClass('has-image');
         $hookImage.clipPath(this._getHookPoints(imageDimensions.height - this.options.hookHeight));
@@ -386,10 +386,9 @@ var Infowindow = View.extend({
     var $img = $("<img class='CDB-infowindow-media-item' />");
     $cover.append($img);
 
-    $img
-      .load(this._onLoadImageSuccess)
-      .error(this._onLoadImageError)
-      .attr('src', url);
+    $img.on('load', this._onLoadImageSuccess);
+    $img.on('error', this._onLoadImageError);
+    $img.attr('src', url);
   },
 
   _onLoadImageError: function () {
@@ -402,9 +401,12 @@ var Infowindow = View.extend({
     var $img = this.$('.CDB-infowindow-media-item');
     var url = $img.attr('src');
     var numFields = this.model.get('content').fields.length;
-
-    var imageDimensions = { width: $img.width(), height: $img.height() };
-    var coverDimensions = { width: $cover.width(), height: $cover.height() };
+    var imgWidth = $img.width() || 0;
+    var imgHeight = $img.height() || 0;
+    var coverWidth = $cover.width() || 0;
+    var coverHeight = $cover.height() || 0;
+    var imageDimensions = { width: imgWidth, height: imgHeight };
+    var coverDimensions = { width: coverWidth, height: coverHeight };
 
     var styles = this._calcImageStyle(imageDimensions, coverDimensions);
 
@@ -633,7 +635,7 @@ var Infowindow = View.extend({
     if (!this.model.get('autoPan') || this.isHidden()) { return; }
 
     var containerHeight = this.$el.outerHeight(true) + 15; // Adding some more space
-    var containerWidth = this.$el.width();
+    var containerWidth = this.$el.width() || 0;
     var pos = this.mapView.latLngToContainerPoint(this.model.get('latlng'));
     var adjustOffset = {x: 0, y: 0};
     var size = this.mapView.getSize();
