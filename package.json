@@ -43,7 +43,7 @@
     "d3-format": "1.2.0",
     "d3-time-format": "2.1.0",
     "jquery": "2.1.4",
-    "mustache": "1.1.0",
+    "mustache": "2.2.1",
     "perfect-scrollbar": "https://github.com/CartoDB/perfect-scrollbar.git#master",
     "postcss": "5.0.19",
     "promise-polyfill": "^6.1.0",
