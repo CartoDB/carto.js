@@ -4,7 +4,7 @@
   "description": "CartoDB javascript library",
   "repository": {
     "type": "git",
-    "url": "git://github.com/CartoDB/cartodb.js.git"
+    "url": "https://github.com/CartoDB/cartodb.js.git"
   },
   "author": {
     "name": "CARTO",
