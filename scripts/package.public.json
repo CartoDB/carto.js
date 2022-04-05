@@ -5,7 +5,7 @@
   "main": "carto.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/CartoDB/carto.js.git"
+    "url": "https://github.com/CartoDB/carto.js.git"
   },
   "dependencies": {},
   "author": {

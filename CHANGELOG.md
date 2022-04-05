@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 4.2.2 - 2022-03-16
+### Fixed
+- Replace deprecated git protocol with https ([#2268](https://github.com/CartoDB/carto.js/pull/2268))
 ## 4.2.1 - 2020-07-15
 ### Changed
 - Changed attribution link ([#2253](https://github.com/CartoDB/carto.js/pull/2253))
