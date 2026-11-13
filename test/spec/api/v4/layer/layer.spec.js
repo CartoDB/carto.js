@@ -150,7 +150,7 @@ describe('api/v4/layer', function () {
       var client;
       beforeEach(function () {
         client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test'
         });
       });
@@ -223,7 +223,7 @@ describe('api/v4/layer', function () {
 
       it('should set the internal model style', function (done) {
         var client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test'
         });
 
@@ -361,7 +361,7 @@ describe('api/v4/layer', function () {
 
     it('should fire a cartoError when the source is invalid', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var sourceChangedSoy = jasmine.createSpy('sourceChangedSoy');
@@ -659,7 +659,7 @@ describe('api/v4/layer', function () {
 
   xit('should update "internalmodel.cartocss" when the style is updated', function (done) {
     var client = new carto.Client({
-      apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+      apiKey: 'YOUR_CARTO_API_KEY',
       username: 'cartojs-test'
     });
     var layer = new carto.layer.Layer(source, style);

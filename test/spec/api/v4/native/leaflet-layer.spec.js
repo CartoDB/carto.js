@@ -13,7 +13,7 @@ describe('src/api/v4/native/leaflet-layer', function () {
     document.body.appendChild(element);
 
     client = new carto.Client({
-      apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+      apiKey: 'YOUR_CARTO_API_KEY',
       username: 'cartojs-test'
     });
     map = L.map('map').setView([42.431234, -8.643616], 5);
