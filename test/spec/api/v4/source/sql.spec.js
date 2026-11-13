@@ -65,7 +65,7 @@ describe('api/v4/source/sql', function () {
 
     it('should trigger an queryChanged event when there is an internal model', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -96,7 +96,7 @@ describe('api/v4/source/sql', function () {
 
     it('should return a resolved promise when there is an internal model', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -114,7 +114,7 @@ describe('api/v4/source/sql', function () {
 
     it('should return a rejected promise with a CartoError when there is an internal model (and a reload error)', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -218,7 +218,7 @@ describe('api/v4/source/sql', function () {
   describe('errors', function () {
     it('should trigger an error when invalid', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       // The following sql has the invalid operator: ===
@@ -236,7 +236,7 @@ describe('api/v4/source/sql', function () {
 
     it('should trigger a CartoError when there is an error in the internal model', function () {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var source = new carto.source.SQL('SELECT * FROM ne_10m_populated_places_simple');

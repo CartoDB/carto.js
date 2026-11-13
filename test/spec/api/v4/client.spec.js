@@ -12,7 +12,7 @@ describe('api/v4/client', function () {
 
   beforeEach(function () {
     client = new carto.Client({
-      apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+      apiKey: 'YOUR_CARTO_API_KEY',
       serverUrl: 'https://cartojs-test.carto.com',
       username: 'cartojs-test'
     });
@@ -26,7 +26,7 @@ describe('api/v4/client', function () {
 
     it('should autogenerate the carto url when is not given', function () {
       client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
 
@@ -35,7 +35,7 @@ describe('api/v4/client', function () {
 
     it('should autogenerate the carto url when a template is given', function () {
       client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test',
         serverUrl: 'https://{username}.mycarto.com'
       });
@@ -46,7 +46,7 @@ describe('api/v4/client', function () {
     it('should accept a ipv4/user/{username} as a valid serverURL', function () {
       expect(function () {
         client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test',
           serverUrl: 'https://192.168.0.1/user/cartojs-test'
         });
@@ -56,7 +56,7 @@ describe('api/v4/client', function () {
     it('should reject a valid ip adress with no /user/{username} as serverURL', function () {
       expect(function () {
         client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test',
           serverUrl: 'https://10.10.0.1'
         });
@@ -66,7 +66,7 @@ describe('api/v4/client', function () {
     it('should reject an invalid ip adress with no /user/{username}', function () {
       expect(function () {
         client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test',
           serverUrl: 'https://192.168.1'
         });
@@ -89,7 +89,7 @@ describe('api/v4/client', function () {
 
         it('should throw a descriptive error when apikey is not a string', function () {
           expect(function () {
-            new carto.Client({ apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18' }); // eslint-disable-line
+            new carto.Client({ apiKey: 'YOUR_CARTO_API_KEY' }); // eslint-disable-line
           }).toThrowError('username property is required.');
         });
       });
@@ -97,7 +97,7 @@ describe('api/v4/client', function () {
       describe('username', function () {
         it('should throw a descriptive error when username is not a string', function () {
           expect(function () {
-            new carto.Client({ apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18', username: 1234 }); // eslint-disable-line
+            new carto.Client({ apiKey: 'YOUR_CARTO_API_KEY', username: 1234 }); // eslint-disable-line
           }).toThrowError('username property must be a string.');
         });
       });
@@ -107,7 +107,7 @@ describe('api/v4/client', function () {
           expect(function () {
             // eslint-disable-next-line
             new carto.Client({
-              apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+              apiKey: 'YOUR_CARTO_API_KEY',
               username: 'cartojs-test',
               serverUrl: 'invalid-url'
             });
@@ -118,7 +118,7 @@ describe('api/v4/client', function () {
           expect(function () {
             // eslint-disable-next-line
             new carto.Client({
-              apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+              apiKey: 'YOUR_CARTO_API_KEY',
               username: 'cartojs-test',
               serverUrl: 'https://invald-username.carto.com'
             });

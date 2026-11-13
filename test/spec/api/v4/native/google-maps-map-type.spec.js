@@ -13,7 +13,7 @@ describe('src/api/v4/native/google-maps-map-type', function () {
     document.body.appendChild(element);
 
     client = new carto.Client({
-      apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+      apiKey: 'YOUR_CARTO_API_KEY',
       username: 'cartojs-test'
     });
     map = new google.maps.Map(element);

@@ -34,7 +34,7 @@ describe('api/v4/style/cartocss', function () {
   describe('errors', function () {
     it('should trigger a CartoError when the style is not valid', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var source = new carto.source.Dataset('ne_10m_populated_places_simple');
@@ -51,7 +51,7 @@ describe('api/v4/style/cartocss', function () {
 
     it('should NOT trigger a CartoError when the style is valid but there are some other errors', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var source = new carto.source.Dataset('invalid_dataset');
@@ -114,7 +114,7 @@ describe('api/v4/style/cartocss', function () {
 
       beforeAll(function () {
         client = new carto.Client({
-          apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+          apiKey: 'YOUR_CARTO_API_KEY',
           username: 'cartojs-test'
         });
       });

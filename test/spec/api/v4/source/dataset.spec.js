@@ -86,7 +86,7 @@ describe('api/v4/source/dataset', function () {
 
     it('should trigger an tableNameChanged event when there is an internal model', function (done) {
       const client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       const style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -117,7 +117,7 @@ describe('api/v4/source/dataset', function () {
 
     it('should return a resolved promise when there is an internal model', function (done) {
       const client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       const style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -136,7 +136,7 @@ describe('api/v4/source/dataset', function () {
 
     it('should return a rejected promise with a CartoError when there is an internal model (and a reload error)', function (done) {
       const client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       const style = new carto.style.CartoCSS('#layer { marker-fill: red; }');
@@ -250,7 +250,7 @@ describe('api/v4/source/dataset', function () {
   describe('errors', function () {
     it('should trigger an error when invalid', function (done) {
       var client = new carto.Client({
-        apiKey: '84fdbd587e4a942510270a48e843b4c1baa11e18',
+        apiKey: 'YOUR_CARTO_API_KEY',
         username: 'cartojs-test'
       });
       var invalidSource = new carto.source.Dataset('invalid_dataset');
